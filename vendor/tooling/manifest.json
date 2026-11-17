@@ -2811,5 +2811,28 @@
         "ws"
       ]
     }
+  ],
+  "notes": [
+    {
+      "date": "2026-11-18",
+      "change": "Layout restructured to mirror the distribution install: all manifest packages moved from vendor/dsh/<pkg> to vendor/dsh/node_modules/<pkg> (same bytes, same dirs, verified sha256 of package.json unchanged), and vendor/dsh/package.json added as an exact copy of $DIST/package.json so the dsh-app-boot installation anchor (installAnchor) resolves bundles and the runtime resolution table from the vendored tree.",
+      "files": [
+        "vendor/dsh/node_modules/",
+        "vendor/dsh/package.json"
+      ]
+    },
+    {
+      "date": "2026-11-18",
+      "change": "vendored-boot run required two darwin-arm64 platform packages that the original manifest closure omitted (platform-specific optionalDependencies were not walked). Copied byte-identical from $DIST/node_modules (diff -rq clean): node-addon-require-builtin-darwin-arm64 (needed by node-addon-require-builtin; dsh-app-boot internalModules fails without it: \"No usable native binding found for node-addon-require-builtin-darwin-arm64 (auto)\") and @deepseek-ai/node-addon-system-darwin-arm64 (needed by @deepseek-ai/dsh-session-persistence-jsonl flock on darwin-arm64).",
+      "copiedFrom": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/",
+      "added": [
+        "node-addon-require-builtin-darwin-arm64@0.1.9",
+        "@deepseek-ai/node-addon-system-darwin-arm64@0.1.2"
+      ]
+    },
+    {
+      "date": "2026-11-18",
+      "change": "The five entries in \"missing\" are optional dependencies absent from $DIST/node_modules itself (npm did not install them there), so the headless vendored boot does not need them. Not added. Also not added (unused by the dsh-base/dsh-headless tree, absent from any import): @koromix/koffi-darwin-arm64 (koffi has no importer in the headless closure) and @img/sharp-darwin-arm64 / @img/sharp-libvips-darwin-arm64 (sharp has no importer in the headless closure)."
+    }
   ]
 }
