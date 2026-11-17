@@ -171,9 +171,14 @@ function makeRunError(message, details) {
   return error;
 }
 
-function makeAbortError(message = "The turn was cancelled") {
+export function makeAbortError(message = "The turn was cancelled") {
   const error = typeof DOMException === "function" ? new DOMException(message, "AbortError") : new Error(message);
-  if (error instanceof Error) error.name = "AbortError";
+  if (error instanceof Error) {
+    // Plain assignment fails in strict mode (this module is ESM): the
+    // DOMException prototype's `name` is a getter-only accessor. Define an
+    // own property instead (mirrors abortError in src/lib/harness/runtime.ts).
+    Object.defineProperty(error, "name", { value: "AbortError", configurable: true, writable: true });
+  }
   return error;
 }
 
@@ -439,6 +444,13 @@ export async function* runNativeTask(options = {}) {
     throw new Error("runNativeTask: task must be a non-empty string");
   }
 
+  // Cancellation promptness: a turn that is already aborted never boots a
+  // tree (the host maps the abort to an immediate AbortError). Aborts that
+  // land while the tree is running are handled by the race in step 4; an
+  // abort that lands during boot is picked up by that same race once boot
+  // completes.
+  if (signal?.aborted) throw makeAbortError();
+
   const {
     loadLayeredEnv,
     loadProfileDirectory,
@@ -613,8 +625,11 @@ export async function* runNativeTask(options = {}) {
     }
   } finally {
     evidence?.restoreCjs();
-    capture.restore();
     abortCleanup();
+    // Dispose while the capture is still installed: an aborted turn's session
+    // flush can emit a late `error` NDJSON event to stdout mid-dispose
+    // ("flush on a closed handle"); harvesting it here keeps the real stdout
+    // free of projector JSON on the abort path.
     try {
       if (ctx) await withTimeout(ctx.fiber.dispose(), 5_000, "tree dispose");
     } catch (error) {
@@ -625,6 +640,7 @@ export async function* runNativeTask(options = {}) {
     } catch (error) {
       log(`proxy dispose failed: ${error instanceof Error ? error.message : String(error)}`);
     }
+    capture.restore();
     log(`turn done in ${(performance.now() - started).toFixed(0)}ms`);
   }
 }
