@@ -95,7 +95,20 @@ no files touched, both V1 ports restored and verified (3001/3002 → 200).
 Remaining: capability integration (Phase 4 - first CRM tool via a Cyraops
 bundle), SBOM completion, reliability suite, Next upgrade decision.
 
-## Checkpoint 6 — licensing/SBOM (pending)
+## Checkpoint 6 — first CRM capability ✅ (verified 2026-11-18, commit 79ac883)
+
+Phase 4 v1: @cyraops/harness-crm cordis bundle registers cyraops_open_tickets
+(defineTool via ctx.tools.register). The tool queries the live DB through a
+createRequire-anchored Prisma bridge outside the vendored loader's interception.
+
+Live evidence (native engine): registry log '[cyraops-crm] registered tool',
+model tool_call → tool_result {count:0,statuses:{}} → '**0 open tickets**' —
+matching psql (Task has 0 rows in cyraops_v2). V1 stream regression-tested.
+379 tests: 378 pass, 1 pre-existing skip.
+
+Remaining: further tools/approvals mapping (Phase 4 continues), SBOM/license
+notices completion, reliability suite (cancellation/backpressure/restart),
+Next upgrade decision (pending user).
 
 ## Checkpoint 7 — reliability/packaging (pending)
 
