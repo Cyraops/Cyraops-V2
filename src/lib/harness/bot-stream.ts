@@ -29,6 +29,20 @@
 import { harnessSessionStore, type AgentRuntime, type RuntimeKind, type Session } from "./runtime";
 import type { HarnessSessionStore } from "./store";
 
+/**
+ * Instruction appended to a harness turn's task when the reply will be read
+ * aloud (the voice screen posts `voice: true`). Same spirit as the V1 voice
+ * flag: the harness must answer in spoken length, not paragraph length.
+ */
+export const VOICE_SHAPING_INSTRUCTION =
+  "\n\nYou are speaking aloud right now through a voice interface. Answer in one to three short spoken sentences, no lists, no headings, no markdown, no URLs. If there is a lot to say, offer to continue rather than reciting it all.";
+
+/** The task handed to the harness for one turn, with voice shaping when spoken. */
+export function harnessTaskForTurn(input: { content: string; attachmentContext?: string; voice?: boolean }): string {
+  const { content, attachmentContext = "", voice = false } = input;
+  return `${content}${attachmentContext}${voice ? VOICE_SHAPING_INSTRUCTION : ""}`;
+}
+
 export interface StreamHarnessTurnInput {
   runtime: AgentRuntime;
   /** The conversation this turn belongs to (the session store's key). */

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { streamHarnessTurn } from "./bot-stream";
+import { harnessTaskForTurn, streamHarnessTurn, VOICE_SHAPING_INSTRUCTION } from "./bot-stream";
 import type { HarnessEvent } from "./client";
 import type { AgentRuntime, RuntimeHealth, Session } from "./runtime";
 import type { HarnessSessionStore } from "./store";
@@ -341,4 +341,29 @@ test("streamHarnessTurn: a missing workspace key arrives at the runtime as null"
   });
 
   assert.equal(runtime.turns[0].workspaceId, null);
+});
+
+test("harnessTaskForTurn: a voice turn appends the spoken-length instruction", () => {
+  const task = harnessTaskForTurn({ content: "What is due this week?", voice: true });
+  assert.equal(task, `What is due this week?${VOICE_SHAPING_INSTRUCTION}`);
+  assert.match(task, /Answer in one to three short spoken sentences/);
+  // The instruction rides the task, after the user's words, exactly once.
+  assert.equal(task.indexOf(VOICE_SHAPING_INSTRUCTION), task.lastIndexOf(VOICE_SHAPING_INSTRUCTION));
+});
+
+test("harnessTaskForTurn: a typed turn carries no voice instruction", () => {
+  assert.equal(harnessTaskForTurn({ content: "What is due this week?" }), "What is due this week?");
+  assert.equal(harnessTaskForTurn({ content: "What is due?", voice: false }), "What is due?");
+});
+
+test("harnessTaskForTurn: attachment context sits between the words and the instruction", () => {
+  const task = harnessTaskForTurn({
+    content: "Summarise the file",
+    attachmentContext: "\n\n[Attached files]\n--- notes.txt ---\nhello",
+    voice: true,
+  });
+  assert.equal(
+    task,
+    "Summarise the file\n\n[Attached files]\n--- notes.txt ---\nhello" + VOICE_SHAPING_INSTRUCTION
+  );
 });

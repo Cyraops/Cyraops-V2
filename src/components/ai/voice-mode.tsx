@@ -6,6 +6,7 @@ import { VoiceEarth, type EarthPhase } from "./voice-earth";
 import { stripToolMarkup } from "@/lib/ai/tool-markup";
 import { availableGenders, pickVoice, type VoiceGender } from "@/lib/ai/voice/preferred-voices";
 import { recordUtterance, toWav } from "@/lib/ai/voice/recorder";
+import { nextSentence } from "@/lib/ai/voice/sentences";
 
 type Phase = "idle" | "listening" | "thinking" | "speaking" | "error";
 
@@ -97,10 +98,45 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
   const speechGenRef = useRef(0);
   const serverVoiceRef = useRef(false);
   const spokenRef = useRef("");
+  /** The one microphone stream for the whole voice session, reused per utterance. */
+  const micStreamRef = useRef<MediaStream | null>(null);
+  /** Identity of the turn currently allowed to stream text/speech; barge-in supersedes it. */
+  const askGenRef = useRef(0);
+  /** Where the pending approval's decision must go ("harness" → /api/harness/approve). */
+  const pendingViaRef = useRef<"harness" | undefined>(undefined);
+  /** One recording at a time: a second concurrent recorder would fight over the mic stream. */
+  const recordingRef = useRef(false);
+  /** Consecutive ASR rounds that came back without words; three strikes pauses the session. */
+  const emptyAsrRoundsRef = useRef(0);
 
   const setPhaseSafe = useCallback((next: Phase) => {
     phaseRef.current = next;
     setPhase(next);
+  }, []);
+
+  /** Read the live phase; as a function it never carries TS's flow narrowing. */
+  const currentPhase = useCallback((): Phase => phaseRef.current, []);
+
+  /**
+   * One microphone acquisition per voice session. Chrome asks for permission
+   * on the first getUserMedia and never again while these tracks stay live, so
+   * every utterance records from this same stream — no permission flicker, no
+   * device re-probe between turns. The tracks stop only on exit or a hard
+   * microphone error.
+   */
+  const acquireMicStream = useCallback(async (): Promise<MediaStream> => {
+    const existing = micStreamRef.current;
+    if (existing && existing.getAudioTracks().some((track) => track.readyState === "live")) {
+      return existing;
+    }
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    micStreamRef.current = stream;
+    return stream;
+  }, []);
+
+  const releaseMicStream = useCallback(() => {
+    micStreamRef.current?.getTracks().forEach((track) => track.stop());
+    micStreamRef.current = null;
   }, []);
 
   /** The voice to use: the most natural one of the chosen gender. */
@@ -155,6 +191,8 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
   useEffect(() => {
     mutedRef.current = muted;
     if (muted && typeof window !== "undefined" && window.speechSynthesis) window.speechSynthesis.cancel();
+    if (muted) stopSpeaking();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [muted]);
 
   // Keep the newest turn in view, the way a chat does.
@@ -387,15 +425,30 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
    * kept for deployments without a transcription key.
    */
   const listenWithServerAsr = useCallback(async () => {
+    if (!activeRef.current || recordingRef.current) return;
+    recordingRef.current = true;
+    try {
+      await recordOneUtterance();
+    } finally {
+      recordingRef.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setPhaseSafe]);
+
+  /** One record → transcribe round, against the session's single mic stream. */
+  const recordOneUtterance = useCallback(async () => {
     if (!activeRef.current) return;
     setPhaseSafe("listening");
     setHeard("");
     setError("");
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await acquireMicStream();
       const { blob, hadSpeech } = await recordUtterance(stream, { silenceMs: 1300, maxUtteranceMs: 30000 });
-      stream.getTracks().forEach((track) => track.stop());
+      // The session stream stays live for the next utterance: only leaving the
+      // voice screen or a hard microphone failure stops its tracks.
       if (!activeRef.current) return;
+      // The planet was tapped to pause while this recording ran: say nothing.
+      if (phaseRef.current === "idle" || phaseRef.current === "error") return;
 
       if (!hadSpeech || !blob) {
         // Nothing said: keep listening rather than declaring a fault on the
@@ -407,7 +460,9 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
           setPhaseSafe("error");
           return;
         }
-        void listenWithServerAsr();
+        // Round finished: the guard above was still held during this call, so
+        // re-listen on a fresh tick rather than recursing into it.
+        setTimeout(() => void listenWithServerAsr(), 50);
         return;
       }
 
@@ -416,23 +471,52 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       const wav = await toWav(blob);
       const form = new FormData();
       form.append("file", wav, "speech.wav");
-      const response = await fetch("/api/assistant/asr", { method: "POST", body: form });
-      const data = await response.json().catch(() => ({}));
+      let data: Record<string, unknown> = {};
+      try {
+        const response = await fetch("/api/assistant/asr", { method: "POST", body: form });
+        data = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+      } catch {
+        // A failed transcription round is retried like an empty one below.
+        data = {};
+      }
       if (!activeRef.current) return;
+      // The phase may have changed while the transcription ran (planet tap,
+      // an error): re-read it before acting on the round's outcome.
+      const phaseNow = currentPhase();
+      if (phaseNow === "idle" || phaseNow === "error") return;
       const said = String(data?.text ?? "").trim();
       if (!said) {
+        // Not the end of the conversation: keep the mic session alive and
+        // listen again. Three consecutive wordless rounds pause the session.
+        emptyAsrRoundsRef.current += 1;
+        setMicStatus("heard something, no words");
+        if (emptyAsrRoundsRef.current >= 3) {
+          setError("I could not make out any words. Try again a little closer to the microphone.");
+          setPhaseSafe("error");
+          return;
+        }
         setError("I could not make out any words. Try again a little closer to the microphone.");
-        setPhaseSafe("error");
+        setTimeout(() => void listenWithServerAsr(), 50);
         return;
       }
-      void ask(said);
+      emptyAsrRoundsRef.current = 0;
+      void askRef.current?.(said);
     } catch (caught) {
       if (!activeRef.current) return;
-      setError((caught as Error)?.message || "Could not record from the microphone.");
+      const name = (caught as DOMException)?.name ?? "";
+      if (name === "NotAllowedError" || name === "SecurityError") {
+        releaseMicStream();
+        setError("Microphone is blocked. Allow it for this site, then tap the planet again.");
+      } else if (name === "NotFoundError") {
+        releaseMicStream();
+        setError("No microphone was found. Connect one and try again.");
+      } else {
+        setError((caught as Error)?.message || "Could not record from the microphone.");
+      }
       setPhaseSafe("error");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPhaseSafe]);
+  }, [acquireMicStream, currentPhase, releaseMicStream, setPhaseSafe]);
 
   const listen = useCallback(() => {
     if (!activeRef.current) return;
@@ -578,10 +662,29 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clearWatchdog, setPhaseSafe, stopRecognition]);
 
+  /**
+   * Hand back to listening after a turn. The 12s watchdog is for the browser
+   * recognizer only: the recorder decides utterance ends itself (silence and
+   * hard-stop timers), so arming it there would wrongly kill long recordings.
+   */
+  const resumeListening = useCallback(() => {
+    if (!activeRef.current) return;
+    if (asrAvailableRef.current) {
+      listen();
+      return;
+    }
+    armWatchdog();
+    listen();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [armWatchdog, listen]);
+
   const ask = useCallback(
     async (text: string, files: Attachment[] = [], supersede = false) => {
       if (inFlightRef.current && !supersede) return;
       inFlightRef.current = true;
+      // This turn's identity: a barge-in supersedes it, and everything the
+      // open stream still delivers after that point is discarded.
+      const gen = ++askGenRef.current;
       setPhaseSafe("thinking");
       clearWatchdog();
       stopRecognition();
@@ -615,7 +718,15 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         let buffer = "";
         let reply = "";
         let spokenUpTo = 0;
-        let pending: { id: string; toolName: string; summary?: string; reason?: string; canAlwaysAllow?: boolean } | null = null;
+        let pending: {
+          id: string;
+          toolName: string;
+          summary?: string;
+          reason?: string;
+          canAlwaysAllow?: boolean;
+          answered?: "allow" | "deny";
+          via?: "harness";
+        } | null = null;
 
         while (true) {
           const { done, value } = await reader.read();
@@ -633,17 +744,23 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
               continue;
             }
             if (payload.type === "token") {
+              // Superseded by a barge-in while the stream was closing: these
+              // tokens belong to a turn that no longer owns the screen.
+              if (askGenRef.current !== gen) continue;
               reply += payload.content;
               setStreamingReply(reply);
               // Speak each finished sentence as it forms, rather than waiting for
-              // the whole answer: the first words land about a second in.
-              const pendingText = reply.slice(spokenUpTo);
-              const sentence = /^([\s\S]*?[.!?…])(\s|$)/.exec(pendingText);
-              if (sentence && sentence[1].trim().length >= 12) {
-                spokenUpTo += sentence[1].length;
-                enqueueSpeech(sentence[1]);
+              // the whole answer: the first words land while it is still writing.
+              const split = nextSentence(reply.slice(spokenUpTo));
+              if (split && split.sentence.trim().length >= 12) {
+                spokenUpTo += split.consumed;
+                enqueueSpeech(split.sentence);
               }
             } else if (payload.type === "approval") {
+              // Harness approval mid-turn: the broker is waiting on the decision,
+              // so the card's buttons must be able to answer it right now.
+              pendingApprovalRef.current = payload.approvalId;
+              pendingViaRef.current = "harness";
               setPendingApproval({ id: payload.approvalId, toolName: payload.toolName, summary: payload.summary, via: "harness" });
             } else if (payload.type === "done") {
               if (payload.reply) reply = payload.reply;
@@ -658,18 +775,32 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
           }
         }
 
+        // Superseded while the stream was closing: nothing from here on may
+        // touch the screen, the transcript or the speech queue.
+        if (askGenRef.current !== gen) return;
+
         setStreamingReply("");
         if (reply.trim()) appendTurn("assistant", reply);
 
-        // A tool needs a person. Ask here rather than throwing the person out of
-        // the voice screen: the card appears above the composer and the
-        // conversation carries on once it is answered.
-        if (pending) {
+        // A tool needs a person. Ask here rather than throwing the person out
+        // of the voice screen: the card appears above the composer and the
+        // conversation carries on once it is answered. Harness approvals carry
+        // their decision in `answered` (the mid-stream card already handled
+        // them), so only an undecided action is put on the card.
+        if (pending && !pending.answered) {
           pendingApprovalRef.current = pending.id;
+          pendingViaRef.current = pending.via === "harness" ? "harness" : undefined;
           setPendingApproval({ id: pending.id, toolName: pending.toolName, summary: pending.summary ?? pending.toolName });
           setPhaseSafe("idle");
           enqueueSpeech(`${pending.toolName} needs your approval before I can do that.`);
           return;
+        }
+        if (pending && pendingApprovalRef.current === pending.id) {
+          // The turn completed with the decision already made (broker timeout
+          // or a mid-stream card): the card can no longer be answered.
+          pendingApprovalRef.current = null;
+          pendingViaRef.current = undefined;
+          setPendingApproval(null);
         }
 
         const tail = reply.slice(spokenUpTo).trim();
@@ -680,31 +811,38 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
             setTimeout(waitForSpeech, 150);
             return;
           }
-          armWatchdog();
-          listen();
+          resumeListening();
         };
         if (queueRef.current.length || pumpingRef.current) waitForSpeech();
-        else {
-          armWatchdog();
-          listen();
-        }
+        else resumeListening();
       } catch (caught) {
         setStreamingReply("");
         // Aborted because the person spoke over it: that is not an error.
         if ((caught as { name?: string })?.name === "AbortError") return;
+        // A superseded turn failing must not paint over the new turn's screen.
+        if (askGenRef.current !== gen) return;
         setError(caught instanceof Error ? caught.message : "Something went wrong.");
         setPhaseSafe("error");
       } finally {
-        inFlightRef.current = false;
+        // Only the current turn may release the in-flight flag: a superseded
+        // turn's finally runs after the new turn already took over.
+        if (askGenRef.current === gen) inFlightRef.current = false;
         if (streamAbortRef.current === controller) streamAbortRef.current = null;
       }
     },
-    [appendTurn, armWatchdog, assistantId, clearWatchdog, enqueueSpeech, listen, onConversation, setPhaseSafe, stopRecognition]
+    [appendTurn, armWatchdog, assistantId, clearWatchdog, enqueueSpeech, listen, onConversation, resumeListening, setPhaseSafe, stopRecognition]
   );
+  // The recording round (memoized once) must always launch the LATEST ask:
+  // otherwise recorder-initiated turns keep a closure from before the speech
+  // voices loaded and lose the picked voice, among other staleness.
+  const askRef = useRef(ask);
+  askRef.current = ask;
 
   /**
    * Start listening. Recognition starts synchronously, inside the tap, so Chrome
-   * treats it as user-initiated. The microphone is probed in parallel only to
+   * treats it as user-initiated. With server transcription the recorder itself
+   * acquires the session's one mic stream (and reports denials), so there is no
+   * second probe here. The browser-recognizer path still probes in parallel to
    * explain a denial — and that probe's stream is stopped at once, because a
    * held audio track can starve the recognizer.
    */
@@ -714,6 +852,7 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
     // exists for the browser recognizer, which can fail silently.
     if (!asrAvailableRef.current) armWatchdog();
     listen();
+    if (asrAvailableRef.current) return;
     void (async () => {
       try {
         const stream = await navigator.mediaDevices?.getUserMedia({ audio: true });
@@ -741,6 +880,9 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       activeRef.current = false;
       clearWatchdog();
       stopRecognition();
+      // Leaving the voice screen ends the mic session: stop its tracks.
+      micStreamRef.current?.getTracks().forEach((track) => track.stop());
+      micStreamRef.current = null;
       if (typeof window !== "undefined" && window.speechSynthesis) window.speechSynthesis.cancel();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -888,14 +1030,13 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       const actionId = pendingApprovalRef.current;
       if (!actionId) return;
       pendingApprovalRef.current = null;
+      const via = pendingViaRef.current;
+      pendingViaRef.current = undefined;
       setPendingApproval(null);
       setPhaseSafe("thinking");
       try {
-        const endpoint = pendingApproval?.via === "harness" ? "/api/harness/approve" : "/api/assistant/actions/confirm";
-        const body =
-          pendingApproval?.via === "harness"
-            ? JSON.stringify({ approvalId: actionId, approve })
-            : JSON.stringify({ actionId, approve });
+        const endpoint = via === "harness" ? "/api/harness/approve" : "/api/assistant/actions/confirm";
+        const body = via === "harness" ? JSON.stringify({ approvalId: actionId, approve }) : JSON.stringify({ actionId, approve });
         const response = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -906,7 +1047,9 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
           const reason = data.result?.error || data.error || "That action could not be completed.";
           setError(String(reason));
           appendTurn("assistant", `That didn't work: ${reason}`);
-        } else {
+        } else if (via !== "harness") {
+          // A harness decision is made while its turn is still streaming, and
+          // that turn's own reply describes the outcome — no placeholder here.
           appendTurn(
             "assistant",
             approve
@@ -917,12 +1060,14 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       } catch (caught) {
         setError(caught instanceof Error ? caught.message : "Could not confirm that action.");
       } finally {
-        armWatchdog();
-        listen();
+        // While the harness turn is still streaming, its own completion hands
+        // back to listening; only a finished turn needs the handoff here
+        // (otherwise two recordings would fight over the mic stream).
+        if (!inFlightRef.current) resumeListening();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [appendTurn, armWatchdog, listen, setPhaseSafe]
+    [appendTurn, resumeListening, setPhaseSafe]
   );
 
   const onPlanetTap = () => {
@@ -931,7 +1076,17 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       return;
     }
     if (phaseRef.current === "speaking") {
-      window.speechSynthesis?.cancel();
+      // Interrupt, the same as barge-in: stop every sound, supersede the open
+      // stream so nothing it still delivers can play, and go back to listening.
+      stopSpeaking();
+      askGenRef.current += 1;
+      try {
+        streamAbortRef.current?.abort();
+      } catch {
+        /* nothing in flight */
+      }
+      inFlightRef.current = false;
+      setStreamingReply("");
       listen();
       return;
     }

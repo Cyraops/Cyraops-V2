@@ -9,7 +9,7 @@ import {
 import { checkDailySpend, checkRateLimit } from "@/lib/ai/assistant/guard";
 import { db } from "@/lib/db";
 import { storage } from "@/lib/storage";
-import { streamHarnessTurn } from "@/lib/harness/bot-stream";
+import { streamHarnessTurn, harnessTaskForTurn } from "@/lib/harness/bot-stream";
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
 
 const encoder = new TextEncoder();
@@ -249,11 +249,14 @@ async function streamHarnessReply(
           });
         }
 
-        const voiceNote =
-          body?.voice === true
-            ? "\n\nYou are speaking aloud right now through a voice interface. Answer in one to three short spoken sentences, no lists, no headings, no markdown, no URLs. If there is a lot to say, offer to continue rather than reciting it all."
-            : "";
-        const task = `${content}${attachmentContext}${voiceNote}`;
+        // The voice screen posts voice:true: the reply will be read aloud, so
+        // shape it to spoken length (one to three short sentences) before it
+        // is generated, exactly like the V1 voice flag does.
+        const task = harnessTaskForTurn({
+          content,
+          attachmentContext,
+          voice: body?.voice === true,
+        });
 
         const result = await streamHarnessTurn({
           runtime: harnessRuntime as AgentRuntime,
