@@ -21,13 +21,21 @@ import {
   normalizeDays,
   normalizeOptionalQuery,
   normalizeRequiredQuery,
+  normalizePriority,
+  normalizeTicketId,
+  normalizeTitle,
   openTickets,
+  openTicketsWhere,
   listTickets,
   searchContacts,
   scheduleEvents,
+  updateTicket,
+  readTenantId,
+  taskTenantWhere,
   OPEN_STATUSES,
   OPEN_WHERE,
   ALL_STATUSES,
+  ALL_PRIORITIES,
   LIST_LIMIT_DEFAULT,
   LIST_LIMIT_MAX,
   SCHEDULE_DAYS_DEFAULT,
@@ -40,11 +48,16 @@ import {
   createListTicketsDefinition,
   createSearchContactsDefinition,
   createListScheduleDefinition,
+  createUpdateTicketDefinition,
+  createApprovalAnswerer,
+  updateTicketAskGate,
+  updateTicketSummary,
   toolDefinitions,
   TOOL_NAME,
   TOOL_LIST_TICKETS,
   TOOL_SEARCH_CONTACTS,
   TOOL_LIST_SCHEDULE,
+  TOOL_UPDATE_TICKET,
 } from "./index.js";
 
 /** A findMany-capable stub with the shape the bridge uses. */
@@ -524,10 +537,326 @@ test("tool: output render turns the new canonical values into JSON text", () => 
   ]);
 });
 
-test("tool: toolDefinitions returns the four tools in stable registration order", () => {
+test("tool: toolDefinitions returns the five tools in stable registration order", () => {
   const definitions = toolDefinitions();
   assert.deepEqual(
-    definitions.map((definition) => definition.name),
-    [TOOL_NAME, TOOL_LIST_TICKETS, TOOL_SEARCH_CONTACTS, TOOL_LIST_SCHEDULE]
+    definitions.map((definition: { name: string }) => definition.name),
+    [TOOL_NAME, TOOL_LIST_TICKETS, TOOL_SEARCH_CONTACTS, TOOL_LIST_SCHEDULE, TOOL_UPDATE_TICKET]
   );
+});
+
+// ---------------------------------------------------------------------------
+// TASK 2: tenant scoping (CYRAOPS_WORKSPACE_ID) in the bridge.
+// ---------------------------------------------------------------------------
+
+test("bridge: readTenantId reads and trims CYRAOPS_WORKSPACE_ID", () => {
+  assert.equal(readTenantId({ CYRAOPS_WORKSPACE_ID: "user-tenant-1" }), "user-tenant-1");
+  assert.equal(readTenantId({ CYRAOPS_WORKSPACE_ID: "  user-tenant-1  " }), "user-tenant-1");
+});
+
+test("bridge: readTenantId is undefined when the variable is absent or blank", () => {
+  assert.equal(readTenantId({}), undefined);
+  assert.equal(readTenantId({ CYRAOPS_WORKSPACE_ID: "" }), undefined);
+  assert.equal(readTenantId({ CYRAOPS_WORKSPACE_ID: "   " }), undefined);
+});
+
+test("bridge: taskTenantWhere scopes by creator or project owner, and is empty without a tenant", () => {
+  assert.deepEqual(taskTenantWhere(undefined), {});
+  assert.deepEqual(taskTenantWhere("tenant-a"), {
+    OR: [{ creatorId: "tenant-a" }, { project: { ownerId: "tenant-a" } }],
+  });
+});
+
+test("bridge: openTicketsWhere keeps the legacy clause without a tenant and adds the tenant clause with one", () => {
+  assert.deepEqual(openTicketsWhere(undefined), OPEN_WHERE);
+  assert.deepEqual(openTicketsWhere("tenant-a"), {
+    archivedAt: null,
+    AND: [
+      { status: { in: ["BACKLOG", "TODO", "IN_PROGRESS", "IN_REVIEW"] } },
+      { OR: [{ creatorId: "tenant-a" }, { project: { ownerId: "tenant-a" } }] },
+    ],
+  });
+});
+
+test("bridge: openTickets runs against the tenant-scoped where clause", async () => {
+  const prisma = stubPrisma([{ status: "TODO" }]);
+  const result = await openTickets(prisma, { tenantId: "tenant-a" });
+  assert.deepEqual(result, { count: 1, statuses: { TODO: 1 } });
+  assert.deepEqual(prisma.calls[0]?.where, openTicketsWhere("tenant-a"));
+});
+
+test("bridge: listTickets adds the tenant clause to its AND list", async () => {
+  const calls: Array<Record<string, unknown>> = [];
+  const prisma = {
+    task: {
+      async findMany(args: Record<string, unknown>) {
+        calls.push(args);
+        return [];
+      },
+    },
+  };
+  await listTickets(prisma, { tenantId: "tenant-a" });
+  const and = (calls[0]?.where as { AND?: unknown[] })?.AND;
+  assert.ok(Array.isArray(and));
+  assert.deepEqual(and?.[1], { OR: [{ creatorId: "tenant-a" }, { project: { ownerId: "tenant-a" } }] });
+});
+
+test("bridge: scheduleEvents scopes by creatorId when a tenant is set", async () => {
+  const calls: Array<Record<string, unknown>> = [];
+  const prisma = {
+    calendarEvent: {
+      async findMany(args: Record<string, unknown>) {
+        calls.push(args);
+        return [];
+      },
+    },
+  };
+  await scheduleEvents(prisma, { days: 7, tenantId: "tenant-a" });
+  assert.equal((calls[0]?.where as { creatorId?: string })?.creatorId, "tenant-a");
+});
+
+test("bridge: scheduleEvents without a tenant has no creator filter", async () => {
+  const calls: Array<Record<string, unknown>> = [];
+  const prisma = {
+    calendarEvent: {
+      async findMany(args: Record<string, unknown>) {
+        calls.push(args);
+        return [];
+      },
+    },
+  };
+  await scheduleEvents(prisma, { days: 7 });
+  assert.equal((calls[0]?.where as { creatorId?: string })?.creatorId, undefined);
+});
+
+// ---------------------------------------------------------------------------
+// TASK 1: cyraops_update_ticket bridge behaviour (write path).
+// ---------------------------------------------------------------------------
+
+/** A task-capable stub covering the updateMany/findUnique write path. */
+function stubUpdateClient(updatedRow: Record<string, unknown> | null, updateCount = 1) {
+  const calls: Array<{ kind: string; args: Record<string, unknown> }> = [];
+  return {
+    calls,
+    task: {
+      async updateMany(args: Record<string, unknown>) {
+        calls.push({ kind: "updateMany", args });
+        return { count: updateCount };
+      },
+      async findUnique(args: Record<string, unknown>) {
+        calls.push({ kind: "findUnique", args });
+        return updatedRow;
+      },
+    },
+  };
+}
+
+test("bridge: updateTicket validates the ticket id", async () => {
+  const prisma = stubUpdateClient(null, 0);
+  for (const bad of [undefined, null, "", "  "]) {
+    await assert.rejects(
+      () => updateTicket(prisma, { id: bad, priority: "HIGH" }),
+      /id must be a non-empty ticket id/
+    );
+  }
+});
+
+test("bridge: updateTicket validates the priority vocabulary", async () => {
+  const prisma = stubUpdateClient(null, 0);
+  await assert.rejects(
+    () => updateTicket(prisma, { id: "t1", priority: "CRITICAL" }),
+    /priority must be one of LOW\/MEDIUM\/HIGH\/URGENT/
+  );
+});
+
+test("bridge: updateTicket requires at least one change", async () => {
+  const prisma = stubUpdateClient(null, 0);
+  await assert.rejects(() => updateTicket(prisma, { id: "t1" }), /provide title and\/or priority/);
+});
+
+test("bridge: updateTicket updates within the tenant and returns the updated row", async () => {
+  const prisma = stubUpdateClient({ id: "t1", title: "Fixed", status: "TODO", priority: "HIGH" });
+  const result = await updateTicket(prisma, { id: "t1", priority: "HIGH", tenantId: "tenant-a" });
+  assert.deepEqual(result, { id: "t1", title: "Fixed", status: "TODO", priority: "HIGH" });
+  const update = prisma.calls.find((call) => call.kind === "updateMany");
+  assert.deepEqual(update?.args, {
+    where: {
+      id: "t1",
+      OR: [{ creatorId: "tenant-a" }, { project: { ownerId: "tenant-a" } }],
+    },
+    data: { priority: "HIGH" },
+  });
+});
+
+test("bridge: updateTicket refuses a ticket outside the tenant (updateMany count 0)", async () => {
+  const prisma = stubUpdateClient(null, 0);
+  await assert.rejects(
+    () => updateTicket(prisma, { id: "tenant-two-secret", priority: "HIGH", tenantId: "tenant-a" }),
+    /ticket tenant-two-secret not found in this workspace/
+  );
+});
+
+test("bridge: ALL_PRIORITIES is the four ticket priorities", () => {
+  assert.deepEqual([...ALL_PRIORITIES], ["LOW", "MEDIUM", "HIGH", "URGENT"]);
+});
+
+// ---------------------------------------------------------------------------
+// TASK 1: the update tool definition, the ask gate, and the answerer.
+// ---------------------------------------------------------------------------
+
+test("tool: update definition declares the exact name, description and parameter schema", () => {
+  const definition = createUpdateTicketDefinition({
+    runQuery: async () => ({ id: "t1", title: "T", status: "TODO", priority: "LOW" }),
+  });
+  assert.equal(definition.name, TOOL_UPDATE_TICKET);
+  assert.match(definition.description, /Update an existing Cyraops CRM ticket/);
+  assert.equal(definition.parameters.type, "object");
+  assert.equal(definition.parameters.properties.id.type, "string");
+  assert.deepEqual(definition.parameters.required, ["id"]);
+  assert.equal(definition.parameters.properties.title.type, "string");
+  assert.equal(definition.parameters.properties.priority.type, "string");
+  assert.equal(definition.output.schema.type, "object");
+  assert.deepEqual(definition.output.schema.required, ["id", "title", "status", "priority"]);
+});
+
+test("tool: update execute normalizes and forwards the arguments", async () => {
+  const received: Array<Record<string, unknown>> = [];
+  const definition = createUpdateTicketDefinition({
+    runQuery: async (args: Record<string, unknown>) => {
+      received.push(args);
+      return { id: "t1", title: "New", status: "TODO", priority: "HIGH" };
+    },
+  });
+  const result = await definition.execute({ id: "  t1  ", title: "  New  ", priority: "HIGH" }, {} as never);
+  assert.deepEqual(result, { id: "t1", title: "New", status: "TODO", priority: "HIGH" });
+  assert.deepEqual(received, [{ id: "t1", title: "New", priority: "HIGH" }]);
+});
+
+test("tool: update execute rejects an invalid priority before touching the bridge", async () => {
+  const definition = createUpdateTicketDefinition({
+    runQuery: async () => {
+      throw new Error("bridge must not be reached");
+    },
+  });
+  await assert.rejects(
+    () => definition.execute({ id: "t1", priority: "URGENT2" }, {} as never),
+    /priority must be one of LOW\/MEDIUM\/HIGH\/URGENT/
+  );
+});
+
+test("tool: updateTicketSummary renders the requested changes", () => {
+  assert.equal(
+    updateTicketSummary({ id: "seed-task-billing", priority: "HIGH" }),
+    "Update ticket seed-task-billing in Cyraops CRM: priority → HIGH."
+  );
+  assert.equal(
+    updateTicketSummary({ id: "t2", title: "New title" }),
+    "Update ticket t2 in Cyraops CRM: title → \"New title\"."
+  );
+});
+
+test("tool: updateTicketAskGate returns the harness ask decision for the update tool", async () => {
+  const gate = updateTicketAskGate();
+  const decision = await gate(
+    { name: TOOL_UPDATE_TICKET, arguments: { id: "t1", priority: "HIGH" } },
+    async () => {
+      throw new Error("next must not run for the gated tool");
+    }
+  );
+  assert.equal(decision.kind, "ask");
+  assert.equal(decision.reason, "Update ticket t1 in Cyraops CRM: priority → HIGH.");
+  assert.equal(decision.displayReason?.en, decision.reason);
+});
+
+test("tool: updateTicketAskGate delegates every other tool to next()", async () => {
+  const gate = updateTicketAskGate();
+  const decision = await gate({ name: TOOL_LIST_TICKETS }, async () => ({ kind: "allow" }));
+  assert.deepEqual(decision, { kind: "allow" });
+});
+
+test("tool: the approval answerer delegates when no broker is installed", async () => {
+  const answerer = createApprovalAnswerer({ lookupBroker: () => undefined });
+  const outcome = await answerer(
+    { toolName: TOOL_UPDATE_TICKET, reason: "update" },
+    async () => "fallback-outcome"
+  );
+  assert.equal(outcome, "fallback-outcome");
+});
+
+test("tool: the approval answerer delegates other tools' requests to next()", async () => {
+  const broker = {
+    request() {
+      throw new Error("broker must not be consulted for other tools");
+    },
+  };
+  const answerer = createApprovalAnswerer({ lookupBroker: () => broker });
+  const outcome = await answerer({ toolName: "some_other_tool" }, async () => "delegated");
+  assert.equal(outcome, "delegated");
+});
+
+test("tool: the approval answerer forwards the ask to the broker and returns allowed-once on approve", async () => {
+  const seen: Array<Record<string, unknown>> = [];
+  const broker = {
+    request(info: Record<string, unknown>) {
+      seen.push(info);
+      return { approvalId: "a1", decision: Promise.resolve("allowed-once"), cancel: () => {} };
+    },
+  };
+  const answerer = createApprovalAnswerer({ lookupBroker: () => broker });
+  const outcome = await answerer(
+    { toolName: TOOL_UPDATE_TICKET, callId: "call-9", reason: "Update ticket t1: priority → HIGH." },
+    async () => "never"
+  );
+  assert.equal(outcome, "allowed-once");
+  assert.deepEqual(seen, [
+    {
+      toolName: TOOL_UPDATE_TICKET,
+      callId: "call-9",
+      reason: "Update ticket t1: priority → HIGH.",
+      summary: "Update ticket t1: priority → HIGH.",
+    },
+  ]);
+});
+
+test("tool: the approval answerer returns rejected when the broker rejects", async () => {
+  const broker = {
+    request() {
+      return { approvalId: "a2", decision: Promise.resolve("rejected"), cancel: () => {} };
+    },
+  };
+  const answerer = createApprovalAnswerer({ lookupBroker: () => broker });
+  const outcome = await answerer({ toolName: TOOL_UPDATE_TICKET, reason: "update" }, async () => "never");
+  assert.equal(outcome, "rejected");
+});
+
+test("tool: the approval answerer cancels through the broker when the request signal aborts", async () => {
+  const controller = new AbortController();
+  const cancelledIds: string[] = [];
+  let resolveAborted: ((outcome: string) => void) | undefined;
+  const broker: {
+    cancelledIds: string[];
+    request: () => { approvalId: string; decision: Promise<unknown>; cancel: () => void };
+    cancel: (approvalId: string) => void;
+  } = {
+    cancelledIds,
+    request() {
+      return {
+        approvalId: "a3",
+        decision: new Promise((resolve) => {
+          resolveAborted = resolve;
+        }),
+        cancel: () => {},
+      };
+    },
+    cancel(approvalId: string) {
+      cancelledIds.push(approvalId);
+      resolveAborted?.("cancelled");
+    },
+  };
+  const answerer = createApprovalAnswerer({ lookupBroker: () => broker });
+  const outcomePromise = answerer({ toolName: TOOL_UPDATE_TICKET, reason: "u", signal: controller.signal }, async () => "never");
+  controller.abort();
+  const outcome = await outcomePromise;
+  assert.equal(outcome, "cancelled");
+  assert.deepEqual(broker.cancelledIds, ["a3"]);
 });

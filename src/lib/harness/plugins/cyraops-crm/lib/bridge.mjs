@@ -34,6 +34,9 @@ export const OPEN_WHERE = Object.freeze({
 /** TaskStatus values the list-tickets status filter accepts (all five). */
 export const ALL_STATUSES = Object.freeze([...OPEN_STATUSES, "DONE"]);
 
+/** Priority values cyraops_update_ticket accepts. */
+export const ALL_PRIORITIES = Object.freeze(["LOW", "MEDIUM", "HIGH", "URGENT"]);
+
 /** Bounds shared by the list/search tools. */
 export const LIST_LIMIT_DEFAULT = 10;
 export const LIST_LIMIT_MAX = 25;
@@ -43,6 +46,58 @@ export const SCHEDULE_DAYS_MIN = 1;
 export const SCHEDULE_DAYS_MAX = 30;
 /** Hard cap on rows the schedule tool reads in one call. */
 export const SCHEDULE_ROWS_MAX = 50;
+
+// ---------------------------------------------------------------------------
+// Tenant scoping (TASK 2): the bridge derives the turn's workspace/tenant from
+// CYRAOPS_WORKSPACE_ID, which the runtime sets (under its global turn mutex)
+// to the conversation owner's user id before the turn executes.
+//
+// Why a user id: the schema has no workspace column on Task/Contact/
+// CalendarEvent. The only tenant-stable keys are user ids (Task.creatorId,
+// Task.project.ownerId, CalendarEvent.creatorId), and Workspace.ownerId maps a
+// workspace 1:1 to its owner user. The bot conversation's owner (Assistant.
+// userId) is therefore the data boundary the bridge can actually enforce.
+//
+// LIMITATIONS (documented honestly):
+// - Contact has no tenant/owner column at all, so cyraops_search_contacts
+//   cannot be scoped and still searches the whole DB (the app's own
+//   /api/crm/contacts behaves the same way).
+// - When CYRAOPS_WORKSPACE_ID is unset the tools keep their previous
+//   whole-DB behaviour (used by unit tests and any turn that never passed a
+//   tenant, e.g. the CLI fallback). This is a query-level, model-visible
+//   filter — not a DB row-level security policy.
+// ---------------------------------------------------------------------------
+
+/**
+ * Read the turn's tenant key from the environment. Empty/unset means no
+ * tenant is known: the caller decides whether to filter (fail closed) or keep
+ * legacy behaviour. The bridge keeps legacy behaviour and the tools document
+ * it; the live bot path always sets the variable.
+ * @param {Record<string, string | undefined>} [env]
+ */
+export function readTenantId(env = process.env) {
+  const value = env?.CYRAOPS_WORKSPACE_ID;
+  return typeof value === "string" && value.trim() !== "" ? value.trim() : undefined;
+}
+
+/**
+ * The Prisma `where` fragment scoping tasks to one tenant: rows the tenant
+ * created or rows in projects the tenant owns. No tenant id → `{}` (whole DB,
+ * the pre-scoping behaviour).
+ */
+export function taskTenantWhere(tenantId) {
+  if (!tenantId) return {};
+  return { OR: [{ creatorId: tenantId }, { project: { ownerId: tenantId } }] };
+}
+
+/** The open-ticket `where`: tenant-scoped when a tenant is known, else the legacy constant. */
+export function openTicketsWhere(tenantId) {
+  if (!tenantId) return OPEN_WHERE;
+  return {
+    archivedAt: null,
+    AND: [{ status: { in: [...OPEN_STATUSES] } }, taskTenantWhere(tenantId)],
+  };
+}
 
 /**
  * Locate the Cyraops V2 application root: CYRAOPS_ROOT wins, else the
@@ -134,10 +189,11 @@ export function normalizeDays(days) {
  * client or a unit-test stub): { count, statuses }.
  * `limit` (optional) caps how many open-ticket rows are read, so count and
  * statuses describe the capped set; without it every open ticket is counted.
+ * `tenantId` (optional) scopes the set to the turn's workspace/tenant.
  */
-export async function openTickets(prisma, { limit } = {}) {
+export async function openTickets(prisma, { limit, tenantId } = {}) {
   const take = normalizeLimit(limit);
-  const rows = await prisma.task.findMany({ where: OPEN_WHERE, select: { status: true }, take });
+  const rows = await prisma.task.findMany({ where: openTicketsWhere(tenantId), select: { status: true }, take });
   const statuses = {};
   for (const row of rows) {
     const status = row.status;
@@ -149,14 +205,14 @@ export async function openTickets(prisma, { limit } = {}) {
 /**
  * One read-only aggregate over the live Cyraops database: connect with a
  * fresh PrismaClient (created through the root require), run the aggregate,
- * and always disconnect.
+ * and always disconnect. The tenant comes from CYRAOPS_WORKSPACE_ID.
  */
 export async function queryOpenTickets({ limit } = {}) {
   const rootRequire = createRootRequire(cyraopsRoot());
   const PrismaClient = loadPrismaClient(rootRequire);
   const prisma = new PrismaClient();
   try {
-    return await openTickets(prisma, { limit });
+    return await openTickets(prisma, { limit, tenantId: readTenantId() });
   } finally {
     await prisma.$disconnect();
   }
@@ -169,14 +225,16 @@ export async function queryOpenTickets({ limit } = {}) {
  * limit (default 10, max 25). Returns
  * { count, tickets: [{ id, title, status, priority, assignee }] } where
  * `assignee` is the assignee's display name or null. Read-only.
+ * `tenantId` (optional) scopes the set to the turn's workspace/tenant.
  */
-export async function listTickets(prisma, { status, limit, query } = {}) {
+export async function listTickets(prisma, { status, limit, query, tenantId } = {}) {
   if (status !== undefined && status !== null && !ALL_STATUSES.includes(status)) {
     throw new Error(`cyraops-crm: status must be one of ${ALL_STATUSES.join("/")}`);
   }
   const take = limit === undefined || limit === null ? LIST_LIMIT_DEFAULT : normalizeBoundedLimit(limit, LIST_LIMIT_MAX);
   const q = normalizeOptionalQuery(query);
   const and = [status != null ? { status } : { status: { in: [...OPEN_STATUSES] } }];
+  if (tenantId) and.push(taskTenantWhere(tenantId));
   if (q) {
     const contains = { contains: q, mode: "insensitive" };
     and.push({ OR: [{ title: contains }, { description: contains }] });
@@ -243,14 +301,21 @@ export async function searchContacts(prisma, { query, limit } = {}) {
  * List upcoming non-archived calendar events whose start falls within the
  * next `days` days (default 7, 1..30). Returns
  * { count, events: [{ id, title, start, end }] } with ISO-8601 start/end.
+ * `tenantId` (optional) scopes the set to events the turn's workspace/tenant
+ * created (CalendarEvent has no workspace column; creatorId is the only
+ * tenant-stable key).
  * Read-only.
  */
-export async function scheduleEvents(prisma, { days } = {}) {
+export async function scheduleEvents(prisma, { days, tenantId } = {}) {
   const windowDays = normalizeDays(days);
   const now = new Date();
   const until = new Date(now.getTime() + windowDays * 86_400_000);
   const rows = await prisma.calendarEvent.findMany({
-    where: { archivedAt: null, startsAt: { gte: now, lte: until } },
+    where: {
+      archivedAt: null,
+      startsAt: { gte: now, lte: until },
+      ...(tenantId ? { creatorId: tenantId } : {}),
+    },
     select: { id: true, title: true, startsAt: true, endsAt: true },
     orderBy: { startsAt: "asc" },
     take: SCHEDULE_ROWS_MAX,
@@ -278,7 +343,7 @@ async function withPrismaClient(run) {
 
 /** Live read-only ticket listing (per-call PrismaClient, always disconnected). */
 export function queryListTickets(args = {}) {
-  return withPrismaClient((prisma) => listTickets(prisma, args));
+  return withPrismaClient((prisma) => listTickets(prisma, { ...args, tenantId: readTenantId() }));
 }
 
 /** Live read-only contact search (per-call PrismaClient, always disconnected). */
@@ -288,5 +353,69 @@ export function querySearchContacts(args = {}) {
 
 /** Live read-only schedule listing (per-call PrismaClient, always disconnected). */
 export function queryListSchedule(args = {}) {
-  return withPrismaClient((prisma) => scheduleEvents(prisma, args));
+  return withPrismaClient((prisma) => scheduleEvents(prisma, { ...args, tenantId: readTenantId() }));
+}
+
+// ---------------------------------------------------------------------------
+// cyraops_update_ticket: the ONE write tool (TASK 1). Requires harness
+// approval before it runs: the plugin's tools/pre-execute listener returns
+// { kind: "ask" } for this tool and the approval service's answerer waterfall
+// decides it (see index.js).
+// ---------------------------------------------------------------------------
+
+/** Validate the optional priority argument: one of LOW/MEDIUM/HIGH/URGENT. */
+export function normalizePriority(priority) {
+  if (typeof priority !== "string" || !ALL_PRIORITIES.includes(priority)) {
+    throw new Error(`cyraops-crm: priority must be one of ${ALL_PRIORITIES.join("/")}`);
+  }
+  return priority;
+}
+
+/** Validate the optional title argument: a non-empty string when provided. */
+export function normalizeTitle(title) {
+  if (typeof title !== "string" || title.trim() === "") {
+    throw new Error("cyraops-crm: title must be a non-empty string when provided");
+  }
+  return title.trim();
+}
+
+/** Validate the required ticket id argument: a non-empty string. */
+export function normalizeTicketId(id) {
+  if (typeof id !== "string" || id.trim() === "") {
+    throw new Error("cyraops-crm: id must be a non-empty ticket id");
+  }
+  return id.trim();
+}
+
+/**
+ * Update one ticket's title and/or priority. The update is tenant-scoped:
+ * with a `tenantId`, the WHERE clause additionally requires the ticket to
+ * belong to that tenant (creator or project owner), so a cross-tenant id
+ * fails with "not found in this workspace" instead of updating another
+ * tenant's row. Returns { id, title, status, priority } of the updated row.
+ */
+export async function updateTicket(prisma, { id, title, priority, tenantId } = {}) {
+  const ticketId = normalizeTicketId(id);
+  const updates = {};
+  if (title !== undefined && title !== null) updates.title = normalizeTitle(title);
+  if (priority !== undefined && priority !== null) updates.priority = normalizePriority(priority);
+  if (Object.keys(updates).length === 0) {
+    throw new Error("cyraops-crm: provide title and/or priority to update");
+  }
+  const where = tenantId ? { id: ticketId, ...taskTenantWhere(tenantId) } : { id: ticketId };
+  const result = await prisma.task.updateMany({ where, data: updates });
+  if (typeof result?.count !== "number" || result.count !== 1) {
+    throw new Error(`cyraops-crm: ticket ${ticketId} not found in this workspace`);
+  }
+  const row = await prisma.task.findUnique({
+    where: { id: ticketId },
+    select: { id: true, title: true, status: true, priority: true },
+  });
+  if (!row) throw new Error(`cyraops-crm: ticket ${ticketId} not found in this workspace`);
+  return { id: row.id, title: row.title, status: row.status, priority: row.priority };
+}
+
+/** Live ticket update (per-call PrismaClient, always disconnected). */
+export function queryUpdateTicket(args = {}) {
+  return withPrismaClient((prisma) => updateTicket(prisma, { ...args, tenantId: readTenantId() }));
 }

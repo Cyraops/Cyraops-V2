@@ -85,7 +85,12 @@ export class CliAgentRuntime implements AgentRuntime {
     return session;
   }
 
-  async *executeTurn(input: { sessionId: string; task: string; signal?: AbortSignal }): AsyncIterable<HarnessEvent> {
+  async *executeTurn(input: {
+    sessionId: string;
+    task: string;
+    signal?: AbortSignal;
+    workspaceId?: string | null;
+  }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
     if (!session) throw new Error(`unknown harness session: ${input.sessionId}`);
 
@@ -109,7 +114,7 @@ export class CliAgentRuntime implements AgentRuntime {
 
     // Serialize turns per session: the next turn waits for this child to exit.
     const previous = this.turns.get(session.id) ?? Promise.resolve();
-    const spawn = previous.catch(() => undefined).then(() => this.runSpawn(session, input.task, queue));
+    const spawn = previous.catch(() => undefined).then(() => this.runSpawn(session, input.task, input.workspaceId ?? null, queue));
     this.turns.set(session.id, spawn.catch(() => undefined));
 
     try {
@@ -121,7 +126,12 @@ export class CliAgentRuntime implements AgentRuntime {
     }
   }
 
-  private async runSpawn(session: Session, task: string, queue: EventQueue<HarnessEvent>): Promise<void> {
+  private async runSpawn(
+    session: Session,
+    task: string,
+    workspaceId: string | null,
+    queue: EventQueue<HarnessEvent>
+  ): Promise<void> {
     let harnessSessionId = session.harnessSessionId;
     if (!harnessSessionId) {
       harnessSessionId = await this.store.loadHarnessSessionId({
@@ -135,6 +145,13 @@ export class CliAgentRuntime implements AgentRuntime {
       task,
       sessionId: harnessSessionId ?? undefined,
       cwd: process.cwd(),
+      // Tenant scoping for the CLI path: unlike the native runtime (whose
+      // global mutex makes env mutation safe), CLI turns on different
+      // sessions can run in parallel, so the workspace id is passed as a
+      // per-spawn env override instead of mutating process.env.
+      env: workspaceId
+        ? { ...process.env, CYRAOPS_WORKSPACE_ID: workspaceId }
+        : process.env,
       onEvent: (event) => {
         if (event.type === "final") sawFinal = true;
         queue.push(event);

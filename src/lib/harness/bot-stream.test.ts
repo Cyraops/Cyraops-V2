@@ -37,22 +37,22 @@ interface FakeRuntimeOptions {
 
 /** Fake AgentRuntime: createSession resolves the stored id, like the real runtimes. */
 function fakeRuntime(store: HarnessSessionStore, options: FakeRuntimeOptions = {}): AgentRuntime & {
-  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string }>;
+  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null }>;
 } {
   const sessions = new Map<string, Session>();
   let nextId = 0;
   const runtime = {
-    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string }>,
+    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null }>,
     async createSession({ tenantId, conversationId }: { tenantId: string; conversationId: string }) {
       const harnessSessionId = await store.loadHarnessSessionId({ tenantId, conversationId });
       const session: Session = { id: `adapter-${++nextId}`, tenantId, conversationId, harnessSessionId };
       sessions.set(session.id, session);
       return session;
     },
-    async *executeTurn({ sessionId, task }: { sessionId: string; task: string }) {
+    async *executeTurn({ sessionId, task, workspaceId }: { sessionId: string; task: string; workspaceId?: string | null }) {
       const session = sessions.get(sessionId);
       assert.ok(session, "fake runtime must receive a known session id");
-      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task });
+      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task, workspaceId: workspaceId ?? null });
       if (options.throwOnTurn) throw new Error("engine exploded");
       for (const event of options.events ?? []) {
         if (event.type === "session") {
@@ -196,4 +196,149 @@ test("streamHarnessTurn: a throwing runtime propagates the error but still fires
   assert.equal(doneCount, 1, "onDone fires exactly once, success or failure");
   assert.deepEqual(chunks, []);
   assert.equal(store.saveCount, 0, "a failed turn persists nothing");
+});
+
+test("streamHarnessTurn: forwards approval requests to onApproval and mirrors an allow decision in the result", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "text", text: "before" },
+      { type: "approval", approvalId: "approval-1", toolName: "cyraops_update_ticket", summary: "Update ticket X: priority → HIGH", reason: "Update ticket X: priority → HIGH", callId: "call-1" },
+      { type: "approval_decided", approvalId: "approval-1", outcome: "allowed-once", timedOut: false },
+      { type: "text", text: "before Updated" },
+      { type: "final", text: "Updated" },
+    ],
+  });
+
+  const approvals: unknown[] = [];
+  const result = await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-approval",
+    tenantId: "tenant-1",
+    task: "update ticket",
+    onText: () => {},
+    onDone: () => {},
+    onApproval: (approval) => approvals.push(approval),
+    store,
+  });
+
+  assert.deepEqual(approvals, [
+    {
+      approvalId: "approval-1",
+      toolName: "cyraops_update_ticket",
+      summary: "Update ticket X: priority → HIGH",
+      reason: "Update ticket X: priority → HIGH",
+      callId: "call-1",
+    },
+  ]);
+  // The result mirrors the V1 pendingAction card shape exactly.
+  assert.deepEqual(result.approval, {
+    id: "approval-1",
+    toolName: "cyraops_update_ticket",
+    summary: "Update ticket X: priority → HIGH",
+    answered: "allow",
+    canAlwaysAllow: false,
+  });
+});
+
+test("streamHarnessTurn: a rejected decision yields answered deny in the result", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "approval", approvalId: "approval-2", toolName: "cyraops_update_ticket", summary: "Update ticket Y" },
+      { type: "approval_decided", approvalId: "approval-2", outcome: "rejected", timedOut: false },
+      { type: "final", text: "denied" },
+    ],
+  });
+
+  const result = await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-reject",
+    tenantId: "tenant-1",
+    task: "update ticket",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+
+  assert.deepEqual(result.approval, {
+    id: "approval-2",
+    toolName: "cyraops_update_ticket",
+    summary: "Update ticket Y",
+    answered: "deny",
+    canAlwaysAllow: false,
+  });
+});
+
+test("streamHarnessTurn: no approval events yields a null approval result", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "text", text: "plain" },
+      { type: "final", text: "plain" },
+    ],
+  });
+
+  const approvals: unknown[] = [];
+  const result = await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-plain",
+    tenantId: "tenant-1",
+    task: "plain",
+    onText: () => {},
+    onDone: () => {},
+    onApproval: (approval) => approvals.push(approval),
+    store,
+  });
+
+  assert.deepEqual(approvals, []);
+  assert.equal(result.approval, null);
+});
+
+test("streamHarnessTurn: passes the workspace/tenant key through to the runtime", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "final", text: "ok" },
+    ],
+  });
+
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-tenant",
+    tenantId: "tenant-1",
+    task: "list tickets",
+    workspaceId: "workspace-owner-user-1",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+
+  assert.equal(runtime.turns[0].workspaceId, "workspace-owner-user-1");
+});
+
+test("streamHarnessTurn: a missing workspace key arrives at the runtime as null", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "final", text: "ok" },
+    ],
+  });
+
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-no-tenant",
+    tenantId: "tenant-1",
+    task: "list tickets",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+
+  assert.equal(runtime.turns[0].workspaceId, null);
 });

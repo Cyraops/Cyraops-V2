@@ -37,6 +37,8 @@ export interface HarnessOptions {
   sessionId?: string;
   cwd?: string;
   timeoutMs?: number;
+  /** Per-spawn environment (e.g. CYRAOPS_WORKSPACE_ID tenant scoping). */
+  env?: NodeJS.ProcessEnv;
   onEvent?: (event: HarnessEvent) => void;
 }
 
@@ -58,12 +60,11 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
   return new Promise<HarnessResult>((resolve) => {
     const child = spawn(harnessBinary(), args, {
       cwd: options.cwd ?? process.cwd(),
-      env: process.env,
+      env: options.env ?? process.env,
       stdio: ["ignore", "pipe", "pipe"],
     });
 
     const events: HarnessEvent[] = [];
-    let final = "";
     let sessionId: string | null = options.sessionId ?? null;
     let stderr = "";
     let buffer = "";
@@ -105,7 +106,7 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
 
     child.on("close", (code) => {
       clearTimeout(timer);
-      const text = final || finalTextOf(events);
+      const text = finalTextOf(events);
       resolve({ text, sessionId, events, stderr, code, timedOut });
     });
   });

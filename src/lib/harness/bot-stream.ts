@@ -16,6 +16,14 @@
  * because the chat UI appends every token payload it receives. A `final`
  * event's text wins over the accumulated snapshot; a turn with no `final`
  * event falls back to the last snapshot.
+ *
+ * Approvals: when a tool requires the user's approval, the runtime emits a
+ * synthetic `approval` event (type "approval": approvalId/toolName/summary/
+ * reason/callId) and later an `approval_decided` event. This module forwards
+ * the request to `onApproval` (the route maps it onto the SSE) and mirrors
+ * the decision into the result's `approval` field with the exact
+ * `pendingAction` shape the V1 approval card renders (id/toolName/summary/
+ * answered/canAlwaysAllow), so the SAME UI card displays without UI changes.
  */
 
 import { harnessSessionStore, type AgentRuntime, type RuntimeKind, type Session } from "./runtime";
@@ -29,12 +37,35 @@ export interface StreamHarnessTurnInput {
   tenantId: string;
   task: string;
   signal?: AbortSignal;
+  /** The turn's workspace/tenant key (conversation owner id); scopes the CRM tools. */
+  workspaceId?: string | null;
   /** Receives each incremental delta of streamed assistant text. */
   onText: (chunk: string) => void;
   /** Invoked exactly once when the turn's event stream ends, success or failure. */
   onDone: () => void;
+  /** Receives each approval request the turn surfaces (route → SSE payload). */
+  onApproval?: (approval: HarnessApprovalRequest) => void;
   /** Test seam; defaults to the shared harnessSessionStore(). */
   store?: HarnessSessionStore;
+}
+
+/** An approval request surfaced mid-turn, in the UI-compatible card shape. */
+export interface HarnessApprovalRequest {
+  approvalId: string;
+  toolName: string;
+  summary: string;
+  reason?: string;
+  callId?: string;
+}
+
+/** The V1-compatible pendingAction shape for the terminal SSE payload. */
+export interface HarnessApprovalResult {
+  id: string;
+  toolName: string;
+  summary: string;
+  /** Mirrors the card's answered state: allow/deny after the decision. */
+  answered: "allow" | "deny";
+  canAlwaysAllow: false;
 }
 
 export interface StreamHarnessTurnResult {
@@ -44,10 +75,12 @@ export interface StreamHarnessTurnResult {
   sessionId: string | null;
   /** The runtime kind that actually served the turn (healthCheck may report a fallback). */
   runtimeKind: RuntimeKind;
+  /** The first approval the turn asked for, with its decision; null when none. */
+  approval: HarnessApprovalResult | null;
 }
 
 export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<StreamHarnessTurnResult> {
-  const { runtime, conversationId, tenantId, task, signal, onText, onDone } = input;
+  const { runtime, conversationId, tenantId, task, signal, onText, onDone, onApproval } = input;
   const store = input.store ?? harnessSessionStore();
 
   // createSession resolves the stored harness session id for this conversation
@@ -58,9 +91,17 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
   let announcedId: string | null = null;
   let snapshot = ""; // the last cumulative text snapshot seen
   let finalText = "";
+  const approvals = new Map<string, HarnessApprovalRequest>();
+  const decisions = new Map<string, "allow" | "deny">();
+  let firstApproval: HarnessApprovalRequest | null = null;
 
   try {
-    for await (const event of runtime.executeTurn({ sessionId: session.id, task, signal })) {
+    for await (const event of runtime.executeTurn({
+      sessionId: session.id,
+      task,
+      signal,
+      workspaceId: input.workspaceId ?? null,
+    })) {
       if (event.type === "text" && typeof event.text === "string") {
         const text = event.text;
         const delta = text.startsWith(snapshot) ? text.slice(snapshot.length) : text;
@@ -70,6 +111,21 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
         finalText = event.text;
       } else if (event.type === "session" && typeof event.sessionId === "string" && event.sessionId) {
         announcedId = event.sessionId;
+      } else if (event.type === "approval" && typeof event.approvalId === "string") {
+        const approval: HarnessApprovalRequest = {
+          approvalId: event.approvalId,
+          toolName: typeof event.toolName === "string" ? event.toolName : "tool",
+          summary: typeof event.summary === "string" ? event.summary : "This action requires your approval.",
+          ...(typeof event.reason === "string" ? { reason: event.reason } : {}),
+          ...(typeof event.callId === "string" ? { callId: event.callId } : {}),
+        };
+        approvals.set(approval.approvalId, approval);
+        firstApproval ??= approval;
+        onApproval?.(approval);
+      } else if (event.type === "approval_decided" && typeof event.approvalId === "string") {
+        const outcome = event.outcome;
+        const answered = outcome === "allowed-once" ? "allow" : "deny";
+        decisions.set(event.approvalId, answered);
       }
     }
   } finally {
@@ -88,5 +144,14 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
     text: finalText || snapshot,
     sessionId: announcedId ?? session.harnessSessionId,
     runtimeKind: health.kind,
+    approval: firstApproval
+      ? {
+          id: firstApproval.approvalId,
+          toolName: firstApproval.toolName,
+          summary: firstApproval.summary,
+          answered: decisions.get(firstApproval.approvalId) ?? "deny",
+          canAlwaysAllow: false,
+        }
+      : null,
   };
 }

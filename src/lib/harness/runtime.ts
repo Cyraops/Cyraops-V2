@@ -46,6 +46,8 @@ export interface AgentRuntime {
     sessionId: string;
     task: string;
     signal?: AbortSignal;
+    /** The turn's workspace/tenant key (conversation owner id); scopes the CRM tools. */
+    workspaceId?: string | null;
   }): AsyncIterable<HarnessEvent>;
   getSession(sessionId: string): Promise<Session | null>;
   cancelTurn(input: { sessionId: string }): Promise<void>;

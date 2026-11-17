@@ -25,6 +25,9 @@
  *     tee = "diagnostics",           // "diagnostics" forwards non-NDJSON stdout
  *                                    // lines to the real stdout; "all" forwards
  *                                    // everything (evidence runs)
+ *     approvalPolicy = "never",      // session approval policy passed as
+ *                                    // --approval-policy; "ask" lets tools that
+ *                                    // declare an ask gate consult answerers
  *     log = (m) => process.stderr.write(`[native-host] ${m}\n`),
  *   } = {}) : AsyncIterable<HarnessEvent>
  *
@@ -188,6 +191,23 @@ function makeTimeoutError(ms) {
     stderr: "",
     timedOut: true,
   });
+}
+
+/**
+ * Build the CLI argument vector the headless runner receives. Exported so the
+ * policy mapping (never by default, ask when the caller opts in) is unit
+ * tested without booting a tree.
+ *
+ * @param options.task - the task text (appended last, as one argument).
+ * @param options.sessionId - optional durable session id to resume.
+ * @param options.approvalPolicy - "ask" | "never"; the headless runner maps it
+ *   onto the session approval policy via setApprovalPolicy before the run.
+ */
+export function buildRunArgs({ task, sessionId, approvalPolicy = "never" }) {
+  const args = ["--json", "--approval-policy", approvalPolicy];
+  if (sessionId) args.push("--session-id", sessionId);
+  args.push(task);
+  return args;
 }
 
 // ---------------------------------------------------------------------------
@@ -438,6 +458,7 @@ export async function* runNativeTask(options = {}) {
     captureEvidence = false,
     tee = "diagnostics",
     log = DEFAULT_LOG,
+    approvalPolicy = "never",
   } = options;
 
   if (typeof task !== "string" || task.trim() === "") {
@@ -542,9 +563,7 @@ export async function* runNativeTask(options = {}) {
       hostCtx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, environment);
       await hostCtx.plugin(PluginPackages, { resolution });
       evidence?.installEsm();
-      const args = ["--json", "--approval-policy", "never"];
-      if (sessionId) args.push("--session-id", sessionId);
-      args.push(task);
+      const args = buildRunArgs({ task, sessionId, approvalPolicy });
       provideCmdline(hostCtx, {
         args,
         exit: (code) => exitResolve(code),

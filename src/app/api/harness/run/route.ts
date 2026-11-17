@@ -62,6 +62,8 @@ export async function POST(request: NextRequest) {
       sessionId: session.id,
       task: parsed.data.task,
       signal: request.signal,
+      // The request owner is the tenant key for the CRM tools' scoping.
+      workspaceId: user.id,
     })) {
       events.push(event);
     }

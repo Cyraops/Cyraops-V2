@@ -33,11 +33,15 @@ import {
   normalizeDays,
   normalizeLimit,
   normalizeOptionalQuery,
+  normalizePriority,
   normalizeRequiredQuery,
+  normalizeTicketId,
+  normalizeTitle,
   queryListSchedule,
   queryListTickets,
   queryOpenTickets,
   querySearchContacts,
+  queryUpdateTicket,
 } from "./bridge.mjs";
 
 export const name = "cyraops-crm";
@@ -47,6 +51,10 @@ export const TOOL_NAME = "cyraops_open_tickets";
 export const TOOL_LIST_TICKETS = "cyraops_list_tickets";
 export const TOOL_SEARCH_CONTACTS = "cyraops_search_contacts";
 export const TOOL_LIST_SCHEDULE = "cyraops_list_schedule";
+export const TOOL_UPDATE_TICKET = "cyraops_update_ticket";
+
+/** Key under which the Next-side approval broker is published on globalThis. */
+export const APPROVAL_BROKER_KEY = Symbol.for("cyraops.harness.approval-broker");
 
 const TOOL_DESCRIPTION =
   "Count the open tickets in the Cyraops CRM database. An open ticket is a task " +
@@ -346,7 +354,8 @@ export function createListScheduleDefinition(deps = {}) {
 
 /**
  * The registry-ready definitions used by the harness (lazily built once, in
- * stable registration order: the Phase 4 v1 tool first, then the v2 set).
+ * stable registration order: the Phase 4 v1 tool first, then the v2 set, then
+ * the approval-gated write tool).
  */
 let registration = null;
 export function toolDefinitions() {
@@ -355,8 +364,134 @@ export function toolDefinitions() {
     createListTicketsDefinition(),
     createSearchContactsDefinition(),
     createListScheduleDefinition(),
+    createUpdateTicketDefinition(),
   ];
   return registration;
+}
+
+// ---------------------------------------------------------------------------
+// cyraops_update_ticket — the ONE write tool (TASK 1: approval mapping).
+//
+// The harness has no approval field on `defineTool` (dsh-tools README,
+// "Enforce policy on calls"): approval is enforced by the `tools/pre-execute`
+// waterfall, whose listener returns { kind: "ask", reason } for a tool. The
+// tools pipeline then resolves the ask through the approval service
+// (`ctx.get("approval").request(...)`), which logs approval/asked, dispatches
+// the `approval/request` answerer waterfall, and maps `allowed-once` to the
+// only grant. The NDJSON projection never emits approval events (they are
+// log-only session events), so the decision travels through the answerer we
+// register here, which bridges to the Next-side broker over globalThis (same
+// process in the native runtime) and waits for /api/harness/approve.
+// ---------------------------------------------------------------------------
+
+const UPDATE_TICKET_DESCRIPTION =
+  "Update an existing Cyraops CRM ticket's title and/or priority. Changing real " +
+  "CRM data requires the user's approval: an approval prompt is shown before the " +
+  "update runs, and rejecting it (or no answerer being available) fails the call. " +
+  "Returns the ticket's id, title, status and priority after the update.";
+
+const UPDATE_TICKET_OUTPUT_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    id: { type: "string", required: true, description: "Ticket id." },
+    title: { type: "string", required: true, description: "Ticket title after the update." },
+    status: { type: "string", required: true, description: "Task status (BACKLOG/TODO/IN_PROGRESS/IN_REVIEW/DONE)." },
+    priority: { type: "string", required: true, description: "Task priority after the update (LOW/MEDIUM/HIGH/URGENT)." },
+  },
+};
+
+export function createUpdateTicketDefinition(deps = {}) {
+  const defineTool = deps.defineTool ?? loadDefineTool();
+  const runQuery = deps.runQuery ?? queryUpdateTicket;
+  return defineTool({
+    name: TOOL_UPDATE_TICKET,
+    description: UPDATE_TICKET_DESCRIPTION,
+    parameters: {
+      id: {
+        type: "string",
+        required: true,
+        description: "The ticket id to update (e.g. seed-task-billing).",
+      },
+      title: {
+        type: "string",
+        description: "Optional new ticket title.",
+      },
+      priority: {
+        type: "string",
+        description: "Optional new priority: LOW, MEDIUM, HIGH or URGENT.",
+      },
+    },
+    output: {
+      schema: UPDATE_TICKET_OUTPUT_SCHEMA,
+      render: (_args, value) => [{ type: "text", text: JSON.stringify(value) }],
+    },
+    timeoutMs: 15_000,
+    async execute(args) {
+      return runQuery({
+        id: normalizeTicketId(args.id),
+        title: args.title === undefined || args.title === null ? undefined : normalizeTitle(args.title),
+        priority: args.priority === undefined || args.priority === null ? undefined : normalizePriority(args.priority),
+      });
+    },
+  });
+}
+
+/** Human-readable summary of the pending update, shown on the approval card. */
+export function updateTicketSummary(args) {
+  const id = typeof args?.id === "string" && args.id.trim() !== "" ? args.id.trim() : "unknown ticket";
+  const changes = [];
+  if (typeof args?.title === "string" && args.title.trim() !== "") changes.push(`title → "${args.title.trim()}"`);
+  if (typeof args?.priority === "string" && args.priority.trim() !== "") changes.push(`priority → ${args.priority.trim()}`);
+  const what = changes.length > 0 ? changes.join(", ") : "update";
+  return `Update ticket ${id} in Cyraops CRM: ${what}.`;
+}
+
+/**
+ * The tools/pre-execute listener: returns the `ask` gate for the write tool
+ * and delegates every other tool unchanged. Pure and exported so the unit
+ * test exercises the exact decision shape the pipeline consumes.
+ */
+export function updateTicketAskGate(toolName = TOOL_UPDATE_TICKET) {
+  return async function toolsPreExecute(exec, next) {
+    if (exec?.name !== toolName) return next();
+    const summary = updateTicketSummary(exec.arguments);
+    return { kind: "ask", reason: summary, displayReason: { en: summary } };
+  };
+}
+
+/**
+ * The approval/request answerer: claims approval requests for the write tool
+ * and resolves them through the Next-side broker (published on globalThis in
+ * the native runtime process). No broker (CLI runtime, plain-node tests) or
+ * another tool's request delegates via next() — the service then fails closed
+ * ("unavailable"), which the pipeline maps to a denial.
+ *
+ * `lookupBroker` is a test seam defaulting to the globalThis lookup, so the
+ * answerer is unit-testable without a broker installed.
+ */
+export function createApprovalAnswerer({
+  toolName = TOOL_UPDATE_TICKET,
+  lookupBroker = () => globalThis?.[APPROVAL_BROKER_KEY],
+} = {}) {
+  return async function approvalRequest(req, next) {
+    if (req?.toolName !== toolName) return next();
+    const broker = lookupBroker();
+    if (!broker || typeof broker.request !== "function") return next();
+    const pending = broker.request({
+      toolName: req.toolName,
+      callId: typeof req.callId === "string" ? req.callId : undefined,
+      reason: typeof req.reason === "string" ? req.reason : undefined,
+      summary: typeof req.reason === "string" && req.reason ? req.reason : updateTicketSummary({}),
+    });
+    const onAbort = () => broker.cancel?.(pending.approvalId);
+    req.signal?.addEventListener("abort", onAbort, { once: true });
+    try {
+      return await pending.decision;
+    } finally {
+      req.signal?.removeEventListener("abort", onAbort);
+    }
+  };
 }
 
 function apply(ctx) {
@@ -366,6 +501,12 @@ function apply(ctx) {
     // names appear on the native host's stderr during tree mount.
     process.stderr.write(`[cyraops-crm] registered tool: ${definition.name}\n`);
   }
+  // Approval wiring: the ask gate for the write tool (tools/pre-execute) and
+  // the answerer that bridges decisions to the Next-side broker
+  // (approval/request). Both are no-ops for tools they do not own.
+  ctx.on("tools/pre-execute", updateTicketAskGate());
+  ctx.on("approval/request", createApprovalAnswerer());
+  process.stderr.write("[cyraops-crm] approval wiring installed (ask gate + broker answerer)\n");
 }
 
 export { apply };

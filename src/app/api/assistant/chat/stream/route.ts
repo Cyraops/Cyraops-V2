@@ -261,7 +261,25 @@ async function streamHarnessReply(
           tenantId: user.id,
           task,
           signal: request.signal,
+          // Tenant scoping: the conversation's owner (Assistant.userId) is the
+          // workspace/tenant key the CRM tools filter by (the schema has no
+          // workspace column on Task/Contact/CalendarEvent; the owner user id
+          // is the only tenant-stable key). Passed to the runtime, which
+          // publishes it as CYRAOPS_WORKSPACE_ID for the bridge.
+          workspaceId: assistant.userId,
           onText: (chunk: string) => send({ type: "token", content: chunk }),
+          // Approval mapping: the harness's ask → the same SSE shape the V1
+          // approval card consumes. The turn stays open (callback approval:
+          // the harness answerer waterfall awaits /api/harness/approve).
+          onApproval: (approval) =>
+            send({
+              type: "approval",
+              approvalId: approval.approvalId,
+              toolName: approval.toolName,
+              summary: approval.summary,
+              ...(approval.reason ? { reason: approval.reason } : {}),
+              ...(approval.callId ? { callId: approval.callId } : {}),
+            }),
           onDone: () =>
             console.info(`[assistant/stream] harness turn finished (conversation=${conversation.id})`),
         });
@@ -286,7 +304,10 @@ async function streamHarnessReply(
           reply: result.text,
           toolCallsUsed: [],
           conversationId: conversation.id,
-          pendingAction: undefined,
+          // Mirror the V1 pendingAction shape so the SAME approval card
+          // renders in the unchanged UI (answered state: the decision has
+          // already been made by the time the turn completes).
+          pendingAction: result.approval ?? undefined,
           runtime: result.runtimeKind,
         });
       } catch (err: any) {

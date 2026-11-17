@@ -14,6 +14,11 @@ import { isAbortError } from "./runtime";
 interface NativeHostModule {
   parseEventLine(line: string): unknown;
   makeAbortError(message?: string): Error;
+  buildRunArgs(options: {
+    task: string;
+    sessionId?: string;
+    approvalPolicy?: "ask" | "never";
+  }): string[];
 }
 
 let hostPromise: Promise<NativeHostModule> | null = null;
@@ -48,4 +53,31 @@ test("native host: parseEventLine accepts NDJSON events and rejects diagnostics"
   assert.equal(parseEventLine("   "), null);
   assert.equal(parseEventLine("plain diagnostic line"), null);
   assert.equal(parseEventLine('{"noType":true}'), null);
+});
+
+test("native host: buildRunArgs defaults the approval policy to never (the historical behaviour)", async () => {
+  const { buildRunArgs } = await loadHost();
+  assert.deepEqual(buildRunArgs({ task: "say hi" }), ["--json", "--approval-policy", "never", "say hi"]);
+});
+
+test("native host: buildRunArgs carries an explicit ask policy before the task", async () => {
+  const { buildRunArgs } = await loadHost();
+  assert.deepEqual(buildRunArgs({ task: "go", approvalPolicy: "ask" }), [
+    "--json",
+    "--approval-policy",
+    "ask",
+    "go",
+  ]);
+});
+
+test("native host: buildRunArgs resumes a session with --session-id between policy and task", async () => {
+  const { buildRunArgs } = await loadHost();
+  assert.deepEqual(buildRunArgs({ task: "continue", sessionId: "session-1", approvalPolicy: "ask" }), [
+    "--json",
+    "--approval-policy",
+    "ask",
+    "--session-id",
+    "session-1",
+    "continue",
+  ]);
 });

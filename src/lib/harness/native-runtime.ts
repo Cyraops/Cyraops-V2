@@ -18,19 +18,21 @@
  *
  * Concurrency: turns are serialized globally (one turn at a time across all
  * sessions) because the in-process host temporarily takes over
- * `process.stdout` to capture the run projection. `cancelTurn` aborts the
- * in-flight turn's signal; the host tears the tree down and the iterator
- * throws an AbortError.
+ * `process.stdout` to capture the run projection and the turn's tenant is
+ * published through process.env (CYRAOPS_WORKSPACE_ID, read by the
+ * cyraops-crm bridge during tool execution) — the same global mutex makes
+ * both mutations safe. `cancelTurn` aborts the in-flight turn's signal; the
+ * host tears the tree down and the iterator throws an AbortError.
  */
 
 import { randomUUID } from "node:crypto";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
+import { approvalBroker, type ApprovalDecidedInfo, type PendingApproval } from "./approval-broker";
 import type { HarnessEvent } from "./client";
 import { CliAgentRuntime } from "./cli-runtime";
 import { sessionIdOf } from "./events";
 import {
-  abortError,
   createEventQueue,
   HarnessRunError,
   isAbortError,
@@ -48,6 +50,7 @@ interface NativeHostModule {
     signal?: AbortSignal;
     timeoutMs?: number;
     projectRoot?: string;
+    approvalPolicy?: "ask" | "never";
     onLog?: (message: string) => void;
   }): AsyncIterable<HarnessEvent>;
 }
@@ -129,7 +132,12 @@ export class NativeAgentRuntime implements AgentRuntime {
     return session;
   }
 
-  async *executeTurn(input: { sessionId: string; task: string; signal?: AbortSignal }): AsyncIterable<HarnessEvent> {
+  async *executeTurn(input: {
+    sessionId: string;
+    task: string;
+    signal?: AbortSignal;
+    workspaceId?: string | null;
+  }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
     if (!session) throw new Error(`unknown harness session: ${input.sessionId}`);
 
@@ -138,7 +146,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     const queue = createEventQueue<HarnessEvent>();
     const events: HarnessEvent[] = [];
 
-    const run = this.turnChain.catch(() => undefined).then(() => this.runTurn(session, input.task, signal, queue, events));
+    const run = this.turnChain.catch(() => undefined).then(() => this.runTurn(session, input.task, input.workspaceId ?? null, signal, queue, events));
     this.turnChain = run.catch(() => undefined);
 
     try {
@@ -152,6 +160,7 @@ export class NativeAgentRuntime implements AgentRuntime {
   private async runTurn(
     session: Session,
     task: string,
+    workspaceId: string | null,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
     events: HarnessEvent[]
@@ -171,9 +180,43 @@ export class NativeAgentRuntime implements AgentRuntime {
       } catch {
         // Next/Turbopack (or a missing addon) blocked the in-process host:
         // serve the turn through the CLI runtime instead of failing the route.
-        await this.runTurnViaCli(session, task, signal, queue, events);
+        await this.runTurnViaCli(session, task, workspaceId, signal, queue, events);
         return;
       }
+
+      // Tenant scoping: the harness plugin reads CYRAOPS_WORKSPACE_ID from
+      // process.env when a tool executes. The global turn mutex (turnChain)
+      // guarantees no two turns interleave, so setting the variable for the
+      // duration of this turn cannot leak into a concurrent turn. Restored in
+      // finally so later turns (and any other reader) see the prior value.
+      const previousWorkspace = process.env.CYRAOPS_WORKSPACE_ID;
+      if (workspaceId) process.env.CYRAOPS_WORKSPACE_ID = workspaceId;
+      else delete process.env.CYRAOPS_WORKSPACE_ID;
+
+      // Approval events: the plugin's answerer publishes requests on the
+      // broker (same process); forward them into this turn's event stream as
+      // synthetic harness events so bot-stream can relay them over SSE.
+      const broker = approvalBroker();
+      const forwardRequest = (pending: PendingApproval) => {
+        queue.push({
+          type: "approval",
+          approvalId: pending.approvalId,
+          toolName: pending.toolName,
+          summary: pending.summary,
+          ...(pending.callId ? { callId: pending.callId } : {}),
+          ...(pending.reason ? { reason: pending.reason } : {}),
+        });
+      };
+      const forwardDecided = (info: ApprovalDecidedInfo) => {
+        queue.push({
+          type: "approval_decided",
+          approvalId: info.approvalId,
+          outcome: info.outcome,
+          timedOut: info.timedOut,
+        });
+      };
+      const stopRequest = broker.onRequest(forwardRequest);
+      const stopDecided = broker.onDecided(forwardDecided);
 
       try {
         for await (const event of host.runNativeTask({
@@ -181,6 +224,9 @@ export class NativeAgentRuntime implements AgentRuntime {
           sessionId: harnessSessionId ?? undefined,
           signal,
           projectRoot: process.cwd(),
+          // The write tool's ask must reach an answerer; the plugin's broker
+          // answerer fails closed when no decision arrives in time.
+          approvalPolicy: "ask",
           onLog: (message) => process.stderr.write(`[native-host] ${message}\n`),
         })) {
           events.push(event);
@@ -198,6 +244,11 @@ export class NativeAgentRuntime implements AgentRuntime {
             sessionId: details.sessionId,
           }
         );
+      } finally {
+        stopRequest();
+        stopDecided();
+        if (previousWorkspace === undefined) delete process.env.CYRAOPS_WORKSPACE_ID;
+        else process.env.CYRAOPS_WORKSPACE_ID = previousWorkspace;
       }
     } finally {
       queue.close();
@@ -218,12 +269,13 @@ export class NativeAgentRuntime implements AgentRuntime {
   private async runTurnViaCli(
     session: Session,
     task: string,
+    workspaceId: string | null,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
     events: HarnessEvent[]
   ): Promise<void> {
     const delegate = (this.cliDelegate ??= new CliAgentRuntime(this.store));
-    let delegateId = this.delegateSessions.get(session.id);
+    const delegateId = this.delegateSessions.get(session.id);
     let delegateSession = delegateId ? await delegate.getSession(delegateId) : null;
     if (!delegateSession) {
       delegateSession = await delegate.createSession({
@@ -232,7 +284,7 @@ export class NativeAgentRuntime implements AgentRuntime {
       });
       this.delegateSessions.set(session.id, delegateSession.id);
     }
-    for await (const event of delegate.executeTurn({ sessionId: delegateSession.id, task, signal })) {
+    for await (const event of delegate.executeTurn({ sessionId: delegateSession.id, task, signal, workspaceId })) {
       events.push(event);
       queue.push(event);
     }

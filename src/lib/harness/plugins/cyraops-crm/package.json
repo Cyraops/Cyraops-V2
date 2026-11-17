@@ -1,7 +1,7 @@
 {
   "name": "@cyraops/harness-crm",
   "version": "0.1.0",
-  "description": "Phase 4 v2: a small read-only Cyraops CRM tool set (cyraops_open_tickets, cyraops_list_tickets, cyraops_search_contacts, cyraops_list_schedule) for the native harness runtime",
+  "description": "Phase 4 v3: Cyraops CRM tools for the native harness runtime — four read-only tools (cyraops_open_tickets, cyraops_list_tickets, cyraops_search_contacts, cyraops_list_schedule) plus one approval-gated write tool (cyraops_update_ticket) with tenant scoping via CYRAOPS_WORKSPACE_ID",
   "type": "module",
   "main": "lib/index.js",
   "license": "MIT",
