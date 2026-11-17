@@ -2,11 +2,15 @@
   "name": "vendored-boot-profile",
   "private": true,
   "version": "0.0.0",
+  "dependencies": {
+    "@cyraops/harness-crm": "0.1.0"
+  },
   "dsh": {
     "profile": {
       "bundles": [
         "@deepseek-ai/dsh-base",
-        "@deepseek-ai/dsh-headless"
+        "@deepseek-ai/dsh-headless",
+        "@cyraops/harness-crm"
       ]
     }
   }

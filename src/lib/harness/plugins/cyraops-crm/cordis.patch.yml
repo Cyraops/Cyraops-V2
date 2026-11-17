@@ -1,0 +1,12 @@
+# @cyraops/harness-crm bundle patch: one read-only tool row inserted into the
+# headless profile's entry list (same dialect as the shipped bundle patches:
+# one `insert` list whose rows the user profile layer may later address by id).
+#
+# The row carries no `config`; the plugin declares its own `inject: [tools]`
+# at module level and registers `cyraops_open_tickets` into the shared tool
+# registry during `apply`. Registered tools feed the model-facing system
+# prompt automatically, so no further wiring is needed.
+
+- insert:
+    - id: tool-cyraops-crm
+      name: '@cyraops/harness-crm'
