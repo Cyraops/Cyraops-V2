@@ -63,7 +63,18 @@ test is booting the identical tree from `vendor/dsh/`.
   with the reason surfaced. Fix in progress: worker-thread load or a node_modules
   shim package so the in-process path serves the UI.
 
-## Checkpoint 4 — UI wiring (pending)
+## Checkpoint 4 — native-in-Next unblocked ✅ (verified 2026-11-18, commit 5bf1c0a)
+
+- Fix: `import(/* turbopackIgnore: true */ url)` — Next 16.4.3's documented
+  escape for computed file:// dynamic imports. Worker threads were rejected
+  (Turbopack enumerates every root file as a candidate module; magic comment
+  not honoured on new Worker).
+- Observed at :3003: native turn banana 3854ms (kind native, host booted
+  in-process), native resume 1762ms, CLI default banana (kind cli).
+- 361 tests: 360 pass, 1 pre-existing skip.
+
+Remaining: UI wiring (Phase 3), capability integration (Phase 4), SBOM, and the
+Next security upgrade decision (pending user).
 
 ## Checkpoint 5 — capability integration (pending)
 
