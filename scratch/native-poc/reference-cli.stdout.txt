@@ -1,0 +1,8 @@
+{"type":"session","sessionId":"session-2800ca66-3713-4fb6-90d7-7beb737b0842","cwd":"/Users/tanveersinghsaini/Desktop/cyraops-v2"}
+{"type":"status","phase":"turn_start","turn":1}
+{"type":"status","phase":"step_start","turn":1,"step":1}
+{"type":"thinking","text":""}
+{"type":"text","text":"banana"}
+{"type":"status","phase":"step_end","turn":1,"step":1,"usage":{"inputTokens":168,"outputTokens":3,"cacheReadTokens":5632,"cacheWriteTokens":0,"totalTokens":5803}}
+{"type":"status","phase":"turn_end","turn":1,"reason":{"kind":"completed"}}
+{"type":"final","sessionId":"session-2800ca66-3713-4fb6-90d7-7beb737b0842","reason":{"kind":"completed"},"text":"banana"}

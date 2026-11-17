@@ -1,0 +1,2815 @@
+{
+  "sourceDistribution": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh",
+  "sourceVersion": "0.2.2-rc.1",
+  "generatedAt": "2026-11-17T19:38:45.613Z",
+  "rootBundles": [
+    "@deepseek-ai/dsh-base",
+    "@deepseek-ai/dsh-headless"
+  ],
+  "packages": [
+    {
+      "name": "@anthropic-ai/sdk",
+      "version": "0.129.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@anthropic-ai/sdk",
+      "license": "MIT",
+      "packageJsonSha256": "3da3840a09a3bfeac32aed68cfd7fa9ac952f41a00cabe335f806caa2966f3f1"
+    },
+    {
+      "name": "@aws-sdk/client-bedrock-runtime",
+      "version": "3.1127.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/client-bedrock-runtime",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "d38839f240b6f89020c1abf351691d9749f7d35e6680abd6a6fc4415823c10e0"
+    },
+    {
+      "name": "@aws-sdk/core",
+      "version": "3.981.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/core",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "920876e6431c6f1f256366ba9460bc2c4f7e29372265454e9f2ad54457bcd891"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-env",
+      "version": "3.972.84",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-env",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "61c632c456ea826d84f950e21d87f6b21e923261885b8f5e9c0a1dc38d9e1e49"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-http",
+      "version": "3.972.86",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-http",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "eeb379f6d195b0b6a3f809b0801c4009b12ef5ece882f978e7a8856f83f59b9c"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-ini",
+      "version": "3.973.30",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-ini",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "60f66866ffd48085ef054323d4d3f7009114255f06fa0a5bccbe22c52fe19657"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-login",
+      "version": "3.972.92",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-login",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "5f718f49db914811070d96e4e88840e91e3c2d3f5b599285a01c2543e0b1bc43"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-node",
+      "version": "3.972.97",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-node",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "2d44a9de496124611f32b9f59ef0f340f3e46136170276bfab4ead3e73060933"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-process",
+      "version": "3.972.84",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-process",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "baae9db22248e234d781a3ece0b665c2932b1911ba1a561c6cbf65d2ee908fff"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-sso",
+      "version": "3.973.28",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-sso",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "563cd49025991c00538565dd8feca7cdf2eb4d5f5c98fdfe850c06b91be3a707"
+    },
+    {
+      "name": "@aws-sdk/credential-provider-web-identity",
+      "version": "3.972.90",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-web-identity",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "5cb3d9780cd50ceece5d2b225d43745af556d77293df954401c68349925bbc0e"
+    },
+    {
+      "name": "@aws-sdk/eventstream-handler-node",
+      "version": "3.972.42",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/eventstream-handler-node",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "76fba4af3d9526a8396498c1f30c310ba425378f0f34d74fa73238e55f3d1d67"
+    },
+    {
+      "name": "@aws-sdk/middleware-eventstream",
+      "version": "3.972.38",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/middleware-eventstream",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "c7a3f5db9134f88a536c8dac1bbb75e322aed0af03d8b64fb6f4d7fe8639136d"
+    },
+    {
+      "name": "@aws-sdk/middleware-websocket",
+      "version": "3.972.66",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/middleware-websocket",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "57bdc0248dfdf2eaa61ed1582f66eaf246d18f652c7dcedf5beaba263fdf1432"
+    },
+    {
+      "name": "@aws-sdk/nested-clients",
+      "version": "3.998.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/nested-clients",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "756480d422c005e6a3f22f5ba573c58d4f81579ae709767e9f8fccbdbad67d7c"
+    },
+    {
+      "name": "@aws-sdk/signature-v4-multi-region",
+      "version": "3.996.52",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/signature-v4-multi-region",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "52dca8b8a9f4686e907328cac425ccb0e16caf10881cf450bd4719f6668b0ed2"
+    },
+    {
+      "name": "@aws-sdk/token-providers",
+      "version": "3.1127.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/token-providers",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "fcb7e0ea77d0466b548fe3fc04efa0c13ced2dfbed14c62e7dc0995e1153dcd8"
+    },
+    {
+      "name": "@aws-sdk/types",
+      "version": "3.975.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/types",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "e20e491b59c6d9bf61363afcaf6dc11b9c79fcb8aeb9ad72bffda51d22759a54"
+    },
+    {
+      "name": "@aws-sdk/xml-builder",
+      "version": "3.972.43",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/xml-builder",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "58b4634d97cde7eee9cc2d7fb071be09d0825031a504c9818c5b4b144fb64836"
+    },
+    {
+      "name": "@aws/lambda-invoke-store",
+      "version": "0.3.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws/lambda-invoke-store",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "67dd0cc15cb17df9e12654a78486e710e13a2e96623cb28c683056378fa973dc"
+    },
+    {
+      "name": "@babel/code-frame",
+      "version": "7.29.7",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/code-frame",
+      "license": "MIT",
+      "packageJsonSha256": "f9cccb2e601db93851f10935b4e723c95a730c467f187462eb54b16bb353b036"
+    },
+    {
+      "name": "@babel/helper-validator-identifier",
+      "version": "7.29.7",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/helper-validator-identifier",
+      "license": "MIT",
+      "packageJsonSha256": "1ad6aeced8b186ac259da45fea50ab9d65d3d958f6458c80e3c8013649d1b12d"
+    },
+    {
+      "name": "@babel/runtime",
+      "version": "7.29.14",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/runtime",
+      "license": "MIT",
+      "packageJsonSha256": "81aeaa5b00df4d0b2f74c69600a8a6de42e987ccf586c34a6435b21b557a5917"
+    },
+    {
+      "name": "@deepseek-ai/cordis",
+      "version": "4.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis",
+      "license": "MIT",
+      "packageJsonSha256": "70be1056619663339433309474b1e6a2307088097af3cb082afe4b5ca2021b26"
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-group",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-group",
+      "license": "MIT",
+      "packageJsonSha256": "04375b5919ee2a280282df1f344a652faad0fef2b59d475c743f41e38aa99428"
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-include",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-include",
+      "license": "MIT",
+      "packageJsonSha256": "cffbe4e47cdd97a79f8186b873d87327486fc01d77b52e77c86952453c58c87d"
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-loader",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-loader",
+      "license": "MIT",
+      "packageJsonSha256": "af17686b3c2ec43cbeb9d918c7713db1d337b7b4ed70754d475eafa38a944751"
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-timer",
+      "version": "1.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-timer",
+      "license": "MIT",
+      "packageJsonSha256": "807687d6a28ff369ecc2ce1f66e8a2ed458a97e74a57df24662c4037f5113a65"
+    },
+    {
+      "name": "@deepseek-ai/cosmokit",
+      "version": "1.9.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cosmokit",
+      "license": "MIT",
+      "packageJsonSha256": "7825705f990d7b54c6d1216da86eaf8c6a795274834be83dc0d976bbd929f9da"
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent",
+      "license": "MIT",
+      "packageJsonSha256": "20dd3afcc9bf7cd12e3a98cc6fb2f6f1aa0ba22f7fac222fbcf5187776982e55"
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-default-model",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-default-model",
+      "license": "MIT",
+      "packageJsonSha256": "0678bf52e08c5cb4055c9bf81737cdea3fa6877c1e5c31ee3a7d0b84d4f99ed0"
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-instructions",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-instructions",
+      "license": "MIT",
+      "packageJsonSha256": "015bd6bd843edd66e508ed8110a615c185c65b94ad697f3ceaf106f615bf2ce4"
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-loop",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-loop",
+      "license": "MIT",
+      "packageJsonSha256": "ef7f4b621f2dc61037acd7764e072463ca3f0eacd8dcc2752462e9759405b05a"
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-preset-registry",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-preset-registry",
+      "license": "MIT",
+      "packageJsonSha256": "e298e15f941910f38d2e5eaf9975195f916cf66ad83772635678fcc9b0a632b4"
+    },
+    {
+      "name": "@deepseek-ai/dsh-anonymous-user-id",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-anonymous-user-id",
+      "license": "MIT",
+      "packageJsonSha256": "085bd4185f560f3520ae766a3cc6aa9b360dbd62b50c11296444fe503f56dacb"
+    },
+    {
+      "name": "@deepseek-ai/dsh-api-gateway",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-api-gateway",
+      "license": "MIT",
+      "packageJsonSha256": "8a824641bdfe9b52dc423d6ed23e6cfdf6261b6b83feeb671526023afbb96e6d"
+    },
+    {
+      "name": "@deepseek-ai/dsh-api-remote-access",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-api-remote-access",
+      "license": "MIT",
+      "packageJsonSha256": "4258899e314a59ede19552fcd29336ba3116748b0813487071350076fc7dd2c9"
+    },
+    {
+      "name": "@deepseek-ai/dsh-app-boot",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-app-boot",
+      "license": "MIT",
+      "packageJsonSha256": "ec194ef11a3fecef275f10262734d137c7561ae5a8bfb6a103b61eec7f00e28a"
+    },
+    {
+      "name": "@deepseek-ai/dsh-atomic-write",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-atomic-write",
+      "license": "MIT",
+      "packageJsonSha256": "122bdc8a44d3db9978a5a186a7ffcd547c8aca43ee74a0c5f9e4f18fe33d9d1d"
+    },
+    {
+      "name": "@deepseek-ai/dsh-attachment",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-attachment",
+      "license": "MIT",
+      "packageJsonSha256": "d13da433b1985777dfa32565e76b05fcf895288b10f299e969449eae6d0a3f0f"
+    },
+    {
+      "name": "@deepseek-ai/dsh-attachment-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-attachment-local",
+      "license": "MIT",
+      "packageJsonSha256": "2306d3519630f12be811e77a29a7867666ecb69bac014055a81489baca394269"
+    },
+    {
+      "name": "@deepseek-ai/dsh-authorization",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-authorization",
+      "license": "MIT",
+      "packageJsonSha256": "6bd926f52b5605405129285b0aa2b898d1ab6adc95b9ac84837e5d3daf8181b9"
+    },
+    {
+      "name": "@deepseek-ai/dsh-base",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-base",
+      "license": "MIT",
+      "packageJsonSha256": "e4c91192e947bfe6879092845d65f5bccb9fd77d3251b292f446205f442a95d8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-bash-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-bash-local",
+      "license": "MIT",
+      "packageJsonSha256": "601291e6b47ea3ebf6acc68df25e57cb6c4b51089ff1fe2de3b8330e2ca38394"
+    },
+    {
+      "name": "@deepseek-ai/dsh-bash-sandbox",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-bash-sandbox",
+      "license": "MIT",
+      "packageJsonSha256": "8dc8409a022e245a697f1fc6cc4c17ae111fa04a8e12852a513fd3a4c75df928"
+    },
+    {
+      "name": "@deepseek-ai/dsh-brand",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-brand",
+      "license": "MIT",
+      "packageJsonSha256": "3fd784ce686072a9a4c9b1c7d885d756e21e08f4fd7cbc9ad896e0f44217f137"
+    },
+    {
+      "name": "@deepseek-ai/dsh-chunked-list",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-chunked-list",
+      "license": "MIT",
+      "packageJsonSha256": "04e5937e29284ed6f940c7b39f3952529cc269e14b0386f7a9350651068581f8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-cmdline",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-cmdline",
+      "license": "MIT",
+      "packageJsonSha256": "42aab072fc90c69db546d578c441fcc9716d337980bb048d10fbc8cc24ed20af"
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-compact",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-compact",
+      "license": "MIT",
+      "packageJsonSha256": "0bd675b93ad53b8a105f235968bde2607c371a08404090cac48a4a5eb3fe5c75"
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-feedback",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-feedback",
+      "license": "MIT",
+      "packageJsonSha256": "7a0cc291ff34ff7fad8c08c7d83c24f283aee0942771dd04613e34c390870720"
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-goal",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-goal",
+      "license": "MIT",
+      "packageJsonSha256": "53f5bd4c61a878e414287b27bf6b958c5cc4c31b054f9582059fa90cfb246286"
+    },
+    {
+      "name": "@deepseek-ai/dsh-commands",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-commands",
+      "license": "MIT",
+      "packageJsonSha256": "0bc55bfb1ce461ca3427c1925f2f3298c58af351b72262b3ddae5168e05dc3f3"
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction",
+      "license": "MIT",
+      "packageJsonSha256": "afbb06ef806d8fabf81dfd8915ae6c056ae3b3874035b289cf3790705d3ad40d"
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-basic",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-basic",
+      "license": "MIT",
+      "packageJsonSha256": "0a94a38fa41d8fb73c345378560b9c1c514ba027214781abf9aebd094f9462c3"
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-image-offload",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-image-offload",
+      "license": "MIT",
+      "packageJsonSha256": "388917860f2a3387d40bd3eae088fda692e877b9b49dffbe6799cb0969ff085c"
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-tool-result-pruner",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-tool-result-pruner",
+      "license": "MIT",
+      "packageJsonSha256": "b6f8e9bb0f655b0a46c248b971c9f08ffd9517099d547f768776c8ac494db811"
+    },
+    {
+      "name": "@deepseek-ai/dsh-config-editor",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-config-editor",
+      "license": "MIT",
+      "packageJsonSha256": "0d4956c352eb381ccdf049428b2c29f7e5e27e31fa97b587b12aaf52828d2ce9"
+    },
+    {
+      "name": "@deepseek-ai/dsh-credentials",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-credentials",
+      "license": "MIT",
+      "packageJsonSha256": "02bd5186d05a2d00a86c58bbe6cf96903ae07d82528a83af94ccfb2fa4c042f7"
+    },
+    {
+      "name": "@deepseek-ai/dsh-credentials-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-credentials-local",
+      "license": "MIT",
+      "packageJsonSha256": "a0f04d40ee26650925fe45cb8c9d0844dbd8a1ae775ccd2a150a26c0c9a1aadd"
+    },
+    {
+      "name": "@deepseek-ai/dsh-deepseek-account",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-account",
+      "license": "MIT",
+      "packageJsonSha256": "52c8dc8e3dbe6f173eb310bf7753df2250aa342cd79d4d057a97454425c9d4f7"
+    },
+    {
+      "name": "@deepseek-ai/dsh-deepseek-account-platform",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-account-platform",
+      "license": "MIT",
+      "packageJsonSha256": "39acce0e001e7998e134e9298e7c8dc7d91616d95446c207295ecc195d660fcb"
+    },
+    {
+      "name": "@deepseek-ai/dsh-deepseek-llm-api-extensions",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-llm-api-extensions",
+      "license": "MIT",
+      "packageJsonSha256": "86aa50f03141568c14112543433162869c9ad388c586d09fe2b752d2de0a7879"
+    },
+    {
+      "name": "@deepseek-ai/dsh-deque",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deque",
+      "license": "MIT",
+      "packageJsonSha256": "e9cffc327f03410cd6c7d1ae1c220d4074ae090a6063e597f4a65c75aca938fd"
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs",
+      "license": "MIT",
+      "packageJsonSha256": "d4dee09347ed753b8fffbb8ddc33c691e3af4133addbc5b4a6be61b6feead2cb"
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-local",
+      "license": "MIT",
+      "packageJsonSha256": "f77d11a293d7aeb8ed94e14edd887e036526abaaf08d681d76610da241999526"
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-observation-policy",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-observation-policy",
+      "license": "MIT",
+      "packageJsonSha256": "40ffac636533fa5b1cc5c59476a45ead15c6acefead74ec4c23c422775839f6a"
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-patch",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-patch",
+      "license": "MIT",
+      "packageJsonSha256": "8f9c26c22a8b0d98b4439f6d9b6175cf3c1310cc277fbd244d5dfa99f748f889"
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-sandbox",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-sandbox",
+      "license": "MIT",
+      "packageJsonSha256": "43e403ac1547d31d63f2105ccda4d7cb8adfed85331ded3399db2a84e9a38570"
+    },
+    {
+      "name": "@deepseek-ai/dsh-goal",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-goal",
+      "license": "MIT",
+      "packageJsonSha256": "7d3c20c27d07e563b08523682b22669bb837c630253856c014c0b94c4e6ca2a4"
+    },
+    {
+      "name": "@deepseek-ai/dsh-goal-round-driver",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-goal-round-driver",
+      "license": "MIT",
+      "packageJsonSha256": "d5c8a215c464041e2933a8f0c6d39b9afe75bf2e79bd711eeba22c113d3851d8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-headless",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-headless",
+      "license": "MIT",
+      "packageJsonSha256": "3b6146768aee51cac006282dfe89ba644082def59043fd637b9c972d763e8101"
+    },
+    {
+      "name": "@deepseek-ai/dsh-hmr",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-hmr",
+      "license": "MIT",
+      "packageJsonSha256": "1982cc2d3812178b7f874a5940f5a4ac4bbb878652300bbd1a81ad082f600de3"
+    },
+    {
+      "name": "@deepseek-ai/dsh-home-paths",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-home-paths",
+      "license": "MIT",
+      "packageJsonSha256": "b65f6d0d1ba6645e0aae801250936f0c93bdc8fde8d6b5a28d22803a614dd887"
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-plugin-inventory",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-host-plugin-inventory",
+      "license": "MIT",
+      "packageJsonSha256": "15d93bc72b8689c2404c513ab42bd8d8f9341d372ba7aa29db6b9f0a5bd68b45"
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-webserver",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-host-webserver",
+      "license": "MIT",
+      "packageJsonSha256": "3ec6f9e16028d6c21f265e133a6e6a1c53026b7855406a6554055035467f3a0d"
+    },
+    {
+      "name": "@deepseek-ai/dsh-http-proxy",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-http-proxy",
+      "license": "MIT",
+      "packageJsonSha256": "370ff74659a6a83e4ba1a31a533ed2e1699a1c825bbb1eff8b803ecdbcf9f8c5"
+    },
+    {
+      "name": "@deepseek-ai/dsh-jobs",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-jobs",
+      "license": "MIT",
+      "packageJsonSha256": "4051f2447ab11549085594f4437edb0c497bca3cdd35f1a7df37616fcbb4d35b"
+    },
+    {
+      "name": "@deepseek-ai/dsh-jobs-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-jobs-local",
+      "license": "MIT",
+      "packageJsonSha256": "6adabcf68d8aa95656026e3cff1c3626f17bea0d862c4c78533c79c0a67be710"
+    },
+    {
+      "name": "@deepseek-ai/dsh-launch-environment",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-launch-environment",
+      "license": "MIT",
+      "packageJsonSha256": "11db287043ace783c990ee96c4cb2bceb21d9a3c3cf848e1da3ef4bd80cc725f"
+    },
+    {
+      "name": "@deepseek-ai/dsh-lazy-require",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-lazy-require",
+      "license": "MIT",
+      "packageJsonSha256": "a3f05749fbee48fa9a9fda2bcbdbbef63b53abe566d49de9891e03fe5bb65dcb"
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm",
+      "license": "MIT",
+      "packageJsonSha256": "d7ca17b59abc24e2d7ecd7f3db64fd2dbb1eac183c62a6004ae70333d62d8df3"
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-deepseek",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek",
+      "license": "MIT",
+      "packageJsonSha256": "cd65518067143713f72971cff67644fb5598e0b64e709bf5e5457d54093f7946"
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-deepseek-account",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek-account",
+      "license": "MIT",
+      "packageJsonSha256": "dcef418a09bb272f2a0f4410966cebbf33da46983cdaca81cc37a73aac1e5046"
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-deepseek-api-key",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek-api-key",
+      "license": "MIT",
+      "packageJsonSha256": "644e30865e551f1600fc1bd98fe0f6bd243f1e8f90e53745b72b033659ae1a56"
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-pi-ai",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-pi-ai",
+      "license": "MIT",
+      "packageJsonSha256": "f08cd8d54ddcb7af93d3d13c9ee52c42c913b2dc75525a99283916f997e73377"
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-retry",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-retry",
+      "license": "MIT",
+      "packageJsonSha256": "cefa6f211394fabb63c98e19b51dd8b188ce8012483eb647981ad9e367e1114e"
+    },
+    {
+      "name": "@deepseek-ai/dsh-mcp-resources",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-mcp-resources",
+      "license": "MIT",
+      "packageJsonSha256": "f0cc2e2f5c6f9f2b0e0b474f827284e2ee4bfdd78ae1629011b205e247cb04a8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-message-feedback",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-message-feedback",
+      "license": "MIT",
+      "packageJsonSha256": "0045ad1c0427452727de4fb48576ca231ea9020b15d95c9c09f7827052670c08"
+    },
+    {
+      "name": "@deepseek-ai/dsh-official-bundles",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-official-bundles",
+      "license": "MIT",
+      "packageJsonSha256": "3cbbd3599342c9779e2eaad34179e34e05b4683563c3f235095f008a2e4436fa"
+    },
+    {
+      "name": "@deepseek-ai/dsh-otel",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-otel",
+      "license": "MIT",
+      "packageJsonSha256": "dc3e2e1a6a1ecbb0e080e059a308877e5227ea2f3fa1b82a24b362e6dbbd4aa4"
+    },
+    {
+      "name": "@deepseek-ai/dsh-output-retention",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-output-retention",
+      "license": "MIT",
+      "packageJsonSha256": "31269768dfae3fb15f0202419a05ec375a64ed55af48b8f2f727936924d53fc8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-package-manifest",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-package-manifest",
+      "license": "MIT",
+      "packageJsonSha256": "f94648db529ef05895358761f039888c36753a30a75d42ecfcfb20d9cb9a3c36"
+    },
+    {
+      "name": "@deepseek-ai/dsh-permission-presets",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-permission-presets",
+      "license": "MIT",
+      "packageJsonSha256": "d1e7da7230d9e08e232271a4d86b65c8eb9ee1e48b9eefa35d6b0b217fbd3f8a"
+    },
+    {
+      "name": "@deepseek-ai/dsh-plan-mode",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plan-mode",
+      "license": "MIT",
+      "packageJsonSha256": "bfcc8b30c44b301d2aea6a2f68d3dbb6ee332eb767682eb771d1e81cd197da38"
+    },
+    {
+      "name": "@deepseek-ai/dsh-plugin-detail",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-detail",
+      "license": "MIT",
+      "packageJsonSha256": "e59ad0daad5fad4e631ce9f3c89372967b032e14667d3efce6ac34e88dd81ec8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-plugin-manager",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-manager",
+      "license": "MIT",
+      "packageJsonSha256": "8ab45267e0521b015f87ac3996bdd7cbf0360e7911cbd6bbb191b2d75b61f956"
+    },
+    {
+      "name": "@deepseek-ai/dsh-plugin-package-inventory-deepseek",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-package-inventory-deepseek",
+      "license": "MIT",
+      "packageJsonSha256": "74155908e365baaf0be20b6cd758679494012b301dd5d4423ef5e3020e3f98e8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-ptc-runtime",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-ptc-runtime",
+      "license": "MIT",
+      "packageJsonSha256": "bc3e19899919d82d270803ccdf0107bcb62b692da8784a2d23ef338f1682b54b"
+    },
+    {
+      "name": "@deepseek-ai/dsh-ptc-runtime-node",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-ptc-runtime-node",
+      "license": "MIT",
+      "packageJsonSha256": "6115c18c622bf3ef2259eef9edd0609106e9b45ff8a02f2e7c7530e9ff28d587"
+    },
+    {
+      "name": "@deepseek-ai/dsh-pwsh-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-pwsh-local",
+      "license": "MIT",
+      "packageJsonSha256": "9346c40af920d776749b892b67a1b65224733d69cfcbc428fcd1956985691fff"
+    },
+    {
+      "name": "@deepseek-ai/dsh-pwsh-sandbox",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-pwsh-sandbox",
+      "license": "MIT",
+      "packageJsonSha256": "97111cf1eaf06c8ecf5c1bb729b588438d021e88341c5d5290141ad26add8ed1"
+    },
+    {
+      "name": "@deepseek-ai/dsh-repeat-tool-reminder",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-repeat-tool-reminder",
+      "license": "MIT",
+      "packageJsonSha256": "185423de1ec3109d1330c817b5a48f2c818b479e8c2c01d3d030f741a5d0ef9f"
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox",
+      "license": "MIT",
+      "packageJsonSha256": "278f36b2b131763ddc3a08014e9057fd85936136f0885537113fbde57f7723ea"
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-local",
+      "license": "MIT",
+      "packageJsonSha256": "b44fdfd2dbb3dd1b7cfaf598390652db1ccbfa47e0935c7673ae8031416cd9e1"
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-policy",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-policy",
+      "license": "MIT",
+      "packageJsonSha256": "d889d17656be42f8ae36f2b5b15bb345a34ccb6101df34b6296d49188617d583"
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-windows-acl",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-windows-acl",
+      "license": "MIT",
+      "packageJsonSha256": "9142c8deebb3aab6f6fe95334adee6979b69bf27de78e508bc9528883c8dbf64"
+    },
+    {
+      "name": "@deepseek-ai/dsh-scope",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-scope",
+      "license": "MIT",
+      "packageJsonSha256": "13065feb140884751e162bf1ad3d6a0e3aadc7aa523163749ce585d9631883f3"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session",
+      "license": "MIT",
+      "packageJsonSha256": "18ebb957b762d7e2423f6650f629ad7b67daa233384e58d4c1a5576b5d919f52"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-checkpoint-policy",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-checkpoint-policy",
+      "license": "MIT",
+      "packageJsonSha256": "999fef287545edbc8a3f9437afa4b07c70280e0d90235d7144dbbbc99e3f9006"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format",
+      "license": "MIT",
+      "packageJsonSha256": "3178c548e871cfdae9c8d851f97b77aad10ae96e683a61d6186fa565a1258a53"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-catalog",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-catalog",
+      "license": "MIT",
+      "packageJsonSha256": "4dc3b7acf24515a57925683f6726f6f4b655039e5a286dcd8ec300d1f249b06a"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v0-to-v1",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v0-to-v1",
+      "license": "MIT",
+      "packageJsonSha256": "90f2e6428d5beee7c57eb25ba8f80c567591424f7dadc4e1570220c41abc72bd"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v1-to-v2",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v1-to-v2",
+      "license": "MIT",
+      "packageJsonSha256": "6b1141cefe17d88652939165a59dd9fcd7dd75f94e17850be2d2c643754068ee"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v2-to-v3",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v2-to-v3",
+      "license": "MIT",
+      "packageJsonSha256": "13e7fb72372321693fa04a8891ee55d96356460000276a976977acc49e9beeb2"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v3-to-v4",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v3-to-v4",
+      "license": "MIT",
+      "packageJsonSha256": "8cb730bb41614fd6db118dfd197cfd61ba668c65387dff5a629225ec9fa6e367"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-log-deepseek",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-log-deepseek",
+      "license": "MIT",
+      "packageJsonSha256": "8578a7b7127b91bf249af9c552b04d5873e4066a364cd13dcd3db7bdf8c69762"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-persistence",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-persistence",
+      "license": "MIT",
+      "packageJsonSha256": "562c8dbc500cb1f6471272bba0728cdd79558694ae577df3dcfa3afe01ba5fbc"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-persistence-jsonl",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-persistence-jsonl",
+      "license": "MIT",
+      "packageJsonSha256": "166cea8d3e9a014c70b07f22197a06ef31cce1ec10177053f58c444c6b68808f"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-projection",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection",
+      "license": "MIT",
+      "packageJsonSha256": "45f751d903859a024b698fc6d7d0e6df5678a3210a9408d987c476c3b6935397"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-projection-cache",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection-cache",
+      "license": "MIT",
+      "packageJsonSha256": "73c3b10ffb4910b358e14f64f7e28bf1f5648972bb235c024b9e2a3afdfb82c9"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-query",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-query",
+      "license": "MIT",
+      "packageJsonSha256": "3b9c02e6d4e14d53d7a1ea743ebf7e5025d41f4d176a39c30fcb6a9f392e23a0"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-query-sqlite",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-query-sqlite",
+      "license": "MIT",
+      "packageJsonSha256": "65fa4ad0444a4e22ce475b257439df675d5fb1dd0c30cafdcbe51d7a3f39bdd5"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-telemetry",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-telemetry",
+      "license": "MIT",
+      "packageJsonSha256": "d5e5067f29c16e02d63f5c1494f71d307d8f10a7220b6771d76af1fda48a62f0"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-telemetry-otel",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-telemetry-otel",
+      "license": "MIT",
+      "packageJsonSha256": "24d500d2666770c84feca1ff298736fbec514e1bb03599023b78a2ca2dfe7850"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title",
+      "license": "MIT",
+      "packageJsonSha256": "e8d8f66f43624482c3bd6e0f23b15e3a0d31d15787c2b84199a46baf6e6bfad5"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title-first-prompt-llm",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title-first-prompt-llm",
+      "license": "MIT",
+      "packageJsonSha256": "a82dd46239ee7236afd357cf5d04e414720032e76c95175f58c3a72545b2d56e"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title-llm",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title-llm",
+      "license": "MIT",
+      "packageJsonSha256": "03908dc89bd755d8fb94f5da44159a1f6af1ee5dd522684694e4306080763ffb"
+    },
+    {
+      "name": "@deepseek-ai/dsh-settings",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-settings",
+      "license": "MIT",
+      "packageJsonSha256": "d42a78c5bfe8b3a4ea4f2af3f128f6c93076b95e1a4adc28783fba2f06c3b4e7"
+    },
+    {
+      "name": "@deepseek-ai/dsh-shell",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-shell",
+      "license": "MIT",
+      "packageJsonSha256": "e53be24b8d7f9edad9c778a51a8b21fea12dc0a4985633ea252ffbfaa6bb0dc9"
+    },
+    {
+      "name": "@deepseek-ai/dsh-shell-env",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-shell-env",
+      "license": "MIT",
+      "packageJsonSha256": "6e73f322f7b8b391523a39814aae66e76a41029b3a5149f496d3267efd640aab"
+    },
+    {
+      "name": "@deepseek-ai/dsh-skill",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-skill",
+      "license": "MIT",
+      "packageJsonSha256": "bd743efca298009034627fb21b3c3adfa85734fdeeb7e5c8f13982d18c278fc9"
+    },
+    {
+      "name": "@deepseek-ai/dsh-skill-filesystem",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-skill-filesystem",
+      "license": "MIT",
+      "packageJsonSha256": "531e26bcb01b8e5d637580e3fd985e5814e24f2fdc451fafe06ac9949f04f98e"
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill",
+      "license": "MIT",
+      "packageJsonSha256": "a088e101625bbba65f4ac3e1ab78ec09e5119e45584f687990c097ace1d7977d"
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill-local",
+      "license": "MIT",
+      "packageJsonSha256": "63c5cfab86f98730b48569de8725f1e247855ea26ba3360456fc3e8a49190f32"
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill-policy",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill-policy",
+      "license": "MIT",
+      "packageJsonSha256": "15f100425f3893c1ea80bcb6ada8d78a81761a9c054a3da4ccbeb11430610c57"
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage",
+      "license": "MIT",
+      "packageJsonSha256": "08a30aa37c57a1201c9d3636b1d16a35db1fd0b0b424359a408401398c2c5235"
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage-domain",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage-domain",
+      "license": "MIT",
+      "packageJsonSha256": "2f2516b0bcbb299853b84c27650e490c29748552f56f46573394050fce0b9870"
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage-json",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage-json",
+      "license": "MIT",
+      "packageJsonSha256": "2577586b98540c6a3864d73e3d23901a31059fc6b008bfdbe5313ea0a4b1400c"
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent",
+      "license": "MIT",
+      "packageJsonSha256": "1c5070df3ef30c939c4006afcad0184ffa1d4d9e9b23c88df8d9fe32e1e75514"
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent-fork-in-process",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent-fork-in-process",
+      "license": "MIT",
+      "packageJsonSha256": "5e024080521cab904c4b5823a84dc349d1d07af9932429aa1a66d598665178bf"
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent-spawn-in-process",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent-spawn-in-process",
+      "license": "MIT",
+      "packageJsonSha256": "9ad9b7d25316d29f008fb0b70a6a945b351693fb5a602045b23c6d03b0c524b1"
+    },
+    {
+      "name": "@deepseek-ai/dsh-subprocess",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subprocess",
+      "license": "MIT",
+      "packageJsonSha256": "47a787a917dc18f438f862153c133250f1622e1237927a6499f67875468ab885"
+    },
+    {
+      "name": "@deepseek-ai/dsh-subprocess-local",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subprocess-local",
+      "license": "MIT",
+      "packageJsonSha256": "48d50b0e9d019954a8689b39af2bc20b03ce68abe5dde3351b2e9e27ee842b9f"
+    },
+    {
+      "name": "@deepseek-ai/dsh-system-prompt",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-system-prompt",
+      "license": "MIT",
+      "packageJsonSha256": "bdbf20a3aa49d2d7d98b66786e0115145a40e85978a5282ae8f42c52c2360c59"
+    },
+    {
+      "name": "@deepseek-ai/dsh-timeout",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-timeout",
+      "license": "MIT",
+      "packageJsonSha256": "4db779a50c7d3d09237ad20e4cb17d075b445d6009b958ec9bd2c79b56f84f5a"
+    },
+    {
+      "name": "@deepseek-ai/dsh-token-meter",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-token-meter",
+      "license": "MIT",
+      "packageJsonSha256": "b21f633fd26f5f820cb1019b096cba5b2122dd16bd1358a02d53e44888d16b2b"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-bash",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-bash",
+      "license": "MIT",
+      "packageJsonSha256": "aedbae89c0c8d368e7b5bb04f19b8d69ef538813ab9c1038f73f5bc6c4b22e24"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-call-timeout-policy",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-call-timeout-policy",
+      "license": "MIT",
+      "packageJsonSha256": "92b25684f3781927f925aa0022972cccc6ac79e2264b730e6599a392b6e61d37"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-executor-native",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-executor-native",
+      "license": "MIT",
+      "packageJsonSha256": "1efe6e6d45e027d96e5b70c45fef8768605f47556514a7e3b74d528142125b46"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-executor-ptc",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-executor-ptc",
+      "license": "MIT",
+      "packageJsonSha256": "6ccbbdaf19a8975609f4f7a34cdbe2c7e0b24b3009f14726147ec3d1def1ce51"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-fs",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-fs",
+      "license": "MIT",
+      "packageJsonSha256": "47fee03cc69f85136bdc61451bcc8b57099821ebf375411757f9a796ba4e86c8"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-fs-search",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-fs-search",
+      "license": "MIT",
+      "packageJsonSha256": "0a137864fd3012f5e594a21618039437f3d74df8408f567eaec12485e6cf6673"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-goal",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-goal",
+      "license": "MIT",
+      "packageJsonSha256": "512cf8089d6bf680b28bb1a2c684d10ad3405aa3e883d4cec9454d02b246d8d2"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-jobs",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-jobs",
+      "license": "MIT",
+      "packageJsonSha256": "143e3c67bad8e2afaa197c65ba6631b80ced7c4f76ca46e71ee87cabbe06b2cd"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-present",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-present",
+      "license": "MIT",
+      "packageJsonSha256": "fa1cd6cc288ebe6ce4c33ba0eb0809f96fba2cdc8a1b87e64660b79bfdf54f50"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-pwsh",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-pwsh",
+      "license": "MIT",
+      "packageJsonSha256": "9abd87667cc4e6853738c723ea09081807dfdc04b98df12faec9fd3b23d9db08"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-skill",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-skill",
+      "license": "MIT",
+      "packageJsonSha256": "051e1d0c03c679e907ac6a8aa15dbacf0ae26fb6c53ae857b20e4e24468d301e"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-subagent",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-subagent",
+      "license": "MIT",
+      "packageJsonSha256": "18cf2b86c365df03d0f4b88292ede9c05ceca471e4842de70178c72317a32eb7"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-subagent-control",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-subagent-control",
+      "license": "MIT",
+      "packageJsonSha256": "95d1fda27613fedecf67e96b8c73f58d47f5ea376a06991870addac92d1a8792"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-todo",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-todo",
+      "license": "MIT",
+      "packageJsonSha256": "f7ed49b541922983dfa616da4d53ab02ae02a4e4a265f6307670223b40ec0a18"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-web",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-web",
+      "license": "MIT",
+      "packageJsonSha256": "6b3fa74c50f11285c1e8eda257714454417371945c91c51c2726a3e83a5944ef"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-workflow",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-workflow",
+      "license": "MIT",
+      "packageJsonSha256": "053c6eed3ef783cdf0f808330970f57751d27c7b09e760a7c4a8c69eacd31df6"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-working-directory",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-working-directory",
+      "license": "MIT",
+      "packageJsonSha256": "d5e67a9d22471bca92949689a5054a57ce82e2593afe2eaf63ddd62899830460"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tools",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tools",
+      "license": "MIT",
+      "packageJsonSha256": "fe2268802ba2d9259e413464e9ab0411440a81904785a2fee78f68a39ad30655"
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-loader",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-loader",
+      "license": "MIT",
+      "packageJsonSha256": "4f0cf5db819f9e3037826b2dd6a8dee1c5676a59a324f8b4a83e478f090deed4"
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-protocol",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-protocol",
+      "license": "MIT",
+      "packageJsonSha256": "8fd9cc04794f217866e144f9187ab0e8f90e9dd3122acc217216e6eb25cb9f2e"
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-registry",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-registry",
+      "license": "MIT",
+      "packageJsonSha256": "76b20ed6d29ffbe5ef36b819ea838cf967aa053e266b6dca557e63db8045e70e"
+    },
+    {
+      "name": "@deepseek-ai/dsh-user-approval",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-approval",
+      "license": "MIT",
+      "packageJsonSha256": "75a7feea47883d56068028ce21446f5c7e311f74719d3c1a686ce681af757385"
+    },
+    {
+      "name": "@deepseek-ai/dsh-user-questions",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-questions",
+      "license": "MIT",
+      "packageJsonSha256": "65ce8f27f3fbeed753e5e6602a7729d3dd4e358690d1be4cd395db97dcae2dac"
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-code-language",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-code-language",
+      "license": "MIT",
+      "packageJsonSha256": "d5df5cb2a53e28d3a5751dbc3053fc7b65d29a215f16ae239a130ee81f635801"
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-crypto",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-crypto",
+      "license": "MIT",
+      "packageJsonSha256": "67b43ad66840733da1943e885cd052e0fc9c0129958679a268223f755e181d7a"
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-time",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-time",
+      "license": "MIT",
+      "packageJsonSha256": "7552a97883a59c424a6865d2bce4202eee57dc2c08312aeb62df75a49036bf2f"
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-values",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-values",
+      "license": "MIT",
+      "packageJsonSha256": "5d9702a986bed9416cc817f7c478ed07174189886640a85ec83767b809557327"
+    },
+    {
+      "name": "@deepseek-ai/dsh-web",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web",
+      "license": "MIT",
+      "packageJsonSha256": "0d9d83a4b45b9961f4f02e3f0d62c7a6bdc80910b564a724cc6911267081bd54"
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-deepseek-api",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-deepseek-api",
+      "license": "MIT",
+      "packageJsonSha256": "a7f6ad5dbbf12817512066c9e7d3029324540c6d0612a0a3fb6caa7bfd5dd6c1"
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-fetch-http",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-fetch-http",
+      "license": "MIT",
+      "packageJsonSha256": "eaa85b71e04ffb3f037d31e0ca082193c4830ff4cee9cccb5a9aba67ba23e506"
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-search-deepseek",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-search-deepseek",
+      "license": "MIT",
+      "packageJsonSha256": "e0c61f5d8527f15fccfc16e63017ea6d9ba62179b696f96edb0503915b3f845c"
+    },
+    {
+      "name": "@deepseek-ai/dsh-win32-process",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-win32-process",
+      "license": "MIT",
+      "packageJsonSha256": "bc6de776d9a6112d3a5e6f18c939c30d039cb1f213fedb01310fab81ad472968"
+    },
+    {
+      "name": "@deepseek-ai/dsh-workflow",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workflow",
+      "license": "MIT",
+      "packageJsonSha256": "44ea65ffcb36ab784e63956f6f9f9afc26f968b16176aa3f51318b2dde38eef6"
+    },
+    {
+      "name": "@deepseek-ai/dsh-workflow-ptc",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workflow-ptc",
+      "license": "MIT",
+      "packageJsonSha256": "f3facbf4c35db696db58488dfe8c3f0c8348a44336115a8789a55c1788cd36a3"
+    },
+    {
+      "name": "@deepseek-ai/dsh-working-directory",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-working-directory",
+      "license": "MIT",
+      "packageJsonSha256": "b0c1822685f63728ddccc612b8dec5681b27f01c7e5ac5ea0ab55396683fddc5"
+    },
+    {
+      "name": "@deepseek-ai/dsh-workspace",
+      "version": "0.2.2-rc.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workspace",
+      "license": "MIT",
+      "packageJsonSha256": "81d546c0d4dfc10ce6f922553cd864e7f3ea6a3dd0bbcc7f077015004a2b7df0"
+    },
+    {
+      "name": "@deepseek-ai/node-addon-system",
+      "version": "0.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/node-addon-system",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "e8aebe0548e3fd3e733b03476a0a6531076ba40678137421ecd7fb191792d50a"
+    },
+    {
+      "name": "@deepseek-ai/schemastery",
+      "version": "3.19.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/schemastery",
+      "license": "MIT",
+      "packageJsonSha256": "b56f354704ff6e65c8a0c2639f0d46dffa74aaeef9c12e83d47d60f19021112b"
+    },
+    {
+      "name": "@earendil-works/pi-ai",
+      "version": "1.5.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-ai",
+      "license": "MIT",
+      "packageJsonSha256": "db02f15488aa28c3cce6bbdeabab7d3a43eaea8b293a9688570bc0b43b15f1b0"
+    },
+    {
+      "name": "@earendil-works/pi-schema",
+      "version": "1.5.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-schema",
+      "license": "MIT",
+      "packageJsonSha256": "b0297552afe555ceb41c87632e3b43aa73a68cf8b8a8847a9383587567b09401"
+    },
+    {
+      "name": "@earendil-works/pi-telemetry",
+      "version": "1.5.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-telemetry",
+      "license": "MIT",
+      "packageJsonSha256": "bf7908d77cf617b4cdc0277b10edd69ad837980fd1db5e2824a903dfe20a53a7"
+    },
+    {
+      "name": "@eslint-community/regexpp",
+      "version": "4.12.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@eslint-community/regexpp",
+      "license": "MIT",
+      "packageJsonSha256": "373721a4b99305fe4a273da94078d4b360d0be22526b67feb968b481f3852d15"
+    },
+    {
+      "name": "@google/genai",
+      "version": "2.21.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@google/genai",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "64e3cd991d6b4749cd4b3afe46c8a0ad2f5d983f33df94081343797693fdbc81"
+    },
+    {
+      "name": "@img/colour",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@img/colour",
+      "license": "MIT",
+      "packageJsonSha256": "bc38c5097693ed53b91c32f35fb0a52569736c7854ba2eb6d080f3252071f75c"
+    },
+    {
+      "name": "@joplin/turndown-plugin-gfm",
+      "version": "1.0.71",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@joplin/turndown-plugin-gfm",
+      "license": "MIT",
+      "packageJsonSha256": "b004997566ab61a8b6135c4a9984caff84fca3145fcbc0223bc5dcdf717a8f92"
+    },
+    {
+      "name": "@js-temporal/polyfill",
+      "version": "0.5.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@js-temporal/polyfill",
+      "license": "ISC",
+      "packageJsonSha256": "8406de0f5b7642ee1518c01c40ee6b797da7bc97575fea406e1f17876493e9cc"
+    },
+    {
+      "name": "@keyv/serialize",
+      "version": "1.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@keyv/serialize",
+      "license": "MIT",
+      "packageJsonSha256": "191241178c9adee32a6fca2667499dac3333282b5fc660ed1179d8eada75ec96"
+    },
+    {
+      "name": "@mixmark-io/domino",
+      "version": "2.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@mixmark-io/domino",
+      "license": "BSD-2-Clause",
+      "packageJsonSha256": "2190c3aeea2de40b2a9afcbee22d0603e91b1a490ab2e24387b251e75a5ab77a"
+    },
+    {
+      "name": "@opentelemetry/api",
+      "version": "1.9.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/api",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "c0d7c72331bc8cd456dd791f2f429ddafa1d0b5b8abeb4104e6deb12f18b4a86"
+    },
+    {
+      "name": "@opentelemetry/api-logs",
+      "version": "0.222.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/api-logs",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "2876a24aa73f20017656ddcd42fce755801a389f5cf1365cfb683ac071b3a2b7"
+    },
+    {
+      "name": "@opentelemetry/core",
+      "version": "2.11.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/core",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "da42c9aa39a655b2eef83c2dbc764bdce4440579900bbff9386241bcd641e245"
+    },
+    {
+      "name": "@opentelemetry/otlp-exporter-base",
+      "version": "0.222.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/otlp-exporter-base",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "082c58c619bc5ebb7388376eb9ea2cd3e995fc5ca3d0dd9cc0e56381f839a7b9"
+    },
+    {
+      "name": "@opentelemetry/otlp-transformer",
+      "version": "0.222.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/otlp-transformer",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "bbf0327219d756b87226235a772ff633e29f5f9c79e677c940a1e6b55a25e9f6"
+    },
+    {
+      "name": "@opentelemetry/resources",
+      "version": "2.11.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/resources",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "acb15a54bfa0b1893f70ba2161350610b3909a37c8fa9ecfffd1e98d1316103d"
+    },
+    {
+      "name": "@opentelemetry/sdk-logs",
+      "version": "0.222.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-logs",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "0e8db32bf5622ce3a4725bfe8584f1b6ec98b2ceea721cbbaca43a194b6550d6"
+    },
+    {
+      "name": "@opentelemetry/sdk-metrics",
+      "version": "2.11.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-metrics",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "a8b63f837d4b9bd34229185cb22c9fb13ff11b4becd87af8651617b28dd2ff1d"
+    },
+    {
+      "name": "@opentelemetry/sdk-trace",
+      "version": "2.11.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-trace",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "1b84f5625dc6c8e6a8d4cf71f3b8335206eb07139648b29b4e61bf972e1cbe7c"
+    },
+    {
+      "name": "@opentelemetry/semantic-conventions",
+      "version": "1.45.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/semantic-conventions",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "8cb17fe339152c587fe5771bee2e6b8184e6e398e4926a8e1522eeb7787cccd7"
+    },
+    {
+      "name": "@protobufjs/aspromise",
+      "version": "1.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/aspromise",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "4a39ee1c94f6ee038d2944196aa6167785d3429a91727f828a1274262919e2d8"
+    },
+    {
+      "name": "@protobufjs/base64",
+      "version": "1.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/base64",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "7ff6a89f566b95c0f21a5a9cb12df5718f0b06ef96d4186a92d650c0849fa2c5"
+    },
+    {
+      "name": "@protobufjs/codegen",
+      "version": "2.0.5",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/codegen",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "818bf10387c19ab09b3814004ec672ab8d975302cdaf2dd65466bdb604764d65"
+    },
+    {
+      "name": "@protobufjs/eventemitter",
+      "version": "1.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/eventemitter",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "d157d364fe4aee21cfd517abff35bca312ff51e6e6e90abdbec16225057e5914"
+    },
+    {
+      "name": "@protobufjs/fetch",
+      "version": "1.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/fetch",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "52f997898a745acce5d68751883aad6296bcc2f152468ced0ed30e3c3c5a1c72"
+    },
+    {
+      "name": "@protobufjs/float",
+      "version": "1.0.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/float",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "1cae4ded1bc97375a67fe4608f87ee59990734ea738fabb98e9061ab23669cdf"
+    },
+    {
+      "name": "@protobufjs/path",
+      "version": "1.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/path",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "b19802dd696ceb8a4aa4839f35ab1c8312e97693d93485ff3c3e4f19cca183c4"
+    },
+    {
+      "name": "@protobufjs/pool",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/pool",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "7a33b609e770020fe1e09690cfebc23bbdd6e1306e3f0dd98ba5048966cb7fec"
+    },
+    {
+      "name": "@protobufjs/utf8",
+      "version": "1.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/utf8",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "80fdb6b9f633023846b6cdf352ea795523abcf27affd4d54afd4b50a90a87411"
+    },
+    {
+      "name": "@sec-ant/readable-stream",
+      "version": "0.4.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sec-ant/readable-stream",
+      "license": "MIT",
+      "packageJsonSha256": "53c850ede79e9f4982160a565b66ed6980046a885b1767b46f1cdf186ee4321c"
+    },
+    {
+      "name": "@sindresorhus/is",
+      "version": "7.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sindresorhus/is",
+      "license": "MIT",
+      "packageJsonSha256": "3a1535a0f64df969c9315c5249f748d861903a40d23977987f74b83d33569f49"
+    },
+    {
+      "name": "@sindresorhus/merge-streams",
+      "version": "4.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sindresorhus/merge-streams",
+      "license": "MIT",
+      "packageJsonSha256": "da4b586ad279978d58e79f1f623e1cb99e883d808325528f2dbffa4c0aa4c5a4"
+    },
+    {
+      "name": "@smithy/core",
+      "version": "3.40.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/core",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "cebbdc3db20cb2fc9dbe780dd488014c193693dd1f9dd09dceb11ba39de4e26a"
+    },
+    {
+      "name": "@smithy/credential-provider-imds",
+      "version": "4.5.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/credential-provider-imds",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "1e3b437bfaf7800cbcd770cc744084ab9e3b6c445196b707fde90e2f66e0403c"
+    },
+    {
+      "name": "@smithy/fetch-http-handler",
+      "version": "5.8.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/fetch-http-handler",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "6473f5ec29d6e21ae38824265465ba1b95cb7d9d5dc6c6f485c6145879f8cbee"
+    },
+    {
+      "name": "@smithy/node-http-handler",
+      "version": "4.12.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/node-http-handler",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "e685e00a1e28371390ffab5711e5300b81743b7a7d5f5bf1a994e40197467221"
+    },
+    {
+      "name": "@smithy/signature-v4",
+      "version": "5.7.5",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/signature-v4",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "f3817922e717df10e63d4cc1b5ee2f8d8e54f6f64f40f1823dd0823dedc5e7e5"
+    },
+    {
+      "name": "@smithy/types",
+      "version": "4.20.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/types",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "cc39d011cd8fc26837c1b6d4f3c60161eef3df86ea9df81143901ba819efb06d"
+    },
+    {
+      "name": "@stablelib/base64",
+      "version": "1.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@stablelib/base64",
+      "license": "MIT",
+      "packageJsonSha256": "7821116cc9ab0fb2542c1407ac5e34ff78bcc70b2d1295b753a9ea16134b3df7"
+    },
+    {
+      "name": "@standard-schema/spec",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@standard-schema/spec",
+      "license": "MIT",
+      "packageJsonSha256": "58e5bd75ddd0684c88b07cd799585cc72a37fd6efb8ab0c936d49e230d5164fb"
+    },
+    {
+      "name": "@types/http-cache-semantics",
+      "version": "4.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/http-cache-semantics",
+      "license": "MIT",
+      "packageJsonSha256": "5c63ed5462e2fb00aa749274302f720b6c2e31ef53fb431a88f7ff948d01345a"
+    },
+    {
+      "name": "@types/node",
+      "version": "26.6.6",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/node",
+      "license": "MIT",
+      "packageJsonSha256": "2520fc33dc754e75d61e6e49c174b439244537c3f2cff1897432806156a054fd"
+    },
+    {
+      "name": "@types/retry",
+      "version": "0.12.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/retry",
+      "license": "MIT",
+      "packageJsonSha256": "5d07cffb225eba4439977949ad9e8729620e51d1acc04f60fc8bad712183e063"
+    },
+    {
+      "name": "@vscode/ripgrep",
+      "version": "1.18.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@vscode/ripgrep",
+      "license": "MIT",
+      "packageJsonSha256": "215d02d16768da13248a4a79bc999d51b6629222f36b83b2a7cf0479fecc9618"
+    },
+    {
+      "name": "acorn",
+      "version": "8.19.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/acorn",
+      "license": "MIT",
+      "packageJsonSha256": "04d6fecaafb5e3d20a38fc3b64fed84bb3830a7759a8c00400ebcb87331fec00"
+    },
+    {
+      "name": "acorn-walk",
+      "version": "8.3.5",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/acorn-walk",
+      "license": "MIT",
+      "packageJsonSha256": "73c77feaf1224859bc6995cefe976d51cfd2abcd1edc0362df3149d8bd3633e3"
+    },
+    {
+      "name": "agent-base",
+      "version": "9.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/agent-base",
+      "license": "MIT",
+      "packageJsonSha256": "13df46dd018fcf2e4231a0f47a1a007dd7d5441d9f8efb108f50f9fb64a17138"
+    },
+    {
+      "name": "ajv",
+      "version": "8.20.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ajv",
+      "license": "MIT",
+      "packageJsonSha256": "1f9033ee5a6515e7d76938b7072941862d1ed228a6879cc7fe10cdeb75107989"
+    },
+    {
+      "name": "argparse",
+      "version": "2.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/argparse",
+      "license": "Python-2.0",
+      "packageJsonSha256": "688bace28e14392b3a1c4137eb56bc48b684dbf5cb56278ed7056cd2ece07990"
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/base64-js",
+      "license": "MIT",
+      "packageJsonSha256": "9758f3ab8c45e07bb9a368e32f9a8b3729623bbf47cbbb205b32d674ab2a91f0"
+    },
+    {
+      "name": "bignumber.js",
+      "version": "9.3.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bignumber.js",
+      "license": "MIT",
+      "packageJsonSha256": "192208575108629a3272453526258511a5911a8127ab955371fb1f25ac79e99d"
+    },
+    {
+      "name": "birpc",
+      "version": "4.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/birpc",
+      "license": "MIT",
+      "packageJsonSha256": "1f4124f3a8fd0aeeed7d7d9bbd63acfde161c7d6ace12b4766a31f4a1cd29b7b"
+    },
+    {
+      "name": "bowser",
+      "version": "2.15.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bowser",
+      "license": "MIT",
+      "packageJsonSha256": "e9d27c7ce8ccc41058a86bb94d6f22ef888a2c70c4166ed64421e0c7f229bd52"
+    },
+    {
+      "name": "buffer-equal-constant-time",
+      "version": "1.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/buffer-equal-constant-time",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "2d3df7ecb57811cf6fc43be180d9801c7c70928e5388391a6f258d889449ef4e"
+    },
+    {
+      "name": "byte-counter",
+      "version": "0.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/byte-counter",
+      "license": "MIT",
+      "packageJsonSha256": "58a30d838059f75996d1afb2b13cacbc790466fb4b5042b1fc1f9c77895a9c06"
+    },
+    {
+      "name": "bytes",
+      "version": "3.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bytes",
+      "license": "MIT",
+      "packageJsonSha256": "99b21c09ce812dc76a06cd87c4753247cb9615c6a8501c5a5a9d9caa22ea2d12"
+    },
+    {
+      "name": "cacheable-lookup",
+      "version": "7.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/cacheable-lookup",
+      "license": "MIT",
+      "packageJsonSha256": "e5c9b1896b83229cc0c50935889563464789e89c88c7fd37183a313629511dc4"
+    },
+    {
+      "name": "cacheable-request",
+      "version": "13.0.19",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/cacheable-request",
+      "license": "MIT",
+      "packageJsonSha256": "4cdddb40546eecc666bf6a2b4bbab1ce6069be121e6adfc6e2e3b71952efe7d1"
+    },
+    {
+      "name": "chokidar",
+      "version": "5.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/chokidar",
+      "license": "MIT",
+      "packageJsonSha256": "cb75ae8c3a8ac02e09efc5886a75a87256474ac8349ceea731ec389c03a70d96"
+    },
+    {
+      "name": "commander",
+      "version": "15.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/commander",
+      "license": "MIT",
+      "packageJsonSha256": "130b7d64b2681da74e60757da092067ec3b69315acbb4549c79f9f0e1d13a40d"
+    },
+    {
+      "name": "compressible",
+      "version": "2.0.18",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/compressible",
+      "license": "MIT",
+      "packageJsonSha256": "78af3f89054f6ef1bc4ba56724a5edb55babf7fc6a4e88b8bb5ae631afcf9219"
+    },
+    {
+      "name": "compression",
+      "version": "1.8.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/compression",
+      "license": "MIT",
+      "packageJsonSha256": "0b7fae36342883daa0f2ffeb91de83d702e8e02e7186feb2d6f62e0b25d37f0a"
+    },
+    {
+      "name": "content-type",
+      "version": "2.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/content-type",
+      "license": "MIT",
+      "packageJsonSha256": "33102772db7c8375395bdcc11e7004c597b4cdbe457d8dd0ae2e56f5a2d28637"
+    },
+    {
+      "name": "data-uri-to-buffer",
+      "version": "4.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/data-uri-to-buffer",
+      "license": "MIT",
+      "packageJsonSha256": "ad4f90a737ab5d8af4dad265e9218456e3779ca5beb70df38dd5feecf80121dd"
+    },
+    {
+      "name": "debug",
+      "version": "2.6.9",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/debug",
+      "license": "MIT",
+      "packageJsonSha256": "6c3d2c892db282317913ce7c340dd2edccd326bcafd18b644b8738144967d6ee"
+    },
+    {
+      "name": "decompress-response",
+      "version": "10.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/decompress-response",
+      "license": "MIT",
+      "packageJsonSha256": "e7b412562f04b5e77627dbc4baab79d77b4687a03d031d81c00864948a0c2c3d"
+    },
+    {
+      "name": "destroy",
+      "version": "1.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/destroy",
+      "license": "MIT",
+      "packageJsonSha256": "f865b50652dc062f43142e01f55db2760cc10d255bd05afd232e738999c58188"
+    },
+    {
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/detect-libc",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "ee88e5b954fdf3a8480b1d01ef767d68d8ca2c6da269f58c5cf1c5550e9aa2a7"
+    },
+    {
+      "name": "diff",
+      "version": "9.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/diff",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "1c625fe9bba43722c8d8fbd8c2b70edcab5473d75f8d66a862f9800b415aa014"
+    },
+    {
+      "name": "ecdsa-sig-formatter",
+      "version": "1.0.11",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ecdsa-sig-formatter",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "f8c0805a13487310192db6ae04452c4315f5538ae87d7bc20de2904902c34027"
+    },
+    {
+      "name": "eventsource-parser",
+      "version": "3.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/eventsource-parser",
+      "license": "MIT",
+      "packageJsonSha256": "27a8440c43f6bb12ec3d93338d93efcc4130e8be1ec7f33f5b31c05c2147430b"
+    },
+    {
+      "name": "execa",
+      "version": "10.2.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/execa",
+      "license": "MIT",
+      "packageJsonSha256": "e2f668e70d5ed68ec6e10684c2f41a2f83272d50d2993c87faefb7c11ae03290"
+    },
+    {
+      "name": "extend",
+      "version": "3.0.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/extend",
+      "license": "MIT",
+      "packageJsonSha256": "8d891b3f00bead114c4741d8a594e7aaa59114f53782ec9a9319a619709dc14f"
+    },
+    {
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-deep-equal",
+      "license": "MIT",
+      "packageJsonSha256": "a5c63940db0260739be9e2ac67f3aac268df4db5770420ee4e34e493152f97d2"
+    },
+    {
+      "name": "fast-sha256",
+      "version": "1.3.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-sha256",
+      "license": "Unlicense",
+      "packageJsonSha256": "d312f1993364bfb4f217f820ff7f9e0a6b1d87930bfc2605138ab660e8d29806"
+    },
+    {
+      "name": "fast-uri",
+      "version": "3.1.9",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-uri",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "06728ad83c4df979c6895d089452622441e34afe9b1c24584e2acac8d94a2876"
+    },
+    {
+      "name": "fetch-blob",
+      "version": "3.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fetch-blob",
+      "license": "MIT",
+      "packageJsonSha256": "ee47bb73168049962586a09317017c44b1b10b2a90fc74e5c4561efdb361411b"
+    },
+    {
+      "name": "figures",
+      "version": "6.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/figures",
+      "license": "MIT",
+      "packageJsonSha256": "38284ac2e5dd8b07e2f4d05459afdcfdc608a851af109e3792c60dabf434ae4a"
+    },
+    {
+      "name": "form-data-encoder",
+      "version": "4.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/form-data-encoder",
+      "license": "MIT",
+      "packageJsonSha256": "e86a41265968b930a0619a6b090aa5a5924b4f0ac68bb45a700c2be866673f10"
+    },
+    {
+      "name": "formdata-polyfill",
+      "version": "4.0.10",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/formdata-polyfill",
+      "license": "MIT",
+      "packageJsonSha256": "09767e86a596171ef17e8ec4977eb11f530654740fa3105dbbd7cd545753421e"
+    },
+    {
+      "name": "gaxios",
+      "version": "7.3.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gaxios",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "6d8ac1fadd9a3e890a0407f04f49dd8b919e418e46d10e65df9cba295ce319ad"
+    },
+    {
+      "name": "gcp-metadata",
+      "version": "8.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gcp-metadata",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "1d50f7d982a12c539356257f1b26631ec06f569b804a596dc926ec8773224fa4"
+    },
+    {
+      "name": "get-stream",
+      "version": "9.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/get-stream",
+      "license": "MIT",
+      "packageJsonSha256": "73c1309fdf7d1086c33c4095ecd081b0993b4b98f3bbc46c6ff10349830623c9"
+    },
+    {
+      "name": "google-auth-library",
+      "version": "10.9.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/google-auth-library",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "d502e0b8f9b83f97f5f78aaee9ba5e7cd7067a81d2f8f0215c47b2877814a9c9"
+    },
+    {
+      "name": "google-logging-utils",
+      "version": "1.1.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/google-logging-utils",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "74980e1fd2db59c71a20ddf6accf42704c67da3b905fc5d2134ee39807dad42f"
+    },
+    {
+      "name": "got",
+      "version": "14.6.6",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/got",
+      "license": "MIT",
+      "packageJsonSha256": "f59fd70d35f432bf42ce98289cbf6a27ef5f85f510b6da4fb604ebd3ddc0b025"
+    },
+    {
+      "name": "hosted-git-info",
+      "version": "9.0.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/hosted-git-info",
+      "license": "ISC",
+      "packageJsonSha256": "7c3774e4843581832aec08133a19df318625a91c1ca6c90fef1a328d4e02705e"
+    },
+    {
+      "name": "http-cache-semantics",
+      "version": "4.3.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-cache-semantics",
+      "license": "BSD-2-Clause",
+      "packageJsonSha256": "dbe99941ed2092d43257294405cfb389a476ef54a029488b51125e6f3a777fde"
+    },
+    {
+      "name": "http-proxy-agent",
+      "version": "9.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-proxy-agent",
+      "license": "MIT",
+      "packageJsonSha256": "03703c6c566b00d8fd85ba57cd6460b14d0b762f694e26f0efbfe4e5384e3081"
+    },
+    {
+      "name": "http2-wrapper",
+      "version": "2.2.4",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http2-wrapper",
+      "license": "MIT",
+      "packageJsonSha256": "2cfed54a743580463b110e352adc0e2cadb4be38b8d2dff31617bd128ea58174"
+    },
+    {
+      "name": "https-proxy-agent",
+      "version": "9.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/https-proxy-agent",
+      "license": "MIT",
+      "packageJsonSha256": "50d17385a8c63c0ed0e138069617d4d9236ce92bddbe6f52cfec0e3a834c97a0"
+    },
+    {
+      "name": "human-signals",
+      "version": "8.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/human-signals",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "7be6481a050d336e83c499b84131fb330b179ed4b6cc9e94c45699dc2b263622"
+    },
+    {
+      "name": "ipaddr.js",
+      "version": "2.5.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ipaddr.js",
+      "license": "MIT",
+      "packageJsonSha256": "a124e0548d4c1f9e2c694807947ef527fa7f7f3012474d54c1df3cc21a5ddb9c"
+    },
+    {
+      "name": "is-plain-obj",
+      "version": "4.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-plain-obj",
+      "license": "MIT",
+      "packageJsonSha256": "ac84142050cd4d1854c489a3d61e0c991550195ae5ae37d9347b736424b09c59"
+    },
+    {
+      "name": "is-stream",
+      "version": "4.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-stream",
+      "license": "MIT",
+      "packageJsonSha256": "fc7c9b9a57fbe9f4553d969cce8829a91c6f288f593855abacf5b2f2ad2deeb2"
+    },
+    {
+      "name": "is-unicode-supported",
+      "version": "2.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-unicode-supported",
+      "license": "MIT",
+      "packageJsonSha256": "e814a4ac0474d18664180ce61a58f2429f089054a0e2969bc2f5c8345b220c9e"
+    },
+    {
+      "name": "js-tokens",
+      "version": "4.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/js-tokens",
+      "license": "MIT",
+      "packageJsonSha256": "47345931827b3e26db9fe690abb81f856a0d040cbca8af1e69711a64cd58ce0d"
+    },
+    {
+      "name": "js-yaml",
+      "version": "4.3.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/js-yaml",
+      "license": "MIT",
+      "packageJsonSha256": "3eeb05aa0ceb4c3686e44c9b5d9b88f914b099ba9a7426b36947e65c6373d9a5"
+    },
+    {
+      "name": "jsbi",
+      "version": "4.3.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jsbi",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "756c2c1b6e80e9e8488fe7ad66403a8307b115a0dc141966e69adf41eb39efc6"
+    },
+    {
+      "name": "json-bigint",
+      "version": "1.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-bigint",
+      "license": "MIT",
+      "packageJsonSha256": "1c3b07ce46552112606922f0782b316383529b3da935d637c0606cb38a8caa5a"
+    },
+    {
+      "name": "json-schema-to-ts",
+      "version": "3.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-schema-to-ts",
+      "license": "MIT",
+      "packageJsonSha256": "9439fa620a0f7a930950239ec4445d902c7d29590cddf0985a83bea531b2e81e"
+    },
+    {
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-schema-traverse",
+      "license": "MIT",
+      "packageJsonSha256": "156fb24af02845c190701360d06dfda35ef04282e34a734289ea9535ad9819ae"
+    },
+    {
+      "name": "jwa",
+      "version": "2.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jwa",
+      "license": "MIT",
+      "packageJsonSha256": "53610fa0143c2cdef9d280e0c029ededf688930648358d4f3e35a081d75219d8"
+    },
+    {
+      "name": "jws",
+      "version": "4.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jws",
+      "license": "MIT",
+      "packageJsonSha256": "a934389f53e2ac8909d5399410c1ede3e35397be9e9f521bde25b61e1fee0b2f"
+    },
+    {
+      "name": "keyv",
+      "version": "5.6.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/keyv",
+      "license": "MIT",
+      "packageJsonSha256": "c010aefc9bdae5618edf0c4e206544d6fb83ff65fe120e3a57a79f57d272a9b6"
+    },
+    {
+      "name": "koffi",
+      "version": "3.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/koffi",
+      "license": "MIT",
+      "packageJsonSha256": "c0473aeaf572a612e643489f49ac8e6d1fe26092cf69802567332dc57fdca4c1"
+    },
+    {
+      "name": "long",
+      "version": "5.3.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/long",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "982e554a35d140981c7962fbba77855563e5890de200f8dc0a249135e4d9acb8"
+    },
+    {
+      "name": "lowercase-keys",
+      "version": "3.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/lowercase-keys",
+      "license": "MIT",
+      "packageJsonSha256": "9345ec23681c4be6e4684f4a9a6a74fef5fe3d0e05fc2810e9f66522a398bcce"
+    },
+    {
+      "name": "lru-cache",
+      "version": "11.5.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/lru-cache",
+      "license": "BlueOak-1.0.0",
+      "packageJsonSha256": "c085d38560434a8915fd1817cd17cee316118078b07f40302b32ef4d8bc760f4"
+    },
+    {
+      "name": "mime-db",
+      "version": "1.54.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/mime-db",
+      "license": "MIT",
+      "packageJsonSha256": "33bdbb99915697ac01df12490b9d479a55529123842e67975e6d76d0010aa142"
+    },
+    {
+      "name": "mimic-response",
+      "version": "4.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/mimic-response",
+      "license": "MIT",
+      "packageJsonSha256": "9de5953cbb394363ee9e09e28920362732803dde4203584e5605c8563dc39d73"
+    },
+    {
+      "name": "ms",
+      "version": "2.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ms",
+      "license": "MIT",
+      "packageJsonSha256": "30fbfaa3840b2f63978ad4bcd7ed8dc24d277b818e4755fe93eda8cb1bc8b74c"
+    },
+    {
+      "name": "negotiator",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/negotiator",
+      "license": "MIT",
+      "packageJsonSha256": "2bc164db19aca1e7af967b7211f7d728940f48ff22d56aa75be587f3bb13ee56"
+    },
+    {
+      "name": "node-addon-api",
+      "version": "7.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-api",
+      "license": "MIT",
+      "packageJsonSha256": "e4947cf10e432c42459e60a00947ccd1ad2501e16cf1a530b3d39f0c2de5c83f"
+    },
+    {
+      "name": "node-addon-native-custom-loader",
+      "version": "0.1.9",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-native-custom-loader",
+      "license": "MIT",
+      "packageJsonSha256": "a8ae0ae29211fc65fb482502081f70bae242404f042ddf1091b439471cffae3e"
+    },
+    {
+      "name": "node-addon-require-builtin",
+      "version": "0.1.9",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-require-builtin",
+      "license": "MIT",
+      "packageJsonSha256": "036dc18faadcc51da0b3704d1d5308a85850077133e4a86281af906eb5e3aad5"
+    },
+    {
+      "name": "node-domexception",
+      "version": "1.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-domexception",
+      "license": "MIT",
+      "packageJsonSha256": "1ff59c11ab7aef2b2f7fa393e8b871362e21b8a2defbd4922a8f8a5082fbfa06"
+    },
+    {
+      "name": "node-fetch",
+      "version": "3.3.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-fetch",
+      "license": "MIT",
+      "packageJsonSha256": "058acbc2474901ffa0b95c3f9d0903111426b118b55f928300e448d7252fc27d"
+    },
+    {
+      "name": "node-pty",
+      "version": "1.2.0-beta.15",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-pty",
+      "license": "MIT",
+      "packageJsonSha256": "f4a19bbc7cf4c2e35c081e6a18a3d11d21c54c2f3cc25bfe48142742a781b71d"
+    },
+    {
+      "name": "normalize-url",
+      "version": "8.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/normalize-url",
+      "license": "MIT",
+      "packageJsonSha256": "4251910b61ae472b6180b1a16d9bce19ba4b55a65057b0b25bd4d8ea5ce35e0a"
+    },
+    {
+      "name": "npm-run-path",
+      "version": "6.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/npm-run-path",
+      "license": "MIT",
+      "packageJsonSha256": "387bb7b7bbb29eebf23eee0570ad11c8d8175c5084eb842f98a5b3e8acfcd20b"
+    },
+    {
+      "name": "on-headers",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/on-headers",
+      "license": "MIT",
+      "packageJsonSha256": "86ef65dd0d349960bfc6a01292c1d40f49b064fffca48bd209a0e693c534a246"
+    },
+    {
+      "name": "openai",
+      "version": "7.19.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/openai",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "8a855f81669a434ce894e2d1ae2f18e9050e93c57d14091f155cd543056bdc30"
+    },
+    {
+      "name": "p-cancelable",
+      "version": "4.0.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-cancelable",
+      "license": "MIT",
+      "packageJsonSha256": "78b1fd1021b650ff653f117cf134812eb467c9c10e795ff3bdb2c221f9d2ab89"
+    },
+    {
+      "name": "p-limit",
+      "version": "7.3.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-limit",
+      "license": "MIT",
+      "packageJsonSha256": "daa6b0d168d7197eccbfef1c678e8f00b79d063129bf48f4ee2db38dc605ca7f"
+    },
+    {
+      "name": "p-retry",
+      "version": "4.6.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-retry",
+      "license": "MIT",
+      "packageJsonSha256": "ee4376966f4f8db899019ec955b3dc25fd972e12587a0da10d8313dc7b617b3f"
+    },
+    {
+      "name": "parse-ms",
+      "version": "4.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/parse-ms",
+      "license": "MIT",
+      "packageJsonSha256": "fd1d6167b2fd11154c054ea57ae94304a941f383ddfcce1edbd6b56b02d98f87"
+    },
+    {
+      "name": "partial-json",
+      "version": "0.1.7",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/partial-json",
+      "license": "MIT",
+      "packageJsonSha256": "42b3ae6c99ec959249f8eb4d3da7fdb44ec1f96ec627fa7f9ca5487a4e80963f"
+    },
+    {
+      "name": "path-key",
+      "version": "3.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/path-key",
+      "license": "MIT",
+      "packageJsonSha256": "25594dab72681c910d9cc919263a4daf27d77a75e0d2c26a4d958d6d6b798f86"
+    },
+    {
+      "name": "picocolors",
+      "version": "1.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/picocolors",
+      "license": "ISC",
+      "packageJsonSha256": "ef2ac226c4811d312e12c64214c453878653e834482125ae475f27cea60de737"
+    },
+    {
+      "name": "picomatch",
+      "version": "4.0.7",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/picomatch",
+      "license": "MIT",
+      "packageJsonSha256": "479b70b87aa7b44344d62c8a459ae7e53dd2bca6c61f1396bd55e63e9de73fc6"
+    },
+    {
+      "name": "pretty-ms",
+      "version": "9.3.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/pretty-ms",
+      "license": "MIT",
+      "packageJsonSha256": "4ff832084033553c9444c3cec5e5a7ff8468fd13bd38045abb423b8add1d55f3"
+    },
+    {
+      "name": "protobufjs",
+      "version": "7.6.6",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/protobufjs",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "0e56b70de03bffc143e74311b42ae22b557370a4a1f4b5066568fbc77857639a"
+    },
+    {
+      "name": "proxy-agent-negotiate",
+      "version": "1.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/proxy-agent-negotiate",
+      "license": "MIT",
+      "packageJsonSha256": "7b7c2579ea138d20d4f7699ca78ef16c526f35168dbf694f1d47cc861b0954d4"
+    },
+    {
+      "name": "quick-lru",
+      "version": "5.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/quick-lru",
+      "license": "MIT",
+      "packageJsonSha256": "bf5251a87213147e4e97a56fb5feade15734354f418b907d074b7ff595eff9ff"
+    },
+    {
+      "name": "readdirp",
+      "version": "5.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/readdirp",
+      "license": "MIT",
+      "packageJsonSha256": "e4243493fb09c5a7b68b2128892b6e2fa3bbc1422030a2a777975fba3a1784f6"
+    },
+    {
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/require-from-string",
+      "license": "MIT",
+      "packageJsonSha256": "c0002f7d4c7d7e2a885cf0f97226344902417c3a0980f2beca41962d2bc1f6d8"
+    },
+    {
+      "name": "resolve-alpn",
+      "version": "1.2.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/resolve-alpn",
+      "license": "MIT",
+      "packageJsonSha256": "104151f28e42154024f78af2f8af97b4a476c6a55f64454788d2204f441c4527"
+    },
+    {
+      "name": "resolve.exports",
+      "version": "2.0.4",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/resolve.exports",
+      "license": "MIT",
+      "packageJsonSha256": "90a772fe11d5589297e248b26cf9f0908547c7cbcd765bbbdc465b8c9da92642"
+    },
+    {
+      "name": "responselike",
+      "version": "4.0.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/responselike",
+      "license": "MIT",
+      "packageJsonSha256": "82d166462c1b21afad581caca91887fbac3b415a80a5745257ca14601192b0b3"
+    },
+    {
+      "name": "retry",
+      "version": "0.13.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/retry",
+      "license": "MIT",
+      "packageJsonSha256": "7ae366b6b8133485abf27abe657c0ffa2d32600611ecf2c4fe5246165bed73d5"
+    },
+    {
+      "name": "rrule",
+      "version": "2.8.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/rrule",
+      "license": "BSD-3-Clause",
+      "packageJsonSha256": "9797906102172cc43e96aa490868e67532e3e7d9b412bf9f27db57e0ce36a529"
+    },
+    {
+      "name": "safe-buffer",
+      "version": "5.2.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/safe-buffer",
+      "license": "MIT",
+      "packageJsonSha256": "e4018fdbfe625433371f48274fee26f520bbe865e0d8c85bf3aa07424134b90c"
+    },
+    {
+      "name": "semver",
+      "version": "7.8.6",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/semver",
+      "license": "ISC",
+      "packageJsonSha256": "0a3f93689bb0be4e2fcdabc585da62ae24695f1abefc6974d68968c8918af381"
+    },
+    {
+      "name": "sharp",
+      "version": "0.35.5",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/sharp",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "ad4a2535d72eb638053a38867b1abf43c328cd1c1dbae5cf4172d498365a8b97"
+    },
+    {
+      "name": "signal-exit",
+      "version": "4.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/signal-exit",
+      "license": "ISC",
+      "packageJsonSha256": "cd1c6cfa95782e432dd2affaa88c3a6dda7f46c8088d91f3acc0fba79dce5075"
+    },
+    {
+      "name": "standardwebhooks",
+      "version": "1.1.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/standardwebhooks",
+      "license": "MIT",
+      "packageJsonSha256": "686397f0f0202e0b693cfd3f6241d7a8da3df326f9642867a484fbbd295690b6"
+    },
+    {
+      "name": "strip-final-newline",
+      "version": "4.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/strip-final-newline",
+      "license": "MIT",
+      "packageJsonSha256": "6a8ffdcafdc3762871d5107cbf065346373a4a9cd5df4dfcc8db8da88e6f58c7"
+    },
+    {
+      "name": "ts-algebra",
+      "version": "2.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ts-algebra",
+      "license": "MIT",
+      "packageJsonSha256": "6c6f692e1a3ad9943c77b5fa4eb04b0f63cb708353c67dcc5d86b35b2f7e5c30"
+    },
+    {
+      "name": "tslib",
+      "version": "2.9.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/tslib",
+      "license": "0BSD",
+      "packageJsonSha256": "7e9ccc6977540dd94f86f98d0ab9ac405cd3507ac5a2c34752498b250718366b"
+    },
+    {
+      "name": "turndown",
+      "version": "7.2.5",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/turndown",
+      "license": "MIT",
+      "packageJsonSha256": "50acbc24f00e0280e5db677f969a538a832fdfa3214d7264498173cef407ba08"
+    },
+    {
+      "name": "type-fest",
+      "version": "4.41.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/type-fest",
+      "license": "(MIT OR CC0-1.0)",
+      "packageJsonSha256": "8c10f8a78aa5d18858b15696cd908cafd118286f11e13c4fdab32ea782160666"
+    },
+    {
+      "name": "undici",
+      "version": "8.11.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/undici",
+      "license": "MIT",
+      "packageJsonSha256": "05686bb347560226dd9fffc0c8152e5d9aa154c76d9eeceae11b52d42eb6e1db"
+    },
+    {
+      "name": "undici-types",
+      "version": "8.9.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/undici-types",
+      "license": "MIT",
+      "packageJsonSha256": "7f3c1a0498b1b7f74402f76d2958bf5a35fc89403036188dc5f8ede1b4e0638b"
+    },
+    {
+      "name": "unicorn-magic",
+      "version": "0.3.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/unicorn-magic",
+      "license": "MIT",
+      "packageJsonSha256": "bbdefb91a0f7b09e1fdd74343ee46f6a65a374ed012376d8f6702dc8d2ec172d"
+    },
+    {
+      "name": "vary",
+      "version": "1.1.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/vary",
+      "license": "MIT",
+      "packageJsonSha256": "73edaee964d527117a9f69d6360fbe6cec534abd9127794be01a6af58a139daa"
+    },
+    {
+      "name": "web-streams-polyfill",
+      "version": "3.3.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/web-streams-polyfill",
+      "license": "MIT",
+      "packageJsonSha256": "13e22b076747f7673afc2afad4b932843844b1ffb2e5bd613442937eacdaf7d7"
+    },
+    {
+      "name": "which-command",
+      "version": "0.1.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/which-command",
+      "license": "MIT",
+      "packageJsonSha256": "c47fcf4cc5a127df7af297691ccacb1c0c7e8f12f308fc7dbaae7eb80985e87c"
+    },
+    {
+      "name": "ws",
+      "version": "8.23.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ws",
+      "license": "MIT",
+      "packageJsonSha256": "3ae4c2b86b06d3d225f2630c12d6897ec9272d5a17fb8d3657f3df74661b47b2"
+    },
+    {
+      "name": "yaml",
+      "version": "2.9.1",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yaml",
+      "license": "ISC",
+      "packageJsonSha256": "1c6441703d8204a23ded0d37ddf57c3b69d821dc392f20852d1f605bb9b8861c"
+    },
+    {
+      "name": "yocto-queue",
+      "version": "1.2.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yocto-queue",
+      "license": "MIT",
+      "packageJsonSha256": "d5de75fe154851539d0adeac9731773ac5b93281ec4019c355cb330d20b176a7"
+    },
+    {
+      "name": "yoctocolors",
+      "version": "2.2.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yoctocolors",
+      "license": "MIT",
+      "packageJsonSha256": "ea6854f768a173d117089cbddc6e8df97c9f82dca599852231cafa6dc2dbabc4"
+    },
+    {
+      "name": "zod",
+      "version": "4.6.7",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c2d190d9ee4e0bdb60332aaa2130a6a98d65ddb903fe1d29248b15de57832c45"
+    }
+  ],
+  "nested": [
+    {
+      "name": "@smithy/node-http-handler",
+      "version": "4.14.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-http/node_modules/@smithy/node-http-handler",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "395aace10ec8ec73f9c7a71e7d3c0729901670f0663b29e1782b67b3916223c7",
+      "nestedUnder": "@aws-sdk/credential-provider-http"
+    },
+    {
+      "name": "@aws-sdk/token-providers",
+      "version": "3.1166.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-sso/node_modules/@aws-sdk/token-providers",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "21351b0d3703188e8423d4a486ca6f37d214cd9d233303a9c55bdde4d4718ab7",
+      "nestedUnder": "@aws-sdk/credential-provider-sso"
+    },
+    {
+      "name": "@smithy/node-http-handler",
+      "version": "4.14.2",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/nested-clients/node_modules/@smithy/node-http-handler",
+      "license": "Apache-2.0",
+      "packageJsonSha256": "395aace10ec8ec73f9c7a71e7d3c0729901670f0663b29e1782b67b3916223c7",
+      "nestedUnder": "@aws-sdk/nested-clients"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-loop/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-agent-loop"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-preset-registry/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-agent-preset-registry"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-agent"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-api-remote-access/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-api-remote-access"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-chunked-list/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-chunked-list"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-feedback/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-command-feedback"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-commands/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-commands"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-account-platform/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-deepseek-account-platform"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-goal/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-goal"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-host-plugin-inventory/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-host-plugin-inventory"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-retry/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-llm-retry"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-llm"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-message-feedback/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-message-feedback"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-permission-presets/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-permission-presets"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plan-mode/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-plan-mode"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-manager/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-plugin-manager"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-policy/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-sandbox-policy"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection-cache/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-session-projection-cache"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-session-projection"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-session-title"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage-domain/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-storage-domain"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-subagent"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-token-meter/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-token-meter"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-subagent/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-tool-subagent"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-todo/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-tool-todo"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-registry/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-typert-registry"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-approval/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-user-approval"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-questions/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-user-questions"
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workspace/node_modules/zod",
+      "license": "MIT",
+      "packageJsonSha256": "c630bd10b52dcf71c112a2bf78dbf2734b9db58d62de663b8d86c2ec2c8cda2e",
+      "nestedUnder": "@deepseek-ai/dsh-workspace"
+    },
+    {
+      "name": "negotiator",
+      "version": "0.6.4",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/compression/node_modules/negotiator",
+      "license": "MIT",
+      "packageJsonSha256": "d7c1fb78e3186b6385077e0b7b365adca324274963e41e1d68f78b4f82105e4f",
+      "nestedUnder": "compression"
+    },
+    {
+      "name": "agent-base",
+      "version": "7.1.4",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gaxios/node_modules/agent-base",
+      "license": "MIT",
+      "packageJsonSha256": "7a08cb2fe1d2b788e0a7bf6a9b7597dbeeeae804698c2fbd15de786d284d327c",
+      "nestedUnder": "gaxios"
+    },
+    {
+      "name": "debug",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gaxios/node_modules/debug",
+      "license": "MIT",
+      "packageJsonSha256": "ea8e33d63fe5f3a4c36609b6c3df8e2ef1f8b8ba2fc3a2e1e53cb27291f384af",
+      "nestedUnder": "gaxios"
+    },
+    {
+      "name": "https-proxy-agent",
+      "version": "7.0.6",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gaxios/node_modules/https-proxy-agent",
+      "license": "MIT",
+      "packageJsonSha256": "b08c1977d38f14f4be7fb5be33aab545e3e5a6e2e12100733a6ad97dec995206",
+      "nestedUnder": "gaxios"
+    },
+    {
+      "name": "ms",
+      "version": "2.1.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gaxios/node_modules/ms",
+      "license": "MIT",
+      "packageJsonSha256": "1a6b4d9739790c0b94ab96c8cc0507e281c164c311ff4fbf5e57fb8d26290b40",
+      "nestedUnder": "gaxios"
+    },
+    {
+      "name": "debug",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-proxy-agent/node_modules/debug",
+      "license": "MIT",
+      "packageJsonSha256": "ea8e33d63fe5f3a4c36609b6c3df8e2ef1f8b8ba2fc3a2e1e53cb27291f384af",
+      "nestedUnder": "http-proxy-agent"
+    },
+    {
+      "name": "ms",
+      "version": "2.1.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-proxy-agent/node_modules/ms",
+      "license": "MIT",
+      "packageJsonSha256": "1a6b4d9739790c0b94ab96c8cc0507e281c164c311ff4fbf5e57fb8d26290b40",
+      "nestedUnder": "http-proxy-agent"
+    },
+    {
+      "name": "debug",
+      "version": "4.4.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/https-proxy-agent/node_modules/debug",
+      "license": "MIT",
+      "packageJsonSha256": "ea8e33d63fe5f3a4c36609b6c3df8e2ef1f8b8ba2fc3a2e1e53cb27291f384af",
+      "nestedUnder": "https-proxy-agent"
+    },
+    {
+      "name": "ms",
+      "version": "2.1.3",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/https-proxy-agent/node_modules/ms",
+      "license": "MIT",
+      "packageJsonSha256": "1a6b4d9739790c0b94ab96c8cc0507e281c164c311ff4fbf5e57fb8d26290b40",
+      "nestedUnder": "https-proxy-agent"
+    },
+    {
+      "name": "path-key",
+      "version": "4.0.0",
+      "path": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/npm-run-path/node_modules/path-key",
+      "license": "MIT",
+      "packageJsonSha256": "6c6eb2e18c111ac4735c9688c0860a4498c2579cdd9fedd62ba3bec5cb228aa4",
+      "nestedUnder": "npm-run-path"
+    }
+  ],
+  "missing": [
+    {
+      "name": "@modelcontextprotocol/sdk",
+      "versionRange": "^1.25.2",
+      "requiredBy": [
+        "@google/genai"
+      ]
+    },
+    {
+      "name": "@smithy/hash-node",
+      "versionRange": ">=4.3.0 <5",
+      "requiredBy": [
+        "openai"
+      ]
+    },
+    {
+      "name": "bufferutil",
+      "versionRange": "^4.0.1",
+      "requiredBy": [
+        "ws"
+      ]
+    },
+    {
+      "name": "kerberos",
+      "versionRange": "^2.0.0",
+      "requiredBy": [
+        "proxy-agent-negotiate"
+      ]
+    },
+    {
+      "name": "utf-8-validate",
+      "versionRange": ">=5.0.2",
+      "requiredBy": [
+        "ws"
+      ]
+    }
+  ]
+}

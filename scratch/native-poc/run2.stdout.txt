@@ -1,0 +1,38 @@
+{"type":"session","sessionId":"session-4d7b6762-8282-4875-b050-5ee3b54bc5ca","cwd":"/Users/tanveersinghsaini/Desktop/cyraops-v2/scratch/native-poc"}
+{"type":"status","phase":"turn_start","turn":1}
+{"type":"status","phase":"step_start","turn":1,"step":1}
+{"type":"thinking","text":""}
+{"type":"text","text":"banana"}
+{"type":"status","phase":"step_end","turn":1,"step":1,"usage":{"inputTokens":182,"outputTokens":3,"cacheReadTokens":5632,"cacheWriteTokens":0,"totalTokens":5817}}
+{"type":"status","phase":"turn_end","turn":1,"reason":{"kind":"completed"}}
+{"type":"final","sessionId":"session-4d7b6762-8282-4875-b050-5ee3b54bc5ca","reason":{"kind":"completed"},"text":"banana"}
+{"type":"session","sessionId":"session-4d7b6762-8282-4875-b050-5ee3b54bc5ca","cwd":"/Users/tanveersinghsaini/Desktop/cyraops-v2/scratch/native-poc"}
+{"type":"status","phase":"turn_start","turn":2}
+{"type":"status","phase":"step_start","turn":2,"step":1}
+{"type":"thinking","text":"The user asked what word I just said. I should answer: banana. But they asked a question, so I can answer normally. Keep it brief."}
+{"type":"text","text":"banana"}
+{"type":"status","phase":"step_end","turn":2,"step":1,"usage":{"inputTokens":196,"outputTokens":34,"cacheReadTokens":5632,"cacheWriteTokens":0,"totalTokens":5862}}
+{"type":"status","phase":"turn_end","turn":2,"reason":{"kind":"completed"}}
+{"type":"final","sessionId":"session-4d7b6762-8282-4875-b050-5ee3b54bc5ca","reason":{"kind":"completed"},"text":"banana"}
+
+== HOST SUMMARY ==
+{
+  "sessionId": "session-4d7b6762-8282-4875-b050-5ee3b54bc5ca",
+  "turn1": {
+    "exitCode": 0,
+    "finalText": "banana",
+    "reason": {
+      "kind": "completed"
+    }
+  },
+  "turn2": {
+    "exitCode": 0,
+    "finalText": "banana",
+    "reason": {
+      "kind": "completed"
+    }
+  },
+  "wallMs": 4696,
+  "maxRssSampledBytes": 245055488,
+  "finalRssBytes": 239206400
+}

@@ -25,9 +25,29 @@ was actually observed; sections pending verification say so explicitly.
   `copy.mjs`, producing `vendor/dsh/<pkg>` + `manifest.json` with
   provenance, license fields, sha256 of package.json, and a missing list.
 
-## Checkpoint 2 — PoC results (pending)
+## Checkpoint 2 — PoC results ✅ (verified 2026-11-18)
 
-_(filled after workstream A returns and the PoC is re-run here)_
+Workstream A traced the boot and produced `boot.mjs` (committed under
+`vendor/tooling/native-poc/`). Parent re-ran it independently:
+
+| Run | Result |
+| --- | --- |
+| Turn 1 (fresh) | session `session-847b9af1…`, final `"banana"` |
+| Turn 2 (resume, same process) | thinking recalls prior reply, final `"banana"` |
+| Exit | 0, graceful shutdown via `ctx.fiber.dispose()` |
+| Wall | 5.05 s for both turns |
+| Peak RSS | 253 MB (CLI baseline: 3.46 s / 246 MB for one turn) |
+| Parity | final text identical; NDJSON projector byte-format-identical |
+
+Mechanism: `dsh-app-boot.boot()` creates the cordis Context + loader +
+PluginPackages resolution; the launcher-owned `provideCmdline` hook supplies our
+own `appExit`, so the headless runner completes turns in-process.
+
+Vendoring (workstream B) also verified: 347-package graph committed as a 57 MB
+tarball with sha256 provenance and a 3-item legal-review flag list.
+
+Open: the PoC still resolves modules from the distribution install; the next
+test is booting the identical tree from `vendor/dsh/`.
 
 ## Checkpoint 3 — runtime adapter (pending)
 

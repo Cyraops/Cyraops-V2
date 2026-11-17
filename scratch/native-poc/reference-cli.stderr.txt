@@ -1,0 +1,19 @@
+[llm-deepseek-api-key] model listing from https://api.deepseek.com/models loaded 2 model(s), skipped 0 row(s)
+        3.46 real         1.60 user         0.46 sys
+           246497280  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               15582  page reclaims
+                 654  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  18  messages sent
+                  35  messages received
+                   0  signals received
+                6315  voluntary context switches
+                8703  involuntary context switches
+         14715899658  instructions retired
+          6092993109  cycles elapsed
+           213695744  peak memory footprint

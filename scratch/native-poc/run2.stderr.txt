@@ -1,0 +1,32 @@
+[native-poc] DSH_HOME=/Users/tanveersinghsaini/.dsh
+[native-poc] install anchor: /Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/package.json
+[native-poc] profile dir: /Users/tanveersinghsaini/Desktop/cyraops-v2/scratch/native-poc/profile
+[native-poc] env project layer: /Users/tanveersinghsaini/Desktop/cyraops-v2
+[native-poc] turn 1: booting tree #1 (wall 60ms)
+[native-poc] tree #1: tree mounted (fiber state=2)
+[llm-deepseek-api-key] model listing from https://api.deepseek.com/models loaded 2 model(s), skipped 0 row(s)
+[native-poc] turn 1 done: exit=0 sessionId=session-4d7b6762-8282-4875-b050-5ee3b54bc5ca text="banana"
+[native-poc] tree #1 disposed (wall 2880ms)
+[native-poc] turn 2: booting tree #2 with --session-id (resume)
+[native-poc] tree #2: tree mounted (fiber state=2)
+[llm-deepseek-api-key] model listing from https://api.deepseek.com/models loaded 2 model(s), skipped 0 row(s)
+[native-poc] turn 2 done: exit=0 text="banana"
+[native-poc] tree #2 disposed (wall 4696ms)
+        4.74 real         1.85 user         0.47 sys
+           245055488  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               16540  page reclaims
+                  23  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  36  messages sent
+                  72  messages received
+                   0  signals received
+                6124  voluntary context switches
+                9054  involuntary context switches
+         17740331964  instructions retired
+          6816413412  cycles elapsed
+           222710144  peak memory footprint

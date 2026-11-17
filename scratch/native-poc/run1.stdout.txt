@@ -1,0 +1,38 @@
+{"type":"session","sessionId":"session-1b8f1ee0-36ce-4c5f-9983-0a3963119be3","cwd":"/Users/tanveersinghsaini/Desktop/cyraops-v2/scratch/native-poc"}
+{"type":"status","phase":"turn_start","turn":1}
+{"type":"status","phase":"step_start","turn":1,"step":1}
+{"type":"thinking","text":""}
+{"type":"text","text":"banana"}
+{"type":"status","phase":"step_end","turn":1,"step":1,"usage":{"inputTokens":310,"outputTokens":3,"cacheReadTokens":5504,"cacheWriteTokens":0,"totalTokens":5817}}
+{"type":"status","phase":"turn_end","turn":1,"reason":{"kind":"completed"}}
+{"type":"final","sessionId":"session-1b8f1ee0-36ce-4c5f-9983-0a3963119be3","reason":{"kind":"completed"},"text":"banana"}
+{"type":"session","sessionId":"session-1b8f1ee0-36ce-4c5f-9983-0a3963119be3","cwd":"/Users/tanveersinghsaini/Desktop/cyraops-v2/scratch/native-poc"}
+{"type":"status","phase":"turn_start","turn":2}
+{"type":"status","phase":"step_start","turn":2,"step":1}
+{"type":"thinking","text":"The user asked what word I just said. I said \"banana\". Answer simply."}
+{"type":"text","text":"banana"}
+{"type":"status","phase":"step_end","turn":2,"step":1,"usage":{"inputTokens":196,"outputTokens":21,"cacheReadTokens":5632,"cacheWriteTokens":0,"totalTokens":5849}}
+{"type":"status","phase":"turn_end","turn":2,"reason":{"kind":"completed"}}
+{"type":"final","sessionId":"session-1b8f1ee0-36ce-4c5f-9983-0a3963119be3","reason":{"kind":"completed"},"text":"banana"}
+
+== HOST SUMMARY ==
+{
+  "sessionId": "session-1b8f1ee0-36ce-4c5f-9983-0a3963119be3",
+  "turn1": {
+    "exitCode": 0,
+    "finalText": "banana",
+    "reason": {
+      "kind": "completed"
+    }
+  },
+  "turn2": {
+    "exitCode": 0,
+    "finalText": "banana",
+    "reason": {
+      "kind": "completed"
+    }
+  },
+  "wallMs": 5877,
+  "maxRssSampledBytes": 235601920,
+  "finalRssBytes": 126795776
+}

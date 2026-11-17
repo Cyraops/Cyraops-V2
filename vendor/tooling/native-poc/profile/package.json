@@ -1,0 +1,13 @@
+{
+  "name": "native-poc-profile",
+  "private": true,
+  "version": "0.0.0",
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-headless"
+      ]
+    }
+  }
+}
