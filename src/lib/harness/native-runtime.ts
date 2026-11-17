@@ -5,13 +5,16 @@
  * packages and disposes it afterwards — one turn, one tree, same NDJSON event
  * contract as the CLI.
  *
- * The host is loaded ONLY by dynamic import with a fully runtime-computed
- * `file://` URL, so Next/Turbopack never statically bundles (or type-checks)
- * the vendored ESM/CJS/native-addon code. If the dynamic import fails inside
- * Next for any reason (bundling interception, native addon load failure), the
- * runtime does not break the HTTP path: it delegates the turn to the CLI
- * runtime (same store, so session persistence still works) and healthCheck()
- * reports the fallback and the underlying error.
+ * The host is loaded ONLY by dynamic import of a fully runtime-computed
+ * `file://` URL. The import carries the `turbopackIgnore` magic comment
+ * (documented in Next's bundled lazy-loading guide for exactly this case), so
+ * the Turbopack dev runtime leaves the expression alone instead of rejecting
+ * the computed URL ("Cannot find module as expression is too dynamic") or
+ * statically tracing the vendored ESM/CJS/native-addon code. If the dynamic
+ * import fails inside Next for any reason (bundling interception, native
+ * addon load failure), the runtime does not break the HTTP path: it delegates
+ * the turn to the CLI runtime (same store, so session persistence still
+ * works) and healthCheck() reports the fallback and the underlying error.
  *
  * Concurrency: turns are serialized globally (one turn at a time across all
  * sessions) because the in-process host temporarily takes over
@@ -61,13 +64,16 @@ function loadNativeHost(): Promise<NativeHostModule> {
   if (hostLoadError) return Promise.reject(hostLoadError);
   if (!hostModule) {
     const url = pathToFileURL(join(process.cwd(), "vendor", "tooling", "vendored-boot", "native-host.mjs")).href;
-    const importing = import(url).then((mod) => mod as NativeHostModule);
-    // A bundler runtime (Turbopack dev) intercepts dynamic import() and either
-    // hangs or rejects computed file URLs ("Cannot find module as expression
-    // is too dynamic"). Bound the wait so the HTTP path falls back to the CLI
-    // runtime instead of hanging; the reason surfaces in healthCheck(). In a
-    // plain Node process (and a runtime that leaves import() native) this
-    // resolves in milliseconds and the in-process path serves the turn.
+    // turbopackIgnore: the Turbopack dev runtime must skip bundling this
+    // import and leave it as a native runtime Node import of the computed
+    // file URL (without the comment it rejects computed URLs with "Cannot
+    // find module as expression is too dynamic"). In a plain Node process
+    // the comment is inert and the import resolves in milliseconds.
+    const importing = import(/* turbopackIgnore: true */ url).then((mod) => mod as NativeHostModule);
+    // Bound the wait so the HTTP path falls back to the CLI runtime instead
+    // of hanging; the reason surfaces in healthCheck(). In a plain Node
+    // process (and a runtime that leaves import() native) this resolves in
+    // milliseconds and the in-process path serves the turn.
     hostModule = new Promise<NativeHostModule>((resolve, reject) => {
       const timer = setTimeout(() => {
         const timeoutMs = hostLoadTimeoutMs();

@@ -35,26 +35,39 @@ projection — callers must serialize concurrent turns (the adapter does).
 
 `src/lib/harness/native-runtime.ts` loads this module with a **dynamic import
 of a runtime-computed `file://` URL** (`pathToFileURL(join(process.cwd(),
-"vendor/tooling/vendored-boot/native-host.mjs"))`), so Next/Turbopack never
-statically bundles the vendored ESM/CJS/native-addon code. The runtime
-serializes turns globally (the host owns stdout during a run) and maps the
-adapter's `AgentRuntime` contract onto `runNativeTask`; `HARNESS_RUNTIME=native`
-selects it, and `runtimeFactory` falls back to the CLI runtime when the
-vendored tree is missing.
+"vendor/tooling/vendored-boot/native-host.mjs"))`), and the import carries the
+**`turbopackIgnore` magic comment** (documented in Next's bundled
+lazy-loading guide: "Skip bundling - import happens at runtime"). The comment
+keeps the expression out of Turbopack's module graph entirely, so the vendored
+ESM/CJS/native-addon code is never statically bundled or type-checked and the
+import stays a native Node runtime import. The runtime serializes turns
+globally (the host owns stdout during a run) and maps the adapter's
+`AgentRuntime` contract onto `runNativeTask`; `HARNESS_RUNTIME=native` selects
+it, and `runtimeFactory` falls back to the CLI runtime when the vendored tree
+is missing.
 
-**Known blocker (observed 2026-11-18, Next 16.4.3 dev/Turbopack):** the
-Turbopack dev runtime intercepts `import()` and rejects the computed file URL
-with `Cannot find module as expression is too dynamic`, and it statically
-traces `createRequire(...)`-based loads (compile error `Module not found:
-Can't resolve ...`). No shipped escape hatch exists, so inside `next dev` the
-adapter falls back to the CLI runtime for the HTTP path — the turn is still
-served, and the API's `runtime` field reports
-`{"available":true,"kind":"cli","reason":"...intercepted by the Next.js dev
-runtime..."}`. In a plain Node process (and a runtime that leaves `import()`
-native) the module loads normally and the in-process path serves the turn;
+**Previous blocker, now lifted (observed 2026-11-18, Next 16.4.3
+dev/Turbopack):** without the magic comment, the Turbopack dev runtime
+intercepts `import()` and rejects the computed file URL with `Cannot find
+module as expression is too dynamic`, and it statically traces
+`createRequire(...)`-based loads (compile error `Module not found: Can't
+resolve ...`). With `/* turbopackIgnore: true */`, `next dev` compiles the
+route and the in-process host serves the turn: verified banana turn through
+`POST /api/harness/run` with `HARNESS_RUNTIME=native` →
+`{"runtime":{"available":true,"kind":"native"}}`, wall ~3.9 s for the first
+turn and ~1.8 s for a session-resume turn. A worker-thread alternative
+(`new Worker(<runtime-computed path>)` from the adapter) was tried first and
+rejected: Turbopack statically evaluates the Worker path argument to the
+project root directory and then errors on every non-module file under it
+("Unknown module type" for each root `*.md`/log, `Module not found` inside
+`native-host.mjs`, a non-placeable native addon reached via
+`eslint.config.mjs`); the `turbopackIgnore` comment was not honoured on the
+`new Worker(...)` expression in this Next version. The direct import with the
+magic comment is the production path. If the import ever fails inside a
+bundler host, the adapter delegates the turn to the CLI runtime and the API's
+`runtime` field reports `{"available":true,"kind":"cli","reason":...}`.
 `native-host.mjs` has no top-level `await` so Node's `require(esm)` can load
-it as well. The module is production-ready for a non-bundler host; re-testing
-against a newer Next/Turbopack is the way to lift the dev-server limitation.
+it as well, which keeps the door open for a non-bundler host.
 
 ## Evidence launcher
 
