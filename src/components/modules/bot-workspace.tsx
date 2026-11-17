@@ -962,6 +962,18 @@ export function BotWorkspace() {
             toolCallsUsed = Array.isArray(payload.toolCallsUsed) ? payload.toolCallsUsed : [];
             if (payload.pendingAction) nextPending = payload.pendingAction;
             if (payload.conversationId) setConversationId(payload.conversationId);
+          } else if (payload.type === "approval") {
+            // Harness approval mid-turn: the route holds the SSE open while the
+            // broker waits for /api/harness/approve, so surface the card NOW.
+            // via:"harness" makes decide() answer the broker while the stream
+            // is still open; the terminal done payload then replaces this card
+            // with its answered state.
+            setPendingAction({
+              via: "harness",
+              id: payload.approvalId,
+              toolName: payload.toolName,
+              summary: payload.summary,
+            });
           } else if (payload.type === "error") {
             throw new Error(payload.error || "The assistant failed to reply.");
           }
