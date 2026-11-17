@@ -1,0 +1,49 @@
+#!/bin/sh
+# Pre-commit guard.
+#
+# The only things blocked here are the two classes of mistake that are expensive
+# to undo: a secret entering history, and a file that does not belong in a repo.
+# It is deliberately fast — no build, no tests — so it never gets skipped.
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged" ] && exit 0
+
+fail=0
+
+# 1. Secrets by filename.
+blocked=$(printf '%s\n' "$staged" | grep -E '(^|/)\.env$|(^|/)\.env\.[^e]|\.key$|\.pem$|\.p12$|\.pfx$|config/.*\.ya?ml$' || true)
+if [ -n "$blocked" ]; then
+  echo "✖ Refusing to commit files that must never be tracked:"
+  printf '   %s\n' $blocked
+  echo "  Only .env.example is allowed. If this is a genuine template, rename it."
+  fail=1
+fi
+
+# 2. Secrets by content: provider tokens, private keys, connection strings.
+#    Scans only the added lines of the staged diff.
+leaks=$(git diff --cached -U0 -- $staged 2>/dev/null | grep -E '^\+' | grep -vE '^\+\+\+' | \
+  grep -InE 'github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----|postgres(ql)?://[^:]+:[^@]+@' || true)
+if [ -n "$leaks" ]; then
+  echo "✖ Refusing to commit what looks like a credential:"
+  printf '%s\n' "$leaks" | cut -c1-140 | sed 's/^/   /'
+  echo "  Remove it, and rotate the credential — it is already in your clipboard history."
+  fail=1
+fi
+
+# 3. Files too large for a source repo (build output, dumps, vendored bundles).
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  size=$(wc -c < "$f" | tr -d ' ')
+  if [ "$size" -gt 2097152 ]; then
+    echo "✖ $f is $((size / 1024 / 1024)) MB — too large for the repo."
+    echo "  Build output, database dumps and vendored bundles belong in .gitignore."
+    fail=1
+  fi
+done <<EOF
+$staged
+EOF
+
+[ "$fail" -eq 0 ] && exit 0
+echo ""
+echo "Commit blocked. Use 'git commit --no-verify' only if you are certain."
+exit 1

@@ -1,0 +1,37 @@
+{
+  "intro": "CyraOps deliberately does not sell the capabilities below; formal academies are folded into our Team enablement offer rather than sold as a school, and each excluded item is declined or handed to a partner.",
+  "items": [
+    {
+      "capability": "Quantum computing",
+      "reason": "We cannot staff quantum physicists and we do not claim quantum computing or frontier-scale research; classical optimisation and forecasting stay in scope."
+    },
+    {
+      "capability": "Healthcare/clinical (HIPAA)",
+      "reason": "We decline HIPAA-regulated clinical, payer and pharma work because we cannot staff those practices in week one; we partner instead of claiming the vertical."
+    },
+    {
+      "capability": "CPG R&D formulation",
+      "reason": "We do not staff formulation scientists, recipe and bench testing or consumer-goods R&D models, so CPG product innovation work is declined."
+    },
+    {
+      "capability": "Insurance underwriting (P&C & credit)",
+      "reason": "Underwriting and credit decisions stay with the client; we cannot staff regulated P&C decisioning, actuarial models, KYC/AML or loan decisioning."
+    },
+    {
+      "capability": "eCommerce platform operation",
+      "reason": "We do not operate commerce platforms; commerce analytics stay in scope but running the Cogentiq eCommerce platform is excluded."
+    },
+    {
+      "capability": "Talent/staffing platform",
+      "reason": "We do not run a staffing practice, so the iqigai recruiting platform and talent-acquisition operations are out of scope."
+    },
+    {
+      "capability": "Frontier-model training",
+      "reason": "Continued pre-training and frontier-scale model training are out of scope; we customise existing models via fine-tuning, RAG and evaluation instead."
+    },
+    {
+      "capability": "ERP implementation",
+      "reason": "We do not implement or run ERP systems; we build data and AI capabilities that connect to them, but ERP deployment itself is out of scope."
+    }
+  ]
+}

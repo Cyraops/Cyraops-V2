@@ -1,0 +1,1403 @@
+{
+  "axes": [
+    {
+      "axis": "solutions",
+      "label": "Solutions",
+      "intro": {
+        "eyebrow": "BY THE JOB",
+        "headline": "Work we can *scope*, staff and price.",
+        "sub": "Each of these is a project with a defined end, a named lead and a price. Where we are not the right fit we say so first: no creative production, training academies, recruiting platforms or telecom builds."
+      },
+      "items": [
+        {
+          "name": "Assistant Workspace",
+          "outcome": "Staff get one place to ask questions and get answers with sources.",
+          "what": "A private workspace over your documents and systems, with permissions, citations and a test set that scores every answer. Ships with the logs and review queue needed to trust it.",
+          "who_for": "Operations, support and knowledge teams",
+          "capabilities": [
+            "Grounded answers with citations",
+            "Access controls per team",
+            "Test set and scoring",
+            "Feedback and review queue",
+            "Deploys in your cloud"
+          ],
+          "details": [
+            "Grounded answers with citations — every answer points at its source document or system",
+            "Access controls per team — each team sees only the sources it is allowed to see",
+            "Test set and scoring — a scored set of real questions run before and after every change",
+            "Feedback and review queue — thumbs and fixes logged, reviewed and fed back into the test set",
+            "Deploys in your cloud — your network, your identity, your data stays where it is"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Document-to-Data",
+          "outcome": "Paper and PDFs become structured records your systems can use.",
+          "what": "Extraction, classification and validation for invoices, forms, contracts and reports. Every field carries a confidence score and a link back to the page it came from.",
+          "who_for": "Back-office and document operations teams",
+          "capabilities": [
+            "Layout and table extraction",
+            "Handwriting, scans and signatures",
+            "Field-level confidence",
+            "Exception review queue",
+            "Export to ERP or warehouse"
+          ],
+          "details": [
+            "Layout and table extraction — forms, tables and multi-page documents turned into fields",
+            "Handwriting, scans and signatures — poor scans handled, signatures detected and matched to signatories",
+            "Document splitting and bundling — mixed batches split apart, attachments bundled back into the right record",
+            "Field-level confidence — every field scored, low-confidence fields routed to a reviewer",
+            "Business rule engine — validation and routing rules your ops team can change without us",
+            "Document enrichment — extracted fields joined to master data so records arrive complete",
+            "Export to ERP or warehouse — structured records land where your systems already read from"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Operations Platform Rollout",
+          "outcome": "One system for the work, with agents doing the chasing.",
+          "what": "We configure CyraOps CRM around your operating process, move the spreadsheets in, and wire agents to draft, chase and log. It is the platform we run ourselves.",
+          "who_for": "Operations and shared-services leaders",
+          "capabilities": [
+            "CyraOps CRM configuration",
+            "Migration off spreadsheets",
+            "Agent runtime setup",
+            "Roles and permissions",
+            "Team training and handover"
+          ],
+          "details": [
+            "CyraOps CRM configuration — the platform set up around your operating process, not the reverse",
+            "Migration off spreadsheets — sheets and inboxes move in, mapped to cases, records and tasks",
+            "Brownfield automation path — upgrade what you run, automate around it, retire what you stop using",
+            "Agent runtime setup — agents wired to draft, chase and log inside the gates you approve",
+            "Roles and permissions — approval gates and visibility set by named role, not by spreadsheet",
+            "Team training and handover — runbooks and walkthroughs; we train on what we ship, not a standalone academy",
+            "No self-serve designer — we configure workflows with you, then hand over the ones you own"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Pipeline Intelligence",
+          "outcome": "Sales leaders see which deals will close and what to do next.",
+          "what": "A scored pipeline built from CRM history, activity and market signals, with the reasons behind each score. Reps get a short daily list; managers get forecast confidence.",
+          "who_for": "Revenue and growth leaders",
+          "capabilities": [
+            "Deal scoring and risk flags",
+            "Win/loss analysis",
+            "Account and territory views",
+            "Forecast confidence bands",
+            "Rep-level next actions"
+          ],
+          "details": [
+            "Deal scoring and risk flags — every open deal scored, with the reasons a rep can read",
+            "Win/loss analysis — why you win and lose, mined from CRM notes and history",
+            "Account and territory views — one live view per account and territory, refreshed daily",
+            "Forecast confidence bands — a range, not a point, so the commit is honest",
+            "Rep-level next actions — a short daily list of what moves each deal today"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Forecasting & Planning",
+          "outcome": "Plans that hold up when the month does not go to plan.",
+          "what": "Demand, revenue or capacity forecasts built on your own history, with scenarios your planners can change themselves. Accuracy is measured and reported, not assumed.",
+          "who_for": "Finance, supply chain and planning teams",
+          "capabilities": [
+            "Baseline and driver models",
+            "Scenario and what-if views",
+            "Accuracy tracking",
+            "Planner-owned overrides",
+            "Refresh on your cycle"
+          ],
+          "details": [
+            "Baseline and driver models — a model built on your own history, with the drivers named",
+            "Scenario and what-if views — planners change assumptions themselves and see the result at once",
+            "Scenario library — pre-built what-if scenarios for the decisions you repeat every cycle",
+            "Accuracy tracking — forecast error reported every cycle, so the process improves",
+            "Planner-owned overrides — overrides are logged and measured, not hidden in the model",
+            "Refresh on your cycle — the forecast updates on your cadence, with a history of every version"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Migration Accelerator",
+          "outcome": "Move platform without freezing the business for a year.",
+          "what": "A repeatable path off legacy warehouses, BI tools or on-prem systems: inventory, translation, parallel run, cutover. We retire what is not used instead of copying it.",
+          "who_for": "Data platform teams",
+          "capabilities": [
+            "Estate and usage inventory",
+            "Schema and SQL translation",
+            "Parallel-run reconciliation",
+            "Cutover and rollback plan",
+            "Cost comparison after"
+          ],
+          "details": [
+            "Estate and usage inventory — what runs, who uses it and what you can retire before moving",
+            "Schema and SQL translation — conversion assisted by AI, then checked line by line",
+            "Parallel-run reconciliation — old and new run side by side until the numbers agree",
+            "Cutover and rollback plan — a rehearsed switch with a tested way back",
+            "Cost comparison after — what the move actually saved, reported against the plan"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Managed AI Operations",
+          "outcome": "What we build keeps working after the project ends.",
+          "what": "We stay on call for the models, agents and pipelines we ship: monitoring, drift checks, cost control, and a named person who answers. Fixed monthly fee, written report.",
+          "who_for": "CTOs, data leaders and platform owners",
+          "capabilities": [
+            "Monitoring and alerting",
+            "Drift and quality checks",
+            "Cost and usage control",
+            "Incident response window",
+            "Monthly service report"
+          ],
+          "details": [
+            "Monitoring and alerting — models, agents and pipelines watched, with alerts that page a person",
+            "Drift and quality checks — performance checked against the baselines we set at handover",
+            "Cost and usage control — spend tracked per model and tenant, with budgets that alert",
+            "Incident response window — a named responder within an agreed window, not a ticket queue",
+            "Monthly service report — what ran, what changed and what it cost, in writing each month"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Reconciliation & Close",
+          "outcome": "Close the books in days, with every break explained.",
+          "what": "We automate matching, then use agents to investigate what is left and recommend an action. Scoped to one entity or account type first, working beside your controller.",
+          "who_for": "Finance controllers and treasury operations",
+          "capabilities": [
+            "Automated matching rules",
+            "Break investigation notes",
+            "CTM and DTCC connectivity",
+            "Evidence per exception",
+            "Approval and audit trail"
+          ],
+          "details": [
+            "Automated matching rules — clear the routine, rerun on a schedule, escalate what will not clear",
+            "Break investigation notes — the agent reads the source, notes the cause and proposes an action",
+            "CTM and DTCC connectivity — read breaks and recheck status against clearing and settlement venues",
+            "SLA timers and reminders — every break carries a clock, an escalation and a reminder",
+            "Broker communication — chaser and query templates, replies read and filed to the break",
+            "Rule authoring and learning — reviewers test rules against history; approved decisions feed the next rules",
+            "Evidence and audit trail — every decision attached to its evidence, with recurring-cause reporting"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Contract Review",
+          "outcome": "Review contracts in hours, with the clause evidence attached.",
+          "what": "Clause extraction against your playbook, with each flag linked to the source text and a reviewer's decision. Built with your legal team; we do not give legal advice.",
+          "who_for": "Legal and commercial teams",
+          "capabilities": [
+            "Playbook and clause library",
+            "Deviation flags with evidence",
+            "Reviewer approve or reject",
+            "Version comparison",
+            "Audit trail per contract"
+          ],
+          "details": [
+            "Playbook and clause library — your positions encoded as a library your reviewers own",
+            "Deviation flags with evidence — each flag links to the exact clause and page",
+            "Reviewer approve or reject — the human decision is recorded and feeds the playbook",
+            "Version comparison — redlines and changes between versions surfaced, not re-read",
+            "Audit trail per contract — who reviewed what and when, stored with the contract"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Quality Vision",
+          "outcome": "Catch defects at the line, not at the customer.",
+          "what": "Cameras and models that flag surface defects, missing parts or wrong labels as units pass. Delivered with an integration partner for the physical install.",
+          "who_for": "Manufacturing quality engineers",
+          "capabilities": [
+            "Defect detection models",
+            "Edge or cloud inference",
+            "Operator review screen",
+            "False-positive tuning",
+            "Throughput and yield reporting"
+          ],
+          "details": [
+            "Defect detection models — surface defects, missing parts and wrong labels flagged as units pass",
+            "Edge or cloud inference — runs on the line or in your cloud, chosen by latency and cost",
+            "Operator review screen — flagged units queued for a person, with the image and the reason",
+            "False-positive tuning — thresholds tuned against your own good and bad units",
+            "Throughput and yield reporting — yield by shift, line and defect type, without a spreadsheet",
+            "Installation with a partner — cameras and mounting delivered with a named integration partner"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Retail & CPG Growth Analytics",
+          "outcome": "Price, promo, store and field decisions made on one consistent set of numbers.",
+          "what": "Price, promotion, assortment, store and field analytics for retail and CPG teams, built on your ERP, POS and CRM data. Selective: scoped one market or category at a time, with your commercial team in the room.",
+          "who_for": "Retail and CPG commercial teams",
+          "capabilities": [
+            "Price and promo optimisation",
+            "Trade fund, profit-pool analysis",
+            "Geospatial store analytics",
+            "Field planning and routes",
+            "RGM maturity assessment"
+          ],
+          "details": [
+            "Price and promo optimisation — elasticity and uplift models per store, channel and promo mechanic",
+            "Trade fund optimisation — where trade spend returns margin, with profit-pool monitoring by account",
+            "Portfolio, mix and assortment — which SKUs earn their space, and what to swap next",
+            "Geospatial analytics — catchment, cannibalisation and territory views on a map",
+            "Store segmentation — store clusters with one live profile per store, refreshed monthly",
+            "Field planning — optimised call plans and routes, with field alerts from the same data",
+            "SFA, CRM and ERP connectors — joins to the systems your field and trade teams already run"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Consumer Marketing Analytics",
+          "outcome": "Marketing spend and messaging decisions backed by response and consumer signal.",
+          "what": "Campaign performance, audience scoring and consumer insight built on the social, media and review data you license. We decline creative production, neuroscience stimuli and change programmes; a partner does those.",
+          "who_for": "Consumer marketing and brand teams",
+          "capabilities": [
+            "Campaign performance and ROI",
+            "Audience and next-best scoring",
+            "Trend scoring and radar",
+            "Sentiment and benchmarking",
+            "Consumer segmentation"
+          ],
+          "details": [
+            "Campaign performance — spend, response and ROI joined across channels and campaigns",
+            "Audience scoring — propensity and next-best-action scores per audience, tested before rollout",
+            "Trend scoring and radar — emerging topics scored weekly from the social and review data you license",
+            "Geo-sentiment — sentiment by market and segment, multilingual and ESG-aware",
+            "Benchmarking — share of voice and sentiment measured against named competitors",
+            "Influencer impact — reach and response tied to specific influencers and content",
+            "Consumer segmentation — segments built from declared and behavioural data, kept refreshed"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Wealth Advisor Workspace",
+          "outcome": "Advisors meet clients with portfolio, news impact and talking points ready.",
+          "what": "A workspace over holdings, research and client records that builds dossiers, scores news against each portfolio and drafts compliant talking points. Advice stays with the advisor; compliance context comes from your team.",
+          "who_for": "Wealth advisors and practice leads",
+          "capabilities": [
+            "Portfolio and AUM modelling",
+            "News-to-portfolio impact",
+            "Client dossier builder",
+            "Scenario talking points",
+            "Compliance-context checks"
+          ],
+          "details": [
+            "Portfolio and AUM modelling — holdings, liquidity, risk, sentiment and AUM joined per client",
+            "News-to-portfolio impact — market news scored against each client's actual positions",
+            "Client dossier builder — one brief per client, assembled before every meeting",
+            "Scenario talking points — what-if views that turn into plain-language client notes",
+            "Compliance-context checks — drafts checked against the rules and disclosures your compliance team sets",
+            "Advice stays human — the advisor decides; the workspace prepares, cites and logs"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Fund Report Review",
+          "outcome": "Every figure in a fund report checked against source before a reviewer sees it.",
+          "what": "Numeric validation and disclosure checks for fund reports, factsheets and client letters, against a control framework your compliance team configures. Findings are prioritised for reviewers; sign-off stays human.",
+          "who_for": "Fund reporting, operations and compliance teams",
+          "capabilities": [
+            "Numeric cross-validation",
+            "Configurable control framework",
+            "Disclosure and language checks",
+            "Prioritised findings queue",
+            "Reviewer sign-off trail"
+          ],
+          "details": [
+            "Numeric cross-validation — every figure traced to its source document or system, at scale",
+            "Configurable control framework — your tolerance rules, changed by your team without us",
+            "Disclosure checks — required disclosures and risky language flagged against your obligations",
+            "Prioritised findings — financial findings ranked by materiality, so reviewers see the worst first",
+            "Reviewer sign-off — decisions recorded with evidence, exported for audit",
+            "Works with your sources — fund accounting, market data and document stores, joined"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "LLM Customisation and Benchmarks",
+          "outcome": "Your model knows your domain, with benchmarks proving it before release.",
+          "what": "Fine-tuning, synthetic data and benchmark suites for open-weight models, on the evaluation practice we already run. Continued pre-training and frontier training are not ours; we say so in week one.",
+          "who_for": "ML and platform engineering teams",
+          "capabilities": [
+            "Open-weight model fine-tuning",
+            "Synthetic data pipelines",
+            "Domain benchmark suites",
+            "Before and after evaluation",
+            "Serving in your cloud"
+          ],
+          "details": [
+            "Open-weight model fine-tuning — instruction and domain tuning on models you can self-host",
+            "Synthetic data pipelines — generated training data with quality checks, where real data is thin",
+            "Domain benchmark suites — tasks scored on your own examples, run on every candidate model",
+            "Before and after evaluation — the tuned model compared against the base on the same tests",
+            "Serving in your cloud — weights deployed in your environment with rollback and versioning",
+            "Cost and latency budgets — the tuned model measured against the same limits as production"
+          ],
+          "tier": "selective"
+        }
+      ]
+    },
+    {
+      "axis": "products",
+      "label": "Products",
+      "intro": {
+        "eyebrow": "PRODUCT AND ACCELERATORS",
+        "headline": "One platform we run. *Accelerators* we reuse.",
+        "sub": "CyraOps CRM is our own operations platform, with an agent runtime we built and still run. The rest are accelerators: work done once, packaged so you start further along; sold direct, not through a marketplace."
+      },
+      "items": [
+        {
+          "name": "CyraOps CRM",
+          "outcome": "Your operations team works one system, not six spreadsheets.",
+          "what": "An operations platform with a built-in agent runtime: cases, records, approvals and agents on one dataset. We built it and run it daily. Take it as a licence, or installed in your own cloud.",
+          "who_for": "Operations and service delivery teams",
+          "capabilities": [
+            "Case, record and task model",
+            "Agent runtime with tool access",
+            "Low-code agent builder",
+            "Context graph and glossary",
+            "Approval gates by named role"
+          ],
+          "details": [
+            "Case and record model — cases, records and tasks on one shared dataset, with a full audit trail per run",
+            "Agent runtime — tool access, approval gates and replay, in production daily",
+            "Agent builder — a low-code path to new agents, with tool scopes and tests",
+            "Context graph — entities, glossaries and data bindings defined once, reused by every agent",
+            "Solution packs — prebuilt workflows for common operating processes, adapted rather than rebuilt",
+            "Deployment — take a licence on our cloud, or install it in yours"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Data Quality Toolkit",
+          "outcome": "A disagreement about a number ends in a query, not a meeting.",
+          "what": "Checks for data contracts, freshness, ranges and referential integrity, wired into your pipelines and CI. We install it in your repository, then hand it over: the code is yours to extend.",
+          "who_for": "Data platform and engineering teams",
+          "capabilities": [
+            "Data contracts checked in CI",
+            "Freshness and volume checks",
+            "Row and column rules",
+            "Failure triage notes",
+            "Repository is yours"
+          ],
+          "details": [
+            "Data contracts in CI — schema, freshness and range rules checked on every change",
+            "Freshness and volume — staleness and size anomalies caught before the number is quoted",
+            "Row and column rules — business rules run as code, with the failing row named",
+            "Failure triage — each failure carries a note on cause and owner, not just a red light",
+            "Quality index — a per-dataset rating, published so buyers can see it before they trust a table",
+            "Ownership — installed in your repository; the code is yours to extend"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Agent Evaluation Harness",
+          "outcome": "Agent changes ship with evidence instead of opinion.",
+          "what": "Test sets, trace replay and scoring for groundedness, task success, cost and latency, run as a release gate. We set it up inside your repository; it catches agent regressions before users do.",
+          "who_for": "AI product and platform teams",
+          "capabilities": [
+            "Golden test sets",
+            "Trace replay from production",
+            "Groundedness and task scoring",
+            "Cost and latency budgets",
+            "Release gate in CI"
+          ],
+          "details": [
+            "Golden test sets — fixed cases with expected answers, expanded as failures surface",
+            "Trace replay — production traces replayed against a changed agent, diffs highlighted",
+            "Scoring — groundedness, task success, policy and compliance scored the same way each run",
+            "Budgets — cost and latency limits fail the build, not just the review",
+            "Release gate — CI blocks the change until the score holds, with evidence attached"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Platform Baseline",
+          "outcome": "Environments come up in hours, the same way every time.",
+          "what": "Terraform modules for what every data or AI platform needs: network, identity, storage, jobs, logging, cost tags, environments. Licensed and adapted to your cloud, and yours to fork.",
+          "who_for": "Cloud and platform engineering teams",
+          "capabilities": [
+            "Network and identity defaults",
+            "Storage and job templates",
+            "Logging and cost tags",
+            "Dev, staging, prod parity",
+            "Forked into your repo"
+          ],
+          "details": [
+            "Network and identity — default VPC, private links and least-privilege roles in one module set",
+            "Storage and jobs — bucket, warehouse and scheduler templates with lifecycle rules",
+            "Logging and cost tags — audit and usage logs on from day one, spend tagged by owner",
+            "Environment parity — dev, staging and prod from the same code, not three hand-made snowflakes",
+            "Yours to fork — adapted to your cloud and checked into your repository"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Agent Runtime Kit",
+          "outcome": "Add agents to your product without building a runtime.",
+          "what": "The agent runtime from CyraOps CRM, packaged to embed: tool calls, state, approvals and traces behind a small API. Selective: one workflow, in your stack, supported by us while it settles.",
+          "who_for": "Product engineering teams embedding agents",
+          "capabilities": [
+            "Embeddable runtime API",
+            "Tool and permission scopes",
+            "State and resume",
+            "Approval and audit hooks",
+            "We support the first release"
+          ],
+          "details": [
+            "Embeddable API — tool calls, state and traces behind a small surface you call from your product",
+            "Tool and permission scopes — each agent gets the tools it needs and nothing wider",
+            "State and resume — long jobs pause, resume and retry without losing where they were",
+            "Approval and audit hooks — risky steps wait on a named person; every run is replayable",
+            "PII masking — sensitive fields masked in traces and logs at source",
+            "First release with us — we support the first workflow until it settles, then you own it"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Contact Centre Insight Pack",
+          "outcome": "Every call and chat is scored, so coaching and compliance stop being sampled.",
+          "what": "Interaction analytics over every call and chat: VOC and intent classified automatically, SOPs mined from what works, real-time assist for agents. Selective: it runs through your existing CCaaS; we do not run telephony.",
+          "who_for": "Customer experience and contact centre leaders",
+          "capabilities": [
+            "Full-coverage interaction audit",
+            "VOC and intent ontology",
+            "SOP discovery from calls",
+            "Real-time agent assist",
+            "KPI and compliance packs"
+          ],
+          "details": [
+            "Coverage audit — every call and chat scored against quality and compliance, not a sample",
+            "VOC ontology — complaints, praise and intent classified into a taxonomy your teams own",
+            "SOP mining — the phrases and paths that work extracted from calls, turned into scripts",
+            "Agent assist — real-time prompts for the CSR while the customer is on the line",
+            "Prebuilt packs — interaction KPIs and compliance checks wired to your CCaaS connectors",
+            "Coaching — after-call briefs per agent, tied to the calls they actually took",
+            "Voice — multilingual through your CCaaS; we do not run telephony"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Order-to-Cash Pack",
+          "outcome": "Cash arrives sooner, and deductions stop eating analyst time.",
+          "what": "Packaged dunning, payment plans and deduction resolution on CyraOps CRM, with credit holds released by a named approver. Selective: we start with one entity or region and extend what the evidence supports.",
+          "who_for": "Finance and accounts receivable teams",
+          "capabilities": [
+            "Automated dunning sequences",
+            "Payment plan workflows",
+            "Trade-deduction resolution",
+            "Adaptive credit limits",
+            "Blocked-order release gates"
+          ],
+          "details": [
+            "Dunning sequences — chase letters and escalations run on your terms, logged per invoice",
+            "Payment plans — negotiated terms tracked, with follow-up the moment a milestone is missed",
+            "Trade deductions — each deduction matched to evidence and routed to the owner who can fix it",
+            "Adaptive credit limits — limits move with payment behaviour, each change approved by name",
+            "Blocked orders — releases flow through an approval gate, never around it",
+            "Evidence per action — what the agent did and why, ready before audit asks"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Procurement Workspace",
+          "outcome": "From requisition to purchase order in one place, with evidence.",
+          "what": "RFx orchestration and request-to-order guidance on CyraOps CRM, with contract-to-transaction matching. Selective: purchase orders use your ERP's API where it allows one; category strategy stays yours.",
+          "who_for": "Procurement and category management teams",
+          "capabilities": [
+            "RFx build and bid comparison",
+            "Supplier evaluation and scoring",
+            "Request-to-order guidance",
+            "Contract-to-transaction matching",
+            "Deviation and recovery tracking"
+          ],
+          "details": [
+            "RFx orchestration — requirements to issued tender, bid responses compared side by side",
+            "Supplier evaluation — weighted scoring against your criteria, with the evidence kept",
+            "Request-to-order — buying guidance from requisition to purchase order",
+            "Commercial assurance — each transaction matched to contract terms; deviations priced and chased",
+            "Category strategy — spend analysis that informs the strategy your category owner decides",
+            "Approval and audit — every gate and change recorded, per purchase"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Commerce Intelligence Pack",
+          "outcome": "Listings drift is caught in hours and routed to the owner who can fix it.",
+          "what": "Shelf, media and assortment analytics with per-ASIN signals and corrective actions routed into CyraOps CRM. Selective: we surface the signal and route the action; media spend stays yours.",
+          "who_for": "E-commerce and retail brand teams",
+          "capabilities": [
+            "Digital shelf monitoring",
+            "Retail media and eMMM",
+            "Assortment and white space",
+            "Per-ASIN signal alerts",
+            "Corrective action routing"
+          ],
+          "details": [
+            "Shelf wellness — shift alerts, content checks and PDP alignment per listing",
+            "Retail media — iROI measured per campaign so spend moves where the return is",
+            "eMMM — marketing mix modelled on your sales data, with scenarios planners can run",
+            "Assortment — white-space and e-assortment views by category, market and retailer",
+            "ASIN signals — Buy Box, price, content and keyword changes captured daily",
+            "Corrective actions — shipments, coupons and promotions routed to the owner, not executed",
+            "Retail search — search-rank and share-of-shelf trends by brand"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Parts Availability Pack",
+          "outcome": "Parts teams see shortages before they stop a line, with an action attached.",
+          "what": "Obsolescence, availability and replenishment models over your parts and maintenance data, with every risk traced to the action that closes it. Selective: we run the models; execution flows through your EAM or ERP.",
+          "who_for": "Maintenance and supply chain teams",
+          "capabilities": [
+            "Obsolescence early-warning",
+            "Availability and lead-time models",
+            "Replenishment recommendations",
+            "Risk-to-action traceability",
+            "Part master data cleanup"
+          ],
+          "details": [
+            "Obsolescence — part risk scored from lifecycle, supplier and usage signals",
+            "Availability — shortfall and lead-time risk flagged before they stop a line",
+            "Replenishment — recommended orders and buffers, executed through your EAM or ERP",
+            "Traceability — each flagged part links to the action that closes it and its owner",
+            "Master data — duplicates and gaps resolved before the models run"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Model Search Pack",
+          "outcome": "Candidate pipelines are searched systematically, with evidence for the winner.",
+          "what": "Automated search over model and feature pipelines, with experiment agents that prepare data and log what they try. Selective: it replaces trial and error, not judgement; the decision stays with the person who signs.",
+          "who_for": "ML and data science teams",
+          "capabilities": [
+            "Open-source AutoML search",
+            "Autonomous experiment agents",
+            "Source-level PII masking",
+            "Experiment lineage and replay",
+            "Decision evidence reports"
+          ],
+          "details": [
+            "Pipeline search — candidates evolved over your data with open-source AutoML",
+            "Experiment agents — data-prep agents that log what they tried and why",
+            "PII masking — sensitive fields masked at source, before any model or agent sees them",
+            "Lineage — every run recorded, comparable and replayable",
+            "Evidence reports — the winner's trade-offs, tests and limits, written for the sign-off"
+          ],
+          "tier": "selective"
+        }
+      ]
+    },
+    {
+      "axis": "ai-foundation",
+      "label": "AI Foundation",
+      "intro": {
+        "eyebrow": "PLATFORM ENGINEERING",
+        "headline": "The layer everything else *depends on*.",
+        "sub": "We design, build and run the platform under your models: pipelines, governance and migration. We assemble components you own rather than one all-in-one platform, with our agent runtime where a product is wanted."
+      },
+      "items": [
+        {
+          "name": "Data platform foundation",
+          "outcome": "New data and AI work can start in weeks instead of quarters",
+          "what": "We build the core of your data platform: ingestion, storage, transformation, orchestration and clean dev-to-production environments. One shape your own team can operate after we leave.",
+          "who_for": "Data platform and engineering teams",
+          "capabilities": [
+            "Ingestion and CDC pipelines",
+            "Warehouse and lakehouse modelling",
+            "Orchestration and environments",
+            "Infrastructure as code",
+            "Cost and performance baselines"
+          ],
+          "details": [
+            "Ingestion and CDC pipelines — batch and streaming, with retries and replay",
+            "Warehouse and lakehouse modelling — starter patterns from the industries we staff, adapted to your data",
+            "Orchestration and environments — dev, staging and prod kept identical and isolated",
+            "Infrastructure as code — network, identity and jobs defined in code, reviewable in CI",
+            "Cost and performance baselines — budgets and runtimes measured from the first load",
+            "Handover and training — runbooks and a named owner before we leave"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Data governance and MDM",
+          "outcome": "Data people trust, with rules enforced in code rather than documents",
+          "what": "Catalogue, lineage, ownership and access policy applied where the data lives. Master data brought under control with matching rules, merge logic and named stewards.",
+          "who_for": "Chief data officers and data governance teams",
+          "capabilities": [
+            "Catalogue, lineage and ownership",
+            "Policy as code",
+            "AI-assisted matching and merge",
+            "Stewardship and literacy",
+            "AI and model guardrails"
+          ],
+          "details": [
+            "Catalogue, lineage and ownership — every asset named, mapped and owned",
+            "Policy as code — access and quality rules enforced where the data lives",
+            "AI-assisted matching and merge — duplicates reconciled with the steward approving the AI's calls",
+            "Stewardship and literacy — named owners and training so business teams trust the data",
+            "AI and model guardrails — what a model may see and do, enforced in code",
+            "Zero-engineering upkeep — stewards change rules in configuration, not a change ticket"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Cloud and data migration",
+          "outcome": "Legacy warehouses retired with evidence that nothing broke",
+          "what": "We move warehouses, ETL and BI to your target platform in waves. Conversion is AI-assisted and then checked line by line, with reconciliation agreed before the first table moves.",
+          "who_for": "Data platform and engineering leaders",
+          "capabilities": [
+            "Estate assessment and wave plan",
+            "SQL and ETL conversion",
+            "SAS and legacy rewrite",
+            "Reconciliation and cutover",
+            "Dual-run and rollback"
+          ],
+          "details": [
+            "Estate assessment and wave plan — a dependency graph of tables, jobs and reports before anything moves",
+            "SQL and ETL conversion — AI-assisted translation with generated test scripts per object",
+            "SAS and legacy rewrite — similarity and explainability reports for every converted program",
+            "Reconciliation and cutover — side-by-side comparison until old and new outputs agree",
+            "Dual-run and rollback — a rehearsed route back if a wave does not hold",
+            "Assurance pack per wave — tests, similarity scores and sign-off evidence filed as you go"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "AI-assisted SDLC and prompt ops",
+          "outcome": "AI changes that reach production with a review trail behind them",
+          "what": "Versioning, evaluation and review for prompts, agents and generated code, across the frameworks your team runs. The same practice runs our own agent runtime: fixed test sets, approval gates, cost limits and a route back.",
+          "who_for": "Engineering and AI platform teams",
+          "capabilities": [
+            "Prompt and agent versioning",
+            "Evaluation and regression sets",
+            "Review gates for generated code",
+            "CI, tracing and cost limits",
+            "Multi-framework and IDE tooling"
+          ],
+          "details": [
+            "Prompt and agent versioning — every prompt, template and agent under version control",
+            "Evaluation and regression sets — fixed test sets score groundedness, task success and cost",
+            "Review gates for generated code — a person approves AI-written code before production",
+            "CI, tracing and cost limits — one pipeline, budgets that stop runaway runs",
+            "Multi-framework and IDE tooling — LangChain, CrewAI and AutoGen, reviewed in the editor your team uses",
+            "Starter templates — approved patterns in your repository instead of a locked-in vendor canvas",
+            "Team enablement — pairing and reviews until the practice runs without us"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Data quality and observability",
+          "outcome": "Bad data caught by your monitors, not at the quarterly review",
+          "what": "Quality rules, freshness checks and alerting wired into the pipelines that produce the data. We run the first months with you, then hand over runbooks your team owns.",
+          "who_for": "Data engineering and operations teams",
+          "capabilities": [
+            "Data and AI quality checks",
+            "Freshness and volume checks",
+            "Alert routing and on-call",
+            "Impact analysis by lineage",
+            "Runbooks and handover"
+          ],
+          "details": [
+            "Data and AI quality checks — ranges, thresholds and eval scores on every load and output",
+            "Generated-content checks — drift and freshness scoring on what your models and pipelines produce",
+            "Freshness and volume checks — late or missing data alerts before it reaches a report",
+            "Alert routing and on-call — the team that owns the data gets the page",
+            "Impact analysis by lineage — a broken field shows who and what it affects",
+            "Runbooks and handover — documented procedures your team owns after the first months"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Governed data access and products",
+          "outcome": "Self-serve access that audit can follow end to end",
+          "what": "Tables become defined data products with an owner, a description, access rules and an approval route. Built on the catalogue and identity provider you already run.",
+          "who_for": "Data platform and analytics teams",
+          "capabilities": [
+            "Data product definitions",
+            "Request and approval workflow",
+            "Role and attribute-based access",
+            "Usage and freshness signals",
+            "Self-serve consumption"
+          ],
+          "details": [
+            "Data product definitions — a contract: owner, description, access and freshness",
+            "Request and approval workflow — ask once, get routed, get an audit trail",
+            "Role and attribute-based access — permissions joined to the identity provider you run",
+            "Usage and freshness signals — see what is used, what is stale and what is trusted",
+            "Self-serve consumption — plain-language search finds the data product, then the approval route does the rest"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Data marketplace and adoption",
+          "outcome": "Teams find the right dataset in minutes, and it stays used and trusted.",
+          "what": "A storefront over the governance and quality work: friendly search, AI recommendations, ratings, reviews and a publisher portal. Selective: it needs governed data first — we build it after that work, not instead of it.",
+          "who_for": "Chief data officers and data platform teams",
+          "capabilities": [
+            "Self-serve storefront UI",
+            "Business-friendly search",
+            "AI recommendations",
+            "Ratings, reviews and notifications",
+            "Publisher portal and approvals"
+          ],
+          "details": [
+            "Self-serve storefront UI — datasets browsed by anyone, described in business terms",
+            "Business-friendly search — plain-language questions return data, not just table names",
+            "AI recommendations — suggested datasets from usage, role and history",
+            "Ratings, reviews and notifications — feedback loops and nudges that guide people to trusted data",
+            "Publisher portal and approvals — owners publish, describe and retire their data products",
+            "Data value and quality index — usage, freshness and trust scored per dataset"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Privacy ops and third-party data",
+          "outcome": "Privacy evidence is assembled from systems, ready before the regulator asks.",
+          "what": "Privacy operations wired into the systems you run: ROPA, consent, DPIAs, DLP and breach handling, mapped to GDPR, CCPA and DPDPA, plus vetting of third-party data. We build the evidence; your counsel signs it off.",
+          "who_for": "Privacy, risk and compliance teams",
+          "capabilities": [
+            "ROPA and processing maps",
+            "Consent and subject rights",
+            "DPIA and DLP workflows",
+            "Breach and incident handling",
+            "Third-party data vetting"
+          ],
+          "details": [
+            "ROPA and processing maps — the register built from systems, not spreadsheets",
+            "Consent and subject rights — preferences and requests wired to the source systems",
+            "DPIA and DLP workflows — assessments and data-loss rules run as part of delivery",
+            "Breach and incident handling — detection, containment and notification routes, rehearsed",
+            "Third-party data vetting — vendor and external-source evaluation against your standards",
+            "Regulatory mapping — GDPR, CCPA and DPDPA obligations mapped to the controls you run"
+          ],
+          "tier": "selective"
+        }
+      ]
+    },
+    {
+      "axis": "enterprise-ai",
+      "label": "Enterprise AI",
+      "intro": {
+        "eyebrow": "CAPABILITY ON HAND",
+        "headline": "The AI work we can *staff tomorrow*",
+        "sub": "Every item here has engineers we can name and put on it this quarter. We deliberately do not claim quantum computing, foundation-model research or training at frontier scale. Those need a different firm."
+      },
+      "items": [
+        {
+          "name": "Generative AI applications",
+          "outcome": "Staff get answers and drafts from your own documents, not the open web.",
+          "what": "Assistants, search and drafting tools built on your documents and systems, with retrieval, permissions and citations. Shipped as a feature people use, not a demo.",
+          "who_for": "Product, knowledge and internal IT teams",
+          "capabilities": [
+            "Retrieval over your own documents",
+            "Answer grounding and citations",
+            "Access control per user and source",
+            "Evaluation sets for answer quality",
+            "Cost and latency budgets"
+          ],
+          "details": [
+            "Retrieval over your own documents — ranked search across the sources you own",
+            "Answer grounding and citations — every claim links to its source",
+            "Enterprise context and ontology — your entities and terms modelled once",
+            "Access control per user and source — answers respect existing permissions",
+            "Evaluation sets for answer quality — scored before every release",
+            "Market-intelligence briefs — recurring summaries from your feeds, with citations",
+            "Image generation and editing — hosted models with review gates in your workflows"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Agent workflows and runtime",
+          "outcome": "Multi-step work runs end to end, with a person approving the risky steps.",
+          "what": "Agents that read, decide and act across your systems, running on the runtime we built and operate for CyraOps CRM. Approval gates, run history and replay come with it.",
+          "who_for": "Operations leaders and process owners",
+          "capabilities": [
+            "Tool and API orchestration",
+            "Human approval gates",
+            "Run history and replay",
+            "Scoped permissions per agent",
+            "Failure handling and retries"
+          ],
+          "details": [
+            "Tool and API orchestration — agents act across the systems you already run",
+            "Human approval gates — risky steps wait for a named person",
+            "Run history and replay — every decision can be rerun and audited",
+            "Scoped permissions per agent — least privilege, enforced on every run",
+            "Failure handling and retries — errors caught, retried and logged",
+            "Existing bot and RPA estates — governance, entitlements and security review for bots already live",
+            "Estate maintenance plan — each bot owned, monitored and retired when unused"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "ML engineering",
+          "outcome": "Decisions get a model behind them that holds up on next month's data.",
+          "what": "Custom models for forecasting, scoring, ranking and classification, built and tested against your data. We hand over the code, the tests and the reasoning behind them.",
+          "who_for": "Planning, risk and analytics teams",
+          "capabilities": [
+            "Forecasting and demand models",
+            "Scoring and risk models",
+            "Feature pipelines",
+            "Backtesting and validation",
+            "Model documentation"
+          ],
+          "details": [
+            "Forecasting and demand models — fitted to your history, not a textbook",
+            "Scoring and risk models — thresholds your business owners set, not us",
+            "Feature pipelines — inputs versioned and tested like code",
+            "Backtesting and validation — accuracy proven on data the model never saw",
+            "Decision-support co-pilots — recommendations with the reasons attached",
+            "Model documentation — what it assumes, where it fails, who approved it"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "MLOps and model operations",
+          "outcome": "Models keep working after launch, and you can see when they don't.",
+          "what": "The pipelines, monitoring and retraining that keep models honest once they are live. We build the operating layer, then run it with your team or on your behalf.",
+          "who_for": "ML platform and data engineering teams",
+          "capabilities": [
+            "CI/CD for models and data",
+            "Drift and performance monitoring",
+            "Retraining and staged rollout",
+            "Model registry and lineage",
+            "Runbooks and on-call cover"
+          ],
+          "details": [
+            "CI/CD for models and data — a change ships with its tests attached",
+            "Drift and performance monitoring — alerts when behaviour leaves the envelope",
+            "Retraining and staged rollout — new versions released to a slice first",
+            "Model registry and lineage — which version, which data, which owner",
+            "Distributed serving and GPU sizing — capacity matched to real traffic",
+            "Multi-cloud operations — the same practice across the clouds you run",
+            "Embedded or run-for-you — we join your team or operate it, named up front"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Conversational AI",
+          "outcome": "Routine enquiries are answered in seconds; the hard ones reach a person.",
+          "what": "Chat, voice and email assistants for a defined set of conversations: support triage, booking, internal help desks. Social and brand text analytics feed the same models. Built inside your existing contact-centre platform.",
+          "who_for": "Customer experience and contact-centre leaders",
+          "capabilities": [
+            "Support and service triage",
+            "Voice, chat and email channels",
+            "Journey design and inclusive UX",
+            "Intent and sentiment analytics",
+            "Handover to human agents"
+          ],
+          "details": [
+            "Support and service triage — classified and routed before a person reads it",
+            "Voice, chat and email channels — one assistant across the channels you run",
+            "Journey design and inclusive UX — persona-based flows, guided selling and accessibility from the first sketch",
+            "Intent and sentiment analytics — transcripts, feedback and social text mined together",
+            "Sentiment-led lead follow-up — warm outreach queued from customer signals",
+            "Handover to human agents — full context passes with the conversation",
+            "Containment and CSAT reporting — measured per journey stage, not per bot"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Computer vision and document AI",
+          "outcome": "Paper and images stop being manual work and become structured data.",
+          "what": "Extraction from invoices, claims, contracts and forms, plus detection and inspection on images you already capture. We start with document-heavy work, where the return shows up fastest.",
+          "who_for": "Finance ops, claims and back-office teams",
+          "capabilities": [
+            "Invoices, claims and contracts",
+            "Forms and handwriting",
+            "Table and layout parsing",
+            "Defect and object detection",
+            "Accuracy audit per document type"
+          ],
+          "details": [
+            "Invoice, claims and contract extraction — fields out, with the page they came from",
+            "Forms and handwriting — scanned and written text handled, not skipped",
+            "Table and layout parsing — structure preserved, not flattened",
+            "Defect and object detection — anomalies flagged on images you already capture",
+            "Accuracy audit per document type — measured against your ground truth"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Specialist vision applications",
+          "outcome": "Retail shelves and field assets checked by model, not by clipboard.",
+          "what": "Retail planogram and SKU checks, plus aerial and site damage assessment with an inspection partner for capture. We do not run security surveillance: tracking and access control go to a security integrator.",
+          "who_for": "Retail merchandising and insurance claims teams",
+          "capabilities": [
+            "SKU and shelf compliance checks",
+            "Planogram and promo verification",
+            "Aerial and site damage assessment",
+            "Inspection partner for capture",
+            "False-positive tuning per site"
+          ],
+          "details": [
+            "SKU and shelf compliance checks — out-of-stock and facings counted per visit",
+            "Planogram and promo verification — shelf layout scored against the agreed plan",
+            "Aerial and site damage assessment — extent and severity estimated from imagery",
+            "Inspection partner for capture — drones and camera rigs run by people insured for it",
+            "False-positive tuning per site — thresholds set per store, not once for all"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Responsible AI and guardrails",
+          "outcome": "You can explain and defend what the model did, to a regulator or a customer.",
+          "what": "Guardrails, evaluation and documentation built into the system rather than added before an audit, with model cards, bias checks and a review process your risk team can run itself. ESG diagnostics go to a named partner.",
+          "who_for": "Risk, legal and compliance leaders",
+          "capabilities": [
+            "Prompt and output guardrails",
+            "Evaluation and red-team sets",
+            "Bias and fairness testing",
+            "Model cards and decision logs",
+            "AI policy and review process"
+          ],
+          "details": [
+            "Prompt and output guardrails — blocked, rewritten and logged before users see them",
+            "Evaluation and red-team sets — adversarial cases run on every release",
+            "Bias and fairness testing — measured on the populations you serve",
+            "Synthetic test data — edge cases generated where real data is scarce or sensitive",
+            "Privacy and attribution checks — minimisation, licence and source checks in the build",
+            "Model cards and decision logs — the evidence audit reads, kept current in CI",
+            "Contestation routes — a person can appeal any automated decision"
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Human-centred AI design",
+          "outcome": "AI flows people can use, tested with users before the model ships.",
+          "what": "Flows, prototypes and adoption plans for AI features, with user testing built in. Visual design systems come from a design partner; ethnographic and behavioural research from a research partner we name up front.",
+          "who_for": "Product leaders and UX teams",
+          "capabilities": [
+            "AI interaction flows",
+            "Prototypes and user testing",
+            "Design-system partner",
+            "Adoption and change plans",
+            "Research partner for deep studies"
+          ],
+          "details": [
+            "AI interaction flows — when to answer, ask, escalate or hand to a person",
+            "Prototypes and user testing — tested with real users before the model ships",
+            "GenAI-assisted design — drafts and test scripts generated, reviewed by people",
+            "Design-system partner — visual and brand systems from a studio we name",
+            "Adoption and change plans — the org-change work beyond the interface",
+            "Research partner for deep studies — ethnographic and behavioural work, named up front"
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "AI adoption and workforce upskilling",
+          "outcome": "Teams use the AI you shipped, and you can measure what it changed.",
+          "what": "Role-based learning journeys, hands-on labs and mentoring so your people use the AI you already paid for, with adoption and ROI measurement built in. We run cohorts around a live rollout, not a certification business.",
+          "who_for": "L&D, transformation and AI programme leaders",
+          "capabilities": [
+            "Role-based learning journeys",
+            "Hands-on labs and mentoring",
+            "Adoption index and surveys",
+            "AI value and ROI method",
+            "Policy and safe-use coaching"
+          ],
+          "details": [
+            "Role-based learning journeys — per role: what changes, what to check, what to stop",
+            "Hands-on labs and mentoring — your data, your tools, not a slide deck",
+            "Adoption index and surveys — uptake measured before, during and after rollout",
+            "AI value and ROI method — hours, cost and outcomes attributed to adoption",
+            "Policy and safe-use coaching — people learn the guardrails along with the tool",
+            "Responsible-AI training — bias, privacy and review duties taught, not certified"
+          ],
+          "tier": "selective"
+        }
+      ]
+    },
+    {
+      "axis": "functions",
+      "label": "Business functions",
+      "intro": {
+        "eyebrow": "BY BUSINESS FUNCTION",
+        "headline": "Start from the *work*, not the stack.",
+        "sub": "Eight functions, each with the jobs we are actually asked to do in them. If yours is not here, ask — we will say plainly whether we are the right team for it."
+      },
+      "items": [
+        {
+          "name": "Revenue and growth",
+          "outcome": "A forecast you can commit to, and evidence for where growth comes from.",
+          "what": "Pipeline, forecast and win-loss analysis for the revenue team, with agents that read the CRM notes reps never finish. It replaces the monthly argument about the number with a shared view of it.",
+          "who_for": "Revenue operations, sales and growth leaders",
+          "capabilities": [
+            "Forecast accuracy and hygiene",
+            "Win/loss analysis from CRM notes",
+            "Pricing and discount leakage",
+            "Expansion propensity by account",
+            "Lead scoring and routing"
+          ],
+          "details": [
+            "Forecast accuracy and hygiene — accuracy tracked against actuals, with rep-owned overrides.",
+            "Win/loss analysis from CRM notes — why deals close or slip, mined from the notes reps wrote.",
+            "Pricing and discount leakage — discounts by rep, tier and deal, next to what they cost.",
+            "Expansion propensity by account — accounts most likely to grow, with the reason attached.",
+            "Lead scoring and routing — inbound ranked and sent to the right rep in minutes."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Finance and cost",
+          "outcome": "Cost per customer, per job and per tenant — visible, allocated and falling.",
+          "what": "FinOps and unit economics: cloud and GPU cost allocated to the teams that spend it, joined to revenue so margin per customer is a real number. We build the model, the rules and the monthly pack.",
+          "who_for": "CFOs, FP&A and FinOps teams",
+          "capabilities": [
+            "Unit economics and margin model",
+            "Cloud and GPU cost allocation",
+            "Commodity and FX forecast models",
+            "Commitment and vendor planning",
+            "Driver-based forecast models"
+          ],
+          "details": [
+            "Unit economics and margin model — cost per customer, job and tenant joined to revenue.",
+            "Cloud and GPU cost allocation — spend tagged to the team and workload that caused it.",
+            "Commodity and FX forecast models — scenario views to time hedging and procurement decisions.",
+            "Commitment and vendor planning — reserved and committed spend sized against real usage.",
+            "Driver-based forecast models — budgets and reforecasts driven by the levers that move them.",
+            "Kubernetes waste and idle review — overprovisioned workloads found before the next bill.",
+            "Monthly finance pack — the model, rules and numbers, refreshed on your cycle."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Finance operations automation",
+          "outcome": "Cash arrives faster, with fewer manual matches and chases.",
+          "what": "Agents for receivables and payables: cash application, deduction research, collections and invoice intake, each with an approval gate and ERP audit trail. Credit, fraud and underwriting decisions stay with your people.",
+          "who_for": "Accounts receivable, AP and shared-services leaders",
+          "capabilities": [
+            "Cash application agents",
+            "Deduction and dispute research",
+            "Collections with approval gates",
+            "AP intake and matching",
+            "Anomaly and fraud signals"
+          ],
+          "details": [
+            "Cash application agents — payments matched to open invoices and posted to your ERP.",
+            "Deduction and dispute research — short-pays researched back to the proof of delivery.",
+            "Collections with approval gates — polite, sequenced outreach a person approves before it sends.",
+            "AP intake and matching — invoices read, checked for errors and matched to purchase orders.",
+            "Anomaly and fraud signals — unusual payment patterns and credit exposure flagged for your controls team.",
+            "ERP audit trail — every agent action logged with the reason and the person who approved it."
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Operations and supply chain",
+          "outcome": "Less buffer stock and fewer stockouts, from the planning you already run.",
+          "what": "Forecasting, inventory and logistics analytics on data your ERP and warehouse systems already hold. We do not implement ERP, automate a warehouse or build digital twins; we make the numbers you plan with better.",
+          "who_for": "Supply chain, planning and logistics leaders",
+          "capabilities": [
+            "Demand forecasting by SKU and site",
+            "S&OP and S&OE exception views",
+            "Supply and supplier risk",
+            "Production scheduling analytics",
+            "Transport and route optimisation"
+          ],
+          "details": [
+            "Demand forecasting by SKU and site — baselines per SKU with promotions, seasonality and error tracked.",
+            "Safety stock and service levels — targets per SKU tied to the service policy you commit to.",
+            "S&OP and S&OE exception views — a weekly control-tower view of the exceptions that need a decision.",
+            "Supply and supplier risk — lead-time, single-source and payment-term signals by part, for sourcing decisions.",
+            "Production scheduling analytics — feasible weekly schedules from the constraints and changeovers you set.",
+            "Transport and route optimisation — cost-to-serve by lane, with ETA and delay models per route.",
+            "Predictive maintenance signals — assets likely to fail, ranked from sensor and work-order history."
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Customer and support",
+          "outcome": "Faster first reply, with a person still accountable for the answer.",
+          "what": "Triage, drafting, summarising and conversation QA with an agent in the loop, built on the runtime behind CyraOps CRM. Escalation, knowledge gaps and churn signals come out of the same transcript data.",
+          "who_for": "Support, customer success and operations leaders",
+          "capabilities": [
+            "Ticket triage and routing",
+            "Reply drafting with citations",
+            "Conversation QA and scoring",
+            "Churn and escalation signals",
+            "Knowledge repair from tickets"
+          ],
+          "details": [
+            "Ticket triage and routing — every ticket classified and sent to the right queue in seconds.",
+            "Reply drafting with citations — drafts grounded in your knowledge base, ready for a person to send.",
+            "Conversation QA and scoring — every reply scored against your quality bar, with coaching notes.",
+            "Churn and escalation signals — at-risk accounts and repeated complaints surfaced early.",
+            "Knowledge repair from tickets — the gaps tickets expose turned into fixes, not another memo."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Product and engineering",
+          "outcome": "Decisions backed by numbers, and AI features that survive real users.",
+          "what": "Product analytics, experiment readouts and AI features inside your product, plus the delivery and reliability metrics engineering leads keep asking for and rarely get.",
+          "who_for": "Product and engineering leadership teams",
+          "capabilities": [
+            "Feature adoption and retention",
+            "Experiment design and readouts",
+            "Embedded analytics and dashboards",
+            "AI feature prototyping in-product",
+            "Delivery and reliability metrics"
+          ],
+          "details": [
+            "Feature adoption and retention — which features stick, by cohort, with the reason behind it.",
+            "Experiment design and readouts — tests sized and analysed properly, read in plain language.",
+            "Embedded analytics and dashboards — numbers your users see in-product, not in a BI link.",
+            "AI feature prototyping in-product — an AI feature live with a test group in weeks.",
+            "Delivery and reliability metrics — cycle time, failure rate and incident load, visible to leadership."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Risk and compliance",
+          "outcome": "Audit and AI review readiness, without the quarterly scramble for evidence.",
+          "what": "Governance that produces evidence: an AI and data inventory, controls mapped to the obligations you actually carry, and an audit pack assembled from systems rather than screenshots.",
+          "who_for": "Chief risk officers, compliance and audit teams",
+          "capabilities": [
+            "AI and model inventory",
+            "Controls mapped to obligations",
+            "Lineage and audit evidence",
+            "PII discovery and access review",
+            "Model documentation and sign-off"
+          ],
+          "details": [
+            "AI and model inventory — every model, agent and dataset, with its owner and purpose.",
+            "Controls mapped to obligations — each obligation matched to a control that produces evidence.",
+            "Lineage and audit evidence — where every number came from, assembled from systems.",
+            "PII discovery and access review — personal data found, classified and access reviewed on a cycle.",
+            "Model documentation and sign-off — cards and decision logs your risk team can run itself."
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Sustainability and ESG reporting",
+          "outcome": "ESG numbers you can defend, with the evidence behind each one.",
+          "what": "Carbon accounting, CSRD/ESRS mapping and target tracking built on systems you already run: utilities, procurement, travel and suppliers. We prepare the numbers and evidence; your auditors do the assurance.",
+          "who_for": "Sustainability, finance and compliance leaders",
+          "capabilities": [
+            "Carbon accounting by scope",
+            "CSRD and ESRS disclosure mapping",
+            "Emission target tracking",
+            "Sustainable sourcing analytics",
+            "ESG maturity assessment"
+          ],
+          "details": [
+            "Carbon accounting by scope — Scope 1, 2 and 3 estimates from utilities, procurement and travel.",
+            "CSRD and ESRS disclosure mapping — each disclosure matched to the systems that hold the data.",
+            "Emission target tracking — targets tracked against actuals, with the variance explained.",
+            "Sustainable sourcing analytics — supplier emissions and compliance joined to your spend.",
+            "ESG maturity assessment — a scored baseline across data, reporting and controls.",
+            "Assurance-ready evidence pack — source data and workings assembled so auditors verify, not rebuild."
+          ],
+          "tier": "selective"
+        }
+      ]
+    },
+    {
+      "axis": "industries",
+      "label": "Industries",
+      "intro": {
+        "eyebrow": "BY INDUSTRY",
+        "headline": "Nine industry offers we can *actually* staff today.",
+        "sub": "Eight industries, nine ways in: where our past work, data models and hires make us useful in week one. Grid control, actuarial sign-off and physical installs stay with you or a partner, and we say so."
+      },
+      "items": [
+        {
+          "name": "SaaS product and account analytics",
+          "outcome": "You see which accounts are slipping, and ship agents in weeks.",
+          "what": "Usage data sits in the product, the CRM and the billing system, joined by nobody. We model it at account level, then ship in-product and support agents on a runtime we already run in production.",
+          "who_for": "SaaS revenue, product and customer success teams.",
+          "capabilities": [
+            "Product event modelling",
+            "Account health scoring",
+            "Billing and CRM joins",
+            "In-product agent features",
+            "Agent runtime hosting"
+          ],
+          "details": [
+            "Product event modelling — One event model across app, CRM and billing, agreed with your data team.",
+            "Account health scoring — A health score per account with the drivers behind it, refreshed daily.",
+            "Billing and CRM joins — Revenue, usage and support signals in one account-level table.",
+            "In-product agent features — Agents that answer and act inside the product, approvals on risky steps.",
+            "Agent runtime hosting — The runtime behind CyraOps CRM, run by us with monitoring and review queues."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Logistics exception visibility",
+          "outcome": "Late shipments surface hours earlier, with the reason attached.",
+          "what": "Status is spread across carrier portals, TMS extracts and email. We join it into one shipment timeline, alert the exceptions that matter, and let ops ask a question rather than ring the carrier.",
+          "who_for": "Transport, freight and logistics operations teams.",
+          "capabilities": [
+            "Carrier and EDI ingestion",
+            "Shipment event modelling",
+            "Exception alerting",
+            "POD and document extraction",
+            "Ops agent for status queries"
+          ],
+          "details": [
+            "Carrier and EDI ingestion — Tracking, EDI and portal data pulled into one shipment timeline.",
+            "Shipment event modelling — Milestones, stops and statuses standardised across carriers and modes.",
+            "Exception alerting — Late, damaged and missing events flagged with the reason and the next step.",
+            "POD and document extraction — Proof of delivery and freight documents read into structured records.",
+            "Ops agent for status queries — Staff ask the timeline instead of ringing the carrier."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Financial services operations",
+          "outcome": "Fewer manual matches, and evidence ready before audit asks.",
+          "what": "Ops teams spend the week matching records and rebuilding evidence. We automate the matching, extract the documents behind it, and log what the agent did and why. Credit decisions stay yours.",
+          "who_for": "Banking, payments and capital markets operations teams.",
+          "capabilities": [
+            "Reconciliation and break analysis",
+            "Document extraction",
+            "Control and audit logging",
+            "Ops agent with citations",
+            "Validation partner for sign-off"
+          ],
+          "details": [
+            "Reconciliation and break analysis — Automated matching with every break explained and evidenced.",
+            "Document extraction — Statements, notices and contracts read into structured fields with sources.",
+            "Control and audit logging — Every automated step logged with who approved it and why.",
+            "Ops agent with citations — Staff ask about a record and get the answer with the source line.",
+            "Validation partner for sign-off — Independent validation partner engaged where the regulator expects one."
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Manufacturing quality and asset health",
+          "outcome": "Defects caught at the line, and failures caught before they stop it.",
+          "what": "Inspection and machine data rarely meet. We add vision defect detection and condition monitoring on one line, join them to production and maintenance records, and give engineers one history to query.",
+          "who_for": "Plant, quality and reliability engineering teams.",
+          "capabilities": [
+            "Vision defect detection",
+            "Condition monitoring models",
+            "Historian, MES and CMMS joins",
+            "First-pass yield reporting",
+            "Line history agent"
+          ],
+          "details": [
+            "Vision defect detection — Cameras and models flag surface defects and wrong labels; install by partner.",
+            "Condition monitoring models — Vibration and temperature anomalies become failure-likelihood and service flags.",
+            "Historian, MES and CMMS joins — Machine, production and maintenance records in one queryable line history.",
+            "First-pass yield reporting — Yield, rework and scrap by shift and part, tied to the downtime behind them.",
+            "Line history agent — Engineers ask about any unit, batch or asset and get the history with sources."
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Professional services firm operations",
+          "outcome": "Partners see engagement margin before the invoice goes out.",
+          "what": "Utilisation, pipeline and margin live in timesheets and partner memory. We run the firm on CyraOps CRM, add agents for proposals and status reports, and show margin while it can still be fixed.",
+          "who_for": "Managing partners and firm operations teams.",
+          "capabilities": [
+            "CyraOps CRM deployment",
+            "Utilisation and margin reporting",
+            "Resourcing and pipeline view",
+            "Proposal drafting agents",
+            "Automated status reports"
+          ],
+          "details": [
+            "CyraOps CRM deployment — The firm's cases, clients, pipeline and approvals move onto one platform.",
+            "Utilisation and margin reporting — Engagement margin while it can still be fixed.",
+            "Resourcing and pipeline view — People, pipeline and start dates in one view for the staffing meeting.",
+            "Proposal drafting agents — Drafts from past wins and templates; a partner reviews before it goes.",
+            "Automated status reports — Weekly client updates assembled from the system, not partner memory."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Retail customer and marketing analytics",
+          "outcome": "Spend is judged on what it added, and fraud caught before it costs margin.",
+          "what": "Transaction, loyalty, app and campaign data joined to show who is worth what, why customers leave and which activity grows them. Includes fraud scoring and incrementality tests that judge media by what it added.",
+          "who_for": "Retail revenue, marketing and e-commerce teams.",
+          "capabilities": [
+            "Customer segmentation and CLV",
+            "Churn and loyalty drivers",
+            "Campaign and media incrementality",
+            "Price and promo tracking",
+            "Payment and returns fraud scoring"
+          ],
+          "details": [
+            "Customer segmentation and CLV — Value and propensity segments from transaction and loyalty history.",
+            "Churn and loyalty drivers — What separates retained from lost customers, with the actions that move them.",
+            "Campaign and media incrementality — Test designs and readouts that separate true uplift from baseline.",
+            "Price and promo tracking — Competitor prices and promotions monitored, with the margin impact attached.",
+            "Payment and returns fraud scoring — Suspicious orders and returns flagged with reasons and review queue."
+          ],
+          "tier": "core"
+        },
+        {
+          "name": "Retail merchandising and store ops",
+          "outcome": "Stock lands where it sells, and stores are staffed to the traffic they get.",
+          "what": "Assortment, markdown, availability and store-task analytics on POS, inventory and footfall data. We do not run the store; we give planners and store leaders the models and readouts they plan with.",
+          "who_for": "Merchandising, planning and store operations teams.",
+          "capabilities": [
+            "Assortment and space planning",
+            "Markdown and sell-through models",
+            "Availability and shrink analytics",
+            "Store staffing and queue models",
+            "Footfall and store performance"
+          ],
+          "details": [
+            "Assortment and space planning — Which ranges and shelf space earn their place, by store and season.",
+            "Markdown and sell-through models — Markdown timing and depth that clear stock without giving margin.",
+            "Availability and shrink analytics — Out-of-stock and loss patterns traced to root cause, by store and SKU.",
+            "Store staffing and queue models — Staffing plans matched to footfall so the busy hour is covered.",
+            "Footfall and store performance — Traffic, conversion and sales per store, with drivers behind the gaps."
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Insurance pricing and claims analytics",
+          "outcome": "Claims, fraud and pricing decisions get models with the evidence attached.",
+          "what": "Extraction and triage for claims, then fraud, severity and pricing models built beside your actuarial team. Sign-off and rate filings stay yours; behavioural-science RCTs are run with your own marketing science team.",
+          "who_for": "Insurance claims, pricing and marketing teams.",
+          "capabilities": [
+            "Claims extraction and triage",
+            "Fraud and network scoring",
+            "Severity and loss estimation",
+            "Pricing and conversion models",
+            "NBA and marketing effectiveness"
+          ],
+          "details": [
+            "Claims extraction and triage — Documents and images become structured claims with confidence and sources.",
+            "Fraud and network scoring — Claim and claimant-network risk scores, with the reasons behind each flag.",
+            "Severity and loss estimation — Claim-cost models built beside your actuarial team; reserving stays theirs.",
+            "Pricing and conversion models — Rate and conversion models your underwriters review; filings stay yours.",
+            "NBA and marketing effectiveness — Retention and cross-sell recommendations plus media readouts, with evidence."
+          ],
+          "tier": "selective"
+        },
+        {
+          "name": "Energy supply and demand analytics",
+          "outcome": "Demand and supply risk visible hours ahead, not after the day closes.",
+          "what": "Forecasting and risk analytics on meter, generation, weather and price data: demand, shortfall and exposure. We do not claim grid control or SCADA engineering; control actions stay with your OT team or a partner.",
+          "who_for": "Energy planners, trading and supply operations teams.",
+          "capabilities": [
+            "Load and generation forecasting",
+            "Supply assurance and shortfall",
+            "Price and market data joins",
+            "Portfolio exposure views",
+            "Asset performance analytics"
+          ],
+          "details": [
+            "Load and generation forecasting — Demand and output forecasts on your history, with accuracy tracked.",
+            "Supply assurance and shortfall — Scenarios showing shortfall risk per hour and day ahead, with drivers.",
+            "Price and market data joins — Spot, forward and weather feeds joined into one analytics layer.",
+            "Portfolio exposure views — Exposure by hour, contract and asset, so a position can be explained fast.",
+            "Asset performance analytics — Generation and efficiency against plan, with reasons behind the variance."
+          ],
+          "tier": "selective"
+        }
+      ]
+    }
+  ],
+  "extras": {}
+}

@@ -1,0 +1,30 @@
+#!/bin/sh
+# Pre-push gate.
+#
+# Typecheck runs on every push: it is the cheapest check that catches the mistake
+# that actually matters — code that cannot compile reaching release or production.
+# Unit tests are left to the author because they need a database and a slower run;
+# CONTRIBUTING lists them as required before opening a pull request.
+
+remote="$1"
+
+# Only guard the long-lived branches; a scratch feature branch may be work in progress.
+guarded=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/release|refs/heads/production|refs/heads/dev) guarded=1 ;;
+  esac
+done
+
+[ "$guarded" -eq 0 ] && exit 0
+
+echo "→ typecheck before pushing to a long-lived branch…"
+if ! npm run --silent typecheck; then
+  echo ""
+  echo "✖ Typecheck failed. Nothing was pushed."
+  echo "  Fix the errors, or push with 'git push --no-verify' if you know the failure is unrelated."
+  exit 1
+fi
+
+echo "✓ typecheck passed"
+exit 0

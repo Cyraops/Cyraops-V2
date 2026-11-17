@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# The product is not marketing content: keep it out of the index.
+Disallow: /api/
+Disallow: /login
+Disallow: /setup
+Disallow: /dashboard
+Disallow: /crm
+Disallow: /projects
+Disallow: /tasks
+Disallow: /chat
+Disallow: /email
+Disallow: /calendar
+Disallow: /activity
+Disallow: /website
+Disallow: /cost
+Disallow: /team
+Disallow: /settings
+Disallow: /ai
+Disallow: /uploads/
+Disallow: /index.html
+
+Sitemap: https://www.cyraops.com/sitemap.xml

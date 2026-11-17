@@ -1,0 +1,282 @@
+{
+  "manifestMetadata": {
+    "description": "Pre-purge verified synthetic upload file manifest for Cyraops development environment",
+    "sourceDirectory": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads",
+    "totalFiles": 34,
+    "generatedAt": "2026-11-07T14:41:00Z"
+  },
+  "files": [
+    {
+      "invoiceRecordId": "cmvzwjj4b0028xt1uu3x78fig",
+      "fileKey": "0f948c37-f663-420f-ade6-8155135bb3ae.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/0f948c37-f663-420f-ade6-8155135bb3ae.pdf"
+    },
+    {
+      "invoiceRecordId": "cmvzvtvlb0029xtk2gg7t715s",
+      "fileKey": "127c0eaf-2a73-447f-909b-7880b61e9964.pdf",
+      "fileName": "aws_invoice_999_75.00.pdf",
+      "fileSizeBytes": 61,
+      "sha256": "1dedd013c06601ae3cce6ba9213bf0aa6a8e31053c7b1320f7fda4981cbfd49a",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/127c0eaf-2a73-447f-909b-7880b61e9964.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw2ovhac00hrxthhx6qnkwg5",
+      "fileKey": "172fa23f-466e-4d72-bbc3-281a98e15a6d.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/172fa23f-466e-4d72-bbc3-281a98e15a6d.pdf"
+    },
+    {
+      "invoiceRecordId": "cmvzvtvll002bxtk2hrb9hiqr",
+      "fileKey": "181e902a-17ab-4c3a-9f35-e07e76d66851.pdf",
+      "fileName": "aws_invoice_999_75.00.pdf",
+      "fileSizeBytes": 61,
+      "sha256": "1dedd013c06601ae3cce6ba9213bf0aa6a8e31053c7b1320f7fda4981cbfd49a",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/181e902a-17ab-4c3a-9f35-e07e76d66851.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3cj3z0005fxt916lak9vwj",
+      "fileKey": "18983a20-0746-441b-8a37-f088c6cbc232.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/18983a20-0746-441b-8a37-f088c6cbc232.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw2pqx7l005jxtj00x2286zd",
+      "fileKey": "19a1f58e-2345-41a2-a0e9-68cae269477c.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/19a1f58e-2345-41a2-a0e9-68cae269477c.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3hg1ez006uxty8at7ipg2y",
+      "fileKey": "19bea4b1-4172-4d89-aeb4-8177eccab88d.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/19bea4b1-4172-4d89-aeb4-8177eccab88d.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3iezli003jxtj2eke63sa6",
+      "fileKey": "24cadacd-f2a4-436c-854b-40df5e0411e0.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/24cadacd-f2a4-436c-854b-40df5e0411e0.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw2okzin00c0xthhjazhfc7l",
+      "fileKey": "25bdeae1-cde5-4de8-8418-5d67c9ea385c.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/25bdeae1-cde5-4de8-8418-5d67c9ea385c.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw15mmbq0083xtzutkmme4xw",
+      "fileKey": "2984a928-3ea5-41a4-bd9b-032510c88aa2.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/2984a928-3ea5-41a4-bd9b-032510c88aa2.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw162ats00e4xtzubmcxhovk",
+      "fileKey": "2f04f8d9-8c32-428b-b4e6-0b2be5c44a2d.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/2f04f8d9-8c32-428b-b4e6-0b2be5c44a2d.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3hg1es006sxty8wfoqj9ny",
+      "fileKey": "3a918526-78f4-4fda-b73a-3faf29b7961f.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/3a918526-78f4-4fda-b73a-3faf29b7961f.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3hfru9002yxty8h9s7wtwy",
+      "fileKey": "3e5fb0bb-bf98-436e-80b4-2ecb048e801d.pdf",
+      "fileName": "aws_invoice_999_75.00.pdf",
+      "fileSizeBytes": 61,
+      "sha256": "1dedd013c06601ae3cce6ba9213bf0aa6a8e31053c7b1320f7fda4981cbfd49a",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/3e5fb0bb-bf98-436e-80b4-2ecb048e801d.pdf"
+    },
+    {
+      "invoiceRecordId": "cmvzwjj4k002axt1uvh1brla6",
+      "fileKey": "43b3a181-bcba-4b9e-8bd8-ec96f715fb24.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/43b3a181-bcba-4b9e-8bd8-ec96f715fb24.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw11gy61007lxtjg3ocylk13",
+      "fileKey": "46886764-907a-455e-ba9b-0df9c5eb81a9.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/46886764-907a-455e-ba9b-0df9c5eb81a9.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw14p1o20029xtb83nrow1ug",
+      "fileKey": "5c1db06b-4920-4c87-b88e-cd33a0de3333.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/5c1db06b-4920-4c87-b88e-cd33a0de3333.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw15mmbd0081xtzua6arad8e",
+      "fileKey": "5d2506a4-f88f-49f3-8c11-9cb006f3cc87.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/5d2506a4-f88f-49f3-8c11-9cb006f3cc87.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw14abag00kqxtjg6xtw84xh",
+      "fileKey": "8a900f55-e96e-4395-b12b-5d9019d90559.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/8a900f55-e96e-4395-b12b-5d9019d90559.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw2pqx7u005lxtj00j8zvkef",
+      "fileKey": "93994c71-dbbf-4cd1-9afc-feaa42f44ce6.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/93994c71-dbbf-4cd1-9afc-feaa42f44ce6.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw175yxr005pxthhowfv28ju",
+      "fileKey": "93c0043d-b9be-4524-863e-774f76343bee.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/93c0043d-b9be-4524-863e-774f76343bee.pdf"
+    },
+    {
+      "invoiceRecordId": "cmvzwm3zu0027xt64iohg4r84",
+      "fileKey": "af31e6f4-b765-4d42-80e2-01d4efee2ac6.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/af31e6f4-b765-4d42-80e2-01d4efee2ac6.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw175yxz005rxthhnz8tlz8t",
+      "fileKey": "af7c030f-f5e7-49fb-bd26-f1da76232af4.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/af7c030f-f5e7-49fb-bd26-f1da76232af4.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3iezl8003hxtj25gfjl4k8",
+      "fileKey": "b1ae6bdc-7e11-48c1-a485-71072c79e2f8.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/b1ae6bdc-7e11-48c1-a485-71072c79e2f8.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw11gy5f007jxtjgq46182kk",
+      "fileKey": "b9ecc769-7948-4769-a179-1719ca9ccb00.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/b9ecc769-7948-4769-a179-1719ca9ccb00.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw2okzib00byxthhy25l3oac",
+      "fileKey": "bf33b54e-00b8-4891-86d7-cd8c3bf8894d.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/bf33b54e-00b8-4891-86d7-cd8c3bf8894d.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3cj3yi005dxt91sfnopbqh",
+      "fileKey": "cc23bf3e-e6e6-4c60-85f1-51072eef4edc.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/cc23bf3e-e6e6-4c60-85f1-51072eef4edc.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw2ovha400hpxthhjwoiam2z",
+      "fileKey": "cf32d55a-1cb9-4a2e-94d8-07125f120b1c.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/cf32d55a-1cb9-4a2e-94d8-07125f120b1c.pdf"
+    },
+    {
+      "invoiceRecordId": "cmvzwm3zk0025xt64mehso0hp",
+      "fileKey": "d2daf5c2-cd1c-4ebe-b68f-fca86d9cf875.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/d2daf5c2-cd1c-4ebe-b68f-fca86d9cf875.pdf"
+    },
+    {
+      "invoiceRecordId": "cmvzwmwtz004cxt64w3urcw8m",
+      "fileKey": "d401b64c-6c00-4312-9ef5-7d06639c6487.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/d401b64c-6c00-4312-9ef5-7d06639c6487.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw14aba300koxtjgej9p4tfq",
+      "fileKey": "d7897f30-e8ff-446c-aedc-8a52a6a90989.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/d7897f30-e8ff-446c-aedc-8a52a6a90989.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw14p1oh002bxtb8sn6vknjm",
+      "fileKey": "df94a24f-5d9e-4569-bc5f-8b22e2dc6e0c.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/df94a24f-5d9e-4569-bc5f-8b22e2dc6e0c.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw162ati00e2xtzupfm1p90h",
+      "fileKey": "e806ea65-47a9-4ed5-beb2-bbff7e233332.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/e806ea65-47a9-4ed5-beb2-bbff7e233332.pdf"
+    },
+    {
+      "invoiceRecordId": "cmvzwmwu8004ext641sdadpgn",
+      "fileKey": "ed8a1c2f-e454-497c-b099-069be9d2df2c.pdf",
+      "fileName": "audit_test_inv_101.pdf",
+      "fileSizeBytes": 57,
+      "sha256": "db9f263c2efd7742ea92feff880ef455c3d2e3909c92dfc12cd829e2a40719f7",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/ed8a1c2f-e454-497c-b099-069be9d2df2c.pdf"
+    },
+    {
+      "invoiceRecordId": "cmw3hfru2002wxty8z93fbzxb",
+      "fileKey": "fe18646b-ce37-4c2b-8928-c8056e6b9826.pdf",
+      "fileName": "aws_invoice_999_75.00.pdf",
+      "fileSizeBytes": 61,
+      "sha256": "1dedd013c06601ae3cce6ba9213bf0aa6a8e31053c7b1320f7fda4981cbfd49a",
+      "sourcePath": "/Users/tanveersinghsaini/Desktop/locally hosted app dev/uploads/fe18646b-ce37-4c2b-8928-c8056e6b9826.pdf"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+# Normalize line endings across platforms
+* text=auto eol=lf
+
+# Scripts must keep LF so they run on macOS and in the container
+*.sh text eol=lf
+Dockerfile text eol=lf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+
+# Generated files that are committed: do not diff them, they churn
+package-lock.json linguist-generated=true
+src/data/catalog.json linguist-generated=false
+
+# Keep the docs diffable
+*.md text eol=lf

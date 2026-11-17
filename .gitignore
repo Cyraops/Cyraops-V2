@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build output
+.next/
+out/
+build/
+dist/
+site-3d/dist/
+marketing-source/dist/
+marketing-deploy/
+*.tsbuildinfo
+
+# Environment and secrets — never commit these
+.env
+.env.*
+!.env.example
+!.env.local.example
+config/*.yaml
+config/*.yml
+*.key
+*.pem
+*.cert
+*.p12
+*.pfx
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Runtime data
+uploads/
+public/browser-screenshots/
+public/uploads/
+*.sqlite
+*.sqlite3
+
+# Database dumps and backups (large, and they contain customer data)
+backups/
+*.dump
+*.dump.gz
+*.manifest
+
+# Logs
+*.log
+logs/
+dev-server.log
+backups/*.log
+
+# Test and coverage output
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+.audit-cache/
+
+# OS and editor noise
+.DS_Store
+._*
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Local tooling
+scratch/          # one-off audit and screenshot scripts, kept on disk only
+.vercel
+.azure/
+*.local
+tmp/

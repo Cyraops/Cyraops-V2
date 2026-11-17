@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cyraops WebRTC Test Client</title>
+  <script src="./livekit-client.umd.min.js"></script>
+</head>
+<body>
+  <h1>Cyraops WebRTC Real SFU Test Client</h1>
+  <div id="status">Initializing...</div>
+  <pre id="log"></pre>
+
+  <script>
+    window.testClient = {
+      state: "INITIALIZING",
+      connectedAt: null,
+      disconnectedAt: null,
+      disconnectReason: null,
+      roomSid: null,
+      participantSid: null,
+      identity: null,
+      error: null,
+    };
+
+    function updateStatus(msg) {
+      document.getElementById("status").innerText = msg;
+      document.getElementById("log").innerText += "\n" + new Date().toISOString() + " - " + msg;
+      console.log(msg);
+    }
+
+    async function init() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+        const url = params.get("url") || "ws://127.0.0.1:7880";
+        const identity = params.get("identity") || "unknown";
+        window.testClient.identity = identity;
+
+        if (!token) {
+          throw new Error("Missing token query parameter");
+        }
+
+        updateStatus(`Connecting to ${url} as ${identity}...`);
+        window.testClient.state = "CONNECTING";
+
+        const room = new LivekitClient.Room({
+          adaptiveStream: false,
+          dynacast: false,
+        });
+        window.room = room;
+
+        room.on(LivekitClient.RoomEvent.Connected, () => {
+          window.testClient.state = "CONNECTED";
+          window.testClient.connectedAt = new Date().toISOString();
+          window.testClient.roomSid = room.sid;
+          window.testClient.participantSid = room.localParticipant.sid;
+          updateStatus(`CONNECTED successfully to room ${room.name} (SID: ${room.sid}, Participant: ${room.localParticipant.identity})`);
+        });
+
+        room.on(LivekitClient.RoomEvent.Disconnected, (reason) => {
+          window.testClient.state = "DISCONNECTED";
+          window.testClient.disconnectedAt = new Date().toISOString();
+          window.testClient.disconnectReason = String(reason);
+          updateStatus(`DISCONNECTED from room. Reason: ${reason}`);
+        });
+
+        room.on(LivekitClient.RoomEvent.ParticipantConnected, (p) => {
+          updateStatus(`Participant joined: ${p.identity}`);
+        });
+
+        room.on(LivekitClient.RoomEvent.ParticipantDisconnected, (p) => {
+          updateStatus(`Participant left: ${p.identity}`);
+        });
+
+        await room.connect(url, token);
+      } catch (err) {
+        window.testClient.state = "ERROR";
+        window.testClient.error = err.message || String(err);
+        updateStatus(`ERROR: ${window.testClient.error}`);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
+

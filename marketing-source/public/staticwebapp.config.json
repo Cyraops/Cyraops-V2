@@ -1,0 +1,38 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/assets/*",
+      "/crm",
+      "/crm/*",
+      "/api/*",
+      "/cyraops-mark.png",
+      "/icons.svg"
+    ]
+  },
+  "routes": [
+    {
+      "route": "/api/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/crm",
+      "rewrite": "/crm/index.html"
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/crm-not-found.html",
+      "statusCode": 404
+    }
+  },
+  "globalHeaders": {
+    "Referrer-Policy": "no-referrer",
+    "X-Content-Type-Options": "nosniff"
+  },
+  "platform": {
+    "apiRuntime": "node:20"
+  }
+}

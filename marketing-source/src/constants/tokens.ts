@@ -1,0 +1,36 @@
+export const TOKENS = {
+  colors: {
+    bgBase: '#ffffff',
+    bgSurface: '#f8fafc',
+    bgCard: '#ffffff',
+    bgCardHover: '#f1f5f9',
+    bgSectionAlt: '#f8fafc',
+    borderMuted: '#e2e8f0',
+    borderLight: '#cbd5e1',
+    borderActive: '#2563eb',
+    textPrimary: '#0f172a',
+    textSecondary: '#475569',
+    textMuted: '#64748b',
+    accent: '#2563eb',
+    accentHover: '#1d4ed8',
+    accentAzure: '#0284c7',
+    accentCyan: '#0ea5e9',
+    accentGlow: 'rgba(37, 99, 235, 0.12)',
+    danger: '#e11d48',
+    warning: '#d97706',
+    success: '#059669',
+    shadowSm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    shadowMd: '0 4px 20px -2px rgba(15, 23, 42, 0.06)',
+    shadowLg: '0 20px 30px -6px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04)',
+  },
+  typography: {
+    fontSans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    fontMono: "'JetBrains Mono', monospace",
+  },
+  motion: {
+    fast: '200ms cubic-bezier(0.16, 1, 0.3, 1)',
+    medium: '400ms cubic-bezier(0.16, 1, 0.3, 1)',
+    slow: '700ms cubic-bezier(0.16, 1, 0.3, 1)',
+    spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+  }
+};

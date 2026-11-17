@@ -1,0 +1,14 @@
+.git
+.next
+node_modules
+uploads
+data
+backups
+**/backups
+scratch
+**/scratch
+.env
+.env.*
+!.env.example
+coverage
+*.log
