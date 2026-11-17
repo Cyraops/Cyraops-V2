@@ -1004,6 +1004,9 @@ model AiConversation {
   agentId   String
   userId    String
   title     String        @default("New Conversation")
+  /// The DeepSeek Harness durable session id the AgentRuntime adapter maps
+  /// onto this conversation; null until the first turn announces one.
+  harnessSessionId String?
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   agent     AiAgent       @relation(fields: [agentId], references: [id], onDelete: Cascade)
