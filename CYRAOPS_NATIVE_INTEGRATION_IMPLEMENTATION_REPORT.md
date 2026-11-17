@@ -49,7 +49,19 @@ tarball with sha256 provenance and a 3-item legal-review flag list.
 Open: the PoC still resolves modules from the distribution install; the next
 test is booting the identical tree from `vendor/dsh/`.
 
-## Checkpoint 3 — runtime adapter (pending)
+## Checkpoint 3 — runtime adapter ✅ (verified 2026-11-18, commit 65be2c9)
+
+- `runtime.ts` factory (`HARNESS_RUNTIME=cli|native|none`, cli default),
+  `cli-runtime.ts`, `native-runtime.ts`, `store.ts` (Prisma `harnessSessionId`
+  on AiConversation, migration `20261117200330_harness_session_id`), route gains
+  a post-turn `runtime` field.
+- 361 tests: 360 pass, 0 fail, 1 pre-existing skip; 0 new tsc errors.
+- CLI path: banana + continuation banana. Native plain-node: banana 3.4 s.
+- **Blocker (honest):** Turbopack rejects the computed `file://` dynamic import
+  ("Cannot find module as expression is too dynamic") and statically traces
+  `createRequire` loads — so inside Next dev the native host delegates to CLI
+  with the reason surfaced. Fix in progress: worker-thread load or a node_modules
+  shim package so the in-process path serves the UI.
 
 ## Checkpoint 4 — UI wiring (pending)
 
