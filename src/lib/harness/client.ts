@@ -9,6 +9,7 @@
  */
 
 import { spawn } from "node:child_process";
+import { finalTextOf, parseHarnessLine, sessionIdOf } from "./events";
 
 export interface HarnessEvent {
   type: string;
@@ -82,14 +83,12 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
         buffer = buffer.slice(index + 1);
         index = buffer.indexOf("\n");
         if (!line) continue;
-        try {
-          const event = JSON.parse(line) as HarnessEvent;
+        const event = parseHarnessLine(line);
+        if (event) {
           events.push(event);
-          if (event.type === "session" && typeof event.sessionId === "string") sessionId = event.sessionId;
-          if (event.type === "final" && typeof event.text === "string") final = event.text;
+          const announced = sessionIdOf([event]);
+          if (announced) sessionId = announced;
           options.onEvent?.(event);
-        } catch {
-          // Non-JSON diagnostics, not an event.
         }
       }
     });
@@ -106,7 +105,7 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
 
     child.on("close", (code) => {
       clearTimeout(timer);
-      const text = final || [...events].reverse().find((event) => event.type === "text" && event.text)?.text || "";
+      const text = final || finalTextOf(events);
       resolve({ text, sessionId, events, stderr, code, timedOut });
     });
   });
