@@ -34,5 +34,5 @@ test("usage comes from the last step_end that carries it", () => {
 });
 
 test("step count counts completed steps", () => {
-  assert.equal(stepCountOf([{ phase: "step_end" }, { phase: "step_start" }, { phase: "step_end" }]), 2);
+  assert.equal(stepCountOf([{ type: "status", phase: "step_end" }, { type: "status", phase: "step_start" }, { type: "status", phase: "step_end" }]), 2);
 });

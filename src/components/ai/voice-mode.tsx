@@ -81,7 +81,7 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
   const [micStatus, setMicStatus] = useState("mic off");
   const [hostedVoice, setHostedVoice] = useState<null | "deepseek" | "openai" | "elevenlabs">(null);
   const [serverAsr, setServerAsr] = useState(false);
-  const [pendingApproval, setPendingApproval] = useState<{ id: string; toolName: string; summary: string } | null>(null);
+  const [pendingApproval, setPendingApproval] = useState<{ id: string; toolName: string; summary: string; via?: "harness" } | null>(null);
   const asrAvailableRef = useRef(false);
   const pendingApprovalRef = useRef<string | null>(null);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -643,6 +643,8 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
                 spokenUpTo += sentence[1].length;
                 enqueueSpeech(sentence[1]);
               }
+            } else if (payload.type === "approval") {
+              setPendingApproval({ id: payload.approvalId, toolName: payload.toolName, summary: payload.summary, via: "harness" });
             } else if (payload.type === "done") {
               if (payload.reply) reply = payload.reply;
               if (payload.conversationId) {
@@ -889,10 +891,15 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       setPendingApproval(null);
       setPhaseSafe("thinking");
       try {
-        const response = await fetch("/api/assistant/actions/confirm", {
+        const endpoint = pendingApproval?.via === "harness" ? "/api/harness/approve" : "/api/assistant/actions/confirm";
+        const body =
+          pendingApproval?.via === "harness"
+            ? JSON.stringify({ approvalId: actionId, approve })
+            : JSON.stringify({ actionId, approve });
+        const response = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ actionId, approve }),
+          body,
         });
         const data = await response.json().catch(() => ({}));
         if (approve && (data.status === "FAILED" || data.error || data.result?.error)) {

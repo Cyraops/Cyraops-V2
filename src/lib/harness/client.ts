@@ -58,7 +58,8 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
   args.push(options.task);
 
   return new Promise<HarnessResult>((resolve) => {
-    const child = spawn(harnessBinary(), args, {
+    // Next's build rejects dynamic spawn in App Routes unless excluded from static analysis.
+    const child = spawn(/* turbopackIgnore: true */ harnessBinary(), args, {
       cwd: options.cwd ?? process.cwd(),
       env: options.env ?? process.env,
       stdio: ["ignore", "pipe", "pipe"],
