@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-11-17T19:39:17.609Z",
+  "scannedRoot": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh",
+  "packageJsonCount": 678,
+  "byLicense": {
+    "MIT": 311,
+    "Apache-2.0": 50,
+    "unspecified": 288,
+    "BSD-3-Clause": 15,
+    "ISC": 7,
+    "BSD-2-Clause": 2,
+    "Python-2.0": 1,
+    "Unlicense": 1,
+    "BlueOak-1.0.0": 1,
+    "0BSD": 1,
+    "(MIT OR CC0-1.0)": 1
+  },
+  "needsLegalReview": [
+    {
+      "name": "argparse",
+      "version": "2.0.1",
+      "path": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/argparse/package.json",
+      "relativePath": "argparse/package.json",
+      "license": "Python-2.0",
+      "classification": "needs-legal-review",
+      "nestedCopy": false
+    },
+    {
+      "name": "lru-cache",
+      "version": "11.5.3",
+      "path": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/lru-cache/package.json",
+      "relativePath": "lru-cache/package.json",
+      "license": "BlueOak-1.0.0",
+      "classification": "needs-legal-review",
+      "nestedCopy": false
+    },
+    {
+      "name": "type-fest",
+      "version": "4.41.0",
+      "path": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/type-fest/package.json",
+      "relativePath": "type-fest/package.json",
+      "license": "(MIT OR CC0-1.0)",
+      "classification": "needs-legal-review",
+      "nestedCopy": false
+    }
+  ],
+  "unspecifiedCount": 288
+}

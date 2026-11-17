@@ -69,3 +69,4 @@ scratch/          # one-off audit and screenshot scripts, kept on disk only
 .azure/
 *.local
 tmp/
+vendor/dsh/

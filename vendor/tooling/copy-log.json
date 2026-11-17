@@ -1,0 +1,3140 @@
+{
+  "generatedAt": "2026-11-17T19:39:14.531Z",
+  "sourceManifest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/scratch/vendor/manifest.json",
+  "destinationRoot": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh",
+  "manifestPackageCount": 347,
+  "manifestNestedCount": 42,
+  "note": "manifest \"nested\" entries are npm version-conflict copies that live inside their parent package directory; they are preserved as part of the parent directory copy and not duplicated at the vendor root.",
+  "copied": [
+    {
+      "name": "@anthropic-ai/sdk",
+      "version": "0.129.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@anthropic-ai/sdk",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@anthropic-ai/sdk",
+      "bytes": 9503985,
+      "files": 1753,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/client-bedrock-runtime",
+      "version": "3.1127.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/client-bedrock-runtime",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/client-bedrock-runtime",
+      "bytes": 860206,
+      "files": 109,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/core",
+      "version": "3.981.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/core",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/core",
+      "bytes": 457631,
+      "files": 327,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-env",
+      "version": "3.972.84",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-env",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-env",
+      "bytes": 19452,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-http",
+      "version": "3.972.86",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-http",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-http",
+      "bytes": 161519,
+      "files": 86,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-ini",
+      "version": "3.973.30",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-ini",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-ini",
+      "bytes": 53399,
+      "files": 34,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-login",
+      "version": "3.972.92",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-login",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-login",
+      "bytes": 34882,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-node",
+      "version": "3.972.97",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-node",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-node",
+      "bytes": 40839,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-process",
+      "version": "3.972.84",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-process",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-process",
+      "bytes": 23594,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-sso",
+      "version": "3.973.28",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-sso",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-sso",
+      "bytes": 77302,
+      "files": 63,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/credential-provider-web-identity",
+      "version": "3.972.90",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-web-identity",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/credential-provider-web-identity",
+      "bytes": 31255,
+      "files": 13,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/eventstream-handler-node",
+      "version": "3.972.42",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/eventstream-handler-node",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/eventstream-handler-node",
+      "bytes": 27669,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/middleware-eventstream",
+      "version": "3.972.38",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/middleware-eventstream",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/middleware-eventstream",
+      "bytes": 22720,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/middleware-websocket",
+      "version": "3.972.66",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/middleware-websocket",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/middleware-websocket",
+      "bytes": 58395,
+      "files": 37,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/nested-clients",
+      "version": "3.998.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/nested-clients",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/nested-clients",
+      "bytes": 987137,
+      "files": 416,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/signature-v4-multi-region",
+      "version": "3.996.52",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/signature-v4-multi-region",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/signature-v4-multi-region",
+      "bytes": 38617,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/token-providers",
+      "version": "3.1127.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/token-providers",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/token-providers",
+      "bytes": 38250,
+      "files": 37,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/types",
+      "version": "3.975.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/types",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/types",
+      "bytes": 53965,
+      "files": 124,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws-sdk/xml-builder",
+      "version": "3.972.43",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/xml-builder",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws-sdk/xml-builder",
+      "bytes": 41741,
+      "files": 28,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@aws/lambda-invoke-store",
+      "version": "0.3.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws/lambda-invoke-store",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@aws/lambda-invoke-store",
+      "bytes": 29557,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@babel/code-frame",
+      "version": "7.29.7",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/code-frame",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@babel/code-frame",
+      "bytes": 34632,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@babel/helper-validator-identifier",
+      "version": "7.29.7",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/helper-validator-identifier",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@babel/helper-validator-identifier",
+      "bytes": 48813,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@babel/runtime",
+      "version": "7.29.14",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/runtime",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@babel/runtime",
+      "bytes": 247201,
+      "files": 249,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/cordis",
+      "version": "4.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/cordis",
+      "bytes": 253154,
+      "files": 32,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-group",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-group",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/cordis-plugin-group",
+      "bytes": 2980,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-include",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-include",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/cordis-plugin-include",
+      "bytes": 74411,
+      "files": 13,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-loader",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-loader",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/cordis-plugin-loader",
+      "bytes": 109859,
+      "files": 31,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-timer",
+      "version": "1.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-timer",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/cordis-plugin-timer",
+      "bytes": 16427,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/cosmokit",
+      "version": "1.9.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cosmokit",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/cosmokit",
+      "bytes": 65942,
+      "files": 25,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-agent",
+      "bytes": 4740220,
+      "files": 748,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-default-model",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-default-model",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-agent-default-model",
+      "bytes": 20119,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-instructions",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-instructions",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-agent-instructions",
+      "bytes": 132624,
+      "files": 20,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-loop",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-loop",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-agent-loop",
+      "bytes": 4706091,
+      "files": 738,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-preset-registry",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-preset-registry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-agent-preset-registry",
+      "bytes": 4751299,
+      "files": 752,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-anonymous-user-id",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-anonymous-user-id",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-anonymous-user-id",
+      "bytes": 25921,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-api-gateway",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-api-gateway",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-api-gateway",
+      "bytes": 527383,
+      "files": 40,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-api-remote-access",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-api-remote-access",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-api-remote-access",
+      "bytes": 4719717,
+      "files": 751,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-app-boot",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-app-boot",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-app-boot",
+      "bytes": 415339,
+      "files": 29,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-atomic-write",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-atomic-write",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-atomic-write",
+      "bytes": 36946,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-attachment",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-attachment",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-attachment",
+      "bytes": 82131,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-attachment-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-attachment-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-attachment-local",
+      "bytes": 102062,
+      "files": 23,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-authorization",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-authorization",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-authorization",
+      "bytes": 69964,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-base",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-base",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-base",
+      "bytes": 50149,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-bash-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-bash-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-bash-local",
+      "bytes": 43854,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-bash-sandbox",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-bash-sandbox",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-bash-sandbox",
+      "bytes": 40773,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-brand",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-brand",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-brand",
+      "bytes": 15005,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-chunked-list",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-chunked-list",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-chunked-list",
+      "bytes": 4571827,
+      "files": 725,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-cmdline",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-cmdline",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-cmdline",
+      "bytes": 34110,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-compact",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-compact",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-command-compact",
+      "bytes": 27817,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-feedback",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-feedback",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-command-feedback",
+      "bytes": 4619326,
+      "files": 740,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-goal",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-goal",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-command-goal",
+      "bytes": 30468,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-commands",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-commands",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-commands",
+      "bytes": 4730562,
+      "files": 744,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-compaction",
+      "bytes": 67991,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-basic",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-basic",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-compaction-basic",
+      "bytes": 124594,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-image-offload",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-image-offload",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-compaction-image-offload",
+      "bytes": 38728,
+      "files": 22,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-tool-result-pruner",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-tool-result-pruner",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-compaction-tool-result-pruner",
+      "bytes": 37220,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-config-editor",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-config-editor",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-config-editor",
+      "bytes": 20277,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-credentials",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-credentials",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-credentials",
+      "bytes": 59485,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-credentials-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-credentials-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-credentials-local",
+      "bytes": 80244,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-deepseek-account",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-account",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-deepseek-account",
+      "bytes": 38075,
+      "files": 12,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-deepseek-account-platform",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-account-platform",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-deepseek-account-platform",
+      "bytes": 4708233,
+      "files": 742,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-deepseek-llm-api-extensions",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-llm-api-extensions",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-deepseek-llm-api-extensions",
+      "bytes": 26012,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-deque",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deque",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-deque",
+      "bytes": 14256,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-fs",
+      "bytes": 51948,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-fs-local",
+      "bytes": 95033,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-observation-policy",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-observation-policy",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-fs-observation-policy",
+      "bytes": 30968,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-patch",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-patch",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-fs-patch",
+      "bytes": 44492,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-sandbox",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-sandbox",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-fs-sandbox",
+      "bytes": 39196,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-goal",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-goal",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-goal",
+      "bytes": 4826458,
+      "files": 748,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-goal-round-driver",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-goal-round-driver",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-goal-round-driver",
+      "bytes": 40157,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-headless",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-headless",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-headless",
+      "bytes": 94011,
+      "files": 22,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-hmr",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-hmr",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-hmr",
+      "bytes": 113213,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-home-paths",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-home-paths",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-home-paths",
+      "bytes": 31355,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-plugin-inventory",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-host-plugin-inventory",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-host-plugin-inventory",
+      "bytes": 4611606,
+      "files": 740,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-webserver",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-host-webserver",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-host-webserver",
+      "bytes": 73749,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-http-proxy",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-http-proxy",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-http-proxy",
+      "bytes": 62064,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-jobs",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-jobs",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-jobs",
+      "bytes": 66763,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-jobs-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-jobs-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-jobs-local",
+      "bytes": 77015,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-launch-environment",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-launch-environment",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-launch-environment",
+      "bytes": 21967,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-lazy-require",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-lazy-require",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-lazy-require",
+      "bytes": 10160,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-llm",
+      "bytes": 5008544,
+      "files": 762,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-deepseek",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-llm-deepseek",
+      "bytes": 262244,
+      "files": 34,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-deepseek-account",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek-account",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-llm-deepseek-account",
+      "bytes": 39611,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-deepseek-api-key",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek-api-key",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-llm-deepseek-api-key",
+      "bytes": 33240,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-pi-ai",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-pi-ai",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-llm-pi-ai",
+      "bytes": 279393,
+      "files": 29,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-retry",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-retry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-llm-retry",
+      "bytes": 4603840,
+      "files": 738,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-mcp-resources",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-mcp-resources",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-mcp-resources",
+      "bytes": 32035,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-message-feedback",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-message-feedback",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-message-feedback",
+      "bytes": 4680793,
+      "files": 740,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-official-bundles",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-official-bundles",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-official-bundles",
+      "bytes": 39275,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-otel",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-otel",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-otel",
+      "bytes": 40195,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-output-retention",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-output-retention",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-output-retention",
+      "bytes": 43757,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-package-manifest",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-package-manifest",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-package-manifest",
+      "bytes": 18502,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-permission-presets",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-permission-presets",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-permission-presets",
+      "bytes": 4695784,
+      "files": 742,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-plan-mode",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plan-mode",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-plan-mode",
+      "bytes": 4640601,
+      "files": 738,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-plugin-detail",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-detail",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-plugin-detail",
+      "bytes": 64056,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-plugin-manager",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-manager",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-plugin-manager",
+      "bytes": 5291316,
+      "files": 778,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-plugin-package-inventory-deepseek",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-package-inventory-deepseek",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-plugin-package-inventory-deepseek",
+      "bytes": 32898,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-ptc-runtime",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-ptc-runtime",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-ptc-runtime",
+      "bytes": 47318,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-ptc-runtime-node",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-ptc-runtime-node",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-ptc-runtime-node",
+      "bytes": 645394,
+      "files": 43,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-pwsh-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-pwsh-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-pwsh-local",
+      "bytes": 54564,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-pwsh-sandbox",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-pwsh-sandbox",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-pwsh-sandbox",
+      "bytes": 42102,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-repeat-tool-reminder",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-repeat-tool-reminder",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-repeat-tool-reminder",
+      "bytes": 126172,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-sandbox",
+      "bytes": 71956,
+      "files": 11,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-sandbox-local",
+      "bytes": 63981,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-policy",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-policy",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-sandbox-policy",
+      "bytes": 4602773,
+      "files": 734,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-windows-acl",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-windows-acl",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-sandbox-windows-acl",
+      "bytes": 229047,
+      "files": 21,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-scope",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-scope",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-scope",
+      "bytes": 39104,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session",
+      "bytes": 342721,
+      "files": 34,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-checkpoint-policy",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-checkpoint-policy",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-checkpoint-policy",
+      "bytes": 24454,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-format",
+      "bytes": 52018,
+      "files": 14,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-catalog",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-catalog",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-format-catalog",
+      "bytes": 32752,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v0-to-v1",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v0-to-v1",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-format-v0-to-v1",
+      "bytes": 133396,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v1-to-v2",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v1-to-v2",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-format-v1-to-v2",
+      "bytes": 57617,
+      "files": 12,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v2-to-v3",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v2-to-v3",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-format-v2-to-v3",
+      "bytes": 88120,
+      "files": 12,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-format-v3-to-v4",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v3-to-v4",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-format-v3-to-v4",
+      "bytes": 165857,
+      "files": 23,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-log-deepseek",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-log-deepseek",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-log-deepseek",
+      "bytes": 50098,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-persistence",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-persistence",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-persistence",
+      "bytes": 73513,
+      "files": 11,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-persistence-jsonl",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-persistence-jsonl",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-persistence-jsonl",
+      "bytes": 811966,
+      "files": 28,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-projection",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-projection",
+      "bytes": 4687974,
+      "files": 736,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-projection-cache",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection-cache",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-projection-cache",
+      "bytes": 4621582,
+      "files": 734,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-query",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-query",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-query",
+      "bytes": 118126,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-query-sqlite",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-query-sqlite",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-query-sqlite",
+      "bytes": 88956,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-telemetry",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-telemetry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-telemetry",
+      "bytes": 46957,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-telemetry-otel",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-telemetry-otel",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-telemetry-otel",
+      "bytes": 40467,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-title",
+      "bytes": 4660645,
+      "files": 740,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title-first-prompt-llm",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title-first-prompt-llm",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-title-first-prompt-llm",
+      "bytes": 26395,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title-llm",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title-llm",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-session-title-llm",
+      "bytes": 37494,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-settings",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-settings",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-settings",
+      "bytes": 73933,
+      "files": 22,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-shell",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-shell",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-shell",
+      "bytes": 46554,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-shell-env",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-shell-env",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-shell-env",
+      "bytes": 30769,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-skill",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-skill",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-skill",
+      "bytes": 65801,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-skill-filesystem",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-skill-filesystem",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-skill-filesystem",
+      "bytes": 63597,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-spill",
+      "bytes": 29385,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-spill-local",
+      "bytes": 56125,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill-policy",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill-policy",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-spill-policy",
+      "bytes": 54288,
+      "files": 22,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-storage",
+      "bytes": 40435,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage-domain",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage-domain",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-storage-domain",
+      "bytes": 4624457,
+      "files": 737,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage-json",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage-json",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-storage-json",
+      "bytes": 64646,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-subagent",
+      "bytes": 5146848,
+      "files": 780,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent-fork-in-process",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent-fork-in-process",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-subagent-fork-in-process",
+      "bytes": 27490,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent-spawn-in-process",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent-spawn-in-process",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-subagent-spawn-in-process",
+      "bytes": 24625,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-subprocess",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subprocess",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-subprocess",
+      "bytes": 56743,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-subprocess-local",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subprocess-local",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-subprocess-local",
+      "bytes": 249439,
+      "files": 35,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-system-prompt",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-system-prompt",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-system-prompt",
+      "bytes": 70404,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-timeout",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-timeout",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-timeout",
+      "bytes": 30793,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-token-meter",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-token-meter",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-token-meter",
+      "bytes": 4729565,
+      "files": 756,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-bash",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-bash",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-bash",
+      "bytes": 80736,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-call-timeout-policy",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-call-timeout-policy",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-call-timeout-policy",
+      "bytes": 30792,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-executor-native",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-executor-native",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-executor-native",
+      "bytes": 13005,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-executor-ptc",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-executor-ptc",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-executor-ptc",
+      "bytes": 236704,
+      "files": 34,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-fs",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-fs",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-fs",
+      "bytes": 189437,
+      "files": 34,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-fs-search",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-fs-search",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-fs-search",
+      "bytes": 134760,
+      "files": 20,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-goal",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-goal",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-goal",
+      "bytes": 48676,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-jobs",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-jobs",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-jobs",
+      "bytes": 67602,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-present",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-present",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-present",
+      "bytes": 28047,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-pwsh",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-pwsh",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-pwsh",
+      "bytes": 80282,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-skill",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-skill",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-skill",
+      "bytes": 80543,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-subagent",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-subagent",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-subagent",
+      "bytes": 4654497,
+      "files": 747,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-subagent-control",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-subagent-control",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-subagent-control",
+      "bytes": 37916,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-todo",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-todo",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-todo",
+      "bytes": 4607177,
+      "files": 738,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-web",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-web",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-web",
+      "bytes": 105317,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-workflow",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-workflow",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-workflow",
+      "bytes": 81617,
+      "files": 20,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-working-directory",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-working-directory",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tool-working-directory",
+      "bytes": 13429,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-tools",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tools",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-tools",
+      "bytes": 308977,
+      "files": 34,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-loader",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-loader",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-typert-loader",
+      "bytes": 43532,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-protocol",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-protocol",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-typert-protocol",
+      "bytes": 143770,
+      "files": 22,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-registry",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-registry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-typert-registry",
+      "bytes": 4698887,
+      "files": 742,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-user-approval",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-approval",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-user-approval",
+      "bytes": 4618715,
+      "files": 736,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-user-questions",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-questions",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-user-questions",
+      "bytes": 4738870,
+      "files": 744,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-code-language",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-code-language",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-util-code-language",
+      "bytes": 19061,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-crypto",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-crypto",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-util-crypto",
+      "bytes": 10250,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-time",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-time",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-util-time",
+      "bytes": 101708,
+      "files": 12,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-values",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-values",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-util-values",
+      "bytes": 55011,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-web",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-web",
+      "bytes": 52449,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-deepseek-api",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-deepseek-api",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-web-deepseek-api",
+      "bytes": 57019,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-fetch-http",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-fetch-http",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-web-fetch-http",
+      "bytes": 48052,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-search-deepseek",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-search-deepseek",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-web-search-deepseek",
+      "bytes": 70926,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-win32-process",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-win32-process",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-win32-process",
+      "bytes": 67959,
+      "files": 13,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-workflow",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workflow",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-workflow",
+      "bytes": 44887,
+      "files": 12,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-workflow-ptc",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workflow-ptc",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-workflow-ptc",
+      "bytes": 156010,
+      "files": 23,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-working-directory",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-working-directory",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-working-directory",
+      "bytes": 25639,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/dsh-workspace",
+      "version": "0.2.2-rc.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workspace",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/dsh-workspace",
+      "bytes": 4717262,
+      "files": 742,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/node-addon-system",
+      "version": "0.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/node-addon-system",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/node-addon-system",
+      "bytes": 35391,
+      "files": 11,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@deepseek-ai/schemastery",
+      "version": "3.19.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/schemastery",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@deepseek-ai/schemastery",
+      "bytes": 118476,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@earendil-works/pi-ai",
+      "version": "1.5.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-ai",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@earendil-works/pi-ai",
+      "bytes": 4509513,
+      "files": 886,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@earendil-works/pi-schema",
+      "version": "1.5.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-schema",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@earendil-works/pi-schema",
+      "bytes": 659943,
+      "files": 176,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@earendil-works/pi-telemetry",
+      "version": "1.5.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-telemetry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@earendil-works/pi-telemetry",
+      "bytes": 226323,
+      "files": 34,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@eslint-community/regexpp",
+      "version": "4.12.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@eslint-community/regexpp",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@eslint-community/regexpp",
+      "bytes": 474228,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@google/genai",
+      "version": "2.21.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@google/genai",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@google/genai",
+      "bytes": 11277335,
+      "files": 25,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@img/colour",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@img/colour",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@img/colour",
+      "bytes": 73264,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@joplin/turndown-plugin-gfm",
+      "version": "1.0.71",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@joplin/turndown-plugin-gfm",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@joplin/turndown-plugin-gfm",
+      "bytes": 19629,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@js-temporal/polyfill",
+      "version": "0.5.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@js-temporal/polyfill",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@js-temporal/polyfill",
+      "bytes": 2981675,
+      "files": 38,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@keyv/serialize",
+      "version": "1.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@keyv/serialize",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@keyv/serialize",
+      "bytes": 8107,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@mixmark-io/domino",
+      "version": "2.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@mixmark-io/domino",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@mixmark-io/domino",
+      "bytes": 7736745,
+      "files": 1023,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/api",
+      "version": "1.9.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/api",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/api",
+      "bytes": 1001329,
+      "files": 588,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/api-logs",
+      "version": "0.222.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/api-logs",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/api-logs",
+      "bytes": 136913,
+      "files": 120,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/core",
+      "version": "2.11.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/core",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/core",
+      "bytes": 583971,
+      "files": 327,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/otlp-exporter-base",
+      "version": "0.222.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/otlp-exporter-base",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/otlp-exporter-base",
+      "bytes": 647539,
+      "files": 327,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/otlp-transformer",
+      "version": "0.222.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/otlp-transformer",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/otlp-transformer",
+      "bytes": 1053804,
+      "files": 399,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/resources",
+      "version": "2.11.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/resources",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/resources",
+      "bytes": 440928,
+      "files": 291,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/sdk-logs",
+      "version": "0.222.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-logs",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/sdk-logs",
+      "bytes": 679622,
+      "files": 255,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/sdk-metrics",
+      "version": "2.11.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-metrics",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/sdk-metrics",
+      "bytes": 1846700,
+      "files": 606,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/sdk-trace",
+      "version": "2.11.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-trace",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/sdk-trace",
+      "bytes": 797835,
+      "files": 318,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@opentelemetry/semantic-conventions",
+      "version": "1.45.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/semantic-conventions",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@opentelemetry/semantic-conventions",
+      "bytes": 9862858,
+      "files": 79,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/aspromise",
+      "version": "1.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/aspromise",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/aspromise",
+      "bytes": 9055,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/base64",
+      "version": "1.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/base64",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/base64",
+      "bytes": 9224,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/codegen",
+      "version": "2.0.5",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/codegen",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/codegen",
+      "bytes": 9749,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/eventemitter",
+      "version": "1.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/eventemitter",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/eventemitter",
+      "bytes": 10310,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/fetch",
+      "version": "1.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/fetch",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/fetch",
+      "bytes": 14872,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/float",
+      "version": "1.0.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/float",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/float",
+      "bytes": 26968,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/path",
+      "version": "1.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/path",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/path",
+      "bytes": 7770,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/pool",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/pool",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/pool",
+      "bytes": 6249,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@protobufjs/utf8",
+      "version": "1.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/utf8",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@protobufjs/utf8",
+      "bytes": 42558,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@sec-ant/readable-stream",
+      "version": "0.4.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sec-ant/readable-stream",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@sec-ant/readable-stream",
+      "bytes": 15563,
+      "files": 25,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@sindresorhus/is",
+      "version": "7.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sindresorhus/is",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@sindresorhus/is",
+      "bytes": 106135,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@sindresorhus/merge-streams",
+      "version": "4.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sindresorhus/merge-streams",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@sindresorhus/merge-streams",
+      "bytes": 11424,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@smithy/core",
+      "version": "3.40.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/core",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@smithy/core",
+      "bytes": 1969544,
+      "files": 1172,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@smithy/credential-provider-imds",
+      "version": "4.5.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/credential-provider-imds",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@smithy/credential-provider-imds",
+      "bytes": 80309,
+      "files": 56,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@smithy/fetch-http-handler",
+      "version": "5.8.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/fetch-http-handler",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@smithy/fetch-http-handler",
+      "bytes": 51607,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@smithy/node-http-handler",
+      "version": "4.12.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/node-http-handler",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@smithy/node-http-handler",
+      "bytes": 128867,
+      "files": 56,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@smithy/signature-v4",
+      "version": "5.7.5",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/signature-v4",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@smithy/signature-v4",
+      "bytes": 106908,
+      "files": 47,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@smithy/types",
+      "version": "4.20.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/types",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@smithy/types",
+      "bytes": 317088,
+      "files": 224,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@stablelib/base64",
+      "version": "1.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@stablelib/base64",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@stablelib/base64",
+      "bytes": 46052,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@standard-schema/spec",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@standard-schema/spec",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@standard-schema/spec",
+      "bytes": 22634,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@types/http-cache-semantics",
+      "version": "4.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/http-cache-semantics",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@types/http-cache-semantics",
+      "bytes": 12149,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@types/node",
+      "version": "26.6.6",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/node",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@types/node",
+      "bytes": 2586357,
+      "files": 92,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@types/retry",
+      "version": "0.12.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/retry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@types/retry",
+      "bytes": 7654,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "@vscode/ripgrep",
+      "version": "1.18.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@vscode/ripgrep",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/@vscode/ripgrep",
+      "bytes": 4377,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "acorn",
+      "version": "8.19.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/acorn",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/acorn",
+      "bytes": 568532,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "acorn-walk",
+      "version": "8.3.5",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/acorn-walk",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/acorn-walk",
+      "bytes": 53765,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "agent-base",
+      "version": "9.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/agent-base",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/agent-base",
+      "bytes": 21009,
+      "files": 11,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "ajv",
+      "version": "8.20.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ajv",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/ajv",
+      "bytes": 1033496,
+      "files": 466,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "argparse",
+      "version": "2.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/argparse",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/argparse",
+      "bytes": 171548,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/base64-js",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/base64-js",
+      "bytes": 9624,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "bignumber.js",
+      "version": "9.3.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bignumber.js",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/bignumber.js",
+      "bytes": 351589,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "birpc",
+      "version": "4.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/birpc",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/birpc",
+      "bytes": 25405,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "bowser",
+      "version": "2.15.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bowser",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/bowser",
+      "bytes": 358208,
+      "files": 16,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "buffer-equal-constant-time",
+      "version": "1.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/buffer-equal-constant-time",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/buffer-equal-constant-time",
+      "bytes": 5232,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "byte-counter",
+      "version": "0.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/byte-counter",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/byte-counter",
+      "bytes": 8555,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "bytes",
+      "version": "3.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bytes",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/bytes",
+      "bytes": 12270,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "cacheable-lookup",
+      "version": "7.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/cacheable-lookup",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/cacheable-lookup",
+      "bytes": 25193,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "cacheable-request",
+      "version": "13.0.19",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/cacheable-request",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/cacheable-request",
+      "bytes": 79349,
+      "files": 11,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "chokidar",
+      "version": "5.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/chokidar",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/chokidar",
+      "bytes": 82062,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "commander",
+      "version": "15.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/commander",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/commander",
+      "bytes": 207052,
+      "files": 12,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "compressible",
+      "version": "2.0.18",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/compressible",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/compressible",
+      "bytes": 7355,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "compression",
+      "version": "1.8.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/compression",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/compression",
+      "bytes": 49182,
+      "files": 13,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "content-type",
+      "version": "2.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/content-type",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/content-type",
+      "bytes": 23136,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "data-uri-to-buffer",
+      "version": "4.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/data-uri-to-buffer",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/data-uri-to-buffer",
+      "bytes": 10049,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "debug",
+      "version": "2.6.9",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/debug",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/debug",
+      "bytes": 51243,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "decompress-response",
+      "version": "10.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/decompress-response",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/decompress-response",
+      "bytes": 5965,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "destroy",
+      "version": "1.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/destroy",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/destroy",
+      "bytes": 9018,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/detect-libc",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/detect-libc",
+      "bytes": 26437,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "diff",
+      "version": "9.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/diff",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/diff",
+      "bytes": 615597,
+      "files": 136,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "ecdsa-sig-formatter",
+      "version": "1.0.11",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ecdsa-sig-formatter",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/ecdsa-sig-formatter",
+      "bytes": 20588,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "eventsource-parser",
+      "version": "3.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/eventsource-parser",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/eventsource-parser",
+      "bytes": 123553,
+      "files": 21,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "execa",
+      "version": "10.2.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/execa",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/execa",
+      "bytes": 424921,
+      "files": 148,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "extend",
+      "version": "3.0.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/extend",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/extend",
+      "bytes": 23461,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-deep-equal",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/fast-deep-equal",
+      "bytes": 12966,
+      "files": 11,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "fast-sha256",
+      "version": "1.3.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-sha256",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/fast-sha256",
+      "bytes": 27246,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "fast-uri",
+      "version": "3.1.9",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-uri",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/fast-uri",
+      "bytes": 241202,
+      "files": 47,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "fetch-blob",
+      "version": "3.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fetch-blob",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/fetch-blob",
+      "bytes": 21755,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "figures",
+      "version": "6.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/figures",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/figures",
+      "bytes": 36841,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "form-data-encoder",
+      "version": "4.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/form-data-encoder",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/form-data-encoder",
+      "bytes": 59380,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "formdata-polyfill",
+      "version": "4.0.10",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/formdata-polyfill",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/formdata-polyfill",
+      "bytes": 32220,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "gaxios",
+      "version": "7.3.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gaxios",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/gaxios",
+      "bytes": 780191,
+      "files": 111,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "gcp-metadata",
+      "version": "8.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gcp-metadata",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/gcp-metadata",
+      "bytes": 56762,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "get-stream",
+      "version": "9.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/get-stream",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/get-stream",
+      "bytes": 28353,
+      "files": 13,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "google-auth-library",
+      "version": "10.9.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/google-auth-library",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/google-auth-library",
+      "bytes": 601779,
+      "files": 95,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "google-logging-utils",
+      "version": "1.1.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/google-logging-utils",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/google-logging-utils",
+      "bytes": 63510,
+      "files": 15,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "got",
+      "version": "14.6.6",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/got",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/got",
+      "bytes": 304102,
+      "files": 51,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "hosted-git-info",
+      "version": "9.0.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/hosted-git-info",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/hosted-git-info",
+      "bytes": 28422,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "http-cache-semantics",
+      "version": "4.3.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-cache-semantics",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/http-cache-semantics",
+      "bytes": 50444,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "http-proxy-agent",
+      "version": "9.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-proxy-agent",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/http-proxy-agent",
+      "bytes": 67146,
+      "files": 18,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "http2-wrapper",
+      "version": "2.2.4",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http2-wrapper",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/http2-wrapper",
+      "bytes": 77039,
+      "files": 26,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "https-proxy-agent",
+      "version": "9.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/https-proxy-agent",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/https-proxy-agent",
+      "bytes": 82936,
+      "files": 22,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "human-signals",
+      "version": "8.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/human-signals",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/human-signals",
+      "bytes": 28040,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "ipaddr.js",
+      "version": "2.5.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ipaddr.js",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/ipaddr.js",
+      "bytes": 64424,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "is-plain-obj",
+      "version": "4.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-plain-obj",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/is-plain-obj",
+      "bytes": 4080,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "is-stream",
+      "version": "4.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-stream",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/is-stream",
+      "bytes": 7619,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "is-unicode-supported",
+      "version": "2.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-unicode-supported",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/is-unicode-supported",
+      "bytes": 3958,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "js-tokens",
+      "version": "4.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/js-tokens",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/js-tokens",
+      "bytes": 15069,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "js-yaml",
+      "version": "4.3.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/js-yaml",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/js-yaml",
+      "bytes": 960180,
+      "files": 36,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "jsbi",
+      "version": "4.3.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jsbi",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/jsbi",
+      "bytes": 583518,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "json-bigint",
+      "version": "1.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-bigint",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/json-bigint",
+      "bytes": 37345,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "json-schema-to-ts",
+      "version": "3.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-schema-to-ts",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/json-schema-to-ts",
+      "bytes": 121555,
+      "files": 267,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-schema-traverse",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/json-schema-traverse",
+      "bytes": 22220,
+      "files": 12,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "jwa",
+      "version": "2.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jwa",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/jwa",
+      "bytes": 14052,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "jws",
+      "version": "4.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jws",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/jws",
+      "bytes": 18822,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "keyv",
+      "version": "5.6.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/keyv",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/keyv",
+      "bytes": 117340,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "koffi",
+      "version": "3.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/koffi",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/koffi",
+      "bytes": 1784682,
+      "files": 81,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "long",
+      "version": "5.3.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/long",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/long",
+      "bytes": 139458,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "lowercase-keys",
+      "version": "3.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/lowercase-keys",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/lowercase-keys",
+      "bytes": 3320,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "lru-cache",
+      "version": "11.5.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/lru-cache",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/lru-cache",
+      "bytes": 3334485,
+      "files": 113,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "mime-db",
+      "version": "1.54.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/mime-db",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/mime-db",
+      "bytes": 225566,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "mimic-response",
+      "version": "4.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/mimic-response",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/mimic-response",
+      "bytes": 6201,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "ms",
+      "version": "2.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ms",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/ms",
+      "bytes": 6266,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "negotiator",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/negotiator",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/negotiator",
+      "bytes": 24407,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "node-addon-api",
+      "version": "7.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-api",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/node-addon-api",
+      "bytes": 396312,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "node-addon-native-custom-loader",
+      "version": "0.1.9",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-native-custom-loader",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/node-addon-native-custom-loader",
+      "bytes": 31172,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "node-addon-require-builtin",
+      "version": "0.1.9",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-require-builtin",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/node-addon-require-builtin",
+      "bytes": 4650,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "node-domexception",
+      "version": "1.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-domexception",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/node-domexception",
+      "bytes": 29162,
+      "files": 42,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "node-fetch",
+      "version": "3.3.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-fetch",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/node-fetch",
+      "bytes": 107319,
+      "files": 17,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "node-pty",
+      "version": "1.2.0-beta.15",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-pty",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/node-pty",
+      "bytes": 26877238,
+      "files": 49,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "normalize-url",
+      "version": "8.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/normalize-url",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/normalize-url",
+      "bytes": 28554,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "npm-run-path",
+      "version": "6.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/npm-run-path",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/npm-run-path",
+      "bytes": 12713,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "on-headers",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/on-headers",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/on-headers",
+      "bytes": 8850,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "openai",
+      "version": "7.19.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/openai",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/openai",
+      "bytes": 18477473,
+      "files": 3548,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "p-cancelable",
+      "version": "4.0.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-cancelable",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/p-cancelable",
+      "bytes": 13624,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "p-limit",
+      "version": "7.3.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-limit",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/p-limit",
+      "bytes": 16103,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "p-retry",
+      "version": "4.6.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-retry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/p-retry",
+      "bytes": 11032,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "parse-ms",
+      "version": "4.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/parse-ms",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/parse-ms",
+      "bytes": 4311,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "partial-json",
+      "version": "0.1.7",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/partial-json",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/partial-json",
+      "bytes": 21852,
+      "files": 9,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "path-key",
+      "version": "3.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/path-key",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/path-key",
+      "bytes": 4553,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "picocolors",
+      "version": "1.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/picocolors",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/picocolors",
+      "bytes": 6373,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "picomatch",
+      "version": "4.0.7",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/picomatch",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/picomatch",
+      "bytes": 93759,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "pretty-ms",
+      "version": "9.3.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/pretty-ms",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/pretty-ms",
+      "bytes": 15689,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "protobufjs",
+      "version": "7.6.6",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/protobufjs",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/protobufjs",
+      "bytes": 3053104,
+      "files": 79,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "proxy-agent-negotiate",
+      "version": "1.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/proxy-agent-negotiate",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/proxy-agent-negotiate",
+      "bytes": 4509,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "quick-lru",
+      "version": "5.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/quick-lru",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/quick-lru",
+      "bytes": 8645,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "readdirp",
+      "version": "5.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/readdirp",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/readdirp",
+      "bytes": 26832,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/require-from-string",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/require-from-string",
+      "bytes": 3422,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "resolve-alpn",
+      "version": "1.2.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/resolve-alpn",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/resolve-alpn",
+      "bytes": 4645,
+      "files": 4,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "resolve.exports",
+      "version": "2.0.4",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/resolve.exports",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/resolve.exports",
+      "bytes": 24062,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "responselike",
+      "version": "4.0.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/responselike",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/responselike",
+      "bytes": 6104,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "retry",
+      "version": "0.13.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/retry",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/retry",
+      "bytes": 18852,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "rrule",
+      "version": "2.8.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/rrule",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/rrule",
+      "bytes": 687245,
+      "files": 119,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "safe-buffer",
+      "version": "5.2.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/safe-buffer",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/safe-buffer",
+      "bytes": 32101,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "semver",
+      "version": "7.8.6",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/semver",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/semver",
+      "bytes": 118657,
+      "files": 54,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "sharp",
+      "version": "0.35.5",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/sharp",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/sharp",
+      "bytes": 962168,
+      "files": 47,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "signal-exit",
+      "version": "4.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/signal-exit",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/signal-exit",
+      "bytes": 76966,
+      "files": 29,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "standardwebhooks",
+      "version": "1.1.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/standardwebhooks",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/standardwebhooks",
+      "bytes": 13402,
+      "files": 8,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "strip-final-newline",
+      "version": "4.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/strip-final-newline",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/strip-final-newline",
+      "bytes": 4382,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "ts-algebra",
+      "version": "2.0.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ts-algebra",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/ts-algebra",
+      "bytes": 101154,
+      "files": 104,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "tslib",
+      "version": "2.9.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/tslib",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/tslib",
+      "bytes": 92088,
+      "files": 14,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "turndown",
+      "version": "7.2.5",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/turndown",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/turndown",
+      "bytes": 193256,
+      "files": 10,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "type-fest",
+      "version": "4.41.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/type-fest",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/type-fest",
+      "bytes": 444035,
+      "files": 170,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "undici",
+      "version": "8.11.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/undici",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/undici",
+      "bytes": 1927456,
+      "files": 214,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "undici-types",
+      "version": "8.9.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/undici-types",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/undici-types",
+      "bytes": 120779,
+      "files": 48,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "unicorn-magic",
+      "version": "0.3.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/unicorn-magic",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/unicorn-magic",
+      "bytes": 7207,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "vary",
+      "version": "1.1.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/vary",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/vary",
+      "bytes": 8747,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "web-streams-polyfill",
+      "version": "3.3.3",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/web-streams-polyfill",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/web-streams-polyfill",
+      "bytes": 9036205,
+      "files": 43,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "which-command",
+      "version": "0.1.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/which-command",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/which-command",
+      "bytes": 15855,
+      "files": 6,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "ws",
+      "version": "8.23.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ws",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/ws",
+      "bytes": 153954,
+      "files": 19,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "yaml",
+      "version": "2.9.1",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yaml",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/yaml",
+      "bytes": 686297,
+      "files": 233,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "yocto-queue",
+      "version": "1.2.2",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yocto-queue",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/yocto-queue",
+      "bytes": 8117,
+      "files": 5,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "yoctocolors",
+      "version": "2.2.0",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yoctocolors",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/yoctocolors",
+      "bytes": 13519,
+      "files": 7,
+      "brokenSymlinks": 0
+    },
+    {
+      "name": "zod",
+      "version": "4.6.7",
+      "source": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/zod",
+      "dest": "/Users/tanveersinghsaini/Desktop/cyraops-v2/vendor/dsh/zod",
+      "bytes": 6148944,
+      "files": 840,
+      "brokenSymlinks": 0
+    }
+  ],
+  "excluded": [],
+  "errors": [],
+  "totals": {
+    "packagesCopied": 347,
+    "files": 42413,
+    "bytes": 296696826
+  }
+}
