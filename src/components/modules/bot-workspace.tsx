@@ -227,6 +227,7 @@ export function BotWorkspace() {
     { id: "deepseek-v4-pro", label: "DeepSeek V4 Pro" },
   ]);
   const [pendingAction, setPendingAction] = useState<{
+    via?: "harness";
     id: string;
     toolName: string;
     summary: string;
@@ -1021,6 +1022,27 @@ export function BotWorkspace() {
   const decide = async (approve: boolean, alwaysAllow = false) => {
     if (!pendingAction) return;
     const actionId = pendingAction.id;
+    // Harness approvals answer through the runtime broker, not the V1 tool queue.
+    if (pendingAction.via === "harness") {
+      const response = await fetch("/api/harness/approve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ approvalId: actionId, approve }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.success) {
+        setPendingAction((current) => (current ? { ...current, answered: undefined } : current));
+        setError(data.error || "That approval could not be processed.");
+        return;
+      }
+      setMessages((prev) => [...prev, {
+        id: `sys_${Date.now()}`,
+        role: "assistant",
+        content: approve ? `✅ ${pendingAction.summary || pendingAction.toolName || "Approved and run."}` : `↩️ Rejected: ${pendingAction.toolName ?? "action"}.`,
+      }]);
+      if (approve) void loadConversations();
+      return;
+    }
     // The card stays where it is, marked as answered, so the transcript still
     // explains what happened instead of the decision vanishing.
     setPendingAction((current) => (current ? { ...current, answered: approve ? "allow" : "deny" } : current));

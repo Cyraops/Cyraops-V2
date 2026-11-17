@@ -307,7 +307,7 @@ async function streamHarnessReply(
           // Mirror the V1 pendingAction shape so the SAME approval card
           // renders in the unchanged UI (answered state: the decision has
           // already been made by the time the turn completes).
-          pendingAction: result.approval ?? undefined,
+          pendingAction: result.approval ? { ...result.approval, via: "harness" } : undefined,
           runtime: result.runtimeKind,
         });
       } catch (err: any) {
