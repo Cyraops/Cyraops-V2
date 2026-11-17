@@ -1,0 +1,6630 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:cyraops-v2-vendor-0.2.2-rc.1",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-17T21:58:42.066998+00:00",
+    "component": {
+      "type": "application",
+      "name": "cyraops-v2",
+      "version": "0.1.0"
+    },
+    "tools": [
+      {
+        "vendor": "cyraops",
+        "name": "vendor-tooling",
+        "version": "1.0.0"
+      }
+    ],
+    "properties": [
+      {
+        "name": "cyraops:sourceDistribution",
+        "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh"
+      },
+      {
+        "name": "cyraops:harnessVersion",
+        "value": "0.2.2-rc.1"
+      },
+      {
+        "name": "cyraops:license",
+        "value": "MIT"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "@anthropic-ai/sdk",
+      "version": "0.129.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@anthropic-ai/sdk"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/client-bedrock-runtime",
+      "version": "3.1127.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/client-bedrock-runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/core",
+      "version": "3.981.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-env",
+      "version": "3.972.84",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-env"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-http",
+      "version": "3.972.86",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-http"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-ini",
+      "version": "3.973.30",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-ini"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-login",
+      "version": "3.972.92",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-login"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-node",
+      "version": "3.972.97",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-node"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-process",
+      "version": "3.972.84",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-process"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-sso",
+      "version": "3.973.28",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-sso"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/credential-provider-web-identity",
+      "version": "3.972.90",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/credential-provider-web-identity"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/eventstream-handler-node",
+      "version": "3.972.42",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/eventstream-handler-node"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/middleware-eventstream",
+      "version": "3.972.38",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/middleware-eventstream"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/middleware-websocket",
+      "version": "3.972.66",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/middleware-websocket"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/nested-clients",
+      "version": "3.998.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/nested-clients"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/signature-v4-multi-region",
+      "version": "3.996.52",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/signature-v4-multi-region"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/token-providers",
+      "version": "3.1127.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/token-providers"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/types",
+      "version": "3.975.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/types"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws-sdk/xml-builder",
+      "version": "3.972.43",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws-sdk/xml-builder"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@aws/lambda-invoke-store",
+      "version": "0.3.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@aws/lambda-invoke-store"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@babel/code-frame",
+      "version": "7.29.7",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/code-frame"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@babel/helper-validator-identifier",
+      "version": "7.29.7",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/helper-validator-identifier"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@babel/runtime",
+      "version": "7.29.14",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@babel/runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/cordis",
+      "version": "4.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/cordis-plugin-group",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-group"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/cordis-plugin-include",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-include"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/cordis-plugin-loader",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-loader"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/cordis-plugin-timer",
+      "version": "1.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cordis-plugin-timer"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/cosmokit",
+      "version": "1.9.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/cosmokit"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-agent",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-agent-default-model",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-default-model"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-agent-instructions",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-instructions"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-agent-loop",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-loop"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-agent-preset-registry",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-agent-preset-registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-anonymous-user-id",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-anonymous-user-id"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-api-gateway",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-api-gateway"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-api-remote-access",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-api-remote-access"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-app-boot",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-app-boot"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-atomic-write",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-atomic-write"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-attachment",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-attachment"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-attachment-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-attachment-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-authorization",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-authorization"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-base",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-base"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-bash-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-bash-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-bash-sandbox",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-bash-sandbox"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-brand",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-brand"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-chunked-list",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-chunked-list"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-cmdline",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-cmdline"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-command-compact",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-compact"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-command-feedback",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-feedback"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-command-goal",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-command-goal"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-commands",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-commands"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-compaction",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-compaction-basic",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-basic"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-compaction-image-offload",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-image-offload"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-compaction-tool-result-pruner",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-compaction-tool-result-pruner"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-config-editor",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-config-editor"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-credentials",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-credentials"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-credentials-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-credentials-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-deepseek-account",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-account"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-deepseek-account-platform",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-account-platform"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-deepseek-llm-api-extensions",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deepseek-llm-api-extensions"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-deque",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-deque"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-fs",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-fs-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-fs-observation-policy",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-observation-policy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-fs-patch",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-patch"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-fs-sandbox",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-fs-sandbox"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-goal",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-goal"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-goal-round-driver",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-goal-round-driver"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-headless",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-headless"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-hmr",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-hmr"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-home-paths",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-home-paths"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-host-plugin-inventory",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-host-plugin-inventory"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-host-webserver",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-host-webserver"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-http-proxy",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-http-proxy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-jobs",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-jobs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-jobs-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-jobs-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-launch-environment",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-launch-environment"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-lazy-require",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-lazy-require"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-llm",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-llm-deepseek",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-llm-deepseek-account",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek-account"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-llm-deepseek-api-key",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-deepseek-api-key"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-llm-pi-ai",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-pi-ai"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-llm-retry",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-llm-retry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-mcp-resources",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-mcp-resources"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-message-feedback",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-message-feedback"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-official-bundles",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-official-bundles"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-otel",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-otel"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-output-retention",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-output-retention"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-package-manifest",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-package-manifest"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-permission-presets",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-permission-presets"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-plan-mode",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plan-mode"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-plugin-detail",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-detail"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-plugin-manager",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-manager"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-plugin-package-inventory-deepseek",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-plugin-package-inventory-deepseek"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-ptc-runtime",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-ptc-runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-ptc-runtime-node",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-ptc-runtime-node"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-pwsh-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-pwsh-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-pwsh-sandbox",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-pwsh-sandbox"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-repeat-tool-reminder",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-repeat-tool-reminder"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-sandbox",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-sandbox-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-sandbox-policy",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-policy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-sandbox-windows-acl",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-sandbox-windows-acl"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-scope",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-scope"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-checkpoint-policy",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-checkpoint-policy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-format",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-format-catalog",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-catalog"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-format-v0-to-v1",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v0-to-v1"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-format-v1-to-v2",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v1-to-v2"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-format-v2-to-v3",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v2-to-v3"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-format-v3-to-v4",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-format-v3-to-v4"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-log-deepseek",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-log-deepseek"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-persistence",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-persistence"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-persistence-jsonl",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-persistence-jsonl"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-projection",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-projection-cache",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-projection-cache"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-query",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-query"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-query-sqlite",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-query-sqlite"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-telemetry",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-telemetry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-telemetry-otel",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-telemetry-otel"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-title",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-title-first-prompt-llm",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title-first-prompt-llm"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-session-title-llm",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-session-title-llm"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-settings",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-settings"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-shell",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-shell"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-shell-env",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-shell-env"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-skill",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-skill"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-skill-filesystem",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-skill-filesystem"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-spill",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-spill-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-spill-policy",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-spill-policy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-storage",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-storage-domain",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage-domain"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-storage-json",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-storage-json"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-subagent",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-subagent-fork-in-process",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent-fork-in-process"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-subagent-spawn-in-process",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subagent-spawn-in-process"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-subprocess",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subprocess"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-subprocess-local",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-subprocess-local"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-system-prompt",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-system-prompt"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-timeout",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-timeout"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-token-meter",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-token-meter"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-bash",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-bash"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-call-timeout-policy",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-call-timeout-policy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-executor-native",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-executor-native"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-executor-ptc",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-executor-ptc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-fs",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-fs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-fs-search",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-fs-search"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-goal",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-goal"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-jobs",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-jobs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-present",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-present"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-pwsh",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-pwsh"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-skill",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-skill"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-subagent",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-subagent"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-subagent-control",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-subagent-control"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-todo",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-todo"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-web",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-web"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-workflow",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-workflow"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tool-working-directory",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tool-working-directory"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-tools",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-tools"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-typert-loader",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-loader"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-typert-protocol",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-protocol"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-typert-registry",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-typert-registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-user-approval",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-approval"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-user-questions",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-questions"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-util-code-language",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-code-language"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-util-crypto",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-crypto"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-util-time",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-time"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-util-values",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-util-values"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-web",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-web-deepseek-api",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-deepseek-api"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-web-fetch-http",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-fetch-http"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-web-search-deepseek",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-search-deepseek"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-win32-process",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-win32-process"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-workflow",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workflow"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-workflow-ptc",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workflow-ptc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-working-directory",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-working-directory"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/dsh-workspace",
+      "version": "0.2.2-rc.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-workspace"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/node-addon-system",
+      "version": "0.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/node-addon-system"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@deepseek-ai/schemastery",
+      "version": "3.19.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/schemastery"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@earendil-works/pi-ai",
+      "version": "1.5.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-ai"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@earendil-works/pi-schema",
+      "version": "1.5.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-schema"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@earendil-works/pi-telemetry",
+      "version": "1.5.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@earendil-works/pi-telemetry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@eslint-community/regexpp",
+      "version": "4.12.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@eslint-community/regexpp"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@google/genai",
+      "version": "2.21.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@google/genai"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@img/colour",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@img/colour"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@joplin/turndown-plugin-gfm",
+      "version": "1.0.71",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@joplin/turndown-plugin-gfm"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@js-temporal/polyfill",
+      "version": "0.5.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "ISC"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@js-temporal/polyfill"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@keyv/serialize",
+      "version": "1.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@keyv/serialize"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@mixmark-io/domino",
+      "version": "2.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-2-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@mixmark-io/domino"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/api",
+      "version": "1.9.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/api"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/api-logs",
+      "version": "0.222.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/api-logs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/core",
+      "version": "2.11.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/otlp-exporter-base",
+      "version": "0.222.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/otlp-exporter-base"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/otlp-transformer",
+      "version": "0.222.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/otlp-transformer"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/resources",
+      "version": "2.11.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/resources"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/sdk-logs",
+      "version": "0.222.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-logs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/sdk-metrics",
+      "version": "2.11.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-metrics"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/sdk-trace",
+      "version": "2.11.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/sdk-trace"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@opentelemetry/semantic-conventions",
+      "version": "1.45.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@opentelemetry/semantic-conventions"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/aspromise",
+      "version": "1.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/aspromise"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/base64",
+      "version": "1.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/base64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/codegen",
+      "version": "2.0.5",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/codegen"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/eventemitter",
+      "version": "1.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/eventemitter"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/fetch",
+      "version": "1.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/fetch"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/float",
+      "version": "1.0.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/float"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/path",
+      "version": "1.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/path"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/pool",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/pool"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@protobufjs/utf8",
+      "version": "1.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@protobufjs/utf8"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@sec-ant/readable-stream",
+      "version": "0.4.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sec-ant/readable-stream"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@sindresorhus/is",
+      "version": "7.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sindresorhus/is"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@sindresorhus/merge-streams",
+      "version": "4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@sindresorhus/merge-streams"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@smithy/core",
+      "version": "3.40.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@smithy/credential-provider-imds",
+      "version": "4.5.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/credential-provider-imds"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@smithy/fetch-http-handler",
+      "version": "5.8.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/fetch-http-handler"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@smithy/node-http-handler",
+      "version": "4.12.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/node-http-handler"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@smithy/signature-v4",
+      "version": "5.7.5",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/signature-v4"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@smithy/types",
+      "version": "4.20.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@smithy/types"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@stablelib/base64",
+      "version": "1.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@stablelib/base64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@standard-schema/spec",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@standard-schema/spec"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@types/http-cache-semantics",
+      "version": "4.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/http-cache-semantics"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@types/node",
+      "version": "26.6.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/node"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@types/retry",
+      "version": "0.12.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@types/retry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@vscode/ripgrep",
+      "version": "1.18.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/@vscode/ripgrep"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "acorn",
+      "version": "8.19.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/acorn"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "acorn-walk",
+      "version": "8.3.5",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/acorn-walk"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "agent-base",
+      "version": "9.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/agent-base"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ajv",
+      "version": "8.20.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ajv"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "argparse",
+      "version": "2.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Python-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/argparse"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "base64-js",
+      "version": "1.5.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/base64-js"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bignumber.js",
+      "version": "9.3.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bignumber.js"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "birpc",
+      "version": "4.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/birpc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bowser",
+      "version": "2.15.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bowser"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "buffer-equal-constant-time",
+      "version": "1.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/buffer-equal-constant-time"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "byte-counter",
+      "version": "0.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/byte-counter"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bytes",
+      "version": "3.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/bytes"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "cacheable-lookup",
+      "version": "7.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/cacheable-lookup"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "cacheable-request",
+      "version": "13.0.19",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/cacheable-request"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "chokidar",
+      "version": "5.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/chokidar"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "commander",
+      "version": "15.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/commander"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "compressible",
+      "version": "2.0.18",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/compressible"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "compression",
+      "version": "1.8.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/compression"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "content-type",
+      "version": "2.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/content-type"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "data-uri-to-buffer",
+      "version": "4.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/data-uri-to-buffer"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "debug",
+      "version": "2.6.9",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/debug"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "decompress-response",
+      "version": "10.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/decompress-response"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "destroy",
+      "version": "1.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/destroy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/detect-libc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "diff",
+      "version": "9.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/diff"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ecdsa-sig-formatter",
+      "version": "1.0.11",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ecdsa-sig-formatter"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "eventsource-parser",
+      "version": "3.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/eventsource-parser"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "execa",
+      "version": "10.2.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/execa"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "extend",
+      "version": "3.0.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/extend"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-deep-equal"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-sha256",
+      "version": "1.3.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Unlicense"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-sha256"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-uri",
+      "version": "3.1.9",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fast-uri"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fetch-blob",
+      "version": "3.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/fetch-blob"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "figures",
+      "version": "6.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/figures"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "form-data-encoder",
+      "version": "4.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/form-data-encoder"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "formdata-polyfill",
+      "version": "4.0.10",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/formdata-polyfill"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "gaxios",
+      "version": "7.3.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gaxios"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "gcp-metadata",
+      "version": "8.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/gcp-metadata"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "get-stream",
+      "version": "9.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/get-stream"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "google-auth-library",
+      "version": "10.9.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/google-auth-library"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "google-logging-utils",
+      "version": "1.1.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/google-logging-utils"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "got",
+      "version": "14.6.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/got"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "hosted-git-info",
+      "version": "9.0.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "ISC"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/hosted-git-info"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "http-cache-semantics",
+      "version": "4.3.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-2-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-cache-semantics"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "http-proxy-agent",
+      "version": "9.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http-proxy-agent"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "http2-wrapper",
+      "version": "2.2.4",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/http2-wrapper"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "https-proxy-agent",
+      "version": "9.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/https-proxy-agent"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "human-signals",
+      "version": "8.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/human-signals"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ipaddr.js",
+      "version": "2.5.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ipaddr.js"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "is-plain-obj",
+      "version": "4.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-plain-obj"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "is-stream",
+      "version": "4.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-stream"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "is-unicode-supported",
+      "version": "2.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/is-unicode-supported"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "js-tokens",
+      "version": "4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/js-tokens"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "js-yaml",
+      "version": "4.3.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/js-yaml"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "jsbi",
+      "version": "4.3.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jsbi"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "json-bigint",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-bigint"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "json-schema-to-ts",
+      "version": "3.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-schema-to-ts"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/json-schema-traverse"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "jwa",
+      "version": "2.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jwa"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "jws",
+      "version": "4.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/jws"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "keyv",
+      "version": "5.6.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/keyv"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "koffi",
+      "version": "3.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/koffi"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "long",
+      "version": "5.3.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/long"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lowercase-keys",
+      "version": "3.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/lowercase-keys"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lru-cache",
+      "version": "11.5.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "BlueOak-1.0.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/lru-cache"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "mime-db",
+      "version": "1.54.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/mime-db"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "mimic-response",
+      "version": "4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/mimic-response"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ms",
+      "version": "2.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ms"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "negotiator",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/negotiator"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "node-addon-api",
+      "version": "7.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-api"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "node-addon-native-custom-loader",
+      "version": "0.1.9",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-native-custom-loader"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "node-addon-require-builtin",
+      "version": "0.1.9",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-require-builtin"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "node-domexception",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-domexception"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "node-fetch",
+      "version": "3.3.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-fetch"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "node-pty",
+      "version": "1.2.0-beta.15",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/node-pty"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "normalize-url",
+      "version": "8.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/normalize-url"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "npm-run-path",
+      "version": "6.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/npm-run-path"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "on-headers",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/on-headers"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "openai",
+      "version": "7.19.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/openai"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "p-cancelable",
+      "version": "4.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-cancelable"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "p-limit",
+      "version": "7.3.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-limit"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "p-retry",
+      "version": "4.6.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/p-retry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "parse-ms",
+      "version": "4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/parse-ms"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "partial-json",
+      "version": "0.1.7",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/partial-json"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "path-key",
+      "version": "3.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/path-key"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "picocolors",
+      "version": "1.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "ISC"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/picocolors"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "picomatch",
+      "version": "4.0.7",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/picomatch"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "pretty-ms",
+      "version": "9.3.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/pretty-ms"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "protobufjs",
+      "version": "7.6.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/protobufjs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "proxy-agent-negotiate",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/proxy-agent-negotiate"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "quick-lru",
+      "version": "5.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/quick-lru"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "readdirp",
+      "version": "5.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/readdirp"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/require-from-string"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "resolve-alpn",
+      "version": "1.2.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/resolve-alpn"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "resolve.exports",
+      "version": "2.0.4",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/resolve.exports"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "responselike",
+      "version": "4.0.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/responselike"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "retry",
+      "version": "0.13.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/retry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "rrule",
+      "version": "2.8.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-3-Clause"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/rrule"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "safe-buffer",
+      "version": "5.2.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/safe-buffer"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "semver",
+      "version": "7.8.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "ISC"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/semver"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "sharp",
+      "version": "0.35.5",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/sharp"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "signal-exit",
+      "version": "4.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "ISC"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/signal-exit"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "standardwebhooks",
+      "version": "1.1.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/standardwebhooks"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "strip-final-newline",
+      "version": "4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/strip-final-newline"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ts-algebra",
+      "version": "2.0.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ts-algebra"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "tslib",
+      "version": "2.9.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "0BSD"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/tslib"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "turndown",
+      "version": "7.2.5",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/turndown"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "type-fest",
+      "version": "4.41.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "(MIT OR CC0-1.0)"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/type-fest"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "undici",
+      "version": "8.11.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/undici"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "undici-types",
+      "version": "8.9.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/undici-types"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "unicorn-magic",
+      "version": "0.3.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/unicorn-magic"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "vary",
+      "version": "1.1.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/vary"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "web-streams-polyfill",
+      "version": "3.3.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/web-streams-polyfill"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "which-command",
+      "version": "0.1.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/which-command"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ws",
+      "version": "8.23.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/ws"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "yaml",
+      "version": "2.9.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "ISC"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yaml"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "yocto-queue",
+      "version": "1.2.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yocto-queue"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "yoctocolors",
+      "version": "2.2.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/yoctocolors"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "zod",
+      "version": "4.6.7",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "hashes": [],
+      "properties": [
+        {
+          "name": "cyraops:sourcePath",
+          "value": "/Users/tanveersinghsaini/.nvm/versions/node/v22.23.2/lib/node_modules/@deepseek-ai/dsh/node_modules/zod"
+        }
+      ]
+    }
+  ]
+}
