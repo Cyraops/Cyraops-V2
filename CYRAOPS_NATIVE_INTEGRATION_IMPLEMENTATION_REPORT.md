@@ -76,7 +76,24 @@ test is booting the identical tree from `vendor/dsh/`.
 Remaining: UI wiring (Phase 3), capability integration (Phase 4), SBOM, and the
 Next security upgrade decision (pending user).
 
-## Checkpoint 5 — capability integration (pending)
+## Checkpoint 5 — UI wiring ✅ (verified 2026-11-18, commit 70167bb)
+
+Phase 3 done with zero UI changes. `HARNESS_BOT=1|cli|native` routes the
+existing chat stream through the AgentRuntime in the UI's own SSE shape;
+unset keeps the original V1 stream byte-untouched.
+
+Live evidence at :3003 (logged-in HTTP, DB rows persisted for each):
+- cli engine: banana, 7.99 s + resume turn answering from the session
+- native engine: grape, 6.16 s — in-process host booted (tree mounted, turn 3366 ms)
+- V1 engine: kiwi, 4.66 s — original stream, no runtime field, no regression
+- 365 tests: 364 pass, 0 fail, 1 pre-existing skip (one transient flake observed
+  under load, green on rerun); no new tsc errors.
+
+Note: a broad pkill during engine switching briefly stopped V1's dev server;
+no files touched, both V1 ports restored and verified (3001/3002 → 200).
+
+Remaining: capability integration (Phase 4 - first CRM tool via a Cyraops
+bundle), SBOM completion, reliability suite, Next upgrade decision.
 
 ## Checkpoint 6 — licensing/SBOM (pending)
 
