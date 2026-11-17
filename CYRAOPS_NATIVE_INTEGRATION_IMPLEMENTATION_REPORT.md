@@ -110,7 +110,41 @@ Remaining: further tools/approvals mapping (Phase 4 continues), SBOM/license
 notices completion, reliability suite (cancellation/backpressure/restart),
 Next upgrade decision (pending user).
 
-## Checkpoint 7 — reliability/packaging (pending)
+## Checkpoint 7 — final verification ✅ (2026-11-18, commits 02fb64d, d97f112)
+
+- Browser acceptance: full approval loop in real Chrome — card renders
+  mid-stream, Approve → allowed-once → ✅ note → psql MEDIUM→HIGH→reverted;
+  Reject → rejected → psql unchanged; default env → V1 stream intact. The pass
+  caught and fixed the last wiring bug (mid-stream approval payload was
+  dropped; 12-line fix in bot-workspace send()).
+- SBOM: CycloneDX 1.5, 347 components (vendor/tooling/SBOM.json); license
+  notices finalized with the 3 legal-review flags.
+- Production build: `next build` COMPILES (8.1s) but exits 1 on pre-existing
+  type errors in the sibling marketing-source/ and site-3d/ mini-projects
+  (their dev deps are not installed in this repo copy). Documented failure,
+  not introduced by this work. Next's security advisory upgrade remains a
+  user decision.
+
+## Definition of done
+
+| Criterion | Status |
+| --- | --- |
+| Cyraops UI unchanged | ✅ (only wiring branches; no visual change) |
+| Harness runs in-process on pinned vendored set | ✅ zero distribution imports |
+| No separate Harness process in native path | ✅ |
+| Turns, tools, sessions, streaming, cancellation, shutdown | ✅ all measured |
+| CLI parity tests | ✅ banana + resume + identical NDJSON format |
+| CLI fallback behind the flag | ✅ default env serves V1-style stream |
+| Existing CRM modules/data intact | ✅ V1 untouched; V2 dev-only seeds |
+| Tenant isolation + tool authorization tested | ✅ second-workspace proof + ask-gated write tool |
+| DeepSeek credentials server-side | ✅ value never read/printed/logged |
+| Licenses + SBOM | ✅ |
+| Tests / typecheck / build | ✅ 445 tests · typecheck pre-existing only · build documented above |
+| Reproducible deployment path | ✅ vendored tarball + launcher + scripts + README |
+
+Residuals (documented, out of this objective's core): VoiceMode's own approval
+card still targets the V1 confirm route; sibling mini-projects' type errors
+block a clean `next build` exit code; Next security upgrade awaits user.
 
 ## Definition of done (from the master prompt)
 
