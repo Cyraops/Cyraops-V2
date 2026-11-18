@@ -5,7 +5,8 @@ import { CornerDownLeft, Loader2, Paperclip, PhoneOff, Volume2, VolumeX, X } fro
 import { VoiceEarth, type EarthPhase } from "./voice-earth";
 import { stripToolMarkup } from "@/lib/ai/tool-markup";
 import { availableGenders, pickVoice, type VoiceGender } from "@/lib/ai/voice/preferred-voices";
-import { recordUtterance, toWav } from "@/lib/ai/voice/recorder";
+import { recordUtterance, smoothLevel, toWav } from "@/lib/ai/voice/recorder";
+import { lastModeScope, writeLastMode } from "@/lib/ai/voice/last-mode";
 import { nextSentence } from "@/lib/ai/voice/sentences";
 
 type Phase = "idle" | "listening" | "thinking" | "speaking" | "error";
@@ -65,6 +66,10 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
   const [personPulseAt, setPersonPulseAt] = useState(0);
   const [speakPulseAt, setSpeakPulseAt] = useState(0);
   const [streamingReply, setStreamingReply] = useState("");
+  /** Smoothed microphone level 0..1, shown as a bar while listening. */
+  const [micLevel, setMicLevel] = useState(0);
+  /** Last time the level was pushed into state; the meter updates ~12x/s. */
+  const levelStampRef = useRef(0);
 
   const recognitionRef = useRef<any>(null);
   const conversationRef = useRef(conversationId ?? "");
@@ -106,16 +111,46 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
   const pendingViaRef = useRef<"harness" | undefined>(undefined);
   /** One recording at a time: a second concurrent recorder would fight over the mic stream. */
   const recordingRef = useRef(false);
-  /** Consecutive ASR rounds that came back without words; three strikes pauses the session. */
+  /** Consecutive ASR rounds that came back without words; two strikes pauses the session. */
   const emptyAsrRoundsRef = useRef(0);
 
   const setPhaseSafe = useCallback((next: Phase) => {
     phaseRef.current = next;
     setPhase(next);
+    // The meter only exists while listening; leaving clears its memory so the
+    // next session starts from silence rather than a frozen bar.
+    if (next !== "listening") setMicLevel(0);
   }, []);
 
   /** Read the live phase; as a function it never carries TS's flow narrowing. */
   const currentPhase = useCallback((): Phase => phaseRef.current, []);
+
+  /**
+   * Remember that this assistant was last used in voice mode, for the bot
+   * workspace to restore next time. The voice screen is the only component
+   * that reliably knows when it opened, so it writes the key itself; the
+   * scope is the assistant's id (or "personal" before it has loaded).
+   */
+  const lastModeScopeRef = useRef(lastModeScope(assistantId));
+  useEffect(() => {
+    const scope = lastModeScope(assistantId);
+    lastModeScopeRef.current = scope;
+    try {
+      writeLastMode(window.localStorage, scope, "voice");
+    } catch {
+      /* storage may be unavailable */
+    }
+  }, [assistantId]);
+
+  /** Leaving the voice screen on purpose: the assistant's last mode is chat. */
+  const exit = useCallback(() => {
+    try {
+      writeLastMode(window.localStorage, lastModeScopeRef.current, "chat");
+    } catch {
+      /* storage may be unavailable */
+    }
+    onExit();
+  }, [onExit]);
 
   /**
    * One microphone acquisition per voice session. Chrome asks for permission
@@ -257,8 +292,8 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       stopRecognition();
       setError(
         heardSomething
-          ? "I can hear you, but Chrome is not turning it into words — its speech service looks blocked on this network."
-          : "Your microphone opened but no sound reached me. Check which input device Chrome is using, then tap the planet to try again."
+          ? "Chrome can hear you but can't turn it into words — its speech service looks blocked on this network. Tap the planet to retry, or type instead."
+          : "I didn't hear anything — pick the right mic in Chrome's address bar, then tap the planet to try again."
       );
       setPhaseSafe("error");
     }, 12000);
@@ -441,9 +476,22 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
     setPhaseSafe("listening");
     setHeard("");
     setError("");
+    setMicLevel(0);
+    levelStampRef.current = 0;
     try {
       const stream = await acquireMicStream();
-      const { blob, hadSpeech } = await recordUtterance(stream, { silenceMs: 1300, maxUtteranceMs: 30000 });
+      const { blob, hadSpeech } = await recordUtterance(stream, {
+        silenceMs: 1300,
+        maxUtteranceMs: 30000,
+        // Feed the meter without re-rendering on every audio frame: the bar
+        // shows the smoothed level, refreshed a dozen times a second.
+        onLevel: (value) => {
+          const now = performance.now();
+          if (now - levelStampRef.current < 80) return;
+          levelStampRef.current = now;
+          setMicLevel((previous) => smoothLevel(previous, value));
+        },
+      });
       // The session stream stays live for the next utterance: only leaving the
       // voice screen or a hard microphone failure stops its tracks.
       if (!activeRef.current) return;
@@ -456,13 +504,17 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         silentRoundsRef.current += 1;
         setMicStatus("mic open, no sound yet");
         if (silentRoundsRef.current >= 3) {
-          setError("Your microphone is open but I'm not hearing anything. Check which input device Chrome is using, then tap the planet to try again.");
+          setError("I didn't hear anything — check Chrome's mic input, then tap the planet to try again.");
           setPhaseSafe("error");
           return;
         }
         // Round finished: the guard above was still held during this call, so
-        // re-listen on a fresh tick rather than recursing into it.
-        setTimeout(() => void listenWithServerAsr(), 50);
+        // re-listen on a fresh tick rather than recursing into it. Only while
+        // the round still owns the screen — a planet tap in this window parked
+        // the session (idle/error), so do not drag it back into listening.
+        setTimeout(() => {
+          if (phaseRef.current === "listening") void listenWithServerAsr();
+        }, 50);
         return;
       }
 
@@ -487,16 +539,21 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       const said = String(data?.text ?? "").trim();
       if (!said) {
         // Not the end of the conversation: keep the mic session alive and
-        // listen again. Three consecutive wordless rounds pause the session.
+        // listen again. Two consecutive wordless rounds pause the session and
+        // offer the fallback rather than spinning forever on a broken mic.
         emptyAsrRoundsRef.current += 1;
         setMicStatus("heard something, no words");
-        if (emptyAsrRoundsRef.current >= 3) {
-          setError("I could not make out any words. Try again a little closer to the microphone.");
+        if (emptyAsrRoundsRef.current >= 2) {
+          setError("Couldn't hear clearly — tap to retry, or type instead");
           setPhaseSafe("error");
           return;
         }
-        setError("I could not make out any words. Try again a little closer to the microphone.");
-        setTimeout(() => void listenWithServerAsr(), 50);
+        // The re-listen is only wanted while the round still owns the screen
+        // ("thinking"): a planet tap in this window parked the session, so do
+        // not drag it back into listening.
+        setTimeout(() => {
+          if (phaseRef.current === "thinking") void listenWithServerAsr();
+        }, 50);
         return;
       }
       emptyAsrRoundsRef.current = 0;
@@ -506,10 +563,10 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       const name = (caught as DOMException)?.name ?? "";
       if (name === "NotAllowedError" || name === "SecurityError") {
         releaseMicStream();
-        setError("Microphone is blocked. Allow it for this site, then tap the planet again.");
+        setError("Tap the mic icon in Chrome's address bar to allow the microphone, then tap the planet to try again.");
       } else if (name === "NotFoundError") {
         releaseMicStream();
-        setError("No microphone was found. Connect one and try again.");
+        setError("No microphone found — plug one in, then tap the planet to try again.");
       } else {
         setError((caught as Error)?.message || "Could not record from the microphone.");
       }
@@ -612,17 +669,15 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         silentRoundsRef.current += 1;
         note("mic open, no sound yet");
         if (silentRoundsRef.current >= 3) {
-          setError(
-            "Your microphone is open but I'm not hearing anything. Check which input device Chrome is using, then tap the planet to try again."
-          );
+          setError("I didn't hear anything — check Chrome's mic input, then tap the planet to try again.");
           setPhaseSafe("error");
         }
         return;
       }
       const messages: Record<string, string> = {
-        "not-allowed": "Microphone is blocked. Allow it for this site and reload.",
+        "not-allowed": "Tap the mic icon in Chrome's address bar to allow the microphone, then tap the planet to try again.",
         "service-not-allowed": "The browser's speech service is turned off on this device.",
-        "audio-capture": "No microphone was found.",
+        "audio-capture": "No microphone found — plug one in, then tap the planet to try again.",
         network: "Voice needs an internet connection in Chrome.",
       };
       if (reason === "language-not-supported" && recognition.lang !== "en-US") {
@@ -848,6 +903,10 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
    */
   const start = useCallback(() => {
     setError("");
+    // A tap is a fresh start: clear the wordless/silent streaks so a retry
+    // after an error is judged on its own rounds, never on the ones before it.
+    emptyAsrRoundsRef.current = 0;
+    silentRoundsRef.current = 0;
     // With server transcription the recording decides when it ends; the watchdog
     // exists for the browser recognizer, which can fail silently.
     if (!asrAvailableRef.current) armWatchdog();
@@ -863,9 +922,9 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
           stopRecognition();
           setError(
             name === "NotAllowedError"
-              ? "Microphone is blocked. Allow it for this site, then tap the planet again."
+              ? "Tap the mic icon in Chrome's address bar to allow the microphone, then tap the planet to try again."
               : name === "NotFoundError"
-                ? "No microphone was found. Connect one and try again."
+                ? "No microphone found — plug one in, then tap the planet to try again."
                 : "Could not reach the microphone. Check your system input settings."
           );
           setPhaseSafe("error");
@@ -1154,10 +1213,38 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
           onTap={onPlanetTap}
           className="pointer-events-auto h-40 w-40 drop-shadow-[0_18px_40px_rgba(30,30,80,0.22)]"
         />
-        {phase === "listening" && (
-          <p className="rounded-full bg-[var(--surface)]/85 px-2 py-0.5 text-caption font-semibold text-[var(--muted)] backdrop-blur-sm">
-            {micStatus}
+        {phase === "idle" && (
+          <p
+            data-testid="voice-hint"
+            className="rounded-full bg-[var(--surface)]/85 px-3 py-0.5 text-caption text-[var(--muted)] backdrop-blur-sm"
+          >
+            Tap the planet, then speak. It waits for real silence.
           </p>
+        )}
+        {phase === "listening" && (
+          <div className="flex flex-col items-center gap-1">
+            <p className="rounded-full bg-[var(--surface)]/85 px-2 py-0.5 text-caption font-semibold text-[var(--muted)] backdrop-blur-sm">
+              {micStatus}
+            </p>
+            {/* The mic level: quiet until sound arrives, so anyone speaking can
+                see they are being heard. */}
+            <div
+              data-testid="mic-level"
+              role="meter"
+              aria-label="Microphone level"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(micLevel * 100)}
+              className="h-[3px] w-28 overflow-hidden rounded-full bg-[var(--border)]/70"
+            >
+              <div
+                data-testid="mic-level-fill"
+                data-level={micLevel.toFixed(3)}
+                className="h-full rounded-full bg-accent/80 transition-[width] duration-100 ease-linear"
+                style={{ width: `${(micLevel * 100).toFixed(1)}%` }}
+              />
+            </div>
+          </div>
         )}
         {/* While it is running, the planet's own motion shows the state; the words
             stay for anyone using a screen reader. */}
@@ -1337,7 +1424,7 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
 
           <button
             type="button"
-            onClick={onExit}
+            onClick={exit}
             aria-label="End voice chat"
             title="End voice chat"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[var(--border)] text-rose-600 transition hover:bg-rose-500/10 dark:text-rose-400"

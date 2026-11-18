@@ -66,6 +66,21 @@ export async function toWav(blob: Blob): Promise<Blob> {
 }
 
 /**
+ * One smoothing step for a live microphone level, for meters.
+ *
+ * Attack is instant — the bar jumps up the moment sound arrives, which is what
+ * tells the person they are being heard — and release is eased so the bar
+ * fades between syllables instead of flickering. Both inputs and the result
+ * are clamped to 0..1.
+ */
+export function smoothLevel(previous: number, raw: number, decay = 0.85): number {
+  const prev = Number.isFinite(previous) ? Math.min(1, Math.max(0, previous)) : 0;
+  if (!Number.isFinite(raw)) return prev;
+  const value = Math.min(1, Math.max(0, raw));
+  return value >= prev ? value : prev * decay;
+}
+
+/**
  * Records until the speaker stops talking.
  *
  * Speech is detected from the microphone's own level rather than from a fixed
