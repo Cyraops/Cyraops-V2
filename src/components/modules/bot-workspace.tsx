@@ -10,6 +10,7 @@ import { PagesBrowser, PagesPanel, type OpenPage, type PageMeta } from "@/compon
 import { BrowserPanel } from "@/components/ai/browser-panel";
 import { VoiceMode } from "@/components/ai/voice-mode";
 import { LocalBrowserAgent } from "@/components/ai/local-browser-agent";
+import { readLastMode } from "@/lib/ai/voice/last-mode";
 import { WorkspacePanel } from "@/components/ai/workspace-panel";
 import { CommandPalette } from "@/components/ai/command-palette";
 import { AskBlock, FileBlock, StepBlock, TextBlock, toBlocks } from "@/components/ai/blocks";
@@ -502,10 +503,35 @@ export function BotWorkspace() {
   const [teamOpen, setTeamOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [approvalsOpen, setApprovalsOpen] = useState(false);
+  const windowLocalStorageLike = () => ({
+    getItem: (key: string) => {
+      try {
+        return window.localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    },
+    setItem: (key: string, value: string) => {
+      try {
+        window.localStorage.setItem(key, value);
+      } catch {
+        /* storage may be unavailable */
+      }
+    },
+  });
+
   /** Right-rail collapsible sections (TASK 8): the browser and workspace cards. */
   const [browserOpen, setBrowserOpen] = useState(true);
   const [workspaceOpen, setWorkspaceOpen] = useState(true);
-  const [voiceOpen, setVoiceOpen] = useState(false);
+  const [voiceOpen, setVoiceOpen] = useState(() => {
+    // Remember how the user last talked to this assistant: explicit "end call"
+    // writes "chat", opening voice writes "voice" (see src/lib/ai/voice/last-mode.ts).
+    try {
+      return readLastMode(windowLocalStorageLike(), ["personal"]) === "voice";
+    } catch {
+      return false;
+    }
+  });
   const [teammates, setTeammates] = useState<
     Array<{
       id?: string;
