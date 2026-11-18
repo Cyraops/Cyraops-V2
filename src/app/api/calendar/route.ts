@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { logActivity, sameOrigin, userFromRequest } from "@/lib/auth";
 import { jsonError } from "@/lib/validators";
+import { isTenantAdmin, sharedProjectUserIds } from "@/lib/tenants";
 
 const createSchema = z.object({
   title: z.string().trim().min(1).max(160),
@@ -30,12 +31,20 @@ export async function GET(request: NextRequest) {
   const availableProjects = await db.project.findMany({ where: { archivedAt: null, ...(user.role === "OWNER" || user.role === "ADMIN" ? {} : { members: { some: { userId: user.id } } }) }, select: { id: true } });
   const projectIds = availableProjects.map((p) => p.id);
 
+  // Tenant scoping (FIX 3): meetings used to be whole-DB for every role.
+  // CalendarEvent has no project link, so "the viewer's workspace events" is
+  // expressed through project co-membership (the workspace-owner pattern):
+  // admins keep the workspace-wide view, everyone else sees events created by
+  // themselves, their project owners, and their project co-members.
+  const eventCreatorIds = isTenantAdmin(user.role)
+    ? null
+    : await sharedProjectUserIds(user.id);
+
   const [tasks, projects, meetings] = await Promise.all([
     db.task.findMany({ where: { archivedAt: null, dueDate: range, projectId: projectId ?? { in: projectIds }, ...(memberId ? { assigneeId: memberId } : {}) }, select: { id: true, title: true, dueDate: true, status: true, priority: true, project: { select: { id: true, name: true } } }, orderBy: { dueDate: "asc" } }),
     db.project.findMany({ where: { ...((user.role === "OWNER" || user.role === "ADMIN") ? {} : { members: { some: { userId: user.id } } }), ...(projectId ? { id: projectId } : {}), deadline: range, archivedAt: null }, select: { id: true, name: true, deadline: true, status: true }, orderBy: { deadline: "asc" } }),
-    // Meetings are workspace-wide: a calendar you cannot see the team's calls in
-    // is not a calendar.
-    db.calendarEvent.findMany({ where: { archivedAt: null, startsAt: range }, select: { id: true, title: true, startsAt: true, endsAt: true, location: true, attendees: true }, orderBy: { startsAt: "asc" } }),
+    // Scoped to the viewer's workspace creators; admins still see every call.
+    db.calendarEvent.findMany({ where: { archivedAt: null, startsAt: range, ...(eventCreatorIds ? { creatorId: { in: eventCreatorIds } } : {}) }, select: { id: true, title: true, startsAt: true, endsAt: true, location: true, attendees: true }, orderBy: { startsAt: "asc" } }),
   ]);
 
   return Response.json({

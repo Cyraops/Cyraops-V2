@@ -28,6 +28,7 @@
 
 import { harnessSessionStore, type AgentRuntime, type RuntimeKind, type Session } from "./runtime";
 import type { HarnessSessionStore } from "./store";
+import type { HarnessEvent } from "./client";
 
 /**
  * Instruction appended to a harness turn's task when the reply will be read
@@ -59,6 +60,12 @@ export interface StreamHarnessTurnInput {
   onDone: () => void;
   /** Receives each approval request the turn surfaces (route → SSE payload). */
   onApproval?: (approval: HarnessApprovalRequest) => void;
+  /**
+   * Receives every raw harness event, in stream order. The chat route uses it
+   * to collect the turn's audit evidence (tool_call/tool_result pairs, step_end
+   * usage, event timestamps) without this module touching the database.
+   */
+  onEvent?: (event: HarnessEvent) => void;
   /** Test seam; defaults to the shared harnessSessionStore(). */
   store?: HarnessSessionStore;
 }
@@ -94,7 +101,7 @@ export interface StreamHarnessTurnResult {
 }
 
 export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<StreamHarnessTurnResult> {
-  const { runtime, conversationId, tenantId, task, signal, onText, onDone, onApproval } = input;
+  const { runtime, conversationId, tenantId, task, signal, onText, onDone, onApproval, onEvent } = input;
   const store = input.store ?? harnessSessionStore();
 
   // createSession resolves the stored harness session id for this conversation
@@ -116,6 +123,7 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
       signal,
       workspaceId: input.workspaceId ?? null,
     })) {
+      onEvent?.(event);
       if (event.type === "text" && typeof event.text === "string") {
         const text = event.text;
         const delta = text.startsWith(snapshot) ? text.slice(snapshot.length) : text;

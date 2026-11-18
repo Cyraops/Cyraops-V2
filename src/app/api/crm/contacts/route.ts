@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { logActivity, publicUserSelect, sameOrigin, userFromRequest } from "@/lib/auth";
 import { jsonError } from "@/lib/validators";
 import { ContactStatus } from "@prisma/client";
+import { isTenantAdmin, memberContactWhere } from "@/lib/tenants";
 
 const contactStatusSchema = z.enum(["LEAD", "CUSTOMER", "PARTNER", "INACTIVE"]);
 
@@ -50,6 +51,16 @@ export async function GET(request: NextRequest) {
       { title: { contains: q, mode: "insensitive" } },
       { company: { name: { contains: q, mode: "insensitive" } } },
     ];
+  }
+  // Tenant scoping (FIX 3, partial): the Contact model has NO tenant/owner/
+  // workspace column and no owning relation to backfill one from (Company has
+  // no owner either), so a full tenant scope needs the schema follow-up
+  // documented in CYRAOPS_PERMISSION_AUDIT.md. What the schema DOES allow for
+  // a member: contacts linked to deals they own or leads assigned to them.
+  // Standalone contacts stay invisible to members (fail-closed) until the
+  // `workspaceId String?` migration lands. OWNER/ADMIN keep the app-wide view.
+  if (!isTenantAdmin(user.role)) {
+    where.AND = [memberContactWhere(user.id)];
   }
 
   const [total, contacts] = await Promise.all([

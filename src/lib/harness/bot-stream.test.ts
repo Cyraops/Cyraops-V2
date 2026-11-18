@@ -321,6 +321,39 @@ test("streamHarnessTurn: passes the workspace/tenant key through to the runtime"
   assert.equal(runtime.turns[0].workspaceId, "workspace-owner-user-1");
 });
 
+test("streamHarnessTurn: forwards every raw event to onEvent in stream order", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "tool_call", callId: "c1", tool: "cyraops_list_tickets", input: {} },
+      { type: "tool_result", callId: "c1", status: "completed", result: "ok" },
+      { type: "status", phase: "step_end", usage: { inputTokens: 1, outputTokens: 1 } },
+      { type: "final", text: "done" },
+    ],
+  });
+
+  const seen: string[] = [];
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-events",
+    tenantId: "tenant-1",
+    task: "list tickets",
+    onText: () => {},
+    onDone: () => {},
+    onEvent: (event) => seen.push(`${event.type}:${String(event.callId ?? event.phase ?? "")}`),
+    store,
+  });
+
+  assert.deepEqual(seen, [
+    "session:",
+    "tool_call:c1",
+    "tool_result:c1",
+    "status:step_end",
+    "final:",
+  ]);
+});
+
 test("streamHarnessTurn: a missing workspace key arrives at the runtime as null", async () => {
   const store = memoryStore();
   const runtime = fakeRuntime(store, {

@@ -5,6 +5,7 @@ import { sameOrigin, userFromRequest } from "@/lib/auth";
 import { jsonError } from "@/lib/validators";
 import { listTaskAssignees } from "@/lib/tasks/assignees";
 import { createTicketFromInstruction, parseTicketInstruction, loadTicketPersonas } from "@/lib/tickets";
+import { isTenantAdmin, memberTaskWhere } from "@/lib/tenants";
 
 /**
  * Tickets.
@@ -27,8 +28,16 @@ export async function GET(request: NextRequest) {
 
   const limit = Math.min(60, Math.max(1, Number(new URL(request.url).searchParams.get("limit") ?? 25)));
 
+  // Tenant scoping (FIX 3): previously every role got every task. OWNER/ADMIN
+  // keep the app's admin-wide pattern; members are scoped to their workspace
+  // (own rows + rows in projects they belong to), mirroring the calendar
+  // route's member scoping.
+  const where = isTenantAdmin(user.role)
+    ? { archivedAt: null }
+    : { archivedAt: null, AND: [await memberTaskWhere(user.id)] };
+
   const tasks = await db.task.findMany({
-    where: { archivedAt: null },
+    where,
     select: {
       id: true,
       title: true,

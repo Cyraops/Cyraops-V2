@@ -11,6 +11,15 @@ import { db } from "@/lib/db";
 import { storage } from "@/lib/storage";
 import { streamHarnessTurn, harnessTaskForTurn } from "@/lib/harness/bot-stream";
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
+import type { HarnessEvent } from "@/lib/harness/client";
+import { approvalBroker } from "@/lib/harness/approval-broker";
+import {
+  createHarnessApprovalRow,
+  installApprovalDecisionHook,
+  persistHarnessTurnAudit,
+  toolInputForApproval,
+  type ToolCallTimings,
+} from "@/lib/harness/audit";
 
 const encoder = new TextEncoder();
 
@@ -174,6 +183,18 @@ async function streamHarnessReply(
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let sent = false;
+      let auditConversationId: string | null = null;
+      // Audit trail (FIX 2): harness turns previously left zero rows. The
+      // PENDING approval row must exist BEFORE a decision can land, so it is
+      // created the moment the approval event surfaces; tool-call and usage
+      // rows are persisted from the collected events once the turn ends.
+      // All writes are best-effort and never fail the chat stream.
+      const auditEvents: HarnessEvent[] = [];
+      const toolTimings = new Map<string, { call?: number; result?: number }>();
+      const auditTimings: ToolCallTimings = {
+        get: (callId) => toolTimings.get(callId),
+      };
+      const turnStartedAt = Date.now();
       const send = (payload: Record<string, unknown>) => {
         try {
           controller.enqueue(sse(payload));
@@ -185,6 +206,7 @@ async function streamHarnessReply(
 
       try {
         const assistant = await getOrCreateAssistant(user.id);
+        installApprovalDecisionHook(approvalBroker());
 
         // A teammate is scoped exactly like the V1 path: the same thread
         // store, and an unknown slug fails the turn the same way.
@@ -199,6 +221,7 @@ async function streamHarnessReply(
           typeof body?.conversationId === "string" ? body.conversationId : undefined,
           agentSlug ?? null
         );
+        auditConversationId = conversation.id;
         const isFirstMessage = (await db.assistantMessage.count({ where: { conversationId: conversation.id } })) === 0;
 
         // Attachments are persisted and their text is inlined into the task,
@@ -271,10 +294,23 @@ async function streamHarnessReply(
           // publishes it as CYRAOPS_WORKSPACE_ID for the bridge.
           workspaceId: assistant.userId,
           onText: (chunk: string) => send({ type: "token", content: chunk }),
+          // Collect the turn's raw events for the post-turn audit write.
+          onEvent: (event) => {
+            auditEvents.push(event);
+            if (event.type === "tool_call" && typeof event.callId === "string") {
+              const timing = toolTimings.get(event.callId) ?? {};
+              timing.call = Date.now();
+              toolTimings.set(event.callId, timing);
+            } else if (event.type === "tool_result" && typeof event.callId === "string") {
+              const timing = toolTimings.get(event.callId) ?? {};
+              timing.result = Date.now();
+              toolTimings.set(event.callId, timing);
+            }
+          },
           // Approval mapping: the harness's ask → the same SSE shape the V1
           // approval card consumes. The turn stays open (callback approval:
           // the harness answerer waterfall awaits /api/harness/approve).
-          onApproval: (approval) =>
+          onApproval: (approval) => {
             send({
               type: "approval",
               approvalId: approval.approvalId,
@@ -282,7 +318,19 @@ async function streamHarnessReply(
               summary: approval.summary,
               ...(approval.reason ? { reason: approval.reason } : {}),
               ...(approval.callId ? { callId: approval.callId } : {}),
-            }),
+            });
+            // PENDING audit row (AssistantPendingAction, the V1 assistant's
+            // approval table): settled by the broker's onDecided hook.
+            void createHarnessApprovalRow({
+              approvalId: approval.approvalId,
+              assistantId: assistant.id,
+              userId: user.id,
+              conversationId: conversation.id,
+              toolName: approval.toolName,
+              summary: approval.summary,
+              input: toolInputForApproval(auditEvents, approval.callId, approval.toolName),
+            });
+          },
           onDone: () =>
             console.info(`[assistant/stream] harness turn finished (conversation=${conversation.id})`),
         });
@@ -317,6 +365,19 @@ async function streamHarnessReply(
         console.error("[assistant/stream] harness turn failed:", err?.stack || err?.message || err);
         send({ type: "error", error: describeHarnessFailure(err) });
       } finally {
+        // FIX 2: persist whatever audit evidence the turn produced — even a
+        // failed turn has tool calls and usage worth recording. Best-effort.
+        if (auditConversationId && auditEvents.length > 0) {
+          await persistHarnessTurnAudit({
+            events: auditEvents,
+            conversationId: auditConversationId,
+            userId: user.id,
+            durationMs: Date.now() - turnStartedAt,
+            timings: auditTimings,
+          }).catch((auditError: unknown) => {
+            console.warn("[assistant/stream] audit persist failed:", auditError);
+          });
+        }
         if (!sent) send({ type: "done", reply: "" });
         try {
           controller.close();
