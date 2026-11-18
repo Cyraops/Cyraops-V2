@@ -89,6 +89,34 @@ test("broker: requests are independent and each gets its own id", async () => {
   assert.equal(broker.pendingCount(), 0);
 });
 
+test("broker: requests carry the auto-reject deadline (timeoutMs out from now)", () => {
+  const broker = new ApprovalBroker(60_000);
+  const before = Date.now();
+  const pending = broker.request({ toolName: "t", summary: "s" });
+  const after = Date.now();
+  // Generous bounds: the deadline is "now + timeoutMs", computed inside request().
+  assert.ok(pending.deadline >= before + 59_500, `deadline too early: ${pending.deadline}`);
+  assert.ok(pending.deadline <= after + 60_500, `deadline too late: ${pending.deadline}`);
+});
+
+test("broker: a custom timeout moves the deadline accordingly", () => {
+  const broker = new ApprovalBroker(5_000);
+  const now = Date.now();
+  const pending = broker.request({ toolName: "t", summary: "s" });
+  assert.ok(pending.deadline >= now + 4_500, `deadline too early: ${pending.deadline}`);
+  assert.ok(pending.deadline <= now + 5_500, `deadline too late: ${pending.deadline}`);
+});
+
+test("broker: peek exposes the same deadline while pending", () => {
+  const broker = new ApprovalBroker(60_000);
+  const pending = broker.request({ toolName: "t", summary: "s" });
+  const view = broker.peek(pending.approvalId);
+  assert.ok(view);
+  assert.equal(view?.deadline, pending.deadline);
+  broker.decide(pending.approvalId, false);
+  assert.equal(broker.peek(pending.approvalId), null);
+});
+
 test("broker: install/uninstall publishes the instance under the global symbol", () => {
   const key = Symbol.for("cyraops.harness.approval-broker");
   const broker = new ApprovalBroker(60_000).install();

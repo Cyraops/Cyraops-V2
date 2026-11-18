@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Globe, MessageSquare, Mic, MicOff, Paperclip, Plus, RefreshCw, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
+import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Folder, Globe, MessageSquare, Mic, MicOff, Paperclip, Plus, RefreshCw, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
 import { RoutinesModal } from "@/components/routines/routines-modal";
 import { Markdown } from "@/components/ai/markdown";
 import { parseToolSteps, ToolActivity, type ToolStep } from "@/components/ai/tool-activity";
@@ -17,6 +17,9 @@ import { BotOrb } from "@/components/ai/bot-avatar";
 import { Button, Field, Modal, Textarea, useToast } from "@/components/ui";
 
 const SELECTION_KEY = "cyraops:bot:row";
+
+/** The muted, click-to-fill suggestions a fresh (empty) conversation shows. */
+const SUGGESTIONS = ["list open tickets", "what's due this week", "set ticket priorities"];
 
 interface ChatItem {
   id: string;
@@ -75,8 +78,13 @@ function formatTokenCount(tokens: number): string {
 
 function formatCostUsd(costUsd: number): string {
   const value = Math.max(0, costUsd);
-  if (value > 0 && value < 0.01) return `$${value.toFixed(3)}`;
-  if (value > 0 && value < 1) return `$${value.toFixed(2)}`;
+  if (value <= 0) return "$0.00";
+  // Sub-cent costs: below a tenth of a cent the number is noise, so "<$0.01";
+  // otherwise keep significant digits (never "$0.000").
+  if (value < 0.01) {
+    if (value < 0.001) return "<$0.01";
+    return `$${value.toFixed(4).replace(/0+$/, "").replace(/\.$/, "")}`;
+  }
   return `$${value.toFixed(2)}`;
 }
 
@@ -253,6 +261,29 @@ function InlineQuestion({
         </form>
       )}
     </div>
+  );
+}
+
+/**
+ * The harness approval card's countdown (TASK 5): the broker auto-rejects an
+ * unanswered request after 60s, and this line ticks the seconds left under
+ * the card. V1 cards never carry a deadline, so they render no countdown.
+ */
+function ApprovalDeadline({ deadline }: { deadline: number }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(id);
+  }, []);
+  const seconds = Math.max(0, Math.ceil((deadline - now) / 1000));
+  return (
+    <p
+      role="timer"
+      className="mt-1 flex items-center gap-1.5 px-1 text-caption font-medium text-amber-700/90 dark:text-amber-400/90"
+    >
+      <Clock size={11} className="shrink-0" />
+      {seconds > 0 ? `Auto-rejects in ${seconds}s` : "Auto-rejecting…"}
+    </p>
   );
 }
 
@@ -452,6 +483,8 @@ export function BotWorkspace() {
     reason?: string;
     canAlwaysAllow?: boolean;
     answered?: "allow" | "deny";
+    /** Harness-only: epoch ms the broker auto-rejects at (drives the countdown). */
+    deadline?: number;
   } | null>(null);
   /** The inline ask_user_question card while the harness waits for an answer. */
   const [pendingQuestion, setPendingQuestion] = useState<{ questionId: string; text: string } | null>(null);
@@ -469,6 +502,9 @@ export function BotWorkspace() {
   const [teamOpen, setTeamOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [approvalsOpen, setApprovalsOpen] = useState(false);
+  /** Right-rail collapsible sections (TASK 8): the browser and workspace cards. */
+  const [browserOpen, setBrowserOpen] = useState(true);
+  const [workspaceOpen, setWorkspaceOpen] = useState(true);
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [teammates, setTeammates] = useState<
     Array<{
@@ -891,9 +927,18 @@ export function BotWorkspace() {
   const SLASH_COMMANDS = [
     { command: "/new", label: "Start a new chat", run: () => void newChat() },
     { command: "/pages", label: "Open pages", run: () => { void loadPages(); setPagesBrowserOpen(true); } },
-    { command: "/browser", label: "Jump to the live browser", run: () => document.getElementById("rail-browser")?.scrollIntoView({ block: "nearest" }) },
+    { command: "/browser", label: "Jump to the live browser", run: () => revealBrowser(false) },
     { command: "/routines", label: "Open routines", run: () => setRoutinesOpen(true) },
   ];
+
+  /** Expand the rail's browser section and bring it into view. */
+  const revealBrowser = useCallback((smooth: boolean) => {
+    setBrowserOpen(true);
+    const scroll = () =>
+      document.getElementById("rail-browser")?.scrollIntoView({ block: "nearest", behavior: smooth ? "smooth" : "auto" });
+    // The section renders one commit after it opens, so wait for that paint.
+    requestAnimationFrame(() => requestAnimationFrame(scroll));
+  }, []);
   const slashMatches = input.startsWith("/")
     ? SLASH_COMMANDS.filter((entry) => entry.command.startsWith(input.trim().split(" ")[0]))
     : [];
@@ -1107,10 +1152,18 @@ export function BotWorkspace() {
         /* storage may be unavailable */
       }
     }
+    // FIX (cancel): the controller exists BEFORE the fetch starts, so the Stop
+    // button works from the very first moment the composer flips to busy.
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     setBusy(true);
     setError(null);
     const sentAttachments = attachments;
     setAttachments([]);
+    // A user-sent message always brings the transcript back to the bottom,
+    // even when the reader had scrolled up earlier (standard chat behaviour).
+    followingRef.current = true;
     const pendingId = `pending_${Date.now()}`;
     const localClientId = `client_${Date.now()}`;
     setMessages((prev) => [
@@ -1134,8 +1187,6 @@ export function BotWorkspace() {
     let nextPending: { id: string; toolName: string; summary: string } | null = null;
 
     try {
-      const controller = new AbortController();
-      abortRef.current = controller;
       const response = await fetch("/api/assistant/chat/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1227,11 +1278,14 @@ export function BotWorkspace() {
             // via:"harness" makes decide() answer the broker while the stream
             // is still open; the terminal done payload then replaces this card
             // with its answered state.
+            // TASK 5: the broker's auto-reject deadline rides the payload and
+            // drives the ticking countdown on the card (V1 cards never carry it).
             setPendingAction({
               via: "harness",
               id: payload.approvalId,
               toolName: payload.toolName,
               summary: payload.summary,
+              ...(typeof payload.deadline === "number" ? { deadline: payload.deadline } : {}),
             });
           } else if (payload.type === "question") {
             // TASK 1: the model asked the user something mid-turn — surface the
@@ -1323,7 +1377,7 @@ export function BotWorkspace() {
       void loadConversations();
       // A page tool ran during this turn — surface the result immediately.
       if (toolCallsUsed.some((tool) => /browser|navigate|screenshot/i.test(tool))) {
-        document.getElementById("rail-browser")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        revealBrowser(true);
       }
       if (toolCallsUsed.some((tool) => tool === "create_page" || tool === "update_page")) {
         const list = await loadPages();
@@ -1331,11 +1385,12 @@ export function BotWorkspace() {
       }
     } catch (err: any) {
       if (err?.name === "AbortError") {
-        // Stopped on purpose: keep whatever arrived.
+        // Stopped on purpose: keep whatever arrived and add a graceful note.
+        const cancelled = replyText.trim() ? `${replyText.trimEnd()}\n\n↩︎ _Turn cancelled._` : "↩︎ _Turn cancelled._";
         setMessages((prev) =>
           prev.map((message) =>
             message.id === pendingId
-              ? { ...message, content: replyText ? `${replyText}\n\n_(stopped)_` : "_(stopped)_", streaming: false }
+              ? { ...message, content: cancelled, streaming: false }
               : message
           )
         );
@@ -1810,9 +1865,6 @@ export function BotWorkspace() {
           onWheel={(event) => {
             if (event.deltaY < 0) followingRef.current = false;
           }}
-          onPointerDown={() => {
-            followingRef.current = false;
-          }}
           className="soft-scrollbar relative flex-1 overflow-y-auto px-5 py-4"
         >
           {loading ? (
@@ -1831,11 +1883,22 @@ export function BotWorkspace() {
                   : "I'm your assistant, and I already know my way around your CRM — no need to explain the business twice."}
               </p>
               <p className="text-meta leading-relaxed text-[var(--muted)]">
-                Tell me what you want in your own words: <em>&ldquo;what&rsquo;s due this week?&rdquo;</em>,{" "}
-                <em>&ldquo;triage ticket #SR-7&rdquo;</em>, <em>&ldquo;find that invoice email&rdquo;</em>,{" "}
-                <em>&ldquo;book a call Thursday at 3&rdquo;</em>, <em>&ldquo;send Adil the update&rdquo;</em>.
-                Tickets, leads, mail, meetings, documents — I&rsquo;ll handle the boring parts and ask before I
-                change anything.
+                Try:{" "}
+                {SUGGESTIONS.map((suggestion, index) => (
+                  <Fragment key={suggestion}>
+                    {index > 0 && <span aria-hidden>{" · "}</span>}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setInput(suggestion);
+                        textareaRef.current?.focus();
+                      }}
+                      className="font-medium text-[var(--text-2)] underline decoration-[var(--border-strong)] underline-offset-2 transition hover:text-accent hover:decoration-accent"
+                    >
+                      {suggestion}
+                    </button>
+                  </Fragment>
+                ))}
               </p>
             </div>
           ) : (
@@ -1963,17 +2026,24 @@ export function BotWorkspace() {
                 );
               })}
               {pendingAction && (
-                <AskBlock
-                  block={{
-                    kind: "ask",
-                    id: pendingAction.id,
-                    summary: pendingAction.summary,
-                    toolName: pendingAction.toolName,
-                    answered: pendingAction.answered,
-                    canAlwaysAllow: pendingAction.canAlwaysAllow,
-                  }}
-                  onDecide={(approve, alwaysAllow) => void decide(approve, alwaysAllow)}
-                />
+                <div>
+                  <AskBlock
+                    block={{
+                      kind: "ask",
+                      id: pendingAction.id,
+                      summary: pendingAction.summary,
+                      toolName: pendingAction.toolName,
+                      answered: pendingAction.answered,
+                      canAlwaysAllow: pendingAction.canAlwaysAllow,
+                    }}
+                    onDecide={(approve, alwaysAllow) => void decide(approve, alwaysAllow)}
+                  />
+                  {/* TASK 5: the harness broker's auto-reject countdown. Only
+                      harness cards carry a deadline; V1 cards show nothing. */}
+                  {pendingAction.via === "harness" &&
+                    typeof pendingAction.deadline === "number" &&
+                    !pendingAction.answered && <ApprovalDeadline deadline={pendingAction.deadline} />}
+                </div>
               )}
               {pendingQuestion && (
                 <InlineQuestion
@@ -2147,11 +2217,12 @@ export function BotWorkspace() {
             {busy ? (
               <button
                 onClick={() => abortRef.current?.abort()}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-rose-500/40 bg-rose-500/10 text-rose-600 transition hover:bg-rose-500/20 dark:text-rose-400"
+                className="flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 px-2.5 text-meta font-semibold text-rose-600 transition hover:bg-rose-500/20 dark:text-rose-400"
                 aria-label="Stop generating"
                 title="Stop generating"
               >
-                <Square size={13} />
+                <Square size={12} />
+                Stop
               </button>
             ) : (
               <button
@@ -2180,8 +2251,9 @@ export function BotWorkspace() {
         )}
       </section>
 
-      {/* Right rail — transparency */}
-      <aside className="hidden h-full min-h-0 flex-col overflow-hidden border-l border-[var(--border)] p-4 xl:flex">
+      {/* Right rail — transparency. Scrollable and collapsible so the fixed
+          cards stay reachable on shorter screens. */}
+      <aside className="soft-scrollbar hidden h-full min-h-0 flex-col overflow-y-auto border-l border-[var(--border)] p-4 xl:flex">
         {/* "What it can see" was a frozen list that never matched the selected
             agent's tools, so it is gone rather than kept as decoration. */}
         <button
@@ -2244,26 +2316,53 @@ export function BotWorkspace() {
           </p>
         )}
 
-        {/* Always visible: the assistant's browser is something you watch and
-            occasionally drive, so it does not hide behind a toggle. */}
-        <p className="mb-2 mt-4 flex items-center gap-1.5 text-caption font-bold uppercase tracking-widest text-[var(--muted)]">
+        {/* The live browser + local browser agent collapse behind one toggle,
+            so the rail fits on shorter screens (same muted design as the
+            Approvals section). The browser is still one click away, and a
+            browser tool call opens it automatically. */}
+        <button
+          onClick={() => setBrowserOpen((open) => !open)}
+          aria-expanded={browserOpen}
+          aria-controls="rail-browser"
+          className="mb-2 mt-4 flex w-full items-center gap-1.5 text-left text-caption font-bold uppercase tracking-widest text-[var(--muted)] transition hover:text-[var(--text)]"
+        >
+          <ChevronDown size={11} className={`transition-transform ${browserOpen ? "" : "-rotate-90"}`} />
           <Globe size={12} />
           <span className="flex-1">Live browser</span>
-        </p>
-        <div id="rail-browser" className="flex shrink-0 flex-col overflow-hidden rounded-lg border border-[var(--border)]">
-          <BrowserPanel embedded />
-        </div>
-        <LocalBrowserAgent />
+        </button>
+        {browserOpen && (
+          <div id="rail-browser" className="flex shrink-0 flex-col">
+            <div className="flex shrink-0 flex-col overflow-hidden rounded-lg border border-[var(--border)]">
+              <BrowserPanel embedded />
+            </div>
+            <LocalBrowserAgent />
+          </div>
+        )}
         {/* The conversation's project root: file tree + git line + command
             box. Renders only when the conversation has a workspace root; the
             command box sends through the SAME stream path as the message box
             (command intent), so destructive commands surface the SAME
-            approval card as tool approvals. */}
-        <WorkspacePanel
-          conversationId={conversationId}
-          busy={busy}
-          onRunCommand={(command) => void runTurn(command, { command: true })}
-        />
+            approval card as tool approvals. Collapsible like the other rail
+            cards. */}
+        <button
+          onClick={() => setWorkspaceOpen((open) => !open)}
+          aria-expanded={workspaceOpen}
+          aria-controls="rail-workspace"
+          className="mb-2 mt-4 flex w-full items-center gap-1.5 text-left text-caption font-bold uppercase tracking-widest text-[var(--muted)] transition hover:text-[var(--text)]"
+        >
+          <ChevronDown size={11} className={`transition-transform ${workspaceOpen ? "" : "-rotate-90"}`} />
+          <Folder size={12} />
+          <span className="flex-1">Workspace</span>
+        </button>
+        {workspaceOpen && (
+          <div className="[&>#rail-workspace>p:first-child]:hidden">
+            <WorkspacePanel
+              conversationId={conversationId}
+              busy={busy}
+              onRunCommand={(command) => void runTurn(command, { command: true })}
+            />
+          </div>
+        )}
       </aside>
 
       <RoutinesModal open={routinesOpen} onClose={() => setRoutinesOpen(false)} />
@@ -2304,7 +2403,7 @@ export function BotWorkspace() {
         actions={[
           { id: "new", label: "New chat", hint: "start fresh", run: () => void newChat() },
           { id: "pages", label: "Open pages", run: () => { void loadPages(); setPagesBrowserOpen(true); } },
-          { id: "browser", label: "Jump to live browser", run: () => document.getElementById("rail-browser")?.scrollIntoView({ block: "nearest" }) },
+          { id: "browser", label: "Jump to live browser", run: () => revealBrowser(false) },
           { id: "routines", label: "Open routines", run: () => setRoutinesOpen(true) },
         ]}
         onOpenConversation={(id) => void selectConversation(id)}

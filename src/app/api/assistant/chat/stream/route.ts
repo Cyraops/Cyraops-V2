@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { userFromRequest } from "@/lib/auth";
 import {
+  ConversationNotFoundError,
   deriveConversationTitle,
   getOrCreateAssistant,
   resolveConversation,
@@ -59,6 +60,12 @@ const harnessRuntime = harnessBotRuntime();
 /** The same friendly-error shaping the V1 path uses, plus harness/abort cases. */
 function describeHarnessFailure(error: unknown): string {
   if (isAbortError(error)) return "The turn was cancelled.";
+  if (error instanceof ConversationNotFoundError) {
+    // FIX: strict conversation ids — an unknown id errors instead of silently
+    // hijacking the latest thread. The user message was never persisted, so
+    // starting a new chat retries it safely.
+    return "That conversation no longer exists. Start a new chat.";
+  }
   if (error instanceof HarnessRunError) {
     if (error.details.timedOut) return "The assistant took too long and was stopped.";
     return (
@@ -247,10 +254,15 @@ async function streamHarnessReply(
           user.role
         );
 
+        // FIX: strict conversation ids. An unknown id throws
+        // ConversationNotFoundError (never a silent fallback onto the latest
+        // thread), and an absent id is the client's explicit ask for a brand-
+        // new thread. The V1 path keeps the legacy fallback behaviour.
         const conversation = await resolveConversation(
           assistant.id,
           typeof body?.conversationId === "string" ? body.conversationId : undefined,
-          agentSlug ?? null
+          agentSlug ?? null,
+          { strict: true }
         );
         auditConversationId = conversation.id;
         const isFirstMessage = (await db.assistantMessage.count({ where: { conversationId: conversation.id } })) === 0;
@@ -340,9 +352,11 @@ async function streamHarnessReply(
         const planDirective = commandIntent ? null : planDirectiveFor(content);
         // A BARE switch (no message) runs no model turn: the confirmation
         // stands in for the empty reply. A "/plan <message>" turn keeps the
-        // model's actual reply.
+        // model's actual reply. Only a directive with an explicit mode and no
+        // task is a switch — ordinary turns ({mode:null, task:null}) must keep
+        // the model's reply, or every harness message reads "Plan mode is off".
         const planSwitchText =
-          planDirective?.task === null
+          planDirective && planDirective.mode !== null && planDirective.task === null
             ? planDirective.mode === "on"
               ? "Plan mode is on for this chat. Describe what you want planned — I'll explore first, present a plan for your review, and wait for your approval before executing."
               : "Plan mode is off — I'll work without a review step again."
@@ -399,6 +413,9 @@ async function streamHarnessReply(
               toolName: pending.toolName,
               summary: pending.summary,
               ...(pending.reason ? { reason: pending.reason } : {}),
+              // FIX: approval countdown — the broker's auto-reject deadline
+              // rides the payload so the card can tick down to it.
+              deadline: pending.deadline,
             });
             void createHarnessApprovalRow({
               approvalId: pending.approvalId,
@@ -523,6 +540,13 @@ async function streamHarnessReply(
           // approval card consumes. The turn stays open (callback approval:
           // the harness answerer waterfall awaits /api/harness/approve).
           onApproval: (approval) => {
+            // FIX: approval countdown — the broker knows the auto-reject
+            // deadline; the request is still pending while this callback runs,
+            // so peek() answers for approval events forwarded without it.
+            const deadline =
+              typeof (approval as { deadline?: unknown }).deadline === "number"
+                ? (approval as { deadline?: number }).deadline
+                : approvalBroker().peek(approval.approvalId)?.deadline;
             send({
               type: "approval",
               approvalId: approval.approvalId,
@@ -530,6 +554,7 @@ async function streamHarnessReply(
               summary: approval.summary,
               ...(approval.reason ? { reason: approval.reason } : {}),
               ...(approval.callId ? { callId: approval.callId } : {}),
+              ...(typeof deadline === "number" ? { deadline } : {}),
             });
             // PENDING audit row (AssistantPendingAction, the V1 assistant's
             // approval table): settled by the broker's onDecided hook.

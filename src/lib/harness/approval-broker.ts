@@ -41,6 +41,8 @@ export interface PendingApproval {
   callId?: string;
   reason?: string;
   summary: string;
+  /** Epoch ms at which an unanswered request auto-rejects (the countdown the card shows). */
+  deadline: number;
   decision: Promise<ApprovalOutcome>;
   /** Settles once the decision is known (same moment decision resolves). */
   outcome: Promise<ApprovalOutcome>;
@@ -61,6 +63,7 @@ interface PendingRecord {
   timer: NodeJS.Timeout | null;
   settled: boolean;
   timedOut: boolean;
+  deadline: number;
 }
 
 export const APPROVAL_BROKER_KEY = Symbol.for("cyraops.harness.approval-broker");
@@ -97,6 +100,7 @@ export class ApprovalBroker {
       timer: null,
       settled: false,
       timedOut: false,
+      deadline: Date.now() + this.timeoutMs,
     };
     const settle = (outcome: ApprovalOutcome, timedOut: boolean) => {
       if (record.settled) return;
@@ -116,6 +120,7 @@ export class ApprovalBroker {
       callId: info.callId,
       reason: info.reason,
       summary: info.summary,
+      deadline: record.deadline,
       decision,
       outcome: decision,
       cancel: () => settle("cancelled", false),
@@ -154,6 +159,7 @@ export class ApprovalBroker {
       callId: record.info.callId,
       reason: record.info.reason,
       summary: record.info.summary,
+      deadline: record.deadline,
       decision: Promise.resolve("cancelled"),
       outcome: Promise.resolve("cancelled"),
       cancel: () => {},

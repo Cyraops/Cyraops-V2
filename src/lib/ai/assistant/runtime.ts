@@ -319,13 +319,39 @@ export async function createConversation(
 }
 
 /**
- * Resolves the conversation to use, creating one when the caller has none yet
- * (for example the very first message ever sent by a user).
+ * Thrown when a caller targets a conversation that does not exist (or belongs
+ * to a different assistant/agent scope). Callers that opt into strict
+ * resolution surface this as a typed error instead of silently hijacking the
+ * latest conversation.
+ */
+export class ConversationNotFoundError extends Error {
+  readonly conversationId: string;
+
+  constructor(conversationId: string) {
+    super(`Conversation not found: ${conversationId}`);
+    this.name = "ConversationNotFoundError";
+    this.conversationId = conversationId;
+  }
+}
+
+/**
+ * Resolves the conversation to use for a turn.
+ *
+ * Legacy (default) mode keeps the original behaviour — unknown ids fall back
+ * to the latest conversation, and no id means the latest conversation — for
+ * the callers that rely on it (the messages route and the V1 chat path).
+ *
+ * Strict mode (the harness chat path) has no silent fallback:
+ * - an id that does not exist in the caller's scope throws
+ *   {@link ConversationNotFoundError};
+ * - no id means the caller explicitly wants a brand-new thread, so a fresh
+ *   conversation is created.
  */
 export async function resolveConversation(
   assistantId: string,
   conversationId?: string,
-  agentSlug?: string | null
+  agentSlug?: string | null,
+  options: { strict?: boolean } = {}
 ) {
   const scope = { assistantId, agentSlug: agentSlug ?? null };
   if (conversationId) {
@@ -333,6 +359,10 @@ export async function resolveConversation(
       where: { id: conversationId, ...scope },
     });
     if (existing) return existing;
+    if (options.strict) throw new ConversationNotFoundError(conversationId);
+  }
+  if (options.strict) {
+    return await createConversation(assistantId, "New chat", agentSlug);
   }
   const latest = await db.assistantConversation.findFirst({
     where: scope,

@@ -38,7 +38,7 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
  * into top-level blocks and each block is memoised on its own text — a token
  * only ever re-parses the block it lands in.
  */
-function splitBlocks(text: string): string[] {
+export function splitBlocks(text: string): string[] {
   const blocks: string[] = [];
   let current: string[] = [];
   let fence: string | null = null;
@@ -61,7 +61,7 @@ function splitBlocks(text: string): string[] {
 }
 
 /** An odd number of fences means the stream is mid-code-block. */
-function closeOpenFence(text: string): string {
+export function closeOpenFence(text: string): string {
   const fences = text.match(/^\s*(```|~~~)/gm)?.length ?? 0;
   return fences % 2 === 1 ? `${text}\n\`\`\`` : text;
 }
@@ -90,6 +90,71 @@ function firstElement(node: React.ReactNode): React.ReactElement | null {
   return node && typeof node === "object" && "props" in (node as any) ? (node as React.ReactElement) : null;
 }
 
+function isElement(node: unknown): node is React.ReactElement {
+  return (
+    Boolean(node) &&
+    typeof node === "object" &&
+    "props" in (node as object) &&
+    "type" in (node as object)
+  );
+}
+
+/**
+ * The header row of a markdown table, kept as a module-level component so
+ * TableCard can identify it by IDENTITY (not by `type.name`, which a minifier
+ * may rename and which differs between builds). react-markdown calls it for
+ * every `<thead>`; TableCard never renders it directly — it borrows its cells.
+ * Exported so the table-part tests can build realistic section children.
+ */
+export function MdThead({ children }: { children?: React.ReactNode }) {
+  return <thead className="sticky top-0 z-10 bg-[var(--surface-2)]">{children}</thead>;
+}
+export interface MarkdownTableParts {
+  /** The thead section (MdThead element), or null when the table has no header. */
+  head: React.ReactElement | null;
+  /** The header row's cell elements. */
+  headCells: React.ReactElement[];
+  /** Body rows as element + per-cell text (for sorting and CSV). */
+  rows: Array<{ node: React.ReactElement; text: string[] }>;
+  /** The body rows unfiltered, used when there is no thead to render. */
+  rawRows: React.ReactElement[];
+}
+
+/**
+ * Splits a markdown table's rendered children into header and body.
+ *
+ * react-markdown hands the `table` component the table's SECTIONS as children
+ * (`[MdThead, tbody]`), NOT a `<table>` element — an earlier version unwrapped
+ * one level too deep and ended up rendering `<th>` cells directly inside
+ * `<tbody>`, the invalid nesting behind the tbody/th hydration warning.
+ */
+export function tablePartsOf(children: React.ReactNode): MarkdownTableParts {
+  const sections = React.Children.toArray(children).filter(isElement);
+  const head = sections.find((section) => section.type === MdThead) ?? null;
+  const body = sections.find(
+    (section) =>
+      section.type === "tbody" ||
+      (typeof section.type === "function" && (section.type as { name?: string }).name === "MdTbody")
+  );
+  const fallbackBody = body ?? sections.find((section) => section !== head);
+  const headRow = firstElement((head?.props as { children?: React.ReactNode } | null)?.children);
+  const headCells = React.Children.toArray(
+    (headRow?.props as { children?: React.ReactNode } | null)?.children ?? []
+  ).filter(isElement);
+
+  const rawRows = React.Children.toArray(
+    ((body ?? fallbackBody)?.props as { children?: React.ReactNode } | null | undefined)?.children ?? []
+  ).filter(isElement);
+  const rows = rawRows.map((row) => ({
+    node: row,
+    text: React.Children.toArray((row.props as { children?: React.ReactNode }).children).map((cell) =>
+      textOf(cell)
+    ),
+  }));
+
+  return { head, headCells, rows, rawRows };
+}
+
 /**
  * Tables in assistant replies are usually the answer itself. Sorting keeps the
  * original cell elements (so links and code inside cells survive), adds row
@@ -104,22 +169,7 @@ function TableCard({ children }: { children: React.ReactNode }) {
   const [page, setPage] = useState(0);
 
   // Split the rendered children into header + body rows, keeping cell nodes.
-  const table = firstElement(children);
-  const sections = React.Children.toArray((table?.props as any)?.children ?? []);
-  // Identify by component name: these sections are React components we override,
-  // so their `type` is a function, never the string "thead".
-  const head = sections.find((section: any) => section?.type?.name === "MdThead") as React.ReactElement | undefined;
-  const body = sections.find((section: any) => section?.type?.name === "MdTbody" || section?.type?.name === "tbody") as React.ReactElement | undefined;
-  const fallbackBody = body ?? sections.find((section: any) => section !== head) as React.ReactElement | undefined;
-  const headRow = firstElement((head?.props as any)?.children);
-  const headCells = React.Children.toArray((headRow?.props as any)?.children ?? []).filter((cell: any) => cell?.props);
-
-  const rows = React.Children.toArray(((body ?? fallbackBody)?.props as any)?.children ?? [])
-    .filter((row: any) => row?.props)
-    .map((row: any) => ({
-      node: row,
-      text: React.Children.toArray(row.props.children).map((cell) => textOf(cell)),
-    }));
+  const { head, headCells, rows, rawRows } = tablePartsOf(children);
 
   const sorted = sortIndex === null ? rows : [...rows].sort((a, b) => {
     const left = a.text[sortIndex] ?? "";
@@ -212,7 +262,7 @@ function TableCard({ children }: { children: React.ReactNode }) {
             </thead>
           )}
           <tbody>
-            {(head ? visible.map((row) => row.node) : React.Children.toArray(((body ?? fallbackBody)?.props as any)?.children ?? []))}
+            {head ? visible.map((row) => row.node) : rawRows}
           </tbody>
         </table>
       </div>
@@ -322,9 +372,7 @@ const MarkdownBlock = memo(function MarkdownBlock({ source }: { source: string }
             );
           },
           table: ({ children }) => <TableCard>{children}</TableCard>,
-          thead: function MdThead({ children }: { children?: React.ReactNode }) {
-            return <thead className="sticky top-0 z-10 bg-[var(--surface-2)]">{children}</thead>;
-          },
+          thead: MdThead,
           th: ({ children }) => (
             <th className="border-b border-[var(--border)] px-2.5 py-1.5 text-left font-semibold text-[var(--text)]">{children}</th>
           ),
