@@ -57,6 +57,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Session ownership: a harness session belongs to the tenant that created
+    // it. The id alone must never grant access (audit finding: resume was
+    // unguarded, protected only by UUID entropy).
+    if (session.tenantId !== user.id) {
+      return Response.json({ ok: false, error: "That session belongs to another workspace." }, { status: 404 });
+    }
+
     const events = [];
     for await (const event of runtime.executeTurn({
       sessionId: session.id,
