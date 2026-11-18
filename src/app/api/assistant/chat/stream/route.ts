@@ -9,18 +9,25 @@ import {
 import { checkDailySpend, checkRateLimit } from "@/lib/ai/assistant/guard";
 import { db } from "@/lib/db";
 import { storage } from "@/lib/storage";
-import { streamHarnessTurn, harnessTaskForTurn, planDirectiveFor } from "@/lib/harness/bot-stream";
+import { streamHarnessTurn, harnessTaskForTurn, planDirectiveFor, type StreamHarnessTurnResult } from "@/lib/harness/bot-stream";
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
 import type { HarnessEvent } from "@/lib/harness/client";
 import { approvalBroker } from "@/lib/harness/approval-broker";
 import { planOfToolCall, planReviewOfQuestion, toolCallsUsedOf, type PlanReviewQuestion } from "@/lib/harness/events";
 import { workspaceRootForTurn } from "@/lib/harness/workspace-root";
-import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
+import {
+  classifyCommand,
+  commandTaskFor,
+  COMMAND_MAX_LENGTH,
+  SHELL_DISABLED_REPLY,
+} from "@/lib/harness/command-classifier";
+import { resolvePermissionMode, runtimePermissionMode, allowsSystemTools } from "@/lib/permissions/mode";
 import {
   createHarnessApprovalRow,
   installApprovalDecisionHook,
   maskToolOutput,
   persistHarnessTurnAudit,
+  recordShellCommandAudit,
   toolInputForApproval,
   usageForDonePayload,
   type ToolCallTimings,
@@ -248,6 +255,19 @@ async function streamHarnessReply(
         auditConversationId = conversation.id;
         const isFirstMessage = (await db.assistantMessage.count({ where: { conversationId: conversation.id } })) === 0;
 
+        // Command-box intent (Workspace panel): body.command marks the turn as
+        // a shell-command run. The persisted user message is the command text
+        // (the client sends content === command), the harness task becomes the
+        // fixed "run and report exactly" prompt, destructive commands wait for
+        // an approval through the SAME broker flow tool approvals use, and
+        // every command is recorded in AiAuditLog (eventType SHELL_COMMAND).
+        const commandInput = typeof body?.command === "string" ? body.command : "";
+        const command = commandInput.trim();
+        const commandIntent = command.length > 0;
+        if (commandIntent && command.length > COMMAND_MAX_LENGTH) {
+          throw new Error(`Commands longer than ${COMMAND_MAX_LENGTH} characters are not allowed.`);
+        }
+
         // Project-work harness (Phase A): the conversation's project root rides
         // the turn only for the conversation's OWNER (the assistant's owner —
         // every conversation resolved above is scoped to this caller's own
@@ -317,23 +337,121 @@ async function streamHarnessReply(
         // "/plan" / "/plan off" only switch the mode and get a friendly
         // confirmation instead of a model turn. The user message persists as
         // typed, so the transcript renders exactly as before.
-        const planDirective = planDirectiveFor(content);
+        const planDirective = commandIntent ? null : planDirectiveFor(content);
         // A BARE switch (no message) runs no model turn: the confirmation
         // stands in for the empty reply. A "/plan <message>" turn keeps the
         // model's actual reply.
         const planSwitchText =
-          planDirective.task === null
+          planDirective?.task === null
             ? planDirective.mode === "on"
               ? "Plan mode is on for this chat. Describe what you want planned — I'll explore first, present a plan for your review, and wait for your approval before executing."
               : "Plan mode is off — I'll work without a review step again."
             : null;
-        const task = harnessTaskForTurn({
-          content: planDirective.task ?? (planDirective.mode ? "" : content),
-          attachmentContext,
-          voice: body?.voice === true,
-        });
+        // Command turns hand the harness the fixed command task; everything
+        // else keeps the existing shaping (plan directive, attachments, voice).
+        const task = commandIntent
+          ? commandTaskFor(command)
+          : harnessTaskForTurn({
+              content: planDirective?.task ?? (planDirective?.mode ? "" : content),
+              attachmentContext,
+              voice: body?.voice === true,
+            });
 
-        const result = await streamHarnessTurn({
+        // -----------------------------------------------------------------
+        // Command gate: classify BEFORE anything runs. Destructive commands
+        // emit the approval through the existing broker ({ type: "approval" }
+        // SSE + /api/harness/approve) and execute only after an allow;
+        // non-SYSTEM workspaces never mounted the shell tools, so their
+        // commands get the honest "shell is disabled" answer instead of a
+        // model turn that fails silently. Every command is audit-logged.
+        // -----------------------------------------------------------------
+        let result: StreamHarnessTurnResult | null = null;
+        /** The reply streamed for a shortcut (no-model) command turn. */
+        let shortcutReply: string | null = null;
+        /** A destructive command's gate, mirrored into the done payload. */
+        let commandGate: { id: string; toolName: string; summary: string; answered: "allow" | "deny" } | null = null;
+
+        if (commandIntent) {
+          const classification = classifyCommand(command);
+          if (!allowsSystemTools(permissionMode)) {
+            // Shell tools are only mounted in SYSTEM mode; answer honestly
+            // instead of running a turn whose shell tool would not exist.
+            shortcutReply = SHELL_DISABLED_REPLY;
+            send({ type: "token", content: SHELL_DISABLED_REPLY });
+            void recordShellCommandAudit({
+              userId: user.id,
+              conversationId: conversation.id,
+              command,
+              approved: false,
+            });
+          } else if (classification.destructive) {
+            // The approval gate. The SSE card and the PENDING audit row surface
+            // the moment the request is minted; the turn below runs only when
+            // the broker's outcome is allowed-once.
+            const pending = approvalBroker().request({
+              toolName: "shell",
+              summary: command,
+              reason: `Destructive command (${classification.matches.map((match) => match.label).join("; ")})`,
+            });
+            send({
+              type: "approval",
+              approvalId: pending.approvalId,
+              toolName: pending.toolName,
+              summary: pending.summary,
+              ...(pending.reason ? { reason: pending.reason } : {}),
+            });
+            void createHarnessApprovalRow({
+              approvalId: pending.approvalId,
+              assistantId: assistant.id,
+              userId: user.id,
+              conversationId: conversation.id,
+              toolName: pending.toolName,
+              summary: pending.summary,
+              input: JSON.stringify({ command }),
+            });
+            const onAbort = () => pending.cancel();
+            if (request.signal.aborted) pending.cancel();
+            else request.signal.addEventListener("abort", onAbort, { once: true });
+            const outcome = await pending.outcome;
+            request.signal.removeEventListener("abort", onAbort);
+            const answered = outcome === "allowed-once" ? "allow" : "deny";
+            commandGate = { id: pending.approvalId, toolName: pending.toolName, summary: command, answered };
+            if (answered === "deny") {
+              // Not executed. The user message above stays in the transcript,
+              // and the honest denial becomes the assistant reply.
+              shortcutReply = pending.timedOut
+                ? "Command not run — the approval request timed out."
+                : outcome === "cancelled"
+                  ? "Command not run — the request was cancelled."
+                  : "Command not run — approval was rejected.";
+              send({ type: "token", content: shortcutReply });
+              void recordShellCommandAudit({
+                userId: user.id,
+                conversationId: conversation.id,
+                command,
+                approved: false,
+              });
+            } else {
+              void recordShellCommandAudit({
+                userId: user.id,
+                conversationId: conversation.id,
+                command,
+                approved: true,
+              });
+            }
+          } else {
+            // Non-destructive, SYSTEM mode: runs directly, audited.
+            void recordShellCommandAudit({
+              userId: user.id,
+              conversationId: conversation.id,
+              command,
+              approved: true,
+            });
+          }
+        }
+
+        if (!shortcutReply) {
+          result = await streamHarnessTurn({
           runtime: harnessRuntime as AgentRuntime,
           conversationId: conversation.id,
           tenantId: user.id,
@@ -352,7 +470,7 @@ async function streamHarnessReply(
           permissionMode,
           // Tier-2 plan preview: "/plan …" runs the turn in the harness's
           // plan mode (native runtime; other runtimes ignore the flag).
-          planMode: planDirective.mode ?? undefined,
+          planMode: planDirective?.mode ?? undefined,
           onText: (chunk: string) => send({ type: "token", content: chunk }),
           // Collect the turn's raw events for the post-turn audit write, and
           // relay tool calls as live SSE events (TASK 3: tool timeline) in the
@@ -462,11 +580,14 @@ async function streamHarnessReply(
           onDone: () =>
             console.info(`[assistant/stream] harness turn finished (conversation=${conversation.id})`),
         });
+        }
 
-        const toolCallsUsed = toolCallsUsedOf(auditEvents);
+        const toolCallsUsed = result ? toolCallsUsedOf(auditEvents) : [];
         // A bare "/plan" / "/plan off" switch runs no model turn: the harness
-        // result is empty and the friendly confirmation stands in.
-        const reply = planSwitchText ?? result.text;
+        // result is empty and the friendly confirmation stands in. Shortcut
+        // command turns (disabled shell, denied approval) already streamed
+        // their honest reply.
+        const reply = result ? planSwitchText ?? result.text : shortcutReply ?? "";
 
         await db.assistantMessage.create({
           data: {
@@ -491,12 +612,17 @@ async function streamHarnessReply(
           // TASK 2: usage display. The same events audit.ts persists, cost via
           // the existing estimate mapper; absent usage keeps the field null so
           // the UI shows no caption (V1-engine turns never carry it).
-          usage: usageForDonePayload(auditEvents),
+          usage: result ? usageForDonePayload(auditEvents) : undefined,
           // Mirror the V1 pendingAction shape so the SAME approval card
           // renders in the unchanged UI (answered state: the decision has
-          // already been made by the time the turn completes).
-          pendingAction: result.approval ? { ...result.approval, via: "harness" } : undefined,
-          runtime: result.runtimeKind,
+          // already been made by the time the turn completes). Command turns
+          // mirror their gate the same way.
+          pendingAction: commandGate
+            ? { ...commandGate, canAlwaysAllow: false, via: "harness" }
+            : result?.approval
+              ? { ...result.approval, via: "harness" }
+              : undefined,
+          runtime: result ? result.runtimeKind : (await (harnessRuntime as AgentRuntime).healthCheck()).kind,
         });
       } catch (err: any) {
         console.error("[assistant/stream] harness turn failed:", err?.stack || err?.message || err);

@@ -10,6 +10,7 @@ import { PagesBrowser, PagesPanel, type OpenPage, type PageMeta } from "@/compon
 import { BrowserPanel } from "@/components/ai/browser-panel";
 import { VoiceMode } from "@/components/ai/voice-mode";
 import { LocalBrowserAgent } from "@/components/ai/local-browser-agent";
+import { WorkspacePanel } from "@/components/ai/workspace-panel";
 import { CommandPalette } from "@/components/ai/command-palette";
 import { AskBlock, FileBlock, StepBlock, TextBlock, toBlocks } from "@/components/ai/blocks";
 import { BotOrb } from "@/components/ai/bot-avatar";
@@ -1088,15 +1089,23 @@ export function BotWorkspace() {
     [loadConversation]
   );
 
-  const send = async () => {
-    const content = input.trim();
+  /**
+   * One turn through the SAME stream path for both the message box and the
+   * Workspace panel's command box: `command: true` marks the turn as a
+   * command intent (the server classifies destructive commands and gates
+   * them behind the same approval card tool approvals use) and leaves the
+   * message input untouched.
+   */
+  const runTurn = async (content: string, options: { command?: boolean } = {}) => {
     if (!content || busy) return;
 
-    setInput("");
-    try {
-      window.localStorage.removeItem(draftKey);
-    } catch {
-      /* storage may be unavailable */
+    if (!options.command) {
+      setInput("");
+      try {
+        window.localStorage.removeItem(draftKey);
+      } catch {
+        /* storage may be unavailable */
+      }
     }
     setBusy(true);
     setError(null);
@@ -1135,6 +1144,10 @@ export function BotWorkspace() {
           assistantId: assistantId || undefined,
           conversationId: conversationId || undefined,
           content,
+          // Workspace-panel command turns carry the command intent; the
+          // stream route classifies it server-side (destructive → the same
+          // approval card) and answers honestly when shell tools are off.
+          command: options.command ? content : undefined,
           agentSlug: activeAgent ?? undefined,
           attachmentIds: attachments.map((a) => a.id),
         }),
@@ -1343,6 +1356,10 @@ export function BotWorkspace() {
       setQuestionAnswered(false);
       setQuestionSending(false);
     }
+  };
+
+  const send = async () => {
+    await runTurn(input.trim());
   };
 
   const decide = async (approve: boolean, alwaysAllow = false) => {
@@ -2237,6 +2254,16 @@ export function BotWorkspace() {
           <BrowserPanel embedded />
         </div>
         <LocalBrowserAgent />
+        {/* The conversation's project root: file tree + git line + command
+            box. Renders only when the conversation has a workspace root; the
+            command box sends through the SAME stream path as the message box
+            (command intent), so destructive commands surface the SAME
+            approval card as tool approvals. */}
+        <WorkspacePanel
+          conversationId={conversationId}
+          busy={busy}
+          onRunCommand={(command) => void runTurn(command, { command: true })}
+        />
       </aside>
 
       <RoutinesModal open={routinesOpen} onClose={() => setRoutinesOpen(false)} />

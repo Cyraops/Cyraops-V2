@@ -347,6 +347,39 @@ export function estimatedCostFor(usage: HarnessUsageParams): number {
   return estimateCostUsd(usage.model, usage.promptTokens, usage.completionTokens);
 }
 
+// ---------------------------------------------------------------------------
+// Command box (this phase): one AiAuditLog row per command turn.
+// ---------------------------------------------------------------------------
+
+/**
+ * Record a Workspace-panel command turn. `approved` is true when the command
+ * was cleared to run (no gate, or the destructive-command approval was
+ * allowed); false when the approval was denied/timed out/cancelled, or when
+ * the workspace mode never mounted the shell tools. Best-effort, like every
+ * other audit write here — it must never fail the chat stream.
+ */
+export async function recordShellCommandAudit(params: {
+  userId: string;
+  conversationId: string;
+  command: string;
+  approved: boolean;
+}): Promise<void> {
+  try {
+    await db.aiAuditLog.create({
+      data: {
+        eventType: "SHELL_COMMAND",
+        entity: "AssistantConversation",
+        entityId: params.conversationId,
+        actorId: params.userId,
+        actorType: "USER",
+        details: JSON.stringify({ command: params.command, approved: params.approved }),
+      },
+    });
+  } catch (error) {
+    console.warn("[HarnessAudit] Failed to log shell command:", error);
+  }
+}
+
 /** The exact usage payload the harness done SSE carries (TASK 2: usage display). */
 export interface HarnessDoneUsage {
   inputTokens: number;
