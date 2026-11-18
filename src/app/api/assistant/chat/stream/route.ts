@@ -14,6 +14,7 @@ import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from
 import type { HarnessEvent } from "@/lib/harness/client";
 import { approvalBroker } from "@/lib/harness/approval-broker";
 import { planOfToolCall, planReviewOfQuestion, toolCallsUsedOf, type PlanReviewQuestion } from "@/lib/harness/events";
+import { workspaceRootForTurn } from "@/lib/harness/workspace-root";
 import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import {
   createHarnessApprovalRow,
@@ -247,6 +248,17 @@ async function streamHarnessReply(
         auditConversationId = conversation.id;
         const isFirstMessage = (await db.assistantMessage.count({ where: { conversationId: conversation.id } })) === 0;
 
+        // Project-work harness (Phase A): the conversation's project root rides
+        // the turn only for the conversation's OWNER (the assistant's owner —
+        // every conversation resolved above is scoped to this caller's own
+        // assistant, so this gate is structural today and fails closed for any
+        // future shared thread). Any other caller's turn runs WITHOUT a root.
+        const workspaceRoot = workspaceRootForTurn({
+          actorId: user.id,
+          conversationOwnerId: assistant.userId,
+          workspaceRootRealpath: conversation.workspaceRootRealpath,
+        });
+
         // Attachments are persisted and their text is inlined into the task,
         // mirroring the V1 path.
         let attachmentContext = "";
@@ -333,6 +345,9 @@ async function streamHarnessReply(
           // is the only tenant-stable key). Passed to the runtime, which
           // publishes it as CYRAOPS_WORKSPACE_ID for the bridge.
           workspaceId: assistant.userId,
+          // Project-work harness (Phase A): owner-gated project root for the
+          // turn (null = CRM mode for anyone but the conversation owner).
+          workspaceRoot,
           // The resolved, role-gated permission mode for this turn.
           permissionMode,
           // Tier-2 plan preview: "/plan …" runs the turn in the harness's

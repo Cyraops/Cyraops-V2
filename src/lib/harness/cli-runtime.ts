@@ -92,6 +92,7 @@ export class CliAgentRuntime implements AgentRuntime {
     task: string;
     signal?: AbortSignal;
     workspaceId?: string | null;
+    workspaceRoot?: string | null;
     permissionMode?: PermissionMode;
   }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
@@ -120,7 +121,7 @@ export class CliAgentRuntime implements AgentRuntime {
     const spawn = previous
       .catch(() => undefined)
       .then(() =>
-        this.runSpawn(session, input.task, input.workspaceId ?? null, input.permissionMode, queue)
+        this.runSpawn(session, input.task, input.workspaceId ?? null, input.workspaceRoot ?? null, input.permissionMode, queue)
       );
     this.turns.set(session.id, spawn.catch(() => undefined));
 
@@ -137,6 +138,7 @@ export class CliAgentRuntime implements AgentRuntime {
     session: Session,
     task: string,
     workspaceId: string | null,
+    workspaceRoot: string | null,
     permissionMode: PermissionMode | undefined,
     queue: EventQueue<HarnessEvent>
   ): Promise<void> {
@@ -168,6 +170,9 @@ export class CliAgentRuntime implements AgentRuntime {
               ...(preset ? { DSH_PERMISSION_MODE: preset } : {}),
             }
           : process.env,
+      // Project-work harness (Phase A): the conversation's project root
+      // becomes --add-dir for this spawn (per turn, like the env overrides).
+      addDir: workspaceRoot ? [workspaceRoot] : undefined,
       // Permission mapping: CONTROLLED adds no argument (the harness default);
       // every other mode names its preset explicitly (cliPermissionArgs).
       permissionPreset:

@@ -93,6 +93,13 @@ export interface StreamHarnessTurnInput {
   /** The turn's workspace/tenant key (conversation owner id); scopes the CRM tools. */
   workspaceId?: string | null;
   /**
+   * Project-work harness (Phase A): the conversation's project root for this
+   * turn (server-resolved realpath, already owner-gated by the route). The
+   * native runtime pins the turn's sandbox to it; the CLI runtime passes it
+   * as --add-dir. Null/absent = CRM mode.
+   */
+  workspaceRoot?: string | null;
+  /**
    * The caller's resolved, role-gated permission mode; the runtime maps it
    * onto DSH_PERMISSION_MODE / --permission-mode and the system-tools mount.
    */
@@ -216,6 +223,9 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
       task,
       signal,
       workspaceId: input.workspaceId ?? null,
+      // Project-work harness (Phase A): the conversation's project root rides
+      // the turn input; runtimes ignore it when null (CRM mode).
+      workspaceRoot: input.workspaceRoot ?? null,
       permissionMode: input.permissionMode,
       planMode: input.planMode,
     })) {

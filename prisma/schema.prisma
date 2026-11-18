@@ -1026,6 +1026,15 @@ model AiConversation {
   /// The DeepSeek Harness durable session id the AgentRuntime adapter maps
   /// onto this conversation; null until the first turn announces one.
   harnessSessionId String?
+  /// Project-work harness (Phase A): the project root the harness turn runs
+  /// under, exactly as the owner supplied it. Null = CRM mode (no root).
+  /// Only the conversation's owner may set or clear it.
+  workspaceRoot String?
+  /// The server-resolved canonical path (realpath) of workspaceRoot — the
+  /// value the runtimes actually map into the sandbox. Stored beside the
+  /// user-supplied spelling so the UI can show what was typed while the
+  /// sandbox uses the resolved directory.
+  workspaceRootRealpath String?
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   agent     AiAgent       @relation(fields: [agentId], references: [id], onDelete: Cascade)
@@ -2001,6 +2010,14 @@ model AssistantConversation {
   /// Pinned chats stay at the top; archived ones fold away without being lost.
   pinnedAt    DateTime?
   archivedAt  DateTime?
+  /// Project-work harness (Phase A): the project root the harness bot turns
+  /// run under, exactly as the owner supplied it. Null = CRM mode (no root).
+  /// This is the conversation the HARNESS_BOT chat stream actually turns
+  /// under, so the authoritative copy for the turn path lives here; the same
+  /// columns exist on AiConversation per the Phase A schema spec.
+  workspaceRoot String?
+  /// Server-resolved realpath of workspaceRoot (absolute, canonical).
+  workspaceRootRealpath String?
   /// Null for the personal assistant; set to a specialist's slug for a thread
   /// with that AI teammate.
   agentSlug   String?

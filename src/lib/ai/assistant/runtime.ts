@@ -296,7 +296,17 @@ export async function listConversations(assistantId: string, agentSlug?: string 
       { updatedAt: "desc" },
     ],
     take: 60,
-    select: { id: true, title: true, updatedAt: true, pinnedAt: true, archivedAt: true },
+    // Project-work harness (Phase A): the conversation's project root rides
+    // the read payload so the UI can show which chats are rooted.
+    select: {
+      id: true,
+      title: true,
+      updatedAt: true,
+      pinnedAt: true,
+      archivedAt: true,
+      workspaceRoot: true,
+      workspaceRootRealpath: true,
+    },
   });
 }
 

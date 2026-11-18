@@ -20,6 +20,13 @@
  *     signal,            // optional AbortSignal; abort tears the tree down
  *     timeoutMs = 180000,
  *     projectRoot = process.cwd(),   // env layer (DeepSeek key) + task cwd
+ *     workspaceRoot,                 // optional absolute project root for the
+ *                                    // turn: pins the sandboxed fs cwd, the
+ *                                    // sandbox-policy workspace root and the
+ *                                    // session's recorded cwd to it (Phase A
+ *                                    // per-conversation workspace roots).
+ *                                    // projectRoot keeps feeding the env
+ *                                    // layer and the CRM bundle source.
  *     profileDir, vendorRoot, installAnchor, // defaults below
  *     captureEvidence = false,       // record every resolution (one-shot diagnostics)
  *     tee = "diagnostics",           // "diagnostics" forwards non-NDJSON stdout
@@ -346,6 +353,7 @@ async function drivePlanTurn({
   task,
   sessionId,
   projectRoot,
+  workspaceRoot,
   planMode,
   approvalPolicy,
   permissionMode,
@@ -395,7 +403,7 @@ async function drivePlanTurn({
     installModelSelection(agentCtx);
   };
 
-  const cwd = projectRoot;
+  const cwd = workspaceRoot ?? projectRoot;
   let agent;
   if (sessionId === undefined) {
     const created = await agents.create({
@@ -763,6 +771,7 @@ export async function* runNativeTask(options = {}) {
     signal,
     timeoutMs = 180_000,
     projectRoot = process.cwd(),
+    workspaceRoot,
     profileDir = PROFILE_DIR,
     vendorRoot = VENDOR,
     installAnchor = INSTALL_ANCHOR,
@@ -787,6 +796,12 @@ export async function* runNativeTask(options = {}) {
   }
   if (planMode !== undefined && planMode !== "on" && planMode !== "off") {
     throw new Error("runNativeTask: planMode must be \"on\" or \"off\"");
+  }
+  // Phase A workspace roots: the caller (the AgentRuntime adapter) resolves
+  // and owner-gates the path; the host still refuses a non-absolute spelling
+  // so a bug cannot silently boot the turn under a relative directory.
+  if (workspaceRoot !== undefined && (!path.isAbsolute(workspaceRoot) || workspaceRoot.includes("\0"))) {
+    throw new Error("runNativeTask: workspaceRoot must be an absolute directory path");
   }
 
   // Cancellation promptness: a turn that is already aborted never boots a
@@ -893,6 +908,24 @@ export async function* runNativeTask(options = {}) {
         )
       : [...patches];
     if (planMode !== undefined) appliedPatches.push({ id: "headless-runner", disabled: true });
+    // Phase A workspace roots: pin the turn's sandbox to the project root.
+    // Patch rows override by id and REPLACE the row's config (applyPatches),
+    // so both rows restate the values the bundle rows wire from process.env
+    // (DSH_PERMISSION_MODE is already set for this turn by the runtime's
+    // global mutex) while adding the per-turn root. With no root the bundle
+    // defaults keep applying — the repo cwd stays the sandbox (CRM mode),
+    // byte-for-byte as before.
+    if (workspaceRoot !== undefined) {
+      appliedPatches.push({ id: "fs-sandbox", config: { cwd: workspaceRoot } });
+      appliedPatches.push({
+        id: "sandbox-policy",
+        config: {
+          mode: process.env.DSH_PERMISSION_MODE ?? "workspace-write",
+          workspaceRoot,
+        },
+      });
+      log(`workspace root pinned for this turn: ${workspaceRoot}`);
+    }
     const appReady = createAppReady();
 
     let exitResolve;
@@ -934,6 +967,7 @@ export async function* runNativeTask(options = {}) {
               task: typeof task === "string" ? task : "",
               sessionId,
               projectRoot,
+              workspaceRoot,
               planMode,
               approvalPolicy,
               permissionMode,

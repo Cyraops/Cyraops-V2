@@ -1,0 +1,127 @@
+{
+  "total": 24,
+  "passed": 24,
+  "failed": [],
+  "results": [
+    {
+      "name": "owner login",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "fresh assistant conversation",
+      "ok": true,
+      "detail": "status 201"
+    },
+    {
+      "name": "owner sets root (API)",
+      "ok": true,
+      "detail": "status 200 workspaceRoot=\"/tmp/cyraops-probe-root\""
+    },
+    {
+      "name": "realpath recorded (both spellings stored)",
+      "ok": true,
+      "detail": "realpath=\"/private/tmp/cyraops-probe-root\""
+    },
+    {
+      "name": "DB row carries both columns",
+      "ok": true,
+      "detail": "workspaceRoot=\"/tmp/cyraops-probe-root\" workspaceRootRealpath=\"/private/tmp/cyraops-probe-root\""
+    },
+    {
+      "name": "GET workspace listing",
+      "ok": true,
+      "detail": "status 200 {\"workspaceRoot\":\"/tmp/cyraops-probe-root\",\"workspaceRootRealpath\":\"/private/tmp/cyraops-probe-root\",\"exists\":true,\"realpath\":\"/private/tmp/cyraops-probe-root\"}"
+    },
+    {
+      "name": "relative path rejected",
+      "ok": true,
+      "detail": "status 400 error=\"The project root must be an absolute path on this machine\""
+    },
+    {
+      "name": "missing path rejected",
+      "ok": true,
+      "detail": "status 400 error=\"The project root does not exist: /tmp/cyraops-no-such-dir-xyz\""
+    },
+    {
+      "name": "file path rejected",
+      "ok": true,
+      "detail": "status 400 error=\"The project root is not a directory: /tmp/cyraops-probe-root/cyraops-probe-marker.txt\""
+    },
+    {
+      "name": "same-origin gate (no Origin)",
+      "ok": true,
+      "detail": "status 403"
+    },
+    {
+      "name": "non-owner cannot set the root (404)",
+      "ok": true,
+      "detail": "status 404"
+    },
+    {
+      "name": "non-owner cannot list the workspace (404)",
+      "ok": true,
+      "detail": "status 404"
+    },
+    {
+      "name": "owner native turn lists the marker file under the project root",
+      "ok": true,
+      "detail": "final=\"The file is:\\n\\n**`cyraops-probe-marker.txt`**\\n\\nIt's the only file in the project root (`/private/tmp/cyraops-probe-root`).\""
+    },
+    {
+      "name": "non-owner turn resolves NO project root",
+      "ok": true,
+      "detail": "root=null mode=CONTROLLED"
+    },
+    {
+      "name": "non-owner turn cannot see the marker",
+      "ok": true,
+      "detail": "final=\"I can't complete this one as asked — I don't have a shell/command-execution tool in this session. My available tools are limited to Cyraops CRM reads (tickets, contacts, calendar), web search/fetch, a\""
+    },
+    {
+      "name": "owner clears the root (API)",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "listing reports the cleared root",
+      "ok": true,
+      "detail": "status 200 {\"workspaceRoot\":null,\"workspaceRootRealpath\":null,\"exists\":false,\"realpath\":null}"
+    },
+    {
+      "name": "cleared root restores CRM behaviour (marker gone, repo files present)",
+      "ok": true,
+      "detail": "final=\"NO MARKER FOUND\" listedRepo=true"
+    },
+    {
+      "name": "root change starts a fresh harness session (no adoptability crash)",
+      "ok": true,
+      "detail": "rooted=session-fc2734e6-5e74-4f06-bf12-58eaee3b904f crm=session-55b0ea19-a374-46c0-9c8e-f21174c273ae"
+    },
+    {
+      "name": "AI conversation: owner sets root",
+      "ok": true,
+      "detail": "status 200 {\"id\":\"cmwmkfzzu0003xti25fdr0guo\",\"workspaceRoot\":\"/tmp/cyraops-probe-root\",\"workspaceRootRealpath\":\"/private/tmp/cyraops-probe-root\"}"
+    },
+    {
+      "name": "AI conversation: GET listing",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "AI conversation: non-owner gets 404",
+      "ok": true,
+      "detail": "status 404"
+    },
+    {
+      "name": "AI conversation: clear",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "AI conversation read payload carries the root fields",
+      "ok": true,
+      "detail": "status 200"
+    }
+  ]
+}

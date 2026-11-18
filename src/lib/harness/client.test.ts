@@ -89,3 +89,38 @@ test("buildSpawnArgs: a missing overlay file degrades to profile-only (never blo
   const args = buildSpawnArgs({ task: "hi", cwd: "/nonexistent-cwd" });
   assert.deepEqual(args, ["--profile", "headless", "--json", "--approval-policy", "never", "hi"]);
 });
+
+test("buildSpawnArgs: a project workspace root rides as --add-dir (Phase A)", () => {
+  assert.deepEqual(
+    buildSpawnArgs({ task: "hi", permissionPreset: "workspace-write", addDir: ["/work/project"] }),
+    [
+      "--patch",
+      overlay,
+      "--profile",
+      "headless",
+      "--json",
+      "--approval-policy",
+      "never",
+      "--permission-mode",
+      "workspace-write",
+      "--add-dir",
+      "/work/project",
+      "hi",
+    ]
+  );
+});
+
+test("buildSpawnArgs: no root keeps the vector byte-identical (CRM mode)", () => {
+  assert.deepEqual(buildSpawnArgs({ task: "hi", permissionPreset: "workspace-write", addDir: [] }), [
+    "--patch",
+    overlay,
+    "--profile",
+    "headless",
+    "--json",
+    "--approval-policy",
+    "never",
+    "--permission-mode",
+    "workspace-write",
+    "hi",
+  ]);
+});

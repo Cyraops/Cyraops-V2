@@ -57,6 +57,13 @@ interface NativeHostModule {
     signal?: AbortSignal;
     timeoutMs?: number;
     projectRoot?: string;
+    /**
+     * Project-work harness (Phase A): the turn's sandbox workspace root
+     * (server-resolved realpath). When set, the host pins the sandboxed
+     * filesystem cwd, the sandbox-policy workspace root, and the session's
+     * recorded working directory to it for this turn.
+     */
+    workspaceRoot?: string;
     approvalPolicy?: "ask" | "never";
     /** Harness permission preset name ("read-only" | "workspace-write" | "danger-full-access"). */
     permissionMode?: string;
@@ -125,6 +132,14 @@ export class NativeAgentRuntime implements AgentRuntime {
   /** CLI fallback when the native host cannot be loaded in this process. */
   private cliDelegate: CliAgentRuntime | null = null;
   private readonly delegateSessions = new Map<string, string>();
+  /**
+   * Project-work harness (Phase A): the workspace root each conversation's
+   * harness session was created under (keyed like the store: tenant + "\0" +
+   * conversation). A turn whose root differs starts a fresh harness session —
+   * the harness refuses to resume a session whose recorded cwd differs from
+   * the boot cwd, and silently resuming under the wrong root would be worse.
+   */
+  private readonly sessionBootRoots = new Map<string, string | null>();
 
   constructor(private readonly store: HarnessSessionStore) {}
 
@@ -150,6 +165,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     task: string;
     signal?: AbortSignal;
     workspaceId?: string | null;
+    workspaceRoot?: string | null;
     permissionMode?: PermissionMode;
     planMode?: "on" | "off";
   }): AsyncIterable<HarnessEvent> {
@@ -163,7 +179,19 @@ export class NativeAgentRuntime implements AgentRuntime {
 
     const run = this.turnChain
       .catch(() => undefined)
-      .then(() => this.runTurn(session, input.task, input.workspaceId ?? null, input.permissionMode, input.planMode, signal, queue, events));
+      .then(() =>
+        this.runTurn(
+          session,
+          input.task,
+          input.workspaceId ?? null,
+          input.workspaceRoot ?? null,
+          input.permissionMode,
+          input.planMode,
+          signal,
+          queue,
+          events
+        )
+      );
     this.turnChain = run.catch(() => undefined);
 
     try {
@@ -178,6 +206,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     session: Session,
     task: string,
     workspaceId: string | null,
+    workspaceRoot: string | null,
     permissionMode: PermissionMode | undefined,
     planMode: "on" | "off" | undefined,
     signal: AbortSignal | undefined,
@@ -192,6 +221,27 @@ export class NativeAgentRuntime implements AgentRuntime {
       });
     }
 
+    // Project-work harness (Phase A): a conversation whose project root
+    // changed (set, changed, or cleared) must not resume the harness session
+    // created under the old root — the harness's own adoptability check
+    // rejects a session whose recorded cwd differs from the boot cwd. A fresh
+    // session boots cleanly under the new root; the old one is abandoned.
+    const bootKey = `${session.tenantId}\u0000${session.conversationId}`;
+    if (harnessSessionId) {
+      const bootedUnder = this.sessionBootRoots.get(bootKey);
+      if (bootedUnder !== undefined && bootedUnder !== workspaceRoot) {
+        console.info(
+          `[native-runtime] workspace root changed for conversation ${session.conversationId} ` +
+            `(${bootedUnder ?? "none"} -> ${workspaceRoot ?? "none"}); starting a fresh harness session`
+        );
+        harnessSessionId = null;
+        session.harnessSessionId = null;
+      }
+    }
+    // Record the root this turn boots under BEFORE the boot, so the guard
+    // above sees the true boot root even when the turn fails mid-boot.
+    this.sessionBootRoots.set(bootKey, workspaceRoot);
+
     try {
       let host: NativeHostModule;
       try {
@@ -199,7 +249,7 @@ export class NativeAgentRuntime implements AgentRuntime {
       } catch {
         // Next/Turbopack (or a missing addon) blocked the in-process host:
         // serve the turn through the CLI runtime instead of failing the route.
-        await this.runTurnViaCli(session, task, workspaceId, permissionMode, signal, queue, events);
+        await this.runTurnViaCli(session, task, workspaceId, workspaceRoot, permissionMode, signal, queue, events);
         return;
       }
 
@@ -276,6 +326,13 @@ export class NativeAgentRuntime implements AgentRuntime {
           sessionId: harnessSessionId ?? undefined,
           signal,
           projectRoot: process.cwd(),
+          // Project-work harness (Phase A): the conversation's project root
+          // (server-resolved realpath, already owner-gated upstream) pins the
+          // turn's sandbox: fs-sandbox cwd, sandbox-policy workspace root and
+          // the session's recorded working directory all resolve to it, so
+          // the model's tools operate under that root for exactly this turn.
+          // Unset = CRM mode: the repo root stays the sandbox, as before.
+          workspaceRoot: workspaceRoot ?? undefined,
           // The write tool's ask must reach an answerer; the plugin's broker
           // answerer fails closed when no decision arrives in time.
           approvalPolicy: "ask",
@@ -335,6 +392,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     session: Session,
     task: string,
     workspaceId: string | null,
+    workspaceRoot: string | null,
     permissionMode: PermissionMode | undefined,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
@@ -350,7 +408,14 @@ export class NativeAgentRuntime implements AgentRuntime {
       });
       this.delegateSessions.set(session.id, delegateSession.id);
     }
-    for await (const event of delegate.executeTurn({ sessionId: delegateSession.id, task, signal, workspaceId, permissionMode })) {
+    for await (const event of delegate.executeTurn({
+      sessionId: delegateSession.id,
+      task,
+      signal,
+      workspaceId,
+      workspaceRoot,
+      permissionMode,
+    })) {
       events.push(event);
       queue.push(event);
     }

@@ -43,22 +43,22 @@ interface FakeRuntimeOptions {
 
 /** Fake AgentRuntime: createSession resolves the stored id, like the real runtimes. */
 function fakeRuntime(store: HarnessSessionStore, options: FakeRuntimeOptions = {}): AgentRuntime & {
-  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown; planMode?: "on" | "off" }>;
+  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; workspaceRoot: string | null; permissionMode: unknown; planMode?: "on" | "off" }>;
 } {
   const sessions = new Map<string, Session>();
   let nextId = 0;
   const runtime = {
-    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown; planMode?: "on" | "off" }>,
+    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; workspaceRoot: string | null; permissionMode: unknown; planMode?: "on" | "off" }>,
     async createSession({ tenantId, conversationId }: { tenantId: string; conversationId: string }) {
       const harnessSessionId = await store.loadHarnessSessionId({ tenantId, conversationId });
       const session: Session = { id: `adapter-${++nextId}`, tenantId, conversationId, harnessSessionId };
       sessions.set(session.id, session);
       return session;
     },
-    async *executeTurn({ sessionId, task, workspaceId, permissionMode, planMode }: { sessionId: string; task: string; workspaceId?: string | null; permissionMode?: unknown; planMode?: "on" | "off" }) {
+    async *executeTurn({ sessionId, task, workspaceId, workspaceRoot, permissionMode, planMode }: { sessionId: string; task: string; workspaceId?: string | null; workspaceRoot?: string | null; permissionMode?: unknown; planMode?: "on" | "off" }) {
       const session = sessions.get(sessionId);
       assert.ok(session, "fake runtime must receive a known session id");
-      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task, workspaceId: workspaceId ?? null, permissionMode, planMode });
+      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task, workspaceId: workspaceId ?? null, workspaceRoot: workspaceRoot ?? null, permissionMode, planMode });
       if (options.throwOnTurn) throw new Error("engine exploded");
       for (const event of options.events ?? []) {
         if (event.type === "session") {
@@ -120,6 +120,36 @@ test("streamHarnessTurn: streams text deltas, captures the final text, persists 
   assert.equal(runtime.turns.length, 1);
   assert.equal(runtime.turns[0].task, "say hello");
   assert.equal(runtime.turns[0].harnessSessionId, null);
+});
+
+test("streamHarnessTurn: forwards the project workspace root on the turn input", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, { events: [{ type: "final", text: "done" }] });
+
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-1",
+    tenantId: "tenant-1",
+    task: "say hello",
+    workspaceRoot: "/work/project",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+  assert.equal(runtime.turns[0].workspaceRoot, "/work/project");
+
+  // No root (CRM mode) travels as null, not as the previous turn's value.
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-1",
+    tenantId: "tenant-1",
+    task: "continue",
+    workspaceRoot: null,
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+  assert.equal(runtime.turns[1].workspaceRoot, null);
 });
 
 test("streamHarnessTurn: the second turn resumes the stored id and never saves twice", async () => {

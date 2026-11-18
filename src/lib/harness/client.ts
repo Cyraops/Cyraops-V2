@@ -47,6 +47,13 @@ export interface HarnessOptions {
    * the harness's default preset, exactly as before.
    */
   permissionPreset?: "read-only" | "workspace-write" | "danger-full-access";
+  /**
+   * Project-work harness (Phase A): absolute directories granted as
+   * additional writable roots under the workspace-write preset via the
+   * harness CLI's --add-dir (repeatable). The per-conversation project root
+   * rides here, one spawn per turn.
+   */
+  addDir?: string[];
   /** SYSTEM permission mode: re-enable the harness system tools (skip the overlay). */
   systemTools?: boolean;
   onEvent?: (event: HarnessEvent) => void;
@@ -73,9 +80,17 @@ export function buildSpawnArgs(options: {
   permissionPreset?: "read-only" | "workspace-write" | "danger-full-access";
   systemTools?: boolean;
   cwd?: string;
+  /** Absolute directories appended as --add-dir (workspace-write grants). */
+  addDir?: string[];
 }): string[] {
   const args = ["--json", "--approval-policy", "never"];
   if (options.permissionPreset) args.push("--permission-mode", options.permissionPreset);
+  // Project-work harness (Phase A): the per-turn project root rides as
+  // --add-dir so the CLI harness grants it as an additional writable root
+  // under the workspace-write preset for exactly this spawn.
+  for (const dir of options.addDir ?? []) {
+    if (dir) args.push("--add-dir", dir);
+  }
   // Security overlay: disable the harness's shell/filesystem tools in every
   // Cyraops CLI turn (same rows the native profile patch disables), except
   // for SYSTEM permission mode, which explicitly opts back in.
@@ -101,6 +116,7 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
     permissionPreset: options.permissionPreset,
     systemTools: options.systemTools,
     cwd: options.cwd,
+    addDir: options.addDir,
   });
 
   return new Promise<HarnessResult>((resolve) => {

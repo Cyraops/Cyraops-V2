@@ -50,6 +50,14 @@ export interface AgentRuntime {
     /** The turn's workspace/tenant key (conversation owner id); scopes the CRM tools. */
     workspaceId?: string | null;
     /**
+     * Project-work harness (Phase A): the conversation's project root for
+     * this turn — the server-resolved realpath, already owner-gated (only the
+     * conversation owner's turns carry it). Native: the turn's sandbox cwd /
+     * workspace-write root is pinned to it per turn; CLI: it becomes
+     * `--add-dir <root>`. Null/absent = CRM mode (no project root).
+     */
+    workspaceRoot?: string | null;
+    /**
      * The caller's unified permission mode, already role-gated. Mapped onto
      * DSH_PERMISSION_MODE (native: per-turn env under the global mutex; cli:
      * per-spawn env + --permission-mode) and, for SYSTEM, onto the
