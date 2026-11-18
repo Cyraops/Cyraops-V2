@@ -9,11 +9,11 @@ import {
 import { checkDailySpend, checkRateLimit } from "@/lib/ai/assistant/guard";
 import { db } from "@/lib/db";
 import { storage } from "@/lib/storage";
-import { streamHarnessTurn, harnessTaskForTurn } from "@/lib/harness/bot-stream";
+import { streamHarnessTurn, harnessTaskForTurn, planDirectiveFor } from "@/lib/harness/bot-stream";
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
 import type { HarnessEvent } from "@/lib/harness/client";
 import { approvalBroker } from "@/lib/harness/approval-broker";
-import { toolCallsUsedOf } from "@/lib/harness/events";
+import { planOfToolCall, planReviewOfQuestion, toolCallsUsedOf, type PlanReviewQuestion } from "@/lib/harness/events";
 import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import {
   createHarnessApprovalRow,
@@ -196,6 +196,8 @@ async function streamHarnessReply(
       const auditEvents: HarnessEvent[] = [];
       const toolTimings = new Map<string, { call?: number; result?: number }>();
       const toolNames = new Map<string, string>();
+      /** exit_plan_mode call ids seen this turn (their tool_result closes the review). */
+      const planCallIds = new Set<string>();
       const auditTimings: ToolCallTimings = {
         get: (callId) => toolTimings.get(callId),
       };
@@ -296,8 +298,25 @@ async function streamHarnessReply(
         // The voice screen posts voice:true: the reply will be read aloud, so
         // shape it to spoken length (one to three short sentences) before it
         // is generated, exactly like the V1 voice flag does.
+        //
+        // Tier-2 plan preview: a "/plan" message is the harness's own
+        // plan-mode command (the headless runner provides no /plan adapter).
+        // "/plan <message>" runs the message as a plan-mode turn; bare
+        // "/plan" / "/plan off" only switch the mode and get a friendly
+        // confirmation instead of a model turn. The user message persists as
+        // typed, so the transcript renders exactly as before.
+        const planDirective = planDirectiveFor(content);
+        // A BARE switch (no message) runs no model turn: the confirmation
+        // stands in for the empty reply. A "/plan <message>" turn keeps the
+        // model's actual reply.
+        const planSwitchText =
+          planDirective.task === null
+            ? planDirective.mode === "on"
+              ? "Plan mode is on for this chat. Describe what you want planned — I'll explore first, present a plan for your review, and wait for your approval before executing."
+              : "Plan mode is off — I'll work without a review step again."
+            : null;
         const task = harnessTaskForTurn({
-          content,
+          content: planDirective.task ?? (planDirective.mode ? "" : content),
           attachmentContext,
           voice: body?.voice === true,
         });
@@ -316,6 +335,9 @@ async function streamHarnessReply(
           workspaceId: assistant.userId,
           // The resolved, role-gated permission mode for this turn.
           permissionMode,
+          // Tier-2 plan preview: "/plan …" runs the turn in the harness's
+          // plan mode (native runtime; other runtimes ignore the flag).
+          planMode: planDirective.mode ?? undefined,
           onText: (chunk: string) => send({ type: "token", content: chunk }),
           // Collect the turn's raw events for the post-turn audit write, and
           // relay tool calls as live SSE events (TASK 3: tool timeline) in the
@@ -331,6 +353,16 @@ async function streamHarnessReply(
               const tool = typeof event.tool === "string" && event.tool ? event.tool : "tool";
               toolNames.set(event.callId, tool);
               send({ type: "tool", name: tool, status: "running", callId: event.callId });
+              // Tier-2 plan preview: exit_plan_mode's input carries the
+              // complete plan markdown. Stream it as the collapsible Plan
+              // block's text the moment the model presents it (before the
+              // review question arrives). The review flag flips to true when
+              // the plan-review question surfaces below.
+              const plan = planOfToolCall(event);
+              if (plan) {
+                planCallIds.add(plan.planId);
+                send({ type: "plan", planId: plan.planId, text: plan.text, review: false });
+              }
             } else if (event.type === "tool_result" && typeof event.callId === "string") {
               const timing = toolTimings.get(event.callId) ?? {};
               timing.result = Date.now();
@@ -345,6 +377,13 @@ async function streamHarnessReply(
                 status: completed ? "completed" : "error",
                 result: truncatedToolResult(event.result),
               });
+              // Plan review settled: approved plans complete the tool call
+              // ("Plan approved — plan mode exited…"); a rejection is an
+              // errored call carrying the feedback. Either way the UI closes
+              // the review buttons on the Plan block.
+              if (planCallIds.has(event.callId)) {
+                send({ type: "plan_done", planId: event.callId, approved: completed });
+              }
             }
           },
           // Approval mapping: the harness's ask → the same SSE shape the V1
@@ -375,7 +414,25 @@ async function streamHarnessReply(
           // a { type: "question" } SSE payload the inline question UI renders.
           // The harness answerer waterfall holds the turn open until
           // /api/harness/answer resolves the question broker.
+          //
+          // Tier-2 plan preview: exit_plan_mode's review arrives through the
+          // SAME waterfall as a question whose intent is kind "plan-review".
+          // Instead of the free-text question card, it becomes a
+          // { type: "plan", review: true } payload carrying the plan text
+          // (detail) and the broker question id the Approve / Keep planning
+          // buttons answer through /api/harness/answer.
           onQuestion: (question) => {
+            const planReview = planReviewOfQuestion(question.questions as PlanReviewQuestion[], question.questionId);
+            if (planReview) {
+              send({
+                type: "plan",
+                planId: planReview.planId || question.questionId,
+                questionId: planReview.questionId,
+                text: planReview.text,
+                review: true,
+              });
+              return;
+            }
             send({
               type: "question",
               questionId: question.questionId,
@@ -392,13 +449,16 @@ async function streamHarnessReply(
         });
 
         const toolCallsUsed = toolCallsUsedOf(auditEvents);
+        // A bare "/plan" / "/plan off" switch runs no model turn: the harness
+        // result is empty and the friendly confirmation stands in.
+        const reply = planSwitchText ?? result.text;
 
         await db.assistantMessage.create({
           data: {
             assistantId: assistant.id,
             conversationId: conversation.id,
             role: "assistant",
-            content: result.text,
+            content: reply,
             toolCalls: JSON.stringify(toolCallsUsed),
           },
         });
@@ -410,7 +470,7 @@ async function streamHarnessReply(
 
         send({
           type: "done",
-          reply: result.text,
+          reply,
           toolCallsUsed,
           conversationId: conversation.id,
           // TASK 2: usage display. The same events audit.ts persists, cost via

@@ -8,6 +8,7 @@ import { test } from "node:test";
 import {
   QuestionBroker,
   QuestionAbortedError,
+  answerBatchForSelection,
   answerBatchForText,
   questionTextOf,
 } from "./question-broker";
@@ -141,4 +142,53 @@ test("answerBatchForText: an empty answer is the documented skip (no custom)", (
 test("questionTextOf: the batch's first question is the primary text, with a fallback", () => {
   assert.equal(questionTextOf([{ id: "a", question: "Which ticket?" }, { id: "b", question: "Why?" }]), "Which ticket?");
   assert.equal(questionTextOf([]), "The assistant needs your input.");
+});
+
+test("answerBatchForSelection: the first question carries the selected labels and optional feedback", () => {
+  assert.deepEqual(answerBatchForSelection([{ id: "plan-review", question: "Approve?" }], ["Approve"]), {
+    answers: [{ id: "plan-review", selected: ["Approve"] }],
+  });
+  assert.deepEqual(
+    answerBatchForSelection([{ id: "plan-review", question: "Approve?" }], ["Keep planning"], "Do the billing ticket first"),
+    { answers: [{ id: "plan-review", selected: ["Keep planning"], custom: "Do the billing ticket first" }] }
+  );
+});
+
+test("answerBatchForSelection: extra questions settle as skipped, junk labels are dropped", () => {
+  assert.deepEqual(
+    answerBatchForSelection(
+      [
+        { id: "q1", question: "Which?" },
+        { id: "q2", question: "Why?" },
+      ],
+      ["Approve", "", 42 as unknown as string]
+    ),
+    { answers: [{ id: "q1", selected: ["Approve"] }, { id: "q2", selected: [] }] }
+  );
+});
+
+test("broker: answerSelection() resolves the decision with the selected labels", async () => {
+  const broker = new QuestionBroker(60_000);
+  const pending = broker.request({
+    questions: [
+      {
+        id: "plan-review",
+        question: "Approve this plan and leave plan mode?",
+        detail: "# Plan\n\n- step one",
+        options: [{ label: "Approve" }, { label: "Keep planning" }],
+        intent: { kind: "plan-review", approve: "Approve", callId: "call-plan-1" },
+      },
+    ],
+  });
+  const result = broker.answerSelection(pending.questionId, ["Approve"]);
+  assert.equal(result.timedOut, false);
+  assert.deepEqual(await pending.decision, {
+    answers: [{ id: "plan-review", selected: ["Approve"] }],
+  });
+  assert.equal(broker.pendingCount(), 0);
+});
+
+test("broker: answerSelection() rejects unknown ids like answer()", () => {
+  const broker = new QuestionBroker(60_000);
+  assert.throws(() => broker.answerSelection("missing", ["Approve"]), /not found or already answered/);
 });

@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { harnessTaskForTurn, streamHarnessTurn, VOICE_SHAPING_INSTRUCTION } from "./bot-stream";
+import {
+  harnessTaskForTurn,
+  planDirectiveFor,
+  streamHarnessTurn,
+  VOICE_SHAPING_INSTRUCTION,
+  type HarnessQuestionRequest,
+} from "./bot-stream";
 import type { HarnessEvent } from "./client";
 import type { AgentRuntime, RuntimeHealth, Session } from "./runtime";
 import type { HarnessSessionStore } from "./store";
@@ -37,22 +43,22 @@ interface FakeRuntimeOptions {
 
 /** Fake AgentRuntime: createSession resolves the stored id, like the real runtimes. */
 function fakeRuntime(store: HarnessSessionStore, options: FakeRuntimeOptions = {}): AgentRuntime & {
-  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown }>;
+  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown; planMode?: "on" | "off" }>;
 } {
   const sessions = new Map<string, Session>();
   let nextId = 0;
   const runtime = {
-    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown }>,
+    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown; planMode?: "on" | "off" }>,
     async createSession({ tenantId, conversationId }: { tenantId: string; conversationId: string }) {
       const harnessSessionId = await store.loadHarnessSessionId({ tenantId, conversationId });
       const session: Session = { id: `adapter-${++nextId}`, tenantId, conversationId, harnessSessionId };
       sessions.set(session.id, session);
       return session;
     },
-    async *executeTurn({ sessionId, task, workspaceId, permissionMode }: { sessionId: string; task: string; workspaceId?: string | null; permissionMode?: unknown }) {
+    async *executeTurn({ sessionId, task, workspaceId, permissionMode, planMode }: { sessionId: string; task: string; workspaceId?: string | null; permissionMode?: unknown; planMode?: "on" | "off" }) {
       const session = sessions.get(sessionId);
       assert.ok(session, "fake runtime must receive a known session id");
-      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task, workspaceId: workspaceId ?? null, permissionMode });
+      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task, workspaceId: workspaceId ?? null, permissionMode, planMode });
       if (options.throwOnTurn) throw new Error("engine exploded");
       for (const event of options.events ?? []) {
         if (event.type === "session") {
@@ -532,4 +538,99 @@ test("streamHarnessTurn: a turn without usage yields a null usage result", async
 
   assert.deepEqual(result.toolCallsUsed, []);
   assert.equal(result.usage, null);
+});
+
+// ---------------------------------------------------------------------------
+// Tier-2 plan preview.
+// ---------------------------------------------------------------------------
+
+test("planDirectiveFor parses the /plan chat surface", () => {
+  assert.deepEqual(planDirectiveFor("/plan"), { mode: "on", task: null });
+  assert.deepEqual(planDirectiveFor("/plan off"), { mode: "off", task: null });
+  assert.deepEqual(planDirectiveFor("  /plan  Plan the ticket update  "), { mode: "on", task: "Plan the ticket update" });
+  assert.deepEqual(planDirectiveFor("/plan"), { mode: "on", task: null });
+  assert.deepEqual(planDirectiveFor("/planner think"), { mode: null, task: null });
+  assert.deepEqual(planDirectiveFor("Plan the steps to update the tickets"), { mode: null, task: null });
+  assert.deepEqual(planDirectiveFor(""), { mode: null, task: null });
+  assert.deepEqual(planDirectiveFor("not a /plan"), { mode: null, task: null });
+});
+
+test("streamHarnessTurn: forwards the plan-mode switch to the runtime", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, { events: [{ type: "session" }, { type: "final", text: "Plan mode is on." }] });
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-plan",
+    tenantId: "tenant-1",
+    task: "Plan the steps to update the tickets",
+    planMode: "on",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+  assert.equal(runtime.turns.length, 1);
+  assert.equal(runtime.turns[0].planMode, "on");
+});
+
+test("streamHarnessTurn: a plan-mode switch turn omits planMode entirely", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, { events: [{ type: "session" }, { type: "final", text: "ok" }] });
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-plain",
+    tenantId: "tenant-1",
+    task: "hello",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+  assert.equal(runtime.turns[0].planMode, undefined);
+});
+
+test("streamHarnessTurn: plan-review questions keep the full review surface", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "tool_call", callId: "call-plan-1", tool: "exit_plan_mode", input: { plan: "# Plan\n\n- step" } },
+      {
+        type: "question",
+        questionId: "broker-q-7",
+        text: "Approve this plan and leave plan mode?",
+        questions: [
+          {
+            id: "plan-review",
+            question: "Approve this plan and leave plan mode?",
+            detail: "# Plan\n\n- step",
+            options: [{ label: "Approve" }, { label: "Keep planning" }],
+            intent: { kind: "plan-review", approve: "Approve", callId: "call-plan-1" },
+          },
+        ],
+      },
+      { type: "question_decided", questionId: "broker-q-7", timedOut: false },
+      { type: "final", text: "Plan approved — executing now." },
+    ],
+  });
+  const questions: HarnessQuestionRequest[] = [];
+  const decided: Array<{ questionId: string; timedOut: boolean }> = [];
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-plan-review",
+    tenantId: "tenant-1",
+    task: "/plan Plan the steps",
+    onText: () => {},
+    onDone: () => {},
+    onQuestion: (question) => questions.push(question),
+    onQuestionDecided: (info) => decided.push(info),
+    store,
+  });
+  assert.equal(questions.length, 1);
+  assert.equal(questions[0].questionId, "broker-q-7");
+  assert.deepEqual(questions[0].questions[0], {
+    id: "plan-review",
+    question: "Approve this plan and leave plan mode?",
+    detail: "# Plan\n\n- step",
+    options: [{ label: "Approve" }, { label: "Keep planning" }],
+    intent: { kind: "plan-review", approve: "Approve", callId: "call-plan-1" },
+  });
+  assert.deepEqual(decided, [{ questionId: "broker-q-7", timedOut: false }]);
 });

@@ -748,9 +748,28 @@ export function createUserQuestionAnswerer({
     const broker = lookupBroker();
     if (!broker || typeof broker.request !== "function") return next();
     const pending = broker.request({
+      // TASK (Tier-2 plan preview): preserve the full review surface. The
+      // harness plan-mode service sends exit_plan_mode reviews through this
+      // same waterfall with detail (the plan markdown), options
+      // (Approve / Keep planning) and an intent of kind "plan-review"; the
+      // plain ask_user_question batches have none of them. Everything is
+      // optional, so ordinary questions keep their exact previous shape.
       questions: req.questions.map((question) => ({
         id: question.id,
         question: question.question,
+        ...(typeof question.header === "string" ? { header: question.header } : {}),
+        ...(typeof question.detail === "string" ? { detail: question.detail } : {}),
+        ...(Array.isArray(question.options)
+          ? {
+              options: question.options
+                .filter((option) => option && typeof option === "object")
+                .map((option) => ({
+                  ...(typeof option.label === "string" ? { label: option.label } : {}),
+                  ...(typeof option.description === "string" ? { description: option.description } : {}),
+                })),
+            }
+          : {}),
+        ...(question.intent && typeof question.intent === "object" ? { intent: question.intent } : {}),
       })),
       ...(req.wait?.callId !== undefined ? { callId: req.wait.callId } : {}),
       signal: req.signal,

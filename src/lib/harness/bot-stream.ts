@@ -56,6 +56,32 @@ export function harnessTaskForTurn(input: { content: string; attachmentContext?:
   return `${content}${attachmentContext}${voice ? VOICE_SHAPING_INSTRUCTION : ""}`;
 }
 
+/**
+ * The "/plan" chat surface (Tier-2 plan preview): the harness's own plan-mode
+ * command, which the headless runner does not provide. Pure shaping so it is
+ * unit-testable without a runtime:
+ * - "/plan"             → mode "on",  no model task (a bare switch)
+ * - "/plan off"         → mode "off", no model task
+ * - "/plan <message>"   → mode "on",  task = the trimmed message
+ * - anything else       → mode null   (an ordinary turn; text goes to the model)
+ */
+export interface PlanDirective {
+  mode: "on" | "off" | null;
+  /** The model-facing task after the "/plan" prefix; null for a bare switch. */
+  task: string | null;
+}
+
+export function planDirectiveFor(content: string): PlanDirective {
+  const trimmed = content.trim();
+  if (!trimmed.startsWith("/plan")) return { mode: null, task: null };
+  const rest = trimmed.slice("/plan".length);
+  if (rest === "") return { mode: "on", task: null };
+  if (!/^\s/.test(rest)) return { mode: null, task: null }; // "/planner …" is not the command
+  const argument = rest.trim();
+  if (argument === "off") return { mode: "off", task: null };
+  return { mode: "on", task: argument };
+}
+
 export interface StreamHarnessTurnInput {
   runtime: AgentRuntime;
   /** The conversation this turn belongs to (the session store's key). */
@@ -71,6 +97,14 @@ export interface StreamHarnessTurnInput {
    * onto DSH_PERMISSION_MODE / --permission-mode and the system-tools mount.
    */
   permissionMode?: PermissionMode;
+  /**
+   * Plan-mode switch for this turn ("on" | "off"): the native runtime runs
+   * the turn as a plan-mode turn — the model explores, presents its plan
+   * through exit_plan_mode, and the review arrives as a plan-review question
+   * through the broker this module already forwards (Tier-2 plan preview).
+   * Non-native runtimes ignore it.
+   */
+  planMode?: "on" | "off";
   /** Receives each incremental delta of streamed assistant text. */
   onText: (chunk: string) => void;
   /** Invoked exactly once when the turn's event stream ends, success or failure. */
@@ -110,7 +144,15 @@ export interface HarnessQuestionRequest {
   /** Primary question text the UI renders. */
   text: string;
   /** The full batch, one entry per question of the tool call. */
-  questions: Array<{ id: string; question: string }>;
+  questions: Array<{
+    id: string;
+    question: string;
+    /** Review surfaces: the plan-review question carries the plan markdown. */
+    header?: string;
+    detail?: string;
+    options?: Array<{ label?: string; description?: string }>;
+    intent?: unknown;
+  }>;
   callId?: string;
 }
 
@@ -175,6 +217,7 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
       signal,
       workspaceId: input.workspaceId ?? null,
       permissionMode: input.permissionMode,
+      planMode: input.planMode,
     })) {
       onEvent?.(event);
       if (event.type === "text" && typeof event.text === "string") {
@@ -206,9 +249,28 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
           questionId: event.questionId,
           text: typeof event.text === "string" ? event.text : "The assistant needs your input.",
           questions: Array.isArray(event.questions)
-            ? (event.questions as Array<{ id: unknown; question: unknown }>)
+            ? (event.questions as Array<{ id: unknown; question: unknown; header?: unknown; detail?: unknown; options?: unknown; intent?: unknown }>)
                 .filter((entry) => entry && typeof entry.id === "string")
-                .map((entry) => ({ id: entry.id as string, question: String(entry.question ?? "") }))
+                .map((entry) => ({
+                  id: entry.id as string,
+                  question: String(entry.question ?? ""),
+                  // Tier-2 plan preview: preserve the review surface — the
+                  // plan-review question carries the plan in `detail` and the
+                  // Approve / Keep planning options.
+                  ...(typeof entry.header === "string" ? { header: entry.header } : {}),
+                  ...(typeof entry.detail === "string" ? { detail: entry.detail } : {}),
+                  ...(Array.isArray(entry.options)
+                    ? {
+                        options: (entry.options as Array<{ label?: unknown; description?: unknown }>)
+                          .filter((option) => option && typeof option === "object")
+                          .map((option) => ({
+                            ...(typeof option.label === "string" ? { label: option.label } : {}),
+                            ...(typeof option.description === "string" ? { description: option.description } : {}),
+                          })),
+                      }
+                    : {}),
+                  ...(entry.intent && typeof entry.intent === "object" ? { intent: entry.intent } : {}),
+                }))
             : [],
           ...(typeof event.callId === "string" ? { callId: event.callId } : {}),
         };

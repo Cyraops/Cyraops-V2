@@ -33,6 +33,12 @@ import { randomUUID } from "node:crypto";
 export interface BrokerQuestion {
   id: string;
   question: string;
+  /** Optional review surface: the plan-review question carries the plan here. */
+  header?: string;
+  detail?: string;
+  options?: Array<{ label?: string; description?: string }>;
+  /** The service's review intent (kind "plan-review" carries approve/callId). */
+  intent?: unknown;
 }
 
 /** One answered question of the batch the tool result carries. */
@@ -112,6 +118,29 @@ export function answerBatchForText(questions: BrokerQuestion[], answerText: stri
 /** The primary text the inline UI shows: the batch's first question. */
 export function questionTextOf(questions: BrokerQuestion[]): string {
   return questions[0]?.question ?? "The assistant needs your input.";
+}
+
+/**
+ * Map an OPTION SELECTION onto the batch the service expects: the first
+ * question of the batch is answered with the selected labels (and optional
+ * free-text feedback as `custom`); any remaining questions settle with the
+ * documented skip semantics. exit_plan_mode's review reads exactly this
+ * shape: `selected: ["Approve"]` approves, anything else (or `custom` set)
+ * is keep-planning with feedback.
+ */
+export function answerBatchForSelection(
+  questions: BrokerQuestion[],
+  selectedLabels: string[],
+  custom?: string
+): QuestionAnswerBatch {
+  const selected = selectedLabels.filter((label) => typeof label === "string" && label !== "");
+  return {
+    answers: questions.map((question, index) =>
+      index === 0
+        ? { id: question.id, selected: [...selected], ...(custom !== undefined && custom !== "" ? { custom } : {}) }
+        : { id: question.id, selected: [] }
+    ),
+  };
 }
 
 export class QuestionBroker {
@@ -204,6 +233,28 @@ export class QuestionBroker {
     const record = this.pending.get(questionId);
     if (!record) throw new Error("Question request not found or already answered");
     const batch = answerBatchForText(record.info.questions, answerText);
+    if (record.timer) clearTimeout(record.timer);
+    record.timer = null;
+    this.pending.delete(questionId);
+    record.settled = true;
+    record.resolve(batch);
+    this.emitDecided({ questionId, timedOut: false });
+    return { batch, timedOut: false };
+  }
+
+  /**
+   * The user's OPTION answer from /api/harness/answer (plan reviews: the UI
+   * sends `selected: ["Approve"]` or `["Keep planning"]` plus optional
+   * feedback). Unknown/already-settled ids throw, like answer().
+   */
+  answerSelection(
+    questionId: string,
+    selectedLabels: string[],
+    custom?: string
+  ): { batch: QuestionAnswerBatch; timedOut: boolean } {
+    const record = this.pending.get(questionId);
+    if (!record) throw new Error("Question request not found or already answered");
+    const batch = answerBatchForSelection(record.info.questions, selectedLabels, custom);
     if (record.timer) clearTimeout(record.timer);
     record.timer = null;
     this.pending.delete(questionId);

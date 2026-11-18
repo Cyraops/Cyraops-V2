@@ -56,6 +56,14 @@ export interface AgentRuntime {
      * system-tools mount decision.
      */
     permissionMode?: PermissionMode;
+    /**
+     * Plan-mode switch for this turn ("on" | "off"): the native runtime runs
+     * the turn as a plan-mode turn (the model presents its plan through
+     * exit_plan_mode for review before executing). Only the native runtime
+     * implements it; other runtimes ignore it (the "/plan" chat surface is
+     * native-only).
+     */
+    planMode?: "on" | "off";
   }): AsyncIterable<HarnessEvent>;
   getSession(sessionId: string): Promise<Session | null>;
   cancelTurn(input: { sessionId: string }): Promise<void>;

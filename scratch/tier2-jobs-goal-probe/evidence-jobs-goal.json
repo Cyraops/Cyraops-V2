@@ -1,0 +1,1570 @@
+{
+  "goalSessionId": "session-5ff96834-5500-4328-b68e-c835e69fb7cf",
+  "jobsSessionId": "session-37cb2aa6-f37f-49ce-8c5d-08596b7a3671",
+  "t1": {
+    "census": {
+      "session": 1,
+      "status/turn_start": 2,
+      "status/step_start": 2,
+      "thinking": 2,
+      "tool_call": 1,
+      "tool_result": 1,
+      "status/step_end": 2,
+      "text": 1,
+      "status/turn_end": 1,
+      "final": 1
+    },
+    "toolCalls": [
+      {
+        "callId": "call_00_6dQrNkoQkCXhFtsqtyPb1216",
+        "tool": "create_goal",
+        "input": {
+          "objective": "Improve the Cyraops CRM onboarding flow so new workspaces reach their first ticket in under five minutes"
+        }
+      }
+    ],
+    "toolResults": [
+      {
+        "callId": "call_00_6dQrNkoQkCXhFtsqtyPb1216",
+        "status": "completed",
+        "result": "{\"goal\":{\"id\":\"goal-bfe86bda-2746-450e-8921-b511fcf4d681\",\"revision\":1,\"objective\":\"Improve the Cyraops CRM onboarding flow so new workspaces reach their first ticket in under five minutes\",\"phase\":\"active\",\"roundsStarted\":0,\"maxGoalRounds\":256},\"activation\":\"armed\"}"
+      }
+    ],
+    "finalText": "- **objective:** Improve the Cyraops CRM onboarding flow so new workspaces reach their first ticket in under five minutes\n- **phase:** active\n- **id:** goal-bfe86bda-2746-450e-8921-b511fcf4d681",
+    "runFailure": "[cyraops-crm] approval + ask-user wiring installed (ask gate + broker answerers)\n[host] tree mounted (fiber state=2)\n[llm-deepseek-api-key] model listing from https://api.deepseek.com/models loaded 2 model(s), skipped 0 row(s)"
+  },
+  "t2": {
+    "census": {
+      "session": 1,
+      "status/turn_start": 1,
+      "status/step_start": 2,
+      "thinking": 2,
+      "tool_call": 1,
+      "tool_result": 1,
+      "status/step_end": 2,
+      "text": 1,
+      "status/turn_end": 1,
+      "final": 1
+    },
+    "toolCalls": [
+      {
+        "callId": "call_00_ET_VTqCe0g4t63mqHBQE0dA3464",
+        "tool": "get_goal",
+        "input": {}
+      }
+    ],
+    "toolResults": [
+      {
+        "callId": "call_00_ET_VTqCe0g4t63mqHBQE0dA3464",
+        "status": "completed",
+        "result": "{\"goal\":{\"id\":\"goal-bfe86bda-2746-450e-8921-b511fcf4d681\",\"revision\":1,\"objective\":\"Improve the Cyraops CRM onboarding flow so new workspaces reach their first ticket in under five minutes\",\"phase\":\"active\",\"roundsStarted\":0,\"maxGoalRounds\":256},\"activation\":\"disarmed\"}"
+      }
+    ],
+    "finalText": "- **objective:** Improve the Cyraops CRM onboarding flow so new workspaces reach their first ticket in under five minutes\n- **phase:** active\n- **id:** goal-bfe86bda-2746-450e-8921-b511fcf4d681",
+    "runFailure": null
+  },
+  "t3": {
+    "census": {
+      "session": 1,
+      "status/turn_start": 1,
+      "status/step_start": 3,
+      "thinking": 3,
+      "text": 2,
+      "tool_call": 2,
+      "tool_result": 2,
+      "status/step_end": 3,
+      "status/turn_end": 1,
+      "final": 1
+    },
+    "toolCalls": [
+      {
+        "callId": "call_00_ET_CVuuiSP17cc4QmhuKcgL9674",
+        "tool": "bash",
+        "input": {
+          "description": "Start sleep 300 in background",
+          "command": "sleep 300",
+          "run_in_background": true
+        }
+      },
+      {
+        "callId": "call_00_1Khxff07Gyh9rDGHTVGU8905",
+        "tool": "job_list",
+        "input": {}
+      }
+    ],
+    "toolResults": [
+      {
+        "callId": "call_00_ET_CVuuiSP17cc4QmhuKcgL9674",
+        "status": "completed",
+        "result": "started background job bash-31a8feba82f04e7c"
+      },
+      {
+        "callId": "call_00_1Khxff07Gyh9rDGHTVGU8905",
+        "status": "completed",
+        "result": "bash-31a8feba82f04e7c [bash] running — sleep 300"
+      }
+    ],
+    "finalText": "Started the background job and listed the jobs:\n\n| Job ID | Kind | Status |\n|---|---|---|\n| `bash-31a8feba82f04e7c` | bash | running |\n\nThat's the only job currently tracked — the `sleep 300` command, still running.\n\nNote: I left it running since you didn't ask me to kill it. It'll finish on its own in ~5 minutes. If you'd like it stopped early, say so and I'll run `job_kill`.",
+    "runFailure": null
+  },
+  "t4": {
+    "census": {
+      "session": 1,
+      "status/turn_start": 1,
+      "status/step_start": 2,
+      "thinking": 2,
+      "tool_call": 1,
+      "tool_result": 1,
+      "status/step_end": 2,
+      "text": 1,
+      "status/turn_end": 1,
+      "final": 1
+    },
+    "toolCalls": [
+      {
+        "callId": "call_00_5wqZzppzDj8eakd0F6Wv9444",
+        "tool": "job_list",
+        "input": {}
+      }
+    ],
+    "toolResults": [
+      {
+        "callId": "call_00_5wqZzppzDj8eakd0F6Wv9444",
+        "status": "completed",
+        "result": "(no background jobs)"
+      }
+    ],
+    "finalText": "EMPTY JOB LIST",
+    "runFailure": null
+  },
+  "journalFiles": [
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/000b78e3-738f-439e-bea0-512a7014738a/session.v4.jsonl.zstd",
+      "bytes": 193285,
+      "mtime": "2026-11-15T09:15:05.171Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/0276813a-e7d1-42e8-99ee-c8dc865c9092/session.v4.jsonl.zstd",
+      "bytes": 401342,
+      "mtime": "2026-11-16T14:23:08.327Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/03580e99-d3ff-4d9c-93a0-ecff28ef57c4/session.v4.jsonl.zstd",
+      "bytes": 58004,
+      "mtime": "2026-11-14T22:58:00.957Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/04167aa7-bc5d-4cc5-87aa-4e33fe92120d/session.v4.jsonl.zstd",
+      "bytes": 55664,
+      "mtime": "2026-11-14T22:56:33.982Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/056038ce-9f06-47e4-b607-78da632bd4a4/session.v4.jsonl.zstd",
+      "bytes": 147989,
+      "mtime": "2026-11-15T02:06:01.437Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/05a79df0-58b4-40ff-a933-b105fd81ab9b/session.v4.jsonl.zstd",
+      "bytes": 239043,
+      "mtime": "2026-11-15T09:20:10.986Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/062fbe4e-dd58-4ee1-b798-6925ceab8365/session.v4.jsonl.zstd",
+      "bytes": 69106,
+      "mtime": "2026-11-14T22:59:51.596Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/071ba92f-2b02-44bc-8471-9ba4aab6a175/session.v4.jsonl.zstd",
+      "bytes": 226015,
+      "mtime": "2026-11-14T23:38:10.908Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/07c8062f-96ff-4f39-9354-3682d5b41347/session.v4.jsonl.zstd",
+      "bytes": 562289,
+      "mtime": "2026-11-17T23:42:15.655Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/0979ce75-74bc-47b0-94e2-d7f00dbaa8ab/session.v4.jsonl.zstd",
+      "bytes": 163433,
+      "mtime": "2026-11-15T02:09:54.640Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/0a91d653-5533-4c5b-bd39-4e0de6702d35/session.v4.jsonl.zstd",
+      "bytes": 102751,
+      "mtime": "2026-11-14T22:02:46.052Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/0b22b0db-0ed6-4700-97e7-f7196af607a2/session.v4.jsonl.zstd",
+      "bytes": 259654,
+      "mtime": "2026-11-15T02:36:03.444Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/0bb6f036-082a-4cd8-a15f-1b5649b4ea70/session.v4.jsonl.zstd",
+      "bytes": 66485,
+      "mtime": "2026-11-14T22:58:40.097Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/0cd0bcbc-2ce9-411f-b3d7-c8b48ce053c0/session.v4.jsonl.zstd",
+      "bytes": 133523,
+      "mtime": "2026-11-15T02:09:43.688Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/0e4f399a-de1d-490c-811f-41ee8adcda65/session.v4.jsonl.zstd",
+      "bytes": 81474,
+      "mtime": "2026-11-14T22:01:49.947Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/127caf84-5c59-494a-ae1d-593ce54cd3f9/session.v4.jsonl.zstd",
+      "bytes": 163545,
+      "mtime": "2026-11-14T21:34:36.285Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/132a783d-f072-485c-a53c-5915c167e7f2/session.v4.jsonl.zstd",
+      "bytes": 116627,
+      "mtime": "2026-11-14T22:58:47.565Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/16b1304e-ace6-4ed6-bac1-baf8930342ed/session.v4.jsonl.zstd",
+      "bytes": 60068,
+      "mtime": "2026-11-14T23:02:10.057Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/18abbb7c-42c3-4361-b83a-a7926cbe503e/session.v4.jsonl.zstd",
+      "bytes": 161395,
+      "mtime": "2026-11-15T00:28:38.716Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/191aafad-37d8-44a2-ac31-79795c401af2/session.v4.jsonl.zstd",
+      "bytes": 120446,
+      "mtime": "2026-11-15T00:27:43.684Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/1ba0a7cb-05d8-4033-8222-7a32658ca577/session.v4.jsonl.zstd",
+      "bytes": 69164,
+      "mtime": "2026-11-14T22:59:44.044Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/1c893bcb-142d-4d8e-aad8-782bb2cc4299/session.v4.jsonl.zstd",
+      "bytes": 575067,
+      "mtime": "2026-11-18T06:20:38.957Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/1d96edb6-6b06-4549-b9e8-1aa9a2e29af7/session.v4.jsonl.zstd",
+      "bytes": 91381,
+      "mtime": "2026-11-14T22:58:43.937Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/1e1b2d63-963a-440a-884b-db00bc504a9f/session.v4.jsonl.zstd",
+      "bytes": 218862,
+      "mtime": "2026-11-15T02:08:55.232Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/1f9996e5-e8b3-4e02-99f7-ac20491ed66e/session.v4.jsonl.zstd",
+      "bytes": 230714,
+      "mtime": "2026-11-15T09:15:28.724Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/24f02c6b-17ce-4afd-ac34-fe52aa2e95d0/session.v4.jsonl.zstd",
+      "bytes": 113730,
+      "mtime": "2026-11-14T22:04:49.301Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/25badc1b-74c9-40d9-b78d-09f4b35738be/session.v4.jsonl.zstd",
+      "bytes": 110784,
+      "mtime": "2026-11-15T02:05:25.307Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/2783bd4a-0192-4d21-be6f-53fa005dcca1/session.v4.jsonl.zstd",
+      "bytes": 174585,
+      "mtime": "2026-11-14T21:35:15.458Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/28a233e5-a0ec-4c6a-9a18-807e46504b19/session.v4.jsonl.zstd",
+      "bytes": 162802,
+      "mtime": "2026-11-15T02:12:17.749Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/2a4da675-1357-4031-9c09-83d91bd222bb/session.v4.jsonl.zstd",
+      "bytes": 144556,
+      "mtime": "2026-11-15T02:07:40.211Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/2ce73886-615f-4a5c-81d4-f85863a58773/session.v4.jsonl.zstd",
+      "bytes": 118704,
+      "mtime": "2026-11-14T22:04:21.499Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/3084d063-9242-41ff-bad6-956304213b11/session.v4.jsonl.zstd",
+      "bytes": 136582,
+      "mtime": "2026-11-15T02:10:58.747Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/32b5585d-827a-4232-94e8-e29a20171248/session.v4.jsonl.zstd",
+      "bytes": 206759,
+      "mtime": "2026-11-14T21:36:51.075Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/36524f70-9a74-4deb-a8e4-4db5282bb5a8/session.v4.jsonl.zstd",
+      "bytes": 89890,
+      "mtime": "2026-11-14T22:01:50.995Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/370d6313-da45-40cd-9e79-df31c05ca309/session.v4.jsonl.zstd",
+      "bytes": 162048,
+      "mtime": "2026-11-14T23:37:43.579Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/37b4ccc5-454f-4336-9bf5-0ae653803e2f/session.v4.jsonl.zstd",
+      "bytes": 65125,
+      "mtime": "2026-11-14T22:58:50.758Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/39452ff1-e02f-4a24-b8be-70488d568279/session.v4.jsonl.zstd",
+      "bytes": 71511,
+      "mtime": "2026-11-14T22:57:22.168Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/3977a505-bc13-404e-af2e-e48c821cdaa8/session.v4.jsonl.zstd",
+      "bytes": 90026,
+      "mtime": "2026-11-14T22:03:51.431Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/3a37d5b7-8195-4aa9-a762-642267545cf5/session.v4.jsonl.zstd",
+      "bytes": 92351,
+      "mtime": "2026-11-14T23:02:07.938Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/3b2a815b-786f-4a57-bc78-d323e2eecd12/session.v4.jsonl.zstd",
+      "bytes": 165714,
+      "mtime": "2026-11-15T02:30:32.858Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/3b8d4b77-b8c0-4de7-8f2a-8f72b60639ea/session.v4.jsonl.zstd",
+      "bytes": 74522,
+      "mtime": "2026-11-14T22:56:55.101Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/3de3ff29-8958-493d-a752-dcc279bfb84a/session.v4.jsonl.zstd",
+      "bytes": 124874,
+      "mtime": "2026-11-14T22:04:09.373Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/3f0767d2-c5e9-449d-966b-7db3dcb77dea/session.v4.jsonl.zstd",
+      "bytes": 128136,
+      "mtime": "2026-11-14T22:02:37.129Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/409820bc-3847-48e5-b6e7-77203033b415/session.v4.jsonl.zstd",
+      "bytes": 77113,
+      "mtime": "2026-11-14T23:02:38.222Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/4500eb29-a719-45eb-8ba5-c0993070e686/session.v4.jsonl.zstd",
+      "bytes": 203132,
+      "mtime": "2026-11-15T02:08:45.035Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/47ce5f10-6f8c-49bc-8c81-f84e39f167e2/session.v4.jsonl.zstd",
+      "bytes": 391967,
+      "mtime": "2026-11-17T19:42:37.443Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/48736d67-0967-42e3-986b-36d07e45d140/session.v4.jsonl.zstd",
+      "bytes": 298071,
+      "mtime": "2026-11-18T07:09:39.104Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/4ae415c9-47d7-4ef5-b2b1-861b2968e180/session.v4.jsonl.zstd",
+      "bytes": 64736,
+      "mtime": "2026-11-14T23:03:27.799Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/4b2106df-e780-4d70-ae29-fb6a5978e718/session.v4.jsonl.zstd",
+      "bytes": 121628,
+      "mtime": "2026-11-14T22:03:07.063Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/4b973b67-3817-4abd-b270-20432a8c67f8/session.v4.jsonl.zstd",
+      "bytes": 103736,
+      "mtime": "2026-11-14T23:01:07.985Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/4f496cdb-8535-4324-8ef8-5ea16c9163be/session.v4.jsonl.zstd",
+      "bytes": 83906,
+      "mtime": "2026-11-14T22:01:46.880Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/50d8b038-9d14-410c-99d9-c594f00d7897/session.v4.jsonl.zstd",
+      "bytes": 150761,
+      "mtime": "2026-11-15T02:10:05.218Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/546523c9-826e-43f0-b1bf-e389590cf10f/session.v4.jsonl.zstd",
+      "bytes": 151823,
+      "mtime": "2026-11-15T02:11:03.762Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/55b29f6b-b1a4-4844-92cd-e3206fbfa054/session.v4.jsonl.zstd",
+      "bytes": 142363,
+      "mtime": "2026-11-15T02:06:15.112Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/56cf4cb4-b074-4515-8ba8-24827e27f33e/session.v4.jsonl.zstd",
+      "bytes": 145967,
+      "mtime": "2026-11-15T02:10:04.546Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/5913c02a-43f9-47d8-ba19-f7c67a3ba6bf/session.v4.jsonl.zstd",
+      "bytes": 87883,
+      "mtime": "2026-11-15T00:27:18.561Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/5eedc98f-7c14-4aa9-b6bc-9e10ce020824/session.v4.jsonl.zstd",
+      "bytes": 218117,
+      "mtime": "2026-11-15T09:15:55.000Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/5f5e56d0-f861-452c-8573-6049845cf2bb/session.v4.jsonl.zstd",
+      "bytes": 129328,
+      "mtime": "2026-11-15T02:28:26.212Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/607f336e-14c8-4276-8133-ff4ac127db77/session.v4.jsonl.zstd",
+      "bytes": 131892,
+      "mtime": "2026-11-15T02:28:34.178Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/61ea4a6a-aa94-4911-879e-a91c7d7051bf/session.v4.jsonl.zstd",
+      "bytes": 169562,
+      "mtime": "2026-11-15T00:30:55.706Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/62684605-bf74-410a-9b65-44eeff081aff/session.v4.jsonl.zstd",
+      "bytes": 60473,
+      "mtime": "2026-11-14T22:57:34.392Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/6295bde9-6cec-4d50-9959-7845c4c3a3a3/session.v4.jsonl.zstd",
+      "bytes": 536325,
+      "mtime": "2026-11-17T21:15:13.811Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/62b14075-d6ae-4bc1-922a-bd9cebfe912b/session.v4.jsonl.zstd",
+      "bytes": 204604,
+      "mtime": "2026-11-14T21:36:54.767Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/62c9cd4c-1942-498d-8c59-7947e64a2e75/session.v4.jsonl.zstd",
+      "bytes": 81042,
+      "mtime": "2026-11-14T23:01:43.757Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/642a15f4-1e15-450b-9061-c035333bdd0f/session.v4.jsonl.zstd",
+      "bytes": 451047,
+      "mtime": "2026-11-17T23:45:58.896Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/642d86e0-963f-4c1d-a719-e96745f534d2/session.v4.jsonl.zstd",
+      "bytes": 149424,
+      "mtime": "2026-11-15T02:06:00.117Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/664d508a-fd94-487c-a9b9-8473e8dd133a/session.v4.jsonl.zstd",
+      "bytes": 452551,
+      "mtime": "2026-11-17T23:40:01.928Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/6879a9f4-b267-4f31-9411-b07c3a6a0e42/session.v4.jsonl.zstd",
+      "bytes": 142495,
+      "mtime": "2026-11-15T02:07:52.404Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/69f22f13-cea6-43b4-b86a-58476b90ec9e/session.v4.jsonl.zstd",
+      "bytes": 57132,
+      "mtime": "2026-11-14T22:58:13.880Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/6a65bcda-ddec-4f1d-adc9-4b41b025e6ee/session.v4.jsonl.zstd",
+      "bytes": 61481,
+      "mtime": "2026-11-14T22:58:00.527Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/6bd09cee-d550-4d26-945b-00cbfabde6d2/session.v4.jsonl.zstd",
+      "bytes": 185459,
+      "mtime": "2026-11-14T21:35:19.947Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/6d1608b4-fc13-44e5-a975-936d2d662426/session.v4.jsonl.zstd",
+      "bytes": 70070,
+      "mtime": "2026-11-14T22:01:42.234Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/6e630946-1883-424c-a9c9-3eaad43a786b/session.v4.jsonl.zstd",
+      "bytes": 59782,
+      "mtime": "2026-11-14T23:01:39.817Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/6efac25d-d67d-4fde-bdeb-0469ce45d25e/session.v4.jsonl.zstd",
+      "bytes": 114247,
+      "mtime": "2026-11-14T23:37:49.266Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/72dc84d9-6220-4be5-af18-1c568c4c160d/session.v4.jsonl.zstd",
+      "bytes": 80696,
+      "mtime": "2026-11-14T22:01:48.703Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/749b8636-8c43-47fe-aa00-13cd93ebc272/session.v4.jsonl.zstd",
+      "bytes": 341084,
+      "mtime": "2026-11-16T14:22:18.093Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/75fc4bfe-0054-45c4-a5e9-c27fd9de1170/session.v4.jsonl.zstd",
+      "bytes": 165577,
+      "mtime": "2026-11-15T02:35:38.610Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/777b850e-4c42-4223-96f8-f51545e7587c/session.v4.jsonl.zstd",
+      "bytes": 194923,
+      "mtime": "2026-11-14T21:35:35.087Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/78997ef6-a58b-455e-be40-553e6a307ddf/session.v4.jsonl.zstd",
+      "bytes": 95133,
+      "mtime": "2026-11-14T23:01:02.113Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/7a2b194f-5d77-42eb-839f-3a49cd960cd2/session.v4.jsonl.zstd",
+      "bytes": 305181,
+      "mtime": "2026-11-15T09:16:44.907Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/7f4fbbb8-49f5-45f3-af77-7e00b6e285ea/session.v4.jsonl.zstd",
+      "bytes": 840286,
+      "mtime": "2026-11-17T21:56:45.572Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/804510ca-dc96-430e-ab5b-165d325b57ae/session.v4.jsonl.zstd",
+      "bytes": 186984,
+      "mtime": "2026-11-15T02:30:28.428Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/81e193df-b5b7-42ba-9a01-d43841b094ea/session.v4.jsonl.zstd",
+      "bytes": 545186,
+      "mtime": "2026-11-17T21:39:11.268Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/82891b0c-bb1d-4055-b78f-f494b1da7193/session.v4.jsonl.zstd",
+      "bytes": 63607,
+      "mtime": "2026-11-14T22:58:36.780Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/834b489b-ef91-4831-9b69-74f871ddb949/session.v4.jsonl.zstd",
+      "bytes": 67649,
+      "mtime": "2026-11-14T22:57:39.152Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/88ab5ac9-56af-4b11-b14c-cff412185927/session.v4.jsonl.zstd",
+      "bytes": 121200,
+      "mtime": "2026-11-15T00:27:58.076Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/89dd65b0-0df0-4205-a7eb-49a5fa8d9139/session.v4.jsonl.zstd",
+      "bytes": 639684,
+      "mtime": "2026-11-17T21:25:07.520Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/8aa8ce53-eb23-4ec3-82b0-868bd68d0f4b/session.v4.jsonl.zstd",
+      "bytes": 110949,
+      "mtime": "2026-11-15T09:09:58.697Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/8c53dfac-7a19-4c94-b9ca-2f017be67c81/session.v4.jsonl.zstd",
+      "bytes": 379605,
+      "mtime": "2026-11-16T14:18:15.409Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/8db3847f-653c-4f1e-9244-30b509e8166a/session.v4.jsonl.zstd",
+      "bytes": 234591,
+      "mtime": "2026-11-17T19:41:11.285Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/8e32434a-1312-4169-8c8b-7e3737f17da2/session.v4.jsonl.zstd",
+      "bytes": 128749,
+      "mtime": "2026-11-14T23:01:36.350Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/8fed7590-5459-4e06-9bc3-ef45377c0b96/session.v4.jsonl.zstd",
+      "bytes": 101683,
+      "mtime": "2026-11-14T22:04:57.906Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/8ff7e1b4-1ba2-44f8-8d30-13f88ff08ffa/session.v4.jsonl.zstd",
+      "bytes": 186814,
+      "mtime": "2026-11-15T09:11:39.322Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9041c7e7-020f-4d97-bb77-6d2d99b17799/session.v4.jsonl.zstd",
+      "bytes": 111798,
+      "mtime": "2026-11-14T22:04:19.990Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/92448ee6-8544-4ce5-9ee1-7a8ebea80ebf/session.v4.jsonl.zstd",
+      "bytes": 274057,
+      "mtime": "2026-11-14T22:07:33.618Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9280bd6e-27ce-48cd-88a9-7956f138a49e/session.v4.jsonl.zstd",
+      "bytes": 193884,
+      "mtime": "2026-11-15T02:30:27.764Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/944e8e08-6d09-46b2-b507-b4332a97f193/session.v4.jsonl.zstd",
+      "bytes": 95263,
+      "mtime": "2026-11-14T23:01:54.658Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/957cd6c5-03d4-47d4-9b30-7fcedb4ccb29/session.v4.jsonl.zstd",
+      "bytes": 150101,
+      "mtime": "2026-11-15T02:11:59.910Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/96bf270e-5645-443b-8080-1e21d55249dd/session.v4.jsonl.zstd",
+      "bytes": 171931,
+      "mtime": "2026-11-15T02:29:44.968Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/97dc9602-7a18-4600-8723-6a55ad147e5e/session.v4.jsonl.zstd",
+      "bytes": 426550,
+      "mtime": "2026-11-17T22:10:49.642Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/98e36683-e801-4429-970f-81f0cac900e1/session.v4.jsonl.zstd",
+      "bytes": 164555,
+      "mtime": "2026-11-15T02:08:06.204Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9933a0c6-d3ed-4746-8dbf-ab7890e897b4/session.v4.jsonl.zstd",
+      "bytes": 103821,
+      "mtime": "2026-11-15T09:09:40.429Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9a7e2628-90bd-412a-8c38-51ec312d59f5/session.v4.jsonl.zstd",
+      "bytes": 76966,
+      "mtime": "2026-11-14T22:56:55.844Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9a9a176e-24b1-4266-993b-c6682fa1a27f/session.v4.jsonl.zstd",
+      "bytes": 113673,
+      "mtime": "2026-11-14T23:35:22.754Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9c002306-812a-4bbc-8ac7-2762f74a942c/session.v4.jsonl.zstd",
+      "bytes": 97785,
+      "mtime": "2026-11-14T22:58:23.538Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9f0407ba-0e48-4dbd-8deb-e4906d4679e9/session.v4.jsonl.zstd",
+      "bytes": 95975,
+      "mtime": "2026-11-15T09:09:39.687Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/9f4deaf1-ba77-409f-a836-ab6ef2c2bf7a/session.v4.jsonl.zstd",
+      "bytes": 147128,
+      "mtime": "2026-11-15T09:14:55.650Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/a133c993-500b-4c3c-ad98-754612b0b11d/session.v4.jsonl.zstd",
+      "bytes": 64655,
+      "mtime": "2026-11-14T23:00:50.116Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/a1b11c08-516b-41d4-b5c0-243858c40511/session.v4.jsonl.zstd",
+      "bytes": 54669,
+      "mtime": "2026-11-14T22:56:36.844Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/a275f7f2-1005-4562-8439-41b09266ef4b/session.v4.jsonl.zstd",
+      "bytes": 156473,
+      "mtime": "2026-11-15T00:30:16.646Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/a2c24757-1cd7-415f-8830-548c8e42b85a/session.v4.jsonl.zstd",
+      "bytes": 102022,
+      "mtime": "2026-11-15T00:26:49.560Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/a3f7586b-37dc-41e3-bc5b-df223a779f25/session.v4.jsonl.zstd",
+      "bytes": 311366,
+      "mtime": "2026-11-16T14:17:52.624Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/a4bcb910-697c-4baa-8c3c-d1ad0901113d/session.v4.jsonl.zstd",
+      "bytes": 92983,
+      "mtime": "2026-11-14T22:02:40.413Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b1e06d93-d18b-4e41-bdb7-3d1b29fe2e8a/session.v4.jsonl.zstd",
+      "bytes": 71866,
+      "mtime": "2026-11-14T23:00:44.269Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b1e26255-e345-4e4c-8746-b5f09ba1f7b6/session.v4.jsonl.zstd",
+      "bytes": 139411,
+      "mtime": "2026-11-15T09:10:13.935Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b2b4aeb1-e063-47e5-82d6-b129dc8cdea7/session.v4.jsonl.zstd",
+      "bytes": 252713,
+      "mtime": "2026-11-14T21:38:00.717Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b2edfa1a-fd30-4aa8-b6f7-40cf9b36d11c/session.v4.jsonl.zstd",
+      "bytes": 405499,
+      "mtime": "2026-11-17T19:50:55.862Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b382c316-2a9d-4342-aac7-6237cee94628/session.v4.jsonl.zstd",
+      "bytes": 105059,
+      "mtime": "2026-11-14T23:35:15.423Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b38aad64-eb23-4981-9387-af756d04d09b/session.v4.jsonl.zstd",
+      "bytes": 458456,
+      "mtime": "2026-11-17T20:56:42.440Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b39842e1-44d2-4a49-ac7b-2e6f4842f241/session.v4.jsonl.zstd",
+      "bytes": 98659,
+      "mtime": "2026-11-15T02:30:43.907Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b4b24650-55c4-4b1e-8568-0d27d253512f/session.v4.jsonl.zstd",
+      "bytes": 307203,
+      "mtime": "2026-11-16T14:17:42.275Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b5e639a4-72fd-491b-b903-e552e8800c90/session.v4.jsonl.zstd",
+      "bytes": 105907,
+      "mtime": "2026-11-14T22:57:49.819Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b6f8d52d-4138-4631-97f6-8ac5527f0636/session.v4.jsonl.zstd",
+      "bytes": 163658,
+      "mtime": "2026-11-15T09:10:37.687Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b7c1f0d7-2dde-4574-bf2b-80b74f48c235/session.v4.jsonl.zstd",
+      "bytes": 1169101,
+      "mtime": "2026-11-18T14:38:56.091Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b8563db5-4229-4389-a19b-86f7524df69f/session.v4.jsonl.zstd",
+      "bytes": 78191,
+      "mtime": "2026-11-14T23:01:35.353Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b8f1ebeb-6fe9-4f4f-a1dc-5bf67ec43c69/session.v4.jsonl.zstd",
+      "bytes": 1053224,
+      "mtime": "2026-11-17T20:43:26.566Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/b9e6a065-c440-428f-b633-a752726d61c7/session.v4.jsonl.zstd",
+      "bytes": 88360,
+      "mtime": "2026-11-14T23:00:07.563Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/bb306d92-97f8-4016-b83a-c997c262d680/session.v4.jsonl.zstd",
+      "bytes": 164504,
+      "mtime": "2026-11-15T02:07:57.757Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/bc696da0-9a29-417a-9440-8aab8b54f6c4/session.v4.jsonl.zstd",
+      "bytes": 917151,
+      "mtime": "2026-11-18T04:31:28.327Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/c1472947-e93c-4d24-b0a7-d8deca638ea2/session.v4.jsonl.zstd",
+      "bytes": 358539,
+      "mtime": "2026-11-15T09:17:38.679Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/c5a489b5-a47c-41ad-b23a-4552587207f2/session.v4.jsonl.zstd",
+      "bytes": 69728,
+      "mtime": "2026-11-14T22:56:43.677Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/c60dcfc2-4a19-453d-a4b4-f583380e8ebc/session.v4.jsonl.zstd",
+      "bytes": 407692,
+      "mtime": "2026-11-14T21:40:40.894Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/c7615ccd-ddbb-43bf-88d1-637598bce332/session.v4.jsonl.zstd",
+      "bytes": 203199,
+      "mtime": "2026-11-15T00:30:39.417Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/c8b56a15-5cc6-4de3-b67e-76218ae3428a/session.v4.jsonl.zstd",
+      "bytes": 134488,
+      "mtime": "2026-11-14T21:34:39.358Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/ca2d15c2-134a-4005-b5a4-40686dd67cb8/session.v4.jsonl.zstd",
+      "bytes": 112780,
+      "mtime": "2026-11-15T09:09:52.319Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/ccdaa19b-ff60-4ded-a65e-e39f48750017/session.v4.jsonl.zstd",
+      "bytes": 114813,
+      "mtime": "2026-11-14T22:03:51.571Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/cd7b66ef-bdf7-4070-a702-f31be6d55b49/session.v4.jsonl.zstd",
+      "bytes": 136814,
+      "mtime": "2026-11-15T00:29:31.737Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/d06e5fac-43e6-4fa9-a2dd-92b327a0a276/session.v4.jsonl.zstd",
+      "bytes": 69519,
+      "mtime": "2026-11-14T22:59:52.130Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/d1c17f1e-0d5b-4c7f-a089-efa593667b1a/session.v4.jsonl.zstd",
+      "bytes": 417011,
+      "mtime": "2026-11-16T14:24:58.953Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/d2c3b951-0bc7-43d8-a8d5-72d8998a899b/session.v4.jsonl.zstd",
+      "bytes": 490594,
+      "mtime": "2026-11-16T14:20:04.332Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/d509bb72-2adf-4489-bc90-32db3743a341/session.v4.jsonl.zstd",
+      "bytes": 286946,
+      "mtime": "2026-11-15T09:12:59.738Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/d7031767-23ce-4535-866c-642d4954c4c9/session.v4.jsonl.zstd",
+      "bytes": 87922,
+      "mtime": "2026-11-14T22:57:27.658Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/db64374b-2575-4aaa-82f0-b38a3534d761/session.v4.jsonl.zstd",
+      "bytes": 96463,
+      "mtime": "2026-11-14T22:57:13.471Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/dc35039b-a148-4112-a79f-fd249e9bdc78/session.v4.jsonl.zstd",
+      "bytes": 897131,
+      "mtime": "2026-11-17T23:27:38.877Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/dcbf57ac-a2af-4fdf-ad6b-55957ba1340b/session.v4.jsonl.zstd",
+      "bytes": 68390,
+      "mtime": "2026-11-15T09:10:26.792Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/ddde8bd6-0174-49be-b5a2-5390976ff5f7/session.v4.jsonl.zstd",
+      "bytes": 110668,
+      "mtime": "2026-11-14T22:02:57.744Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/de9a5b95-57a1-4428-a5bf-f671bf8d0a97/session.v4.jsonl.zstd",
+      "bytes": 57795,
+      "mtime": "2026-11-15T09:10:02.990Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/df8a542e-8e85-4e4d-8cb6-f33af7eb6443/session.v4.jsonl.zstd",
+      "bytes": 74040,
+      "mtime": "2026-11-14T22:59:54.784Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e13089c5-26e6-42dc-a5a1-5d4d87cb9116/session.v4.jsonl.zstd",
+      "bytes": 130989,
+      "mtime": "2026-11-15T00:28:07.991Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e2d97bb1-171e-4ece-972f-695064d1d506/session.v4.jsonl.zstd",
+      "bytes": 84868,
+      "mtime": "2026-11-14T23:02:34.114Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e44e70c1-f003-45dc-856d-9f25a265482f/session.v4.jsonl.zstd",
+      "bytes": 92779,
+      "mtime": "2026-11-14T23:00:50.044Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e5516d5b-0c7b-424b-9a58-4e95fedbf8f8/session.v4.jsonl.zstd",
+      "bytes": 612410,
+      "mtime": "2026-11-18T18:33:15.044Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e70eb0a5-f763-4f12-8366-bdf4fb5192da/session.v4.jsonl.zstd",
+      "bytes": 314216,
+      "mtime": "2026-11-17T21:31:54.122Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e77c5fb6-a102-4283-85f1-60af8576f3af/session.v4.jsonl.zstd",
+      "bytes": 87594,
+      "mtime": "2026-11-15T02:30:21.236Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e9234948-3eb0-4d47-987f-ed003f3d837b/session.v4.jsonl.zstd",
+      "bytes": 128782,
+      "mtime": "2026-11-14T23:35:27.292Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/e9b69096-be66-4251-94e0-129427711727/session.v4.jsonl.zstd",
+      "bytes": 159679,
+      "mtime": "2026-11-15T02:06:02.206Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/eab9ea81-d3d3-45ad-a4ce-e642470a4b7b/session.v4.jsonl.zstd",
+      "bytes": 451446,
+      "mtime": "2026-11-16T14:19:42.400Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/ee8cb0e9-af12-43e2-82c9-286a03769e47/session.v4.jsonl.zstd",
+      "bytes": 356549,
+      "mtime": "2026-11-16T14:21:49.435Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/f35240e6-69c0-40e7-b7a9-b1b0d9f737d0/session.v4.jsonl.zstd",
+      "bytes": 133498,
+      "mtime": "2026-11-14T23:35:36.065Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/f3554b96-13df-451f-8cfd-f40ec81937fb/session.v4.jsonl.zstd",
+      "bytes": 160362,
+      "mtime": "2026-11-14T22:06:15.281Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/f51edb28-0e04-4f71-855a-486bfa779daa/session.v4.jsonl.zstd",
+      "bytes": 539421,
+      "mtime": "2026-11-16T14:21:09.135Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/f64b439a-9f43-4a8c-8c39-83e1103af906/session.v4.jsonl.zstd",
+      "bytes": 150436,
+      "mtime": "2026-11-14T23:35:49.677Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/f8b9b15a-0506-41c5-ac86-4ac5cb01b015/session.v4.jsonl.zstd",
+      "bytes": 881881,
+      "mtime": "2026-11-18T06:58:30.715Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/f8e73db5-3d6b-41c1-bf23-ba390f564c7a/session.v4.jsonl.zstd",
+      "bytes": 143711,
+      "mtime": "2026-11-14T21:34:34.667Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/f8f5931f-4cec-44b8-b293-a04f3ff1ca76/session.v4.jsonl.zstd",
+      "bytes": 135320,
+      "mtime": "2026-11-14T22:03:08.355Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/fbd82c33-247f-40f8-9aff-9f6ecc0358e3/session.v4.jsonl.zstd",
+      "bytes": 85715,
+      "mtime": "2026-11-14T23:00:05.243Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/ffaed6d1-b64c-4185-ad08-4d28312a7d5f/session.v4.jsonl.zstd",
+      "bytes": 117227,
+      "mtime": "2026-11-15T02:05:41.576Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/session-34f75125-7178-4b01-82e6-b1288b67d89e/session.v4.jsonl.zstd",
+      "bytes": 17629176,
+      "mtime": "2026-11-18T18:22:38.554Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/session-4d269569-553d-41a2-86cf-16507dedb0f7/session.v4.jsonl.zstd",
+      "bytes": 447,
+      "mtime": "2026-11-17T09:50:41.687Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop--/session-fe9e7be8-7894-4ca9-8917-98507eea14ac/session.v4.jsonl.zstd",
+      "bytes": 328,
+      "mtime": "2026-11-14T21:41:53.124Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/0d678e51-32d5-4185-9118-bb3c1e513581/session.v4.jsonl.zstd",
+      "bytes": 13137,
+      "mtime": "2026-11-18T06:50:51.174Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/be804c6f-67ba-42fc-8e67-9d41d904ecb9/session.v4.jsonl.zstd",
+      "bytes": 111150,
+      "mtime": "2026-11-18T04:14:42.396Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-032b20a5-6ea1-42d0-b710-2ab0855408b5/session.v4.jsonl.zstd",
+      "bytes": 18118,
+      "mtime": "2026-11-17T20:12:37.986Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-0369a2b9-f0b6-4a44-aa30-443e8432cf9d/session.v4.jsonl.zstd",
+      "bytes": 10577,
+      "mtime": "2026-11-17T20:09:35.365Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-05c42bac-a49c-41ac-ac2a-4c48230eed58/session.v4.jsonl.zstd",
+      "bytes": 13956,
+      "mtime": "2026-11-17T22:08:25.209Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-08bac090-32df-4633-b53f-e958ebda3410/session.v4.jsonl.zstd",
+      "bytes": 38861,
+      "mtime": "2026-11-18T13:21:54.778Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-0ec576ea-5df7-45a5-a216-eaab9650c46e/session.v4.jsonl.zstd",
+      "bytes": 10711,
+      "mtime": "2026-11-17T21:29:49.608Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-10745981-7633-4e5d-ac43-b7edca7202bb/session.v4.jsonl.zstd",
+      "bytes": 39443,
+      "mtime": "2026-11-17T21:35:42.901Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-115b013b-bbca-403e-a49c-4d4d28b4a4ef/session.v4.jsonl.zstd",
+      "bytes": 10779,
+      "mtime": "2026-11-17T19:08:00.147Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-18b30871-23b8-456a-b9c5-7612eda40965/session.v4.jsonl.zstd",
+      "bytes": 15735,
+      "mtime": "2026-11-17T21:49:30.232Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-1917a914-62c6-492d-95e2-e2f64d1b1d0f/session.v4.jsonl.zstd",
+      "bytes": 12884,
+      "mtime": "2026-11-18T06:53:07.251Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-19a3f3ae-6f06-45d9-9025-ba4ad8ed6368/session.v4.jsonl.zstd",
+      "bytes": 10677,
+      "mtime": "2026-11-17T20:40:53.250Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-1a7933f0-00f2-4a6f-a912-c6e97cc8572c/session.v4.jsonl.zstd",
+      "bytes": 15433,
+      "mtime": "2026-11-18T13:23:11.962Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-1aa61a66-6e30-4f88-bcf3-2f610eddbb3f/session.v4.jsonl.zstd",
+      "bytes": 10573,
+      "mtime": "2026-11-17T19:06:53.295Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-2144d6b0-4f62-42a6-b5eb-35132f91f213/session.v4.jsonl.zstd",
+      "bytes": 12411,
+      "mtime": "2026-11-18T13:11:55.391Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-2197e202-48c1-4e2d-a4ef-99d15aaf905b/session.v4.jsonl.zstd",
+      "bytes": 15355,
+      "mtime": "2026-11-18T13:07:11.103Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-2553c40a-1812-4130-98f5-5b1a09e05003/session.v4.jsonl.zstd",
+      "bytes": 10698,
+      "mtime": "2026-11-17T20:07:58.918Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-2800ca66-3713-4fb6-90d7-7beb737b0842/session.v4.jsonl.zstd",
+      "bytes": 10698,
+      "mtime": "2026-11-17T19:40:03.929Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-28dfecbf-ba7f-467d-a2af-7cc8409bdda9/session.v4.jsonl.zstd",
+      "bytes": 10721,
+      "mtime": "2026-11-17T18:57:23.365Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-29f7cf29-10b0-4cab-833a-fcff7061e4c0/session.v4.jsonl.zstd",
+      "bytes": 12222,
+      "mtime": "2026-11-18T03:43:58.849Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-31aaa5f0-c427-4d75-8e78-581bf37e2e7c/session.v4.jsonl.zstd",
+      "bytes": 19422,
+      "mtime": "2026-11-17T21:30:50.920Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-37cb2aa6-f37f-49ce-8c5d-08596b7a3671/session.v4.jsonl.zstd",
+      "bytes": 28003,
+      "mtime": "2026-11-18T18:33:27.711Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-38415527-3be3-432a-af6a-2f98564a28f9/session.v4.jsonl.zstd",
+      "bytes": 12301,
+      "mtime": "2026-11-18T13:33:57.111Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-3c0d0d9c-adc6-41e5-a8a5-fce67ad754ef/session.v4.jsonl.zstd",
+      "bytes": 11786,
+      "mtime": "2026-11-18T18:31:30.003Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-43565064-2454-404b-bd0a-26774d771023/session.v4.jsonl.zstd",
+      "bytes": 23013,
+      "mtime": "2026-11-18T06:50:53.909Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-453d0120-db89-4dd4-b4a6-cff47a3eae8c/session.v4.jsonl.zstd",
+      "bytes": 12500,
+      "mtime": "2026-11-18T06:50:41.611Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-494d5a83-6a2e-435d-825a-359e1952148d/session.v4.jsonl.zstd",
+      "bytes": 10907,
+      "mtime": "2026-11-17T20:55:41.733Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-49c7cc56-1187-460f-b6f1-9db69099845d/session.v4.jsonl.zstd",
+      "bytes": 10592,
+      "mtime": "2026-11-17T20:41:15.614Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-49f54348-2bd0-4581-8ed6-1ea7f2655131/session.v4.jsonl.zstd",
+      "bytes": 13967,
+      "mtime": "2026-11-17T21:49:38.576Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-4a39b460-7a1f-40aa-8081-01e18475027c/session.v4.jsonl.zstd",
+      "bytes": 12034,
+      "mtime": "2026-11-18T13:13:17.908Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-4b166533-7a29-4acb-8c44-30b2ab0b267a/session.v4.jsonl.zstd",
+      "bytes": 10764,
+      "mtime": "2026-11-17T20:15:11.307Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-4b22b5b4-eea6-40ae-8a95-06c5d2316446/session.v4.jsonl.zstd",
+      "bytes": 10785,
+      "mtime": "2026-11-17T20:38:08.753Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-4b2e39ff-f51f-4684-8fad-27be49086e37/session.v4.jsonl.zstd",
+      "bytes": 18333,
+      "mtime": "2026-11-17T21:07:03.573Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-503de437-020a-430b-aa29-c3fb9b8ebf4d/session.v4.jsonl.zstd",
+      "bytes": 11468,
+      "mtime": "2026-11-17T21:30:40.131Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-515e858a-7bd0-412a-9ee8-5a66646e16d9/session.v4.jsonl.zstd",
+      "bytes": 10587,
+      "mtime": "2026-11-17T20:23:35.827Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-5537e0b3-7b79-41c2-bc87-2dd40608a5b9/session.v4.jsonl.zstd",
+      "bytes": 10922,
+      "mtime": "2026-11-17T21:29:24.851Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-55813f12-8eed-4515-984b-a20e501f3db7/session.v4.jsonl.zstd",
+      "bytes": 26653,
+      "mtime": "2026-11-18T18:31:36.106Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-55cf04e9-1f1f-4083-95f0-83a592b0ac69/session.v4.jsonl.zstd",
+      "bytes": 16087,
+      "mtime": "2026-11-18T13:50:35.458Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-57c487db-46bc-4674-b749-f6982ceb86f4/session.v4.jsonl.zstd",
+      "bytes": 10779,
+      "mtime": "2026-11-17T20:06:15.728Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-5ff96834-5500-4328-b68e-c835e69fb7cf/session.v4.jsonl.zstd",
+      "bytes": 22587,
+      "mtime": "2026-11-18T18:33:20.481Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-61a435a4-bcf8-478e-bd55-e0a7df496def/session.v4.jsonl.zstd",
+      "bytes": 10761,
+      "mtime": "2026-11-17T21:28:41.543Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-65ea3432-7b18-4786-8dec-19ce9607d362/session.v4.jsonl.zstd",
+      "bytes": 11273,
+      "mtime": "2026-11-17T21:30:26.462Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-66b129d2-53e0-4aef-ac6d-b1ae90909227/session.v4.jsonl.zstd",
+      "bytes": 10704,
+      "mtime": "2026-11-17T21:07:48.926Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-6ff35463-a1ec-4066-9820-e4156e9d9724/session.v4.jsonl.zstd",
+      "bytes": 14358,
+      "mtime": "2026-11-18T18:31:28.009Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-78b9286e-4391-49cf-8d72-7036f3061628/session.v4.jsonl.zstd",
+      "bytes": 10577,
+      "mtime": "2026-11-17T20:40:55.378Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-7e8ed573-144c-41cc-ae0f-a604164f5d99/session.v4.jsonl.zstd",
+      "bytes": 12493,
+      "mtime": "2026-11-18T04:14:15.877Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-80ccaa66-a004-4ce9-832c-9522dfa3a051/session.v4.jsonl.zstd",
+      "bytes": 10568,
+      "mtime": "2026-11-17T21:01:38.762Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-873541be-2eba-4397-b82e-4a870cde32ef/session.v4.jsonl.zstd",
+      "bytes": 13738,
+      "mtime": "2026-11-17T21:49:45.694Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-90a811e5-46bf-411d-9761-bab62c926546/session.v4.jsonl.zstd",
+      "bytes": 10794,
+      "mtime": "2026-11-17T20:28:14.115Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-90ceb293-de0a-4273-aee2-42789ba87fa3/session.v4.jsonl.zstd",
+      "bytes": 8647,
+      "mtime": "2026-11-18T03:44:28.445Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-915aa2ce-cfa2-437b-a670-10a5968ac781/session.v4.jsonl.zstd",
+      "bytes": 13649,
+      "mtime": "2026-11-17T22:07:50.265Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-96e0c44a-d255-4771-8520-1bb10203ca86/session.v4.jsonl.zstd",
+      "bytes": 13933,
+      "mtime": "2026-11-17T22:04:34.907Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-98846fb5-7c40-4529-b1b3-43e68b314459/session.v4.jsonl.zstd",
+      "bytes": 11428,
+      "mtime": "2026-11-17T21:30:16.182Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-9ac00e16-308b-4a45-862f-00db0e600c2e/session.v4.jsonl.zstd",
+      "bytes": 13030,
+      "mtime": "2026-11-17T21:37:27.133Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-9c475bb6-e4fc-4d1c-9622-631379d28931/session.v4.jsonl.zstd",
+      "bytes": 14582,
+      "mtime": "2026-11-17T21:37:21.574Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-9e1acea7-31cf-4504-bf3f-f9d2a7c4fa2e/session.v4.jsonl.zstd",
+      "bytes": 12005,
+      "mtime": "2026-11-18T04:13:49.262Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-9ef84aa7-d0d8-45bf-8f0f-5623017423aa/session.v4.jsonl.zstd",
+      "bytes": 12886,
+      "mtime": "2026-11-18T06:53:12.469Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-9f4943de-5f7c-4672-be6f-44a19ce9c973/session.v4.jsonl.zstd",
+      "bytes": 11462,
+      "mtime": "2026-11-17T21:30:29.377Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-a11e91d7-36ef-4290-b8cb-f772463bd081/session.v4.jsonl.zstd",
+      "bytes": 13080,
+      "mtime": "2026-11-17T21:21:49.192Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-a73c0263-17b3-4f15-bce6-cc6a5f09d5ee/session.v4.jsonl.zstd",
+      "bytes": 23405,
+      "mtime": "2026-11-18T04:23:53.484Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-aa582536-c769-4adf-ace7-29ce3719fa31/session.v4.jsonl.zstd",
+      "bytes": 11492,
+      "mtime": "2026-11-18T06:53:09.854Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-ac8b6d6b-3b85-4874-a279-09324d4ba199/session.v4.jsonl.zstd",
+      "bytes": 10586,
+      "mtime": "2026-11-17T20:08:56.381Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-ac98aacf-5383-44cf-8897-026997a53287/session.v4.jsonl.zstd",
+      "bytes": 10584,
+      "mtime": "2026-11-17T20:10:21.529Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-b234db45-f7ce-47ed-a282-c9b40035ba7b/session.v4.jsonl.zstd",
+      "bytes": 18352,
+      "mtime": "2026-11-17T20:54:24.519Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-b47c54f3-8ea4-40c4-8ea2-a2bb9d203d6a/session.v4.jsonl.zstd",
+      "bytes": 18037,
+      "mtime": "2026-11-17T20:10:15.409Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-bb1bb7ef-b8a1-408c-92bf-8c1c18f03859/session.v4.jsonl.zstd",
+      "bytes": 127327,
+      "mtime": "2026-11-17T23:25:37.018Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-be3eee8d-e719-4178-9377-02d6c8f1ab74/session.v4.jsonl.zstd",
+      "bytes": 12565,
+      "mtime": "2026-11-18T13:50:26.562Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-c0b24433-bc6b-48dc-9448-2726a209b7aa/session.v4.jsonl.zstd",
+      "bytes": 11268,
+      "mtime": "2026-11-17T21:30:37.338Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-c691026e-b4c5-4250-b808-f3f2c8f16e99/session.v4.jsonl.zstd",
+      "bytes": 12941,
+      "mtime": "2026-11-18T13:38:28.547Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-c7de9ddb-8a90-46ef-8603-747f4627cc74/session.v4.jsonl.zstd",
+      "bytes": 10925,
+      "mtime": "2026-11-17T20:06:13.805Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-c82a8a00-4a5b-4205-8709-7647542b9a97/session.v4.jsonl.zstd",
+      "bytes": 11363,
+      "mtime": "2026-11-17T21:30:42.695Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-ccc3e751-691e-4251-862a-e4aa5ecdfb2a/session.v4.jsonl.zstd",
+      "bytes": 12126,
+      "mtime": "2026-11-18T13:23:04.176Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-cddca7e2-60a6-4d3f-969b-23fb33be531a/session.v4.jsonl.zstd",
+      "bytes": 13392,
+      "mtime": "2026-11-18T18:22:16.898Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-cfbcf8c9-c291-4b98-9e82-9ff9880f57d9/session.v4.jsonl.zstd",
+      "bytes": 10980,
+      "mtime": "2026-11-18T03:44:49.164Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-d0efed50-41c6-4d90-930a-89240757b2f0/session.v4.jsonl.zstd",
+      "bytes": 13683,
+      "mtime": "2026-11-18T13:30:30.132Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-d1b3b67e-f7cf-49ee-a1a7-3108ff974eda/session.v4.jsonl.zstd",
+      "bytes": 26911,
+      "mtime": "2026-11-17T21:53:27.721Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-d25dd3b1-0c23-4682-b38b-950dc617780f/session.v4.jsonl.zstd",
+      "bytes": 18974,
+      "mtime": "2026-11-17T21:27:51.900Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-d58e2aef-9e03-4461-8f5b-054c899deed5/session.v4.jsonl.zstd",
+      "bytes": 11319,
+      "mtime": "2026-11-17T21:30:10.366Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-d5b12741-2dfd-4486-b4c4-01d48256a7c9/session.v4.jsonl.zstd",
+      "bytes": 50450,
+      "mtime": "2026-11-18T04:15:04.743Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-d713fae0-c8d5-4202-901d-21dabc03d9a5/session.v4.jsonl.zstd",
+      "bytes": 84876,
+      "mtime": "2026-11-17T23:42:23.209Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-d918d290-6b0b-4fa9-80d2-7e40f23a5176/session.v4.jsonl.zstd",
+      "bytes": 18220,
+      "mtime": "2026-11-17T19:07:08.089Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-da1f8817-ee8e-4d00-bdad-39ab0b171ead/session.v4.jsonl.zstd",
+      "bytes": 10465,
+      "mtime": "2026-11-17T21:29:48.178Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-ddd0c7f6-1580-4f3c-bb3b-4f146c884937/session.v4.jsonl.zstd",
+      "bytes": 19531,
+      "mtime": "2026-11-17T21:30:54.325Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-de99d420-7cad-475e-97e5-bb57838f9919/session.v4.jsonl.zstd",
+      "bytes": 17659,
+      "mtime": "2026-11-18T18:29:42.376Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-e2e2e642-97db-4be9-9fab-2375fa1bc4f9/session.v4.jsonl.zstd",
+      "bytes": 19398,
+      "mtime": "2026-11-17T21:30:58.015Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-e6ef6621-4b54-4751-ba72-abee4c4e01f2/session.v4.jsonl.zstd",
+      "bytes": 9595,
+      "mtime": "2026-11-18T03:43:52.299Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-eb93c820-a005-468a-bcee-30b24b0a75d9/session.v4.jsonl.zstd",
+      "bytes": 19194,
+      "mtime": "2026-11-17T21:01:50.121Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-f0484d3f-1e8a-41ea-9183-2180d952d8c7/session.v4.jsonl.zstd",
+      "bytes": 10584,
+      "mtime": "2026-11-17T20:33:15.641Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-f2a4caa3-ae51-40c1-90a6-568b7f65ba4c/session.v4.jsonl.zstd",
+      "bytes": 11660,
+      "mtime": "2026-11-18T04:11:18.672Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-f2bb7b22-54d0-45b1-93be-32766670cebc/session.v4.jsonl.zstd",
+      "bytes": 12122,
+      "mtime": "2026-11-18T06:49:36.985Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-f2bf0bf2-20eb-4800-a4bd-a43abd254416/session.v4.jsonl.zstd",
+      "bytes": 10375,
+      "mtime": "2026-11-17T21:27:58.577Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-f51b1cc5-9767-46c1-881b-5958ce9470cd/session.v4.jsonl.zstd",
+      "bytes": 10781,
+      "mtime": "2026-11-17T20:41:50.285Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-f9020bc9-6813-44a8-bc9c-698323233e28/session.v4.jsonl.zstd",
+      "bytes": 10586,
+      "mtime": "2026-11-17T20:42:12.950Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-f90695b5-5ed7-48b5-8c1a-261ca61a37ac/session.v4.jsonl.zstd",
+      "bytes": 12396,
+      "mtime": "2026-11-17T21:19:04.489Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-tier2-plan-probe-1795026613873/session.v4.jsonl.zstd",
+      "bytes": 158,
+      "mtime": "2026-11-18T18:30:13.901Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-tier2-plan-probe-1795026684265/session.v4.jsonl.zstd",
+      "bytes": 329,
+      "mtime": "2026-11-18T18:31:24.329Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-tier2-plan-probe-1795026795736/session.v4.jsonl.zstd",
+      "bytes": 19600,
+      "mtime": "2026-11-18T18:33:23.668Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2-scratch-native-poc--/session-1b8f1ee0-36ce-4c5f-9983-0a3963119be3/session.v4.jsonl.zstd",
+      "bytes": 18266,
+      "mtime": "2026-11-17T19:41:16.651Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2-scratch-native-poc--/session-4d7b6762-8282-4875-b050-5ee3b54bc5ca/session.v4.jsonl.zstd",
+      "bytes": 18268,
+      "mtime": "2026-11-17T19:41:44.502Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2-scratch-native-poc--/session-847b9af1-331f-4a75-9fef-ed2863b129dc/session.v4.jsonl.zstd",
+      "bytes": 18237,
+      "mtime": "2026-11-17T19:42:35.231Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2-scratch-vendored-boot--/session-837cb468-68d7-4284-9ca1-a51392192d13/session.v4.jsonl.zstd",
+      "bytes": 10605,
+      "mtime": "2026-11-17T19:49:40.427Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2-scratch-vendored-boot--/session-a579fda9-c97c-4dbe-92d1-79df3adec65b/session.v4.jsonl.zstd",
+      "bytes": 11008,
+      "mtime": "2026-11-17T19:48:54.795Z"
+    },
+    {
+      "name": "--Users-tanveersinghsaini-Desktop-cyraops-v2-scratch-vendored-boot--/session-d6d28ad3-94c3-4261-b2dd-894d01dadee3/session.v4.jsonl.zstd",
+      "bytes": 10804,
+      "mtime": "2026-11-17T19:50:55.658Z"
+    }
+  ],
+  "journalRecords": {
+    "session-5ff96834-5500-4328-b68e-c835e69fb7cf": [
+      {
+        "file": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-5ff96834-5500-4328-b68e-c835e69fb7cf/session.v4.jsonl.zstd",
+        "type": "goal/change",
+        "seq": 20,
+        "data": {
+          "kind": "goal/change",
+          "version": 1,
+          "operation": "create",
+          "goal": {
+            "id": "goal-bfe86bda-2746-450e-8921-b511fcf4d681",
+            "revision": 1,
+            "objective": "Improve the Cyraops CRM onboarding flow so new workspaces reach their first ticket in under five minutes",
+            "phase": "active",
+            "maxGoalRounds": 256
+          },
+          "roundsStarted": 0,
+          "createdAt": 1795026797121,
+          "updatedAt": 1795026797121
+        }
+      }
+    ],
+    "session-37cb2aa6-f37f-49ce-8c5d-08596b7a3671": [
+      {
+        "file": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-37cb2aa6-f37f-49ce-8c5d-08596b7a3671/session.v4.jsonl.zstd",
+        "type": "job/registered",
+        "seq": 20,
+        "data": {
+          "jobId": "bash-31a8feba82f04e7c",
+          "owner": "session-37cb2aa6-f37f-49ce-8c5d-08596b7a3671",
+          "kind": "bash",
+          "label": "sleep 300",
+          "startedAt": 1795026802328,
+          "toolCall": {
+            "callId": "call_00_ET_CVuuiSP17cc4QmhuKcgL9674",
+            "rootCallId": "call_00_ET_CVuuiSP17cc4QmhuKcgL9674"
+          }
+        }
+      },
+      {
+        "file": "--Users-tanveersinghsaini-Desktop-cyraops-v2--/session-37cb2aa6-f37f-49ce-8c5d-08596b7a3671/session.v4.jsonl.zstd",
+        "type": "job/settled",
+        "seq": 34,
+        "data": {
+          "jobId": "bash-31a8feba82f04e7c",
+          "owner": "session-37cb2aa6-f37f-49ce-8c5d-08596b7a3671",
+          "kind": "bash",
+          "label": "sleep 300",
+          "startedAt": 1795026802328,
+          "toolCall": {
+            "callId": "call_00_ET_CVuuiSP17cc4QmhuKcgL9674",
+            "rootCallId": "call_00_ET_CVuuiSP17cc4QmhuKcgL9674"
+          },
+          "finishedAt": 1795026804109,
+          "status": "killed",
+          "cause": "teardown",
+          "producerReported": true,
+          "detail": "signal: SIGTERM"
+        }
+      }
+    ]
+  }
+}

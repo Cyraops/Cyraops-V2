@@ -34,6 +34,8 @@ interface ChatItem {
   usage?: { inputTokens: number; outputTokens: number; costUsd: number } | null;
   /** Harness-only: per-tool timeline entries streamed with the turn. */
   harnessTools?: HarnessToolEntry[];
+  /** Harness-only (plan mode): the turn's presented plan and its review state. */
+  plan?: HarnessPlanState | null;
 }
 
 /** One tool run of a harness turn, as the collapsible tools line expands it. */
@@ -41,6 +43,20 @@ interface HarnessToolEntry {
   name: string;
   status: "running" | "completed" | "error";
   result?: string;
+}
+
+/** The plan-mode surface of one harness turn (Tier-2 plan preview). */
+interface HarnessPlanState {
+  /** Stable wire id: the exit_plan_mode tool call id. */
+  planId: string;
+  /** The complete plan markdown, starting with a # heading. */
+  text: string;
+  /** Broker id the Approve / Keep planning buttons answer. */
+  questionId?: string;
+  /** True while the review question is waiting for the user's decision. */
+  review: boolean;
+  /** draft → presented; pending → review open; approved → plan accepted. */
+  status: "draft" | "pending" | "approved" | "revising";
 }
 
 interface Conversation {
@@ -111,6 +127,72 @@ function HarnessToolTimeline({ tools, live }: { tools: HarnessToolEntry[]; live:
             </span>
           </div>
         ))}
+      </div>
+    </details>
+  );
+}
+
+/**
+ * The plan preview block (Tier-2): the harness plan mode surfaces the model's
+ * finished plan — streamed as the exit_plan_mode tool call's input — in a
+ * collapsible block above the tools line, in the same muted design language
+ * as the tool timeline. While the plan review is waiting, small inline
+ * Approve / Keep planning buttons answer it through /api/harness/answer (the
+ * same broker pattern the ask-user question card uses). Rendered only for
+ * harness plan-mode turns; V1 turns never carry a plan.
+ */
+function HarnessPlanBlock({
+  plan,
+  live,
+  sending,
+  onReview,
+}: {
+  plan: HarnessPlanState;
+  live: boolean;
+  sending: boolean;
+  onReview: (questionId: string, selected: string[]) => void;
+}) {
+  const heading = /^#{1,6}\s+(.+?)\s*$/m.exec(plan.text)?.[1] ?? "Plan";
+  const pending = plan.status === "pending" && Boolean(plan.questionId);
+  return (
+    <details
+      open={live || pending ? true : undefined}
+      className="group mt-1.5 w-fit min-w-[220px] max-w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] text-meta text-[var(--muted)]"
+    >
+      <summary className="flex cursor-pointer list-none items-center gap-1.5 px-2 py-1 font-medium transition hover:text-[var(--text)]">
+        <ChevronRight size={12} className="shrink-0 transition-transform group-open:rotate-90" />
+        <span className="truncate">Plan · {heading}</span>
+        {plan.status === "approved" && (
+          <span className="shrink-0 text-emerald-600 dark:text-emerald-400">approved</span>
+        )}
+        {plan.status === "revising" && (
+          <span className="shrink-0 text-amber-600 dark:text-amber-400">returned</span>
+        )}
+        {pending && <Loader2 size={11} className="shrink-0 animate-spin text-amber-600 dark:text-amber-400" />}
+      </summary>
+      <div className="space-y-2 border-t border-[var(--border)] px-2.5 py-2">
+        <div className="max-h-72 overflow-y-auto break-words text-caption leading-relaxed text-[var(--muted)]">
+          <Markdown content={plan.text} />
+        </div>
+        {pending && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => plan.questionId && onReview(plan.questionId, ["Approve"])}
+              disabled={sending}
+              className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 text-caption font-medium text-emerald-700 transition hover:border-emerald-500/60 dark:text-emerald-300 disabled:opacity-50"
+            >
+              {sending ? <Loader2 size={11} className="mr-1 inline animate-spin" /> : null}
+              Approve
+            </button>
+            <button
+              onClick={() => plan.questionId && onReview(plan.questionId, ["Keep planning"])}
+              disabled={sending}
+              className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 text-caption font-medium text-[var(--muted)] transition hover:border-[var(--border)] hover:text-[var(--text)] disabled:opacity-50"
+            >
+              Keep planning
+            </button>
+          </div>
+        )}
       </div>
     </details>
   );
@@ -375,6 +457,8 @@ export function BotWorkspace() {
   const [questionDraft, setQuestionDraft] = useState("");
   const [questionSending, setQuestionSending] = useState(false);
   const [questionAnswered, setQuestionAnswered] = useState(false);
+  /** Tier-2 plan preview: one plan-review decision in flight at a time. */
+  const [planReviewSending, setPlanReviewSending] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -1149,6 +1233,51 @@ export function BotWorkspace() {
           } else if (payload.type === "question_done") {
             setQuestionAnswered(true);
             setQuestionSending(false);
+          } else if (payload.type === "plan") {
+            // Tier-2 plan preview: the model presented its plan (exit_plan_mode
+            // input) and/or the review question is waiting. Attach the plan to
+            // the pending assistant message; the collapsible Plan block renders
+            // it above the tools line.
+            const planId = String(payload.planId ?? "");
+            const text = String(payload.text ?? "");
+            const review = payload.review === true;
+            const questionId = typeof payload.questionId === "string" ? payload.questionId : undefined;
+            setMessages((prev) =>
+              prev.map((message) =>
+                message.id === pendingId
+                  ? {
+                      ...message,
+                      plan: {
+                        planId,
+                        text: text || message.plan?.text || "",
+                        questionId: questionId ?? message.plan?.questionId,
+                        review,
+                        status: review ? "pending" : (message.plan?.status ?? "draft"),
+                      },
+                    }
+                  : message
+              )
+            );
+          } else if (payload.type === "plan_done") {
+            // The review settled (the exit_plan_mode tool result): approved
+            // plans flip to a closed "approved" state; rejections to
+            // "returned" while the model revises and presents again.
+            const planId = String(payload.planId ?? "");
+            const approved = payload.approved !== false;
+            setMessages((prev) =>
+              prev.map((message) =>
+                message.id === pendingId && message.plan && message.plan.planId === planId
+                  ? {
+                      ...message,
+                      plan: {
+                        ...message.plan,
+                        review: false,
+                        status: approved ? "approved" : "revising",
+                      },
+                    }
+                  : message
+              )
+            );
           } else if (payload.type === "error") {
             throw new Error(payload.error || "The assistant failed to reply.");
           }
@@ -1300,6 +1429,32 @@ export function BotWorkspace() {
     } catch {
       setQuestionSending(false);
       setError("Could not send the answer.");
+    }
+  };
+
+  /**
+   * Tier-2 plan preview: answer the plan review through the SAME broker the
+   * ask-user card uses — Approve or Keep planning as the selected option. The
+   * harness answerer resolves the review, exit_plan_mode returns the
+   * decision, and the SAME SSE stream continues to done.
+   */
+  const answerPlanReview = async (questionId: string, selected: string[]) => {
+    if (planReviewSending) return;
+    setPlanReviewSending(true);
+    try {
+      const response = await fetch("/api/harness/answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId, selected }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.success) {
+        setError(data.error || "That decision could not be sent.");
+      }
+    } catch {
+      setError("Could not send the decision.");
+    } finally {
+      setPlanReviewSending(false);
     }
   };
 
@@ -1746,6 +1901,14 @@ export function BotWorkspace() {
                         return null;
                       }
                     })()}
+                    {message.role === "assistant" && message.plan && message.plan.text ? (
+                      <HarnessPlanBlock
+                        plan={message.plan}
+                        live={Boolean(message.streaming) && busy}
+                        sending={planReviewSending}
+                        onReview={(questionId, selected) => void answerPlanReview(questionId, selected)}
+                      />
+                    ) : null}
                     {message.role === "assistant" && message.harnessTools && message.harnessTools.length > 0 ? (
                       <HarnessToolTimeline tools={message.harnessTools} live={Boolean(message.streaming) && busy} />
                     ) : (

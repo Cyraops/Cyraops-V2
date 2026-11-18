@@ -35,6 +35,16 @@
  *     systemTools = false,           // true (SYSTEM permission mode) skips the
  *                                    // profile patch rows that disable
  *                                    // tool-bash/tool-fs/tool-fs-search
+ *     planMode,                      // "on" | "off": a plan-mode turn, driven
+ *                                    // directly (the one-shot runner row is
+ *                                    // disabled for this boot; the task may
+ *                                    // be empty for a bare switch). "on"
+ *                                    // enters plan mode before the turn; the
+ *                                    // finished plan surfaces as the
+ *                                    // exit_plan_mode tool call and its
+ *                                    // review through the user-questions
+ *                                    // waterfall (the cyraops-crm answerer
+ *                                    // bridges it to the question broker).
  *     log = (m) => process.stderr.write(`[native-host] ${m}\n`),
  *   } = {}) : AsyncIterable<HarnessEvent>
  *
@@ -53,6 +63,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { randomUUID } from "node:crypto";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { performance } from "node:perf_hooks";
 import { createRequire } from "node:module";
@@ -244,6 +255,249 @@ function makeTimeoutError(ms) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Plan-mode turn support (Tier-2 plan preview).
+//
+// The vendored headless runner never enters plan mode (it has no /plan
+// command adapter and never touches ctx.planMode), so a plan turn is driven
+// here directly: the one-shot runner row is disabled for this boot, the agent
+// is created/resumed with the SAME steps the runner takes (mirroring
+// dsh-headless run()/resolveAgent), plan mode is switched on or off through
+// the harness's own ctx.planMode service, and the task is driven to
+// quiescence exactly like the runner — with the SAME NDJSON projector, so the
+// event contract is identical (session/status/thinking/text/tool_call/
+// tool_result/final).
+//
+// The finished plan then surfaces as the exit_plan_mode tool call's
+// input.plan, and its review runs through the user-questions/request
+// waterfall the cyraops-crm plugin bridges to the Next-side question broker
+// (see scratch/tier2-plan-probe for the captured evidence).
+// ---------------------------------------------------------------------------
+
+let planPrimitivesPromise = null;
+function loadPlanPrimitives() {
+  if (!planPrimitivesPromise) {
+    planPrimitivesPromise = (async () => {
+      const { createUserMessage } = await import(`${vendoredPkg("@deepseek-ai/dsh-llm")}/lib/index.js`);
+      const { installModelSelection } = await import(`${vendoredPkg("@deepseek-ai/dsh-agent")}/lib/index.js`);
+      const { setApprovalPolicy } = await import(`${vendoredPkg("@deepseek-ai/dsh-user-approval")}/lib/index.js`);
+      const { brandString } = await import(`${vendoredPkg("@deepseek-ai/dsh-brand")}/lib/index.js`);
+      const { SessionSeq } = await import(`${vendoredPkg("@deepseek-ai/dsh-session")}/lib/index.js`);
+      const jsonStream = await import(`${vendoredPkg("@deepseek-ai/dsh-headless")}/lib/json-stream-Dc3g2Bl1.js`);
+      return {
+        createUserMessage,
+        installModelSelection,
+        setApprovalPolicy,
+        brandString,
+        SessionSeq,
+        projectJsonRun: jsonStream.n,
+      };
+    })();
+    planPrimitivesPromise.catch(() => {
+      planPrimitivesPromise = null; // allow a later retry after a failed load
+    });
+  }
+  return planPrimitivesPromise;
+}
+
+/** Iterate a live Session's durable events in order (mirrors dsh-headless). */
+function* liveSessionEvents(session, SessionSeq) {
+  const length = session.seq;
+  for (let seq = 0; seq < length; seq++) {
+    const event = session.eventAt(SessionSeq(seq));
+    if (event === undefined) {
+      throw new Error(`headless adoption cannot read seq ${String(seq)} below captured length ${String(length)}`);
+    }
+    yield event;
+  }
+}
+
+/**
+ * Reject a Session the one-shot driver must not adopt (mirrors the runner's
+ * assertAdoptable): a preset the headless tree does not compose, a subagent
+ * session, or a recorded cwd that differs from this process's project root.
+ */
+function assertPlanAdoptable(header, events, sessionId, cwd, SessionSeq) {
+  let preset = header.agentPreset;
+  for (const event of events) {
+    if (event.type !== "agent-preset/selected") continue;
+    const selected = event.data?.agentPreset;
+    if (typeof selected !== "string" || selected === "") {
+      throw new Error(`session "${sessionId}" records a malformed agent-preset/selected event and cannot be adopted`);
+    }
+    preset = selected;
+  }
+  if (preset !== undefined) {
+    throw new Error(`session "${sessionId}" runs under agent preset "${preset}", which the one-shot runner does not compose`);
+  }
+  if (header.origin === "subagent") throw new Error(`session "${sessionId}" is a subagent session and cannot be driven directly`);
+  if (header.cwd === undefined) throw new Error(`session "${sessionId}" recorded no working directory, so it cannot be adopted`);
+  if (header.cwd !== cwd) throw new Error(`session "${sessionId}" was recorded in "${header.cwd}", not "${cwd}"`);
+}
+
+/**
+ * Drive one plan-mode turn: create/resume the agent (runner steps), apply the
+ * plan-mode switch, follow the task to quiescence, flush, and finish the
+ * NDJSON projection. Returns the exit code (0 when the last observed turn
+ * completed), exactly the runner's rule.
+ */
+async function drivePlanTurn({
+  ctx,
+  task,
+  sessionId,
+  projectRoot,
+  planMode,
+  approvalPolicy,
+  permissionMode,
+  registerCancel,
+  log,
+}) {
+  const { createUserMessage, installModelSelection, setApprovalPolicy, brandString, SessionSeq, projectJsonRun } =
+    await loadPlanPrimitives();
+
+  const agents = ctx.get("agents");
+  const defaultModel = ctx.get("agentDefaultModel");
+  const sessions = ctx.get("sessions");
+  const planModeService = ctx.get("planMode");
+  if (agents === undefined || defaultModel === undefined || sessions === undefined) {
+    throw new Error("plan mode requires the harness agents/agentDefaultModel/sessions services");
+  }
+  if (planModeService === undefined || typeof planModeService.set !== "function") {
+    throw new Error("plan mode requires the harness plan-mode service (dsh-plan-mode is not mounted)");
+  }
+  if (approvalPolicy !== undefined && ctx.get("approval") === undefined) {
+    throw new Error("headless --approval-policy requires the approval service");
+  }
+  const permissions = ctx.get("permissionPresets");
+  if (permissionMode !== undefined) {
+    if (permissions === undefined) throw new Error("headless --permission-mode requires the permissionPresets service");
+    permissions.resolve(permissionMode);
+  }
+  const approval = ctx.get("approval");
+
+  const selection = defaultModel.currentSelection();
+  const agentOptions = { ...selection };
+  const setup = (agentCtx, agent) => {
+    if (sessionId !== undefined) {
+      const previous = agent.model.current();
+      const configured = { ...selection };
+      if (
+        configured.reasoningEffort === undefined &&
+        previous !== undefined &&
+        previous.provider === configured.provider &&
+        previous.model === configured.model &&
+        previous.reasoningEffort !== undefined
+      ) {
+        configured.reasoningEffort = previous.reasoningEffort;
+      }
+      agent.model.select(configured);
+    }
+    installModelSelection(agentCtx);
+  };
+
+  const cwd = projectRoot;
+  let agent;
+  if (sessionId === undefined) {
+    const created = await agents.create({
+      sessionId: brandString(`session-${randomUUID()}`),
+      meta: { cwd },
+      agentOptions,
+      setup,
+    });
+    agent = created.agent;
+  } else {
+    // Mirrors the runner's resolveAgent: the session must exist on disk and
+    // no agent may be live under it in this tree (a fresh tree guarantees it).
+    if (ctx.get("sessionPersistence") === undefined) {
+      throw new Error("headless --session-id requires the sessionPersistence service; the Session would not survive this process");
+    }
+    const query = ctx.get("sessionQuery");
+    if (query === undefined) throw new Error("headless --session-id requires the sessionQuery service; dsh-base provides it");
+    const live = agents.get(sessionId);
+    if (live !== undefined) {
+      throw new Error(`session "${sessionId}" is live in this process, so the one-shot runner cannot own an exclusive run interval`);
+    }
+    const observation = await query.observeSession(sessionId);
+    assertPlanAdoptable(observation.header, observation.events, sessionId, cwd, SessionSeq);
+    const resumed = await agents.resume({ resumeSessionId: sessionId, agentOptions, setup });
+    agent = resumed.agent;
+    assertPlanAdoptable(agent.session.header, liveSessionEvents(agent.session, SessionSeq), sessionId, cwd, SessionSeq);
+  }
+  registerCancel(() => agent.cancel({ kind: "disposed" }));
+  await agent.whenIdle();
+  if (sessionId !== undefined) {
+    assertPlanAdoptable(agent.session.header, liveSessionEvents(agent.session, SessionSeq), sessionId, cwd, SessionSeq);
+  }
+  if (permissionMode !== undefined && permissions !== undefined) permissions.set(agent.session, permissionMode);
+  if (approvalPolicy !== undefined && approval?.overrideOf(agent.session) !== approvalPolicy) {
+    setApprovalPolicy(agent.session, approvalPolicy);
+  }
+
+  // The plan-mode switch (durable in the session log: it survives resume).
+  planModeService.set(agent, planMode === "on");
+  log(`plan mode set to ${planMode === "on" ? "active" : "inactive"} (session=${agent.session.id})`);
+
+  const firstSeq = agent.session.seq;
+  const projection = projectJsonRun(ctx, agent, process.stdout, { cwd });
+  const subagents = ctx.get("subagents");
+  let failure;
+  const stopErrors = ctx.on("agent/error", ({ agent: subject, error }) => {
+    if (subject === agent) failure = { error, atOffset: agent.session.seq };
+  });
+  const stopTerminals = ctx.on("session/event", (session, event) => {
+    if (session === agent.session && event.type === "turn/end" && failure !== undefined && event.seq >= failure.atOffset) {
+      failure = undefined;
+    }
+  });
+  try {
+    if (typeof task === "string" && task.trim() !== "") {
+      agent.followup(createUserMessage({ content: [{ type: "text", text: task }], source: { kind: "user" } }));
+      while (true) {
+        await agent.whenIdle();
+        const idleSeq = agent.session.seq;
+        if (!(await subagents?.waitForChildren(agent)) && agent.status === "idle" && agent.session.seq === idleSeq) break;
+      }
+    }
+  } finally {
+    stopErrors();
+    stopTerminals();
+  }
+  await sessions.flush(agent.session);
+  if (failure !== undefined) throw failure.error;
+
+  // summarize [firstSeq, seq): the last assistant text + the final turn reason
+  // (mirrors dsh-headless summarize()).
+  let started = false;
+  let text = "";
+  let reason;
+  const length = agent.session.seq;
+  for (let seq = firstSeq; seq < length; seq++) {
+    const event = agent.session.eventAt(SessionSeq(seq));
+    if (event === undefined) {
+      throw new Error(`headless summary cannot read seq ${String(seq)} below captured length ${String(length)}`);
+    }
+    if (event.type === "turn/start") {
+      started = true;
+      reason = undefined;
+      continue;
+    }
+    if (!started) continue;
+    if (event.type === "assistant/message") {
+      const joined = event.data.message.content
+        .filter((block) => block.type === "text")
+        .map((block) => block.text)
+        .join("");
+      if (joined !== "") text = joined;
+    }
+    if (event.type === "turn/end") reason = event.data.reason;
+  }
+  projection.finish(text, reason);
+  // A bare switch ("/plan" / "/plan off") runs no model turn: the empty
+  // outcome is a successful mode change, not a failed run.
+  const bareSwitch = typeof task !== "string" || task.trim() === "";
+  return reason?.kind === "completed" || bareSwitch ? 0 : 1;
+}
+
 /**
  * Build the CLI argument vector the headless runner receives. Exported so the
  * policy mapping (never by default, ask when the caller opts in) is unit
@@ -261,7 +515,9 @@ export function buildRunArgs({ task, sessionId, approvalPolicy = "never", permis
   const args = ["--json", "--approval-policy", approvalPolicy];
   if (permissionMode) args.push("--permission-mode", permissionMode);
   if (sessionId) args.push("--session-id", sessionId);
-  args.push(task);
+  // An empty task (a bare plan-mode switch) must not reach commander: the
+  // startup parser rejects an empty task positional with a failing exit.
+  if (typeof task === "string" && task.trim() !== "") args.push(task);
   return args;
 }
 
@@ -516,10 +772,21 @@ export async function* runNativeTask(options = {}) {
     approvalPolicy = "never",
     permissionMode,
     systemTools = false,
+    /**
+     * "on" | "off" | undefined: run the turn as a plan-mode turn. "on" enters
+     * plan mode for the session (the model explores, then presents the plan
+     * through exit_plan_mode for review); "off" leaves it. Either way the
+     * one-shot runner row is disabled for this boot and the turn is driven
+     * directly (see drivePlanTurn). The task may be empty for a bare switch.
+     */
+    planMode,
   } = options;
 
-  if (typeof task !== "string" || task.trim() === "") {
+  if (planMode === undefined && (typeof task !== "string" || task.trim() === "")) {
     throw new Error("runNativeTask: task must be a non-empty string");
+  }
+  if (planMode !== undefined && planMode !== "on" && planMode !== "off") {
+    throw new Error("runNativeTask: planMode must be \"on\" or \"off\"");
   }
 
   // Cancellation promptness: a turn that is already aborted never boots a
@@ -616,11 +883,16 @@ export async function* runNativeTask(options = {}) {
     // static disable rows while every other mode keeps them off. (The
     // "keep in sync" CLI overlay — system-tools-off.patch.yml — is skipped
     // the same way by the CLI runtime for SYSTEM turns.)
+    // Plan-mode turns drive the agent themselves (drivePlanTurn), so the
+    // one-shot runner must not run a competing turn in the same tree. The
+    // disable row is appended AFTER the bundle rows: patch rows are applied
+    // in order and a bundle's insert re-enables a row targeted earlier.
     const appliedPatches = systemTools
       ? patches.filter(
           (row) => !(SYSTEM_TOOL_IDS.has(row?.id) && row?.disabled === true)
         )
-      : patches;
+      : [...patches];
+    if (planMode !== undefined) appliedPatches.push({ id: "headless-runner", disabled: true });
     const appReady = createAppReady();
 
     let exitResolve;
@@ -647,6 +919,37 @@ export async function* runNativeTask(options = {}) {
     if (ctx.fiber.state === 2 && ctx.get("loader") !== undefined) appReady.commit();
     log(`tree mounted (fiber state=${ctx.fiber.state})`);
 
+    // Plan-mode turns: drive the agent directly (the runner row is disabled).
+    // The drive requests the exit with the runner's outcome rule; abort or
+    // timeout cancel the agent so the drive settles and the shared race below
+    // completes with the right failure.
+    let planCancel = () => {};
+    let planDrive = null;
+    if (planMode !== undefined) {
+      planDrive = (async () => {
+        try {
+          exitResolve(
+            await drivePlanTurn({
+              ctx,
+              task: typeof task === "string" ? task : "",
+              sessionId,
+              projectRoot,
+              planMode,
+              approvalPolicy,
+              permissionMode,
+              registerCancel: (cancel) => {
+                planCancel = cancel;
+              },
+              log,
+            })
+          );
+        } catch (error) {
+          if (failure === undefined) failure = error;
+          exitResolve(1);
+        }
+      })();
+    }
+
     // 4. Wait for the run (exit request, timeout, or abort), draining the
     //    captured NDJSON projection as it streams.
     let timer;
@@ -654,7 +957,10 @@ export async function* runNativeTask(options = {}) {
       timer = setTimeout(() => reject(makeTimeoutError(timeoutMs)), timeoutMs);
     });
     const aborted = new Promise((_, reject) => {
-      const onAbort = () => reject(makeAbortError());
+      const onAbort = () => {
+        planCancel();
+        reject(makeAbortError());
+      };
       if (signal?.aborted) onAbort();
       else {
         signal?.addEventListener("abort", onAbort, { once: true });

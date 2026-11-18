@@ -1093,10 +1093,59 @@ test("tool: the question answerer forwards the batch to the broker and returns i
   assert.deepEqual(seen, [
     {
       questions: [
-        { id: "q", question: "Which ticket?" },
+        { id: "q", question: "Which ticket?", options: [{ label: "A" }] },
         { id: "q2", question: "Why?" },
       ],
       callId: "call-1",
+      signal: undefined,
+    },
+  ]);
+});
+
+test("tool: the question answerer preserves the plan-review surface (detail/options/intent)", async () => {
+  const seen: Array<Record<string, unknown>> = [];
+  const batch = { answers: [{ id: "plan-review", selected: ["Approve"] }] };
+  const broker = {
+    request(info: Record<string, unknown>) {
+      seen.push(info);
+      return { questionId: "broker-q-7", decision: Promise.resolve(batch), cancel: () => {} };
+    },
+  };
+  const answerer = createUserQuestionAnswerer({ lookupBroker: () => broker });
+  const outcome = await answerer(
+    {
+      questions: [
+        {
+          id: "plan-review",
+          header: "Plan review",
+          question: "Approve this plan and leave plan mode?",
+          detail: "# Plan\n\n- step one",
+          options: [
+            { label: "Approve", description: "Leave plan mode" },
+            { label: "Keep planning", description: "Stay in plan mode" },
+          ],
+          intent: { kind: "plan-review", approve: "Approve", callId: "call-plan-1" },
+        },
+      ],
+    },
+    async () => "never"
+  );
+  assert.equal(outcome, batch);
+  assert.deepEqual(seen, [
+    {
+      questions: [
+        {
+          id: "plan-review",
+          question: "Approve this plan and leave plan mode?",
+          header: "Plan review",
+          detail: "# Plan\n\n- step one",
+          options: [
+            { label: "Approve", description: "Leave plan mode" },
+            { label: "Keep planning", description: "Stay in plan mode" },
+          ],
+          intent: { kind: "plan-review", approve: "Approve", callId: "call-plan-1" },
+        },
+      ],
       signal: undefined,
     },
   ]);

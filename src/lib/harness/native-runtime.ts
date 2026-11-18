@@ -62,6 +62,8 @@ interface NativeHostModule {
     permissionMode?: string;
     /** SYSTEM permission mode re-enables the harness system tools. */
     systemTools?: boolean;
+    /** Tier-2 plan preview: "on" | "off" runs the turn as a plan-mode turn. */
+    planMode?: "on" | "off";
     onLog?: (message: string) => void;
   }): AsyncIterable<HarnessEvent>;
 }
@@ -149,6 +151,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     signal?: AbortSignal;
     workspaceId?: string | null;
     permissionMode?: PermissionMode;
+    planMode?: "on" | "off";
   }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
     if (!session) throw new Error(`unknown harness session: ${input.sessionId}`);
@@ -160,7 +163,7 @@ export class NativeAgentRuntime implements AgentRuntime {
 
     const run = this.turnChain
       .catch(() => undefined)
-      .then(() => this.runTurn(session, input.task, input.workspaceId ?? null, input.permissionMode, signal, queue, events));
+      .then(() => this.runTurn(session, input.task, input.workspaceId ?? null, input.permissionMode, input.planMode, signal, queue, events));
     this.turnChain = run.catch(() => undefined);
 
     try {
@@ -176,6 +179,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     task: string,
     workspaceId: string | null,
     permissionMode: PermissionMode | undefined,
+    planMode: "on" | "off" | undefined,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
     events: HarnessEvent[]
@@ -280,6 +284,10 @@ export class NativeAgentRuntime implements AgentRuntime {
           // the harness system tools the profile patch otherwise disables.
           permissionMode: preset,
           systemTools: permissionMode ? systemToolsEnabled(permissionMode) : false,
+          // Plan-mode turns (Tier-2 plan preview): the "/plan" chat surface
+          // drives the turn as a plan-mode turn; the review arrives through
+          // the question broker the runtime already subscribes to below.
+          planMode,
           onLog: (message) => process.stderr.write(`[native-host] ${message}\n`),
         })) {
           events.push(event);

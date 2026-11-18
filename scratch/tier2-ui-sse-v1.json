@@ -1,0 +1,7 @@
+{
+  "mode": "v1",
+  "sseTypes": [
+    "token",
+    "done"
+  ]
+}
