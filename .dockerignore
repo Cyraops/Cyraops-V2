@@ -12,3 +12,17 @@ scratch
 !.env.example
 coverage
 *.log
+
+# Vendored DeepSeek Harness tree — REQUIRED by the production image: the
+# native harness runtime boots entirely from vendor/dsh (installation anchor +
+# node_modules) and vendor/tooling/vendored-boot (host launcher + profile).
+# The extracted tree lives on disk only (gitignored); re-include it explicitly
+# so a stray ignore pattern can never strip the runtime out of the context.
+!vendor
+!vendor/dsh
+!vendor/dsh/**
+!vendor/tooling
+!vendor/tooling/**
+# The pinned source tarball itself is not needed inside the image (the
+# extracted tree is what the runtime reads); keep the image ~58MB smaller.
+vendor/dsh-pinned-0.2.2-rc.1.tar.gz

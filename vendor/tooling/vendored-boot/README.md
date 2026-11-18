@@ -13,6 +13,19 @@ resolution from the anchor). Two native addons are required on darwin-arm64
 and were added to the vendored set: `node-addon-require-builtin-darwin-arm64@0.1.9`
 and `@deepseek-ai/node-addon-system-darwin-arm64@0.1.2`.
 
+## Production image (2026-11-18)
+
+The Dockerfile now carries the whole tree: it copies the extracted
+`vendor/dsh` + `vendor/tooling` (the build fails fast when the extracted tree
+is missing from the context; the pinned tarball is excluded from the image),
+installs the linux-x64 prebuilds of the two native-addon families into
+`vendor/dsh/node_modules` for the image platform, installs a REAL copy of the
+CRM bundle into `profile/node_modules/@cyraops/harness-crm` (instead of the
+dev symlink), and sets `HARNESS_RUNTIME=native`. `native-host.mjs` also
+self-heals the CRM bundle entry at boot: when the profile entry is missing or
+dangling it materializes a real copy from the project's
+`src/lib/harness/plugins/cyraops-crm` before the profile loads.
+
 ## Public API
 
 ```js

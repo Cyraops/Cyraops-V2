@@ -44,6 +44,7 @@
  * AgentRuntime adapter does.
  */
 
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { performance } from "node:perf_hooks";
@@ -60,6 +61,46 @@ export const ROOT_CONFIG = path.join(PROFILE_DIR, "cordis.yml");
 
 const vendoredPkg = (name) => path.join(VENDOR, "node_modules", name);
 const DEFAULT_LOG = (message) => process.stderr.write(`[native-host] ${message}\n`);
+
+/**
+ * Ensure the CRM plugin bundle resolves inside the profile's node_modules.
+ *
+ * The scratch profile declares `@cyraops/harness-crm` as a bundle; dev
+ * checkouts satisfy it through a gitignored symlink
+ * (`profile/node_modules/@cyraops/harness-crm` -> the project's
+ * `src/lib/harness/plugins/cyraops-crm`), which is convenient for local edits
+ * but does not survive a build context where that link is absent or dangling
+ * (fresh clone, container). The production Docker image installs a real copy
+ * (see the Dockerfile); this fallback materializes the same real copy from
+ * the project source when the entry is missing or dangling, so the profile
+ * can never silently skip the bundle.
+ *
+ * A resolvable entry (the dev symlink, or an already-installed copy) is left
+ * untouched.
+ */
+function ensureCrmBundle({ profileDir, projectRoot, log }) {
+  const entry = path.join(profileDir, "node_modules", "@cyraops", "harness-crm");
+  const source = path.join(projectRoot, "src", "lib", "harness", "plugins", "cyraops-crm");
+  let usable = false;
+  try {
+    usable = fs.existsSync(fs.realpathSync(entry));
+  } catch {
+    // missing or dangling entry: materialize below
+  }
+  if (!usable) {
+    try {
+      fs.rmSync(entry, { recursive: true, force: true });
+      fs.mkdirSync(path.dirname(entry), { recursive: true });
+      fs.cpSync(source, entry, { recursive: true });
+      log(`crm bundle materialized: ${source} -> ${entry}`);
+    } catch (error) {
+      throw new Error(
+        `crm bundle is unavailable (${error instanceof Error ? error.message : String(error)})`
+      );
+    }
+  }
+  return entry;
+}
 
 // ---------------------------------------------------------------------------
 // Boot primitives, all from the vendored tree (absolute file URLs so the
@@ -514,6 +555,11 @@ export async function* runNativeTask(options = {}) {
     disposeProxy = await installProxyFromEnvironment(environment, (message) =>
       process.stderr.write(`dsh: ${message}\n`)
     );
+
+    // 0. The CRM bundle must resolve inside the profile; materialize a real
+    //    copy from the project source when the dev symlink is missing/dangling
+    //    (fresh clone, or a container whose context dropped the link).
+    ensureCrmBundle({ profileDir, projectRoot, log });
 
     // 1. Load the profile; bundle dirs resolve from the vendored anchor.
     const profile = loadProfileDirectory("dsh", profileDir, installAnchor);

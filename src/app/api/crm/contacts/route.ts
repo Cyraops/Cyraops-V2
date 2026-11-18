@@ -52,13 +52,14 @@ export async function GET(request: NextRequest) {
       { company: { name: { contains: q, mode: "insensitive" } } },
     ];
   }
-  // Tenant scoping (FIX 3, partial): the Contact model has NO tenant/owner/
-  // workspace column and no owning relation to backfill one from (Company has
-  // no owner either), so a full tenant scope needs the schema follow-up
-  // documented in CYRAOPS_PERMISSION_AUDIT.md. What the schema DOES allow for
-  // a member: contacts linked to deals they own or leads assigned to them.
-  // Standalone contacts stay invisible to members (fail-closed) until the
-  // `workspaceId String?` migration lands. OWNER/ADMIN keep the app-wide view.
+  // Tenant scoping (FIX 3, completed by the contact_workspace_id migration):
+  // Contact now carries workspaceId (the owning user's id — the workspace key
+  // the harness bridge uses). A member sees contacts whose workspaceId is
+  // theirs plus the legacy fallback: contacts linked to deals they own or
+  // leads assigned to them (rows whose workspaceId is null — predating the
+  // column or ambiguous at backfill). Standalone contacts with neither signal
+  // stay invisible to members (fail-closed). OWNER/ADMIN keep the app-wide
+  // view.
   if (!isTenantAdmin(user.role)) {
     where.AND = [memberContactWhere(user.id)];
   }
@@ -142,6 +143,10 @@ export async function POST(request: NextRequest) {
         status: data.status,
         companyId: data.companyId || null,
         notes: data.notes,
+        // New rows carry their creator's workspace key directly (the same
+        // user-id key the harness bridge scopes CRM tools with), so member
+        // scoping never depends on a deal/lead link existing for fresh rows.
+        workspaceId: user.id,
       },
       include: {
         company: { select: { id: true, name: true } },

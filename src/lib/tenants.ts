@@ -4,8 +4,10 @@
  * GET /api/tickets, GET /api/crm/contacts and the calendar events list used to
  * return whole-DB rows. Task/CalendarEvent carry stable owner paths
  * (Task.creatorId/assigneeId/TaskAssignee.userId, CalendarEvent.creatorId,
- * Project.ownerId); Contact has NO tenant or owner column at all (see the
- * contacts route for the documented limitation).
+ * Project.ownerId); Contact now carries workspaceId (the owning user's id,
+ * backfilled from unambiguous deal/lead owners, see the
+ * contact_workspace_id migration), with the deal/lead links kept as the
+ * fallback for rows whose owner path was ambiguous or absent.
  *
  * The tenant model here is the one the harness bridge already uses
  * (plugins/cyraops-crm/lib/bridge.mjs): a workspace's rows are the rows its
@@ -84,14 +86,21 @@ export async function sharedProjectUserIds(userId: string): Promise<string[]> {
 }
 
 /**
- * The member contact scope — the only owner path the schema offers for a
- * Contact: it has no creator/owner/workspace column, so a member can only be
- * linked through their deals (Deal.ownerId) and leads (Lead.assignedToId).
- * Standalone contacts are invisible to members; see the contacts route's
- * documented limitation and the recommended schema follow-up.
+ * The member contact scope. `workspaceId` (the owning user's id, the same
+ * workspace key the harness bridge uses) is authoritative when present; the
+ * deal/lead links (Deal.ownerId / Lead.assignedToId) are only the fallback
+ * for rows whose workspaceId is null — rows that predate the column or whose
+ * owner path was ambiguous at backfill, so the pre-migration visibility is
+ * preserved exactly for them. A link can never reach into a row that another
+ * workspace owns. Standalone contacts with neither signal are invisible to
+ * members (fail-closed).
  */
 export function memberContactWhere(userId: string): Prisma.ContactWhereInput {
   return {
-    OR: [{ deals: { some: { ownerId: userId } } }, { leads: { some: { assignedToId: userId } } }],
+    OR: [
+      { workspaceId: userId },
+      { workspaceId: null, deals: { some: { ownerId: userId } } },
+      { workspaceId: null, leads: { some: { assignedToId: userId } } },
+    ],
   };
 }

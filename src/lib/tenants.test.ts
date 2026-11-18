@@ -103,24 +103,31 @@ describe("tenant scoping helpers (FIX 3)", () => {
     }
   });
 
-  test("memberContactWhere scopes to contacts linked to the member's deals or leads", async () => {
+  test("memberContactWhere prefers workspaceId and falls back to deal/lead links", async () => {
     const s = stamp();
     const users = await seedUsers(s);
     const contactIds: string[] = [];
     try {
       const linked = await db.contact.create({ data: { firstName: `linked ${s}`, lastName: "C" } });
       const leadLinked = await db.contact.create({ data: { firstName: `leadlinked ${s}`, lastName: "C" } });
+      const stamped = await db.contact.create({ data: { firstName: `stamped ${s}`, lastName: "C", workspaceId: users.member } });
+      const foreignStamped = await db.contact.create({ data: { firstName: `foreignstamped ${s}`, lastName: "C", workspaceId: users.outsider } });
+      const foreignStampedLinked = await db.contact.create({ data: { firstName: `foreignstampedlinked ${s}`, lastName: "C", workspaceId: users.outsider } });
       const standalone = await db.contact.create({ data: { firstName: `standalone ${s}`, lastName: "C" } });
       const foreign = await db.contact.create({ data: { firstName: `foreign ${s}`, lastName: "C" } });
-      contactIds.push(linked.id, leadLinked.id, standalone.id, foreign.id);
+      contactIds.push(linked.id, leadLinked.id, stamped.id, foreignStamped.id, foreignStampedLinked.id, standalone.id, foreign.id);
 
+      // Legacy fallback paths (workspaceId null): member's deal / member's lead.
       await db.deal.create({ data: { title: `deal ${s}`, contactId: linked.id, ownerId: users.member } });
       await db.lead.create({ data: { title: `lead ${s}`, contactId: leadLinked.id, assignedToId: users.member } });
+      // workspaceId is authoritative when present: a member-owned deal linked
+      // to a row stamped with another workspace must not grant visibility.
+      await db.deal.create({ data: { title: `cross ${s}`, contactId: foreignStampedLinked.id, ownerId: users.member } });
       await db.deal.create({ data: { title: `foreign deal ${s}`, contactId: foreign.id, ownerId: users.outsider } });
 
       const visible = await db.contact.findMany({ where: memberContactWhere(users.member) });
       const names = visible.map((contact) => contact.firstName).sort();
-      assert.deepEqual(names, [`leadlinked ${s}`, `linked ${s}`].sort());
+      assert.deepEqual(names, [`leadlinked ${s}`, `linked ${s}`, `stamped ${s}`].sort());
     } finally {
       await db.deal.deleteMany({ where: { title: { contains: s } } }).catch(() => {});
       await db.lead.deleteMany({ where: { title: { contains: s } } }).catch(() => {});

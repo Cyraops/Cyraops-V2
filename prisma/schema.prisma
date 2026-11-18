@@ -787,6 +787,11 @@ model Contact {
   archivedAt  DateTime?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  // Owning workspace (the owning user's id, per the app's tenant model: the
+  // workspace key the harness bridge and memberContactWhere use). Nullable:
+  // rows that predate the column, or whose only owner path (linked
+  // deals/leads) is ambiguous, keep null and remain scoped by those links.
+  workspaceId String?
   company     Company?      @relation(fields: [companyId], references: [id], onDelete: SetNull)
   deals       Deal[]
   leads       Lead[]
@@ -794,6 +799,7 @@ model Contact {
   @@index([email])
   @@index([companyId])
   @@index([archivedAt])
+  @@index([workspaceId])
 }
 
 model Lead {
