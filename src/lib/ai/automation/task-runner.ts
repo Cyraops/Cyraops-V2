@@ -95,8 +95,9 @@ export class TaskRunner {
           entityId: taskId,
           actorId,
           actorType: "USER",
-          action: eventType,
-          details: JSON.stringify({ actorId, originalRequester: requestingUserId }),
+          // `action` is not a column on AiAuditLog — this previously threw
+          // inside the try, so the audit trail was silently empty.
+          details: JSON.stringify({ actorId, originalRequester: requestingUserId, action: eventType }),
         },
       });
     } catch (err) {

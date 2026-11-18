@@ -29,8 +29,9 @@ export async function triggerEmergencyStop(userId: string, reason: string = "Eme
       entity: "AiTask",
       actorId: userId,
       actorType: "USER",
-      action: "EMERGENCY_STOP_ALL",
-      details: JSON.stringify({ reason, stoppedTaskIds, count: stoppedTaskIds.length }),
+      // `action` is not a column on AiAuditLog — this previously threw AFTER
+      // tasks were paused, turning a successful emergency stop into a 500.
+      details: JSON.stringify({ reason, stoppedTaskIds, count: stoppedTaskIds.length, action: "EMERGENCY_STOP_ALL" }),
     },
   });
 
