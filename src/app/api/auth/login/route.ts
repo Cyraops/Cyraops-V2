@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { cookieOptions, createSession, SESSION_COOKIE, sameOrigin, sha256 } from "@/lib/auth";
 import { resolveLoginCredential, type LegacyWorkspaceCredential } from "@/lib/login-credentials";
+import { retryAfterSecondsFor } from "@/lib/login-lockout";
 import { emailSchema, jsonError } from "@/lib/validators";
 
 const dummyPasswordHash = hash("cyraops-cms-invalid-account-password", 12);
@@ -18,7 +19,15 @@ export async function POST(request: NextRequest) {
   const now = new Date();
   const windowEnds = new Date(Date.now() + 15 * 60 * 1000);
   const buckets = await db.authRateLimit.findMany({ where: { key: { in: keys } } });
-  if (buckets.some((bucket) => bucket.windowEnds > now && bucket.hits >= 12)) return jsonError("Too many attempts. Try again in 15 minutes.", 429);
+  const retryAfterSeconds = retryAfterSecondsFor(buckets, now);
+  if (retryAfterSeconds !== null) {
+    // Same 12-attempts/15-minute semantics as before; the client just gets the
+    // exact seconds left so the form can render a ticking countdown.
+    return NextResponse.json(
+      { error: "Too many attempts. Try again in 15 minutes.", retryAfterSeconds },
+      { status: 429, headers: { "Retry-After": String(retryAfterSeconds) } },
+    );
+  }
   const user = await db.user.findFirst({
     where: { email: { equals: normalizedEmail, mode: "insensitive" } },
   });

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Building2, CheckCircle2, Command, ShieldCheck, KeyRound } from "lucide-react";
 import { Button, Field, useToast } from "@/components/ui";
+import { formatRetryAfter } from "@/lib/login-lockout";
 
 type Mode = "login" | "setup";
 
@@ -14,6 +15,20 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const [setupToken, setSetupToken] = useState<string | null>(null);
   const [inviteUser, setInviteUser] = useState<{ name: string; email: string } | null>(null);
   const [tokenError, setTokenError] = useState<string | null>(null);
+  const [lockoutEndsAt, setLockoutEndsAt] = useState<number | null>(null);
+  const [lockoutSeconds, setLockoutSeconds] = useState(0);
+
+  useEffect(() => {
+    if (lockoutEndsAt === null) return;
+    const tick = () => {
+      const remaining = Math.max(0, Math.ceil((lockoutEndsAt - Date.now()) / 1000));
+      setLockoutSeconds(remaining);
+      if (remaining === 0) setLockoutEndsAt(null);
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, [lockoutEndsAt]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -86,7 +101,13 @@ export function AuthForm({ mode }: { mode: Mode }) {
     });
     const result = await response.json().catch(() => ({}));
     setBusy(false);
-    if (!response.ok) return toast(result.error ?? "Something went wrong", "error");
+    if (!response.ok) {
+      if (response.status === 429 && typeof result.retryAfterSeconds === "number" && result.retryAfterSeconds > 0) {
+        setLockoutEndsAt(Date.now() + result.retryAfterSeconds * 1000);
+        return;
+      }
+      return toast(result.error ?? "Something went wrong", "error");
+    }
 
     toast(setupToken ? "Account configured successfully" : mode === "setup" ? "Workspace initialized" : "Signed in");
     router.push("/dashboard");
@@ -133,6 +154,12 @@ export function AuthForm({ mode }: { mode: Mode }) {
             </p>
           </div>
 
+          {lockoutSeconds > 0 && (
+            <div role="alert" className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-200">
+              Too many attempts — try again in {formatRetryAfter(lockoutSeconds)}.
+            </div>
+          )}
+
           <form onSubmit={submit} className="space-y-4">
             {isTokenSetup ? (
               <>
@@ -156,7 +183,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
               <>
                 <Field label="Corporate email" name="email" type="email" required autoFocus autoComplete="email" placeholder="you@cyraops.com" />
                 <Field label="Password" name="password" type="password" required autoComplete="current-password" minLength={1} maxLength={128} placeholder="Your account password" />
-                <Button className="mt-2 h-11 w-full justify-between px-4" disabled={busy}>{busy ? "Please wait…" : "Sign in"}<ArrowRight size={16} /></Button>
+                <Button className="mt-2 h-11 w-full justify-between px-4" disabled={busy || lockoutSeconds > 0}>{busy ? "Please wait…" : "Sign in"}<ArrowRight size={16} /></Button>
               </>
             )}
           </form>
