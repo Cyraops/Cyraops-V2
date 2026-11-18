@@ -1,0 +1,8 @@
+data: {"type":"approval","approvalId":"6c8437af-f27b-488c-869c-c9b08c3e0830","toolName":"cyraops_update_ticket","summary":"Update ticket seed-task-billing in Cyraops CRM: priority → LOW.","reason":"Update ticket seed-task-billing in Cyraops CRM: priority → LOW.","callId":"call_00_ET_Nk2QpTRjYAkbgJsYvLhL8393"}
+
+data: {"type":"token","content":"I'll update that ticket's priority."}
+
+data: {"type":"token","content":"The approval prompt for that change was rejected, so the ticket was not modified — `seed-task-billing` still has its original priority.\n\nIf you want it applied, let me know and I can retry (you'd need to approve the prompt when it appears)."}
+
+data: {"type":"done","reply":"The approval prompt for that change was rejected, so the ticket was not modified — `seed-task-billing` still has its original priority.\n\nIf you want it applied, let me know and I can retry (you'd need to approve the prompt when it appears).","toolCallsUsed":[],"conversationId":"cmwl8x41b0003xto9riin3tmc","pendingAction":{"id":"6c8437af-f27b-488c-869c-c9b08c3e0830","toolName":"cyraops_update_ticket","summary":"Update ticket seed-task-billing in Cyraops CRM: priority → LOW.","answered":"deny","canAlwaysAllow":false,"via":"harness"},"runtime":"native"}
+

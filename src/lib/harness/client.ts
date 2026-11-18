@@ -9,6 +9,8 @@
  */
 
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { finalTextOf, parseHarnessLine, sessionIdOf } from "./events";
 
 export interface HarnessEvent {
@@ -53,7 +55,14 @@ export function harnessBinary(): string {
 
 export async function runHarnessTask(options: HarnessOptions): Promise<HarnessResult> {
   const timeoutMs = options.timeoutMs ?? 180_000;
-  const args = ["--profile", harnessProfile(), "--json", "--approval-policy", "never"];
+  // --patch is a top-level CLI option and must precede --profile (the headless
+  // app parser does not accept it).
+  const args = ["--json", "--approval-policy", "never"];
+  // Security overlay: disable the harness's shell/filesystem tools in every
+  // Cyraops CLI turn (same rows the native profile patch disables).
+  const overlay = path.join(process.cwd(), "vendor", "tooling", "vendored-boot", "system-tools-off.patch.yml");
+  if (existsSync(overlay)) args.unshift("--patch", overlay, "--profile", harnessProfile());
+  else args.unshift("--profile", harnessProfile());
   if (options.sessionId) args.push("--session-id", options.sessionId);
   args.push(options.task);
 

@@ -1,0 +1,4 @@
+data: {"type":"token","content":"Created `/tmp/cyraops-harness-probe.txt` (resolves to `/private/tmp/cyraops-harness-probe.txt`) and verified its contents:\n\n```\nhello-probe\n```\n\nThe temp area was writable even under the workspace-write policy."}
+
+data: {"type":"done","reply":"Created `/tmp/cyraops-harness-probe.txt` (resolves to `/private/tmp/cyraops-harness-probe.txt`) and verified its contents:\n\n```\nhello-probe\n```\n\nThe temp area was writable even under the workspace-write policy.","toolCallsUsed":[],"conversationId":"cmwl8x41b0003xto9riin3tmc","runtime":"native"}
+

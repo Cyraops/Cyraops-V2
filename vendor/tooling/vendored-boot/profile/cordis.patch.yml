@@ -1,1 +1,8 @@
-[]
+# Native-runtime patch layer. Mirrors system-tools-off.patch.yml (keep in sync);
+# see that file for the security rationale.
+- id: tool-bash
+  disabled: true
+- id: tool-fs
+  disabled: true
+- id: tool-fs-search
+  disabled: true

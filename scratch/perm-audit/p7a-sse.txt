@@ -1,0 +1,4 @@
+data: {"type":"token","content":"`/Users/tanveersinghsaini/Desktop/cyraops-v2`"}
+
+data: {"type":"done","reply":"`/Users/tanveersinghsaini/Desktop/cyraops-v2`","toolCallsUsed":[],"conversationId":"cmwl8x41b0003xto9riin3tmc","runtime":"native"}
+

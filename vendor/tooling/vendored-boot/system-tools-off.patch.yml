@@ -1,0 +1,11 @@
+# Cyraops security overlay (permission audit 2026-11-18): the harness's local
+# shell/filesystem tools were mounted ungated and a live probe executed
+# `pwd`, read /etc/passwd and wrote /tmp with zero approval. Until a
+# per-tenant "system" permission mode exists, these tools are disabled in
+# every Cyraops runtime (native profile patch and CLI --patch overlay).
+- id: tool-bash
+  disabled: true
+- id: tool-fs
+  disabled: true
+- id: tool-fs-search
+  disabled: true

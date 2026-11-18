@@ -1,0 +1,10 @@
+data: {"type":"tool","name":"search_tasks"}
+
+data: {"type":"tool_done","name":"search_tasks","ok":true,"durationMs":21}
+
+data: {"type":"tool","name":"search_tasks"}
+
+data: {"type":"tool_done","name":"search_tasks","ok":true,"durationMs":4}
+
+data: {"type":"done","reply":"I'd like to run \"Update Ticket\". Review and approve it below.\n\n⚠️ This action needs your approval: Update Ticket. Approve or reject it below.","toolCallsUsed":["search_tasks","search_tasks"],"conversationId":"cmwl8x41b0003xto9riin3tmc","pendingAction":{"id":"cmwlbzqig000dxtczg4lbkcmb","toolName":"Update Ticket","summary":"Approve update_task before it runs. (Update Ticket)","reason":"Approve update_task before it runs.","canAlwaysAllow":true}}
+

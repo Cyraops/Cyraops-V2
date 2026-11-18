@@ -1,0 +1,10 @@
+        id         | priority |   status    |        updatedAt        
+-------------------+----------+-------------+-------------------------
+ seed-task-billing | MEDIUM   | IN_PROGRESS | 2026-11-17 23:26:01.034
+(1 row)
+
+            id             |   toolName    |   toolId    | status  |          userId           |                                                                               input                                                                                
+---------------------------+---------------+-------------+---------+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ cmwlbzqig000dxtczg4lbkcmb | Update Ticket | update_task | PENDING | cmwjedybr0000xtc516kh4t6d | {"task":"seed-task-billing","status":"IN_PROGRESS","priority":"HIGH","assigneeEmail":"","resolution":"","title":"Migrate billing webhooks to v2","description":""}
+(1 row)
+
