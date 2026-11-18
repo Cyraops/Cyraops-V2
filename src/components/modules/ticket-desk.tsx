@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertTriangle,
+  Archive,
   ArrowLeft,
   Filter,
   Check,
+  ChevronLeft,
   ChevronRight,
   ChevronDown,
   CircleDot,
@@ -14,6 +16,7 @@ import {
   MessageSquare,
   Pencil,
   Plus,
+  RotateCcw,
   Search,
   ShieldCheck,
   X,
@@ -46,6 +49,7 @@ type Ticket = {
   requesterEmail?: string | null;
   resolution?: string;
   closedAt?: string | null;
+  archivedAt?: string | null;
   dueDate?: string | null;
   createdAt: string;
   updatedAt?: string;
@@ -55,6 +59,8 @@ type Ticket = {
 };
 
 type Comment = { id: string; body: string; createdAt: string; author?: { name: string } | null };
+
+const PAGE_SIZE = 20;
 
 const STATUSES = ["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"] as const;
 const STATUS_LABEL: Record<string, string> = {
@@ -105,8 +111,14 @@ export function TicketDesk() {
   const toast = useToast();
   const narrow = useNarrow();
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [ticketsLoading, setTicketsLoading] = useState(true);
+  const [total, setTotal] = useState(0);
+  const [openCount, setOpenCount] = useState(0);
+  const [view, setView] = useState<"active" | "archived">("active");
+  const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const ticketRequestRef = useRef(0);
   /**
    * Filters are kept as one object so "Clear" is a single reset and the count of
    * active filters is derivable, rather than six booleans to keep in sync.
@@ -130,29 +142,83 @@ export function TicketDesk() {
   const [team, setTeam] = useState<Array<{ id: string; name: string; email?: string | null }>>([]);
   const [approvals, setApprovals] = useState<number>(0);
   const [projects, setProjects] = useState<Array<{ id: string; name: string }>>([]);
+  const [me, setMe] = useState<{ role?: string } | null>(null);
+  const [groupOptions, setGroupOptions] = useState<string[]>([]);
   const [createOpen, setCreateOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState("");
   const [draftDescription, setDraftDescription] = useState("");
 
-  const load = useCallback(async () => {
-    const [list, people, pending, projects] = await Promise.all([
-      fetch("/api/tickets?limit=60").then((r) => (r.ok ? r.json() : { tickets: [] })).catch(() => ({ tickets: [] })),
+  /** Debounce the search box so a keystroke is not a request. */
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query), 300);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  /** Any filter, search or view change returns to the first page. */
+  useEffect(() => {
+    setPage(1);
+  }, [filters, debouncedQuery, view]);
+
+  const loadBase = useCallback(async () => {
+    const [people, pending, projects, meRes] = await Promise.all([
       fetch("/api/team").then((r) => (r.ok ? r.json() : { members: [] })).catch(() => ({ members: [] })),
       fetch("/api/ai/approvals").then((r) => (r.ok ? r.json() : { approvals: [] })).catch(() => ({ approvals: [] })),
       fetch("/api/projects").then((r) => (r.ok ? r.json() : { projects: [] })).catch(() => ({ projects: [] })),
+      fetch("/api/auth/me").then((r) => (r.ok ? r.json() : { user: null })).catch(() => ({ user: null })),
     ]);
-    setTickets(list.tickets ?? []);
     setTeam(people.members ?? []);
     setProjects(projects.projects ?? []);
     setApprovals((pending.approvals ?? []).length);
-    setLoading(false);
+    setMe(meRes.user ?? null);
   }, []);
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    void loadBase();
+  }, [loadBase]);
+
+  /** The queue is paged and filtered server-side now; the desk just renders the page it is given. */
+  const loadTickets = useCallback(async () => {
+    const requestId = ++ticketRequestRef.current;
+    setTicketsLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("pageSize", String(PAGE_SIZE));
+      if (view === "archived") params.set("archived", "1");
+      // The pills only exist in the active view; an archived page never inherits
+      // the "open" default as a filter.
+      const status = view === "archived" && ["open", "all", "closed"].includes(filters.status) ? "" : filters.status;
+      if (status) params.set("status", status);
+      if (filters.priority) params.set("priority", filters.priority);
+      if (filters.source) params.set("source", filters.source);
+      if (filters.type) params.set("type", filters.type);
+      if (filters.group) params.set("group", filters.group);
+      if (filters.assignee) params.set("assignee", filters.assignee);
+      if (debouncedQuery.trim()) params.set("q", debouncedQuery.trim());
+      const res = await fetch(`/api/tickets?${params.toString()}`);
+      const data = res.ok ? await res.json() : { tickets: [], total: 0, open: 0, groups: [] };
+      if (requestId !== ticketRequestRef.current) return;
+      setTickets(data.tickets ?? []);
+      setTotal(data.total ?? 0);
+      setOpenCount(data.open ?? 0);
+      setGroupOptions(data.groups ?? []);
+    } finally {
+      if (requestId === ticketRequestRef.current) setTicketsLoading(false);
+    }
+  }, [view, page, filters, debouncedQuery]);
+
+  useEffect(() => {
+    void loadTickets();
+  }, [loadTickets]);
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  /** A row change (archive/restore) can empty the page we are on; step back. */
+  useEffect(() => {
+    if (!ticketsLoading && page > totalPages) setPage(totalPages);
+  }, [ticketsLoading, page, totalPages]);
 
   const selected = tickets.find((t) => t.id === selectedId) ?? null;
 
@@ -172,7 +238,8 @@ export function TicketDesk() {
       .catch(() => setComments([]));
   }, [selected?.id, selected?.resolution]);
 
-  /** Groups that actually exist in the queue, so the filter never offers a dead option. */
+  /** Groups come from the server (the current view's whole scope), so the
+   *  filter never offers a dead option now that the list is paged. */
   /** Display labels that disambiguate when two people share a name. */
   const teamLabels = useMemo(() => {
     const counts = new Map<string, number>();
@@ -185,30 +252,13 @@ export function TicketDesk() {
     );
   }, [team]);
 
-  const groups = useMemo(
-    () => [...new Set(tickets.map((t) => t.groupName).filter(Boolean) as string[])].sort(),
-    [tickets]
-  );
   const activeFilters = Object.entries(filters).filter(([key, value]) => value !== "" && !(key === "status" && value === "open")).length;
 
-  const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    return tickets.filter((t) => {
-      if (filters.status === "open" && t.status === "DONE") return false;
-      if (filters.status === "closed" && t.status !== "DONE") return false;
-      if (!["open", "all", "closed", ""].includes(filters.status) && t.status !== filters.status) return false;
-      if (filters.priority && t.priority !== filters.priority) return false;
-      if (filters.source && (t.source ?? "") !== filters.source) return false;
-      if (filters.type && (t.type ?? "") !== filters.type) return false;
-      if (filters.group && (t.groupName ?? "") !== filters.group) return false;
-      if (filters.assignee === "unassigned" && (t.assignees ?? []).some((a) => a.kind === "user")) return false;
-      if (filters.assignee && filters.assignee !== "unassigned" && !(t.assignees ?? []).some((a) => a.kind === "user" && a.id === filters.assignee)) return false;
-      if (!needle) return true;
-      return [t.title, t.requesterName, t.requesterEmail, ticketRef(t.number), t.groupName, t.category]
-        .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(needle));
-    });
-  }, [tickets, filters, query]);
+  /** Archiving stays project-scoped on /api/tasks/:id — the desk mirrors that
+   *  gate: owner/admin always, otherwise a member of the ticket's project. */
+  const isOwnerOrAdmin = me?.role === "OWNER" || me?.role === "ADMIN";
+  const canArchive = (ticket: Ticket) =>
+    isOwnerOrAdmin || Boolean(ticket.project && projects.some((p) => p.id === ticket.project!.id));
 
   const patch = async (id: string, body: Record<string, unknown>, field: string) => {
     setSaving(field);
@@ -269,7 +319,8 @@ export function TicketDesk() {
       if (!response.ok) throw new Error(data.error || "Could not create the ticket");
       setCreateOpen(false);
       form.reset();
-      await load();
+      setView("active");
+      await loadTickets();
       if (data.task?.id) setSelectedId(data.task.id);
       toast(`Ticket ${data.task?.number ? `#SR-${data.task.number}` : ""} created`.trim());
     } catch (error) {
@@ -358,7 +409,49 @@ export function TicketDesk() {
     if (ok) toast("Ticket closed");
   };
 
-  const openCount = tickets.filter((t) => t.status !== "DONE").length;
+  /** Archiving is project-scoped, so it goes through /api/tasks/:id exactly as
+   *  the project view does — the desk mirrors that permission path. */
+  const archiveTicket = async (id: string) => {
+    setSaving("archive");
+    try {
+      const res = await fetch(`/api/tasks/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ archive: true }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Could not archive the ticket");
+      setSelectedId((current) => (current === id ? null : current));
+      toast("Ticket archived");
+      await loadTickets();
+    } catch (error) {
+      toast(error instanceof Error ? error.message : "Could not archive the ticket", "error");
+    } finally {
+      setSaving("");
+    }
+  };
+
+  /** Restore clears archivedAt. The permission path mirrors archiving: the same
+   *  project-scoped route and gate, so only owner/admin or a member of the
+   *  ticket's project can bring it back. */
+  const restoreTicket = async (id: string) => {
+    setSaving("restore");
+    try {
+      const res = await fetch(`/api/tasks/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ archive: false }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Could not restore the ticket");
+      toast("Ticket restored");
+      await loadTickets();
+    } catch (error) {
+      toast(error instanceof Error ? error.message : "Could not restore the ticket", "error");
+    } finally {
+      setSaving("");
+    }
+  };
 
   const propRow = (label: string, control: React.ReactNode, hint?: string) => (
     <label className="block">
@@ -390,6 +483,15 @@ export function TicketDesk() {
             <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${statusTone(selected.status)}`}>
               {STATUS_LABEL[selected.status] ?? selected.status}
             </span>
+            {canArchive(selected) && (
+              <button
+                onClick={() => void archiveTicket(selected.id)}
+                disabled={saving === "archive"}
+                className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] px-2.5 text-caption font-semibold text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-[var(--text)] disabled:opacity-50"
+              >
+                <Archive size={13} /> Archive
+              </button>
+            )}
             {saving && <Loader2 size={13} className="animate-spin text-[var(--muted)]" />}
           </div>
 
@@ -619,7 +721,9 @@ export function TicketDesk() {
             <div>
               <h1 className="font-display text-xl font-extrabold tracking-tight">Tickets</h1>
               <p className="text-caption text-[var(--muted)]">
-                {openCount} open · {tickets.length} total · every task is a ticket, with a number, a requester and a resolution
+                {view === "archived"
+                  ? `${total} archived · tickets set aside — restore brings one back to the queue`
+                  : `${openCount} open · ${total} total · every task is a ticket, with a number, a requester and a resolution`}
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
@@ -628,21 +732,38 @@ export function TicketDesk() {
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search tickets…"
+                  placeholder={view === "archived" ? "Search archived…" : "Search tickets…"}
                   aria-label="Search tickets"
                   className="w-44 bg-transparent text-meta outline-none placeholder:text-[var(--muted)]"
                 />
               </label>
+              {view === "active" && (
+                <div className="flex h-9 items-center rounded-lg border border-[var(--border)] p-0.5">
+                  {(["open", "all", "closed"] as const).map((value) => (
+                    <button
+                      key={value}
+                      onClick={() => setFilters((f) => ({ ...f, status: value }))}
+                      aria-pressed={filters.status === value}
+                      className={`h-8 rounded-md px-2.5 text-caption font-semibold capitalize transition ${
+                        filters.status === value ? "bg-accent/10 text-accent" : "text-[var(--muted)] hover:bg-[var(--hover)]"
+                      }`}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+              )}
               <div className="flex h-9 items-center rounded-lg border border-[var(--border)] p-0.5">
-                {(["open", "all", "closed"] as const).map((value) => (
+                {(["active", "archived"] as const).map((value) => (
                   <button
                     key={value}
-                    onClick={() => setFilters((f) => ({ ...f, status: value }))}
-                    aria-pressed={filters.status === value}
-                    className={`h-8 rounded-md px-2.5 text-caption font-semibold capitalize transition ${
-                      filters.status === value ? "bg-accent/10 text-accent" : "text-[var(--muted)] hover:bg-[var(--hover)]"
+                    onClick={() => setView(value)}
+                    aria-pressed={view === value}
+                    className={`inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-caption font-semibold capitalize transition ${
+                      view === value ? "bg-accent/10 text-accent" : "text-[var(--muted)] hover:bg-[var(--hover)]"
                     }`}
                   >
+                    {value === "archived" && <Archive size={12} />}
                     {value}
                   </button>
                 ))}
@@ -696,7 +817,7 @@ export function TicketDesk() {
                   <div className="absolute right-2 top-full z-30 mt-1 w-[min(560px,calc(100vw-40px))] rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-left shadow-xl">
                     <div className="mb-2 flex items-center justify-between">
                       <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Filter tickets</span>
-                      <span className="text-[10px] font-semibold normal-case text-[var(--muted)]">{visible.length} of {tickets.length} shown</span>
+                      <span className="text-[10px] font-semibold normal-case text-[var(--muted)]">{total} shown</span>
                     </div>
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                       {([
@@ -704,7 +825,7 @@ export function TicketDesk() {
                         ["priority", "Priority", PRIORITIES.map((v) => [v, humanise(v)])],
                         ["source", "Source", SOURCES.map((v) => [v, humanise(v)])],
                         ["type", "Type", TYPES.map((v) => [v, humanise(v)])],
-                        ["group", "Group", groups.map((v) => [v, v])],
+                        ["group", "Group", groupOptions.map((v) => [v, v])],
                         ["assignee", "Agent", [["unassigned", "Unassigned"], ...team.map((m) => [m.id, teamLabels.get(m.id) ?? m.name] as [string, string])]],
                       ] as Array<[keyof typeof filters, string, Array<[string, string]>]>).map(([key, label, options]) => (
                         <label key={key} className="block">
@@ -741,16 +862,80 @@ export function TicketDesk() {
               )}
             </div>
             <div className="max-h-[calc(100vh-320px)] overflow-y-auto">
-              {loading ? (
+              {ticketsLoading ? (
                 <p className="px-3 py-8 text-center text-meta text-[var(--muted)]"><Loader2 size={14} className="mx-auto animate-spin" /></p>
-              ) : visible.length === 0 ? (
+              ) : view === "archived" && tickets.length === 0 ? (
+                <p className="px-3 py-10 text-center text-meta text-[var(--muted)]">
+                  No archived tickets.
+                </p>
+              ) : tickets.length === 0 && (activeFilters > 0 || query.trim()) ? (
+                <p className="px-3 py-10 text-center text-meta text-[var(--muted)]">
+                  No tickets match these filters.
+                </p>
+              ) : tickets.length === 0 ? (
                 <p className="px-3 py-10 text-center text-meta text-[var(--muted)]">
                   No tickets here yet. Add one above, or ask the bot in chat with <span className="font-semibold">@tasks</span>.
                 </p>
               ) : (
-                visible.map((t) => {
+                tickets.map((t) => {
                   const owners = t.assignees ?? [];
                   const contact = t.requesterName || t.creator?.name || "Unknown";
+                  if (view === "archived") {
+                    const owner = owners.find((o) => o.kind === "user");
+                    return (
+                      <div
+                        key={t.id}
+                        style={{ display: "grid", gridTemplateColumns: narrow ? "minmax(0,1fr) 96px 32px" : "minmax(0,1fr) 130px 130px 100px 80px 140px 140px 32px", gap: 12, alignItems: "center" }}
+                        className="ticket-grid w-full border-b border-[var(--border)] px-3 py-2.5 text-left"
+                      >
+                        <span className="min-w-0">
+                          <span className="block truncate text-meta font-semibold text-[var(--muted)]">{t.title}</span>
+                          <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-[var(--muted)]">
+                            <span className="font-mono">{ticketRef(t.number)}</span>
+                            {t.type && <span>· {humanise(t.type)}</span>}
+                            {t.groupName && <span>· {t.groupName}</span>}
+                            {t.archivedAt && <span>· Archived {formatDate(t.archivedAt)}</span>}
+                          </span>
+                        </span>
+                        {!narrow && <span className="truncate text-caption text-[var(--muted)]">{t.project?.name ?? "—"}</span>}
+                        {!narrow && (
+                          <span className="flex min-w-0 items-center gap-1.5">
+                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--surface-2)] text-[9px] font-bold uppercase text-[var(--muted)]">
+                              {contact.slice(0, 1)}
+                            </span>
+                            <span className="truncate text-caption text-[var(--muted)]">{contact}</span>
+                          </span>
+                        )}
+                        <span className={`inline-flex w-fit items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${statusTone(t.status)}`}>
+                          {STATUS_LABEL[t.status] ?? t.status}
+                        </span>
+                        {!narrow && (
+                          <span className="flex items-center gap-1 text-caption capitalize text-[var(--muted)]">
+                            <span className={`h-2 w-2 shrink-0 rounded-sm ${priorityDot(t.priority)}`} /> {humanise(t.priority)}
+                          </span>
+                        )}
+                        {!narrow && <span className="truncate text-caption text-[var(--muted)]">{owner ? owner.name : "Unassigned"}</span>}
+                        {!narrow && (
+                          <span className="flex items-center gap-1.5 text-caption text-[var(--muted)]">
+                            <Clock size={10} /> {formatDate(t.createdAt)}
+                          </span>
+                        )}
+                        {canArchive(t) ? (
+                          <button
+                            onClick={() => void restoreTicket(t.id)}
+                            disabled={saving === "restore"}
+                            aria-label={`Restore ${t.title}`}
+                            title="Restore this ticket to the queue"
+                            className="flex h-6 w-6 items-center justify-center rounded-md text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-[var(--text)] disabled:opacity-40"
+                          >
+                            <RotateCcw size={13} />
+                          </button>
+                        ) : (
+                          <span aria-hidden />
+                        )}
+                      </div>
+                    );
+                  }
                   return (
                     <div
                       key={t.id}
@@ -858,11 +1043,41 @@ export function TicketDesk() {
                           <Clock size={10} /> {formatDate(t.createdAt)}
                         </span>
                       )}
-                      <span aria-hidden />
+                      {canArchive(t) ? (
+                        <button
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            void archiveTicket(t.id);
+                          }}
+                          disabled={saving === "archive"}
+                          aria-label={`Archive ${t.title}`}
+                          title="Archive this ticket"
+                          className="flex h-6 w-6 items-center justify-center rounded-md text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-[var(--text)] disabled:opacity-40"
+                        >
+                          <Archive size={13} />
+                        </button>
+                      ) : (
+                        <span aria-hidden />
+                      )}
                     </div>
                   );
                 })
               )}
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[var(--border)] px-3 py-2">
+              <span className="text-caption text-[var(--muted)]">
+                {total === 0
+                  ? "0 tickets"
+                  : `Page ${page} of ${totalPages} · ${total} ticket${total === 1 ? "" : "s"}`}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <Button variant="secondary" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1} className="h-7 px-2 text-caption">
+                  <ChevronLeft size={13} /> Prev
+                </Button>
+                <Button variant="secondary" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="h-7 px-2 text-caption">
+                  Next <ChevronRight size={13} />
+                </Button>
+              </div>
             </div>
           </div>
         </>

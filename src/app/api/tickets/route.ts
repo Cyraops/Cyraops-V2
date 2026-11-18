@@ -2,15 +2,21 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { sameOrigin, userFromRequest } from "@/lib/auth";
-import { jsonError } from "@/lib/validators";
+import { jsonError, prioritySchema, taskSourceSchema, taskStatusSchema, taskTypeSchema } from "@/lib/validators";
 import { listTaskAssignees } from "@/lib/tasks/assignees";
 import { createTicketFromInstruction, parseTicketInstruction, loadTicketPersonas } from "@/lib/tickets";
 import { isTenantAdmin, memberTaskWhere } from "@/lib/tenants";
+import type { Prisma } from "@prisma/client";
 
 /**
  * Tickets.
  *
  * GET  — the tickets a person should see, newest first, from every project.
+ *        Paginated server-side (?page/&pageSize, clamped) with the queue's
+ *        filters (?status/&priority/&source/&type/&group/&assignee/&q) and an
+ *        archived view (?archived=1). Returns `total` (matching rows), `open`
+ *        (open tickets in the active queue) and `groups` (for the filter
+ *        popover) alongside the page of rows.
  * POST — turn one sentence into a ticket: `@tasks call Northwind back @akshat`.
  *
  * Both exist so the bot can show a Tasks list on the left and create a ticket
@@ -22,50 +28,136 @@ const createSchema = z.object({
   kind: z.enum(["BUG", "SERVICE", "CATEGORY"]).optional(),
 });
 
+const DEFAULT_PAGE_SIZE = 20;
+const MAX_PAGE_SIZE = 100;
+
+/** A query integer, clamped to [min, max]; anything unparseable gets the fallback. */
+function clampInt(value: string | null, fallback: number, min: number, max: number) {
+  const parsed = Number.parseInt(value ?? "", 10);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(max, Math.max(min, parsed));
+}
+
+const TICKET_SELECT = {
+  id: true,
+  title: true,
+  status: true,
+  priority: true,
+  kind: true,
+  dueDate: true,
+  createdAt: true,
+  number: true,
+  source: true,
+  type: true,
+  groupName: true,
+  category: true,
+  requesterName: true,
+  requesterEmail: true,
+  resolution: true,
+  closedAt: true,
+  updatedAt: true,
+  archivedAt: true,
+  project: { select: { id: true, name: true } },
+  creator: { select: { id: true, name: true } },
+} satisfies Prisma.TaskSelect;
+
 export async function GET(request: NextRequest) {
   const user = await userFromRequest(request);
   if (!user) return jsonError("Unauthorized", 401);
 
-  const limit = Math.min(60, Math.max(1, Number(new URL(request.url).searchParams.get("limit") ?? 25)));
+  const url = new URL(request.url);
+  const page = clampInt(url.searchParams.get("page"), 1, 1, 100_000);
+  // `limit` stays as a fallback so older callers keep working.
+  const pageSize = clampInt(url.searchParams.get("pageSize") ?? url.searchParams.get("limit"), DEFAULT_PAGE_SIZE, 1, MAX_PAGE_SIZE);
+  const archived = url.searchParams.get("archived") === "1" || url.searchParams.get("archived") === "true";
+  const status = (url.searchParams.get("status") ?? "").trim();
+  const priority = (url.searchParams.get("priority") ?? "").trim();
+  const source = (url.searchParams.get("source") ?? "").trim();
+  const type = (url.searchParams.get("type") ?? "").trim();
+  const group = (url.searchParams.get("group") ?? "").trim();
+  const assignee = (url.searchParams.get("assignee") ?? "").trim();
+  const q = (url.searchParams.get("q") ?? "").trim();
 
   // Tenant scoping (FIX 3): previously every role got every task. OWNER/ADMIN
   // keep the app's admin-wide pattern; members are scoped to their workspace
   // (own rows + rows in projects they belong to), mirroring the calendar
-  // route's member scoping.
-  const where = isTenantAdmin(user.role)
-    ? { archivedAt: null }
-    : { archivedAt: null, AND: [await memberTaskWhere(user.id)] };
+  // route's member scoping. The archived view keeps the same scoping.
+  const viewerWhere: Prisma.TaskWhereInput = isTenantAdmin(user.role)
+    ? {}
+    : { AND: [await memberTaskWhere(user.id)] };
+  const where: Prisma.TaskWhereInput = {
+    ...(archived ? { archivedAt: { not: null } } : { archivedAt: null }),
+    ...viewerWhere,
+  };
 
-  const tasks = await db.task.findMany({
-    where,
-    select: {
-      id: true,
-      title: true,
-      status: true,
-      priority: true,
-      kind: true,
-      dueDate: true,
-      createdAt: true,
-      number: true,
-      source: true,
-      type: true,
-      groupName: true,
-      category: true,
-      requesterName: true,
-      requesterEmail: true,
-      resolution: true,
-      closedAt: true,
-      updatedAt: true,
-      project: { select: { id: true, name: true } },
-      creator: { select: { id: true, name: true } },
-    },
-    orderBy: { createdAt: "desc" },
-    take: limit,
-  });
+  // The status pills (open/all/closed) and the popover's explicit statuses.
+  const parsedStatus = taskStatusSchema.safeParse(status);
+  if (status === "open") where.status = { not: "DONE" };
+  else if (status === "closed") where.status = "DONE";
+  else if (parsedStatus.success) where.status = parsedStatus.data;
+
+  const parsedPriority = prioritySchema.safeParse(priority);
+  if (parsedPriority.success) where.priority = parsedPriority.data;
+
+  const parsedSource = taskSourceSchema.safeParse(source);
+  if (parsedSource.success) where.source = parsedSource.data;
+
+  const parsedType = taskTypeSchema.safeParse(type);
+  if (parsedType.success) where.type = parsedType.data;
+
+  if (group) where.groupName = group;
+
+  // "Unassigned" is a desk concept: no human in the owner set (agents-only
+  // counts as unassigned, matching the queue's own definition).
+  if (assignee === "unassigned") where.assignees = { none: { userId: { not: null } } };
+  else if (assignee) where.assignees = { some: { userId: assignee } };
+
+  // The same search the queue used to run client-side: subject, requester,
+  // group and category, plus the ticket number when the query names one.
+  if (q) {
+    const clauses: Prisma.TaskWhereInput[] = [
+      { title: { contains: q, mode: "insensitive" } },
+      { requesterName: { contains: q, mode: "insensitive" } },
+      { requesterEmail: { contains: q, mode: "insensitive" } },
+      { groupName: { contains: q, mode: "insensitive" } },
+      { category: { contains: q, mode: "insensitive" } },
+    ];
+    const numberMatch = q.match(/(?:^|\D)(\d+)(?:\D|$)/);
+    if (numberMatch) clauses.push({ number: Number(numberMatch[1]) });
+    const searchClause: Prisma.TaskWhereInput = { OR: clauses };
+    if (Array.isArray(where.AND)) where.AND = [...where.AND, searchClause];
+    else if (where.AND) where.AND = [where.AND, searchClause];
+    else where.AND = [searchClause];
+  }
+
+  const [tasks, total, open, groupRows] = await Promise.all([
+    db.task.findMany({
+      where,
+      select: TICKET_SELECT,
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    db.task.count({ where }),
+    // "open" is the active queue's headline number: non-closed, non-archived.
+    db.task.count({ where: { archivedAt: null, status: { not: "DONE" }, ...viewerWhere } }),
+    // Groups that actually exist in this view, so the filter never offers a dead option.
+    db.task.findMany({
+      where: { groupName: { not: null }, ...(archived ? { archivedAt: { not: null } } : { archivedAt: null }), ...viewerWhere },
+      select: { groupName: true },
+      distinct: ["groupName"],
+      orderBy: { groupName: "asc" },
+    }),
+  ]);
 
   const ownerMap = await listTaskAssignees(tasks.map((task) => task.id));
   return Response.json({
     tickets: tasks.map((task) => ({ ...task, assignees: ownerMap.get(task.id) ?? [] })),
+    total,
+    open,
+    page,
+    pageSize,
+    groups: groupRows.map((row) => row.groupName).filter((value): value is string => Boolean(value)),
   });
 }
 
