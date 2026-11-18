@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation";
 import {
   Briefcase,
   Building2,
-  Check,
   CheckCircle2,
   Clock,
   Edit,
@@ -337,28 +336,7 @@ export function SettingsModule() {
           </div>
 
           <div className="space-y-5">
-            <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-              <div className="mb-4 flex items-center gap-2">
-                <ShieldCheck size={16} className="text-emerald-600" />
-                <h2 className="font-display font-bold">Access & Collaboration Model</h2>
-              </div>
-              <div className="space-y-3">
-                {[
-                  { title: "Two-Collaborator Structure", detail: "Configured for Owner (Admin/Sales Lead) and Member (Technical Delivery Lead)." },
-                  { title: "Role-based permissions", detail: "Granular access controls enforce Owner, Admin, and Member permissions." },
-                  { title: "Secure link onboarding", detail: "New employees receive single-use, 48-hour password setup links." },
-                  { title: "Protected sessions", detail: "Sessions use secure HTTP-only cookies with automatic session isolation." },
-                ].map((item) => (
-                  <div key={item.title} className="flex gap-2.5">
-                    <Check size={14} className="mt-0.5 shrink-0 text-emerald-600" />
-                    <span>
-                      <b className="block text-xs">{item.title}</b>
-                      <span className="mt-0.5 block text-[10px] leading-4 text-[var(--muted)]">{item.detail}</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </section>
+            {(user?.role === "OWNER" || user?.role === "ADMIN") && <PermissionsCard />}
 
             <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
               <div className="mb-4 flex items-center gap-2">
@@ -545,6 +523,223 @@ export function SettingsModule() {
       {/* Bring-your-own-key AI providers */}
       {tab === "providers" && <AiProvidersPanel />}
     </div>
+  );
+}
+
+// ============================================================================
+// UNIFIED PERMISSION MANAGER CARD
+// ============================================================================
+const PERMISSION_MODE_OPTIONS = [
+  { value: "READ_ONLY", label: "Read only", description: "Every mutating action is denied; agents can only read." },
+  { value: "CONTROLLED", label: "Controlled (default)", description: "Reads run freely; writes wait for approval." },
+  { value: "FULL_CONTROL", label: "Full control", description: "Owner actions run without approval; others stay controlled." },
+  { value: "SYSTEM", label: "System", description: "Full control plus harness shell and filesystem tools." },
+];
+
+interface PermissionAgent {
+  id: string;
+  slug: string;
+  name: string;
+  mode: string | null;
+  effective: string;
+}
+
+interface PermissionState {
+  workspace: { id: string; name: string; mode: string };
+  agents: PermissionAgent[];
+}
+
+/**
+ * Functional replacement for the static Access & Collaboration card. Rendered
+ * only for OWNER/ADMIN (the API is Owner/Admin gated); members never see the
+ * controls. Backed by GET/POST /api/ai/permission-mode.
+ */
+function PermissionsCard() {
+  const [state, setState] = useState<PermissionState | null>(null);
+  const [workspaceDraft, setWorkspaceDraft] = useState<string | null>(null);
+  const [agentDrafts, setAgentDrafts] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/ai/permission-mode");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to load permission modes");
+      setState(data);
+      setWorkspaceDraft(null);
+      setAgentDrafts({});
+    } catch (err: any) {
+      setError(err.message ?? "Failed to load permission modes");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const save = async () => {
+    if (!state) return;
+    setSaving(true);
+    setError(null);
+    setSaved(false);
+
+    // One POST per changed field; each response carries the full new state.
+    const patches: { workspaceMode?: string; agentId?: string; agentMode?: string | null }[] = [];
+    if (workspaceDraft && workspaceDraft !== state.workspace.mode) {
+      patches.push({ workspaceMode: workspaceDraft });
+    }
+    for (const agent of state.agents) {
+      const current = agent.mode ?? "";
+      const draft = agentDrafts[agent.id] ?? current;
+      if (draft !== current) {
+        patches.push({ agentId: agent.id, agentMode: draft === "" ? null : draft });
+      }
+    }
+    if (patches.length === 0) {
+      setSaving(false);
+      return;
+    }
+
+    try {
+      let latest: PermissionState | null = null;
+      for (const patch of patches) {
+        const res = await fetch("/api/ai/permission-mode", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(patch),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error ?? "Failed to save permission modes");
+        latest = data;
+      }
+      if (latest) {
+        setState(latest);
+        setWorkspaceDraft(null);
+        setAgentDrafts({});
+      }
+      setSaved(true);
+    } catch (err: any) {
+      setError(err.message ?? "Failed to save permission modes");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+        <div className="animate-pulse space-y-3">
+          <div className="h-4 w-36 rounded bg-[var(--hover)]" />
+          <div className="h-9 rounded-lg bg-[var(--hover)]" />
+          <div className="h-9 rounded-lg bg-[var(--hover)]" />
+          <div className="h-9 rounded-lg bg-[var(--hover)]" />
+        </div>
+      </section>
+    );
+  }
+
+  if (!state) {
+    return (
+      <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+        <div className="mb-4 flex items-center gap-2">
+          <ShieldCheck size={16} className="text-emerald-600" />
+          <h2 className="font-display font-bold">Permissions</h2>
+        </div>
+        <p className="text-xs text-rose-600">{error ?? "Could not load permission modes."}</p>
+        <Button variant="secondary" className="mt-3" onClick={() => void load()}>
+          Retry
+        </Button>
+      </section>
+    );
+  }
+
+  const workspaceMode = workspaceDraft ?? state.workspace.mode;
+
+  return (
+    <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+      <div className="mb-4 flex items-center gap-2">
+        <ShieldCheck size={16} className="text-emerald-600" />
+        <div>
+          <h2 className="font-display font-bold">Permissions</h2>
+          <p className="text-[10px] text-[var(--muted)]">Unified AI permission modes for the workspace and its agents.</p>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <Select
+          label="Workspace mode"
+          value={workspaceMode}
+          onChange={(event) => {
+            setWorkspaceDraft(event.target.value);
+            setSaved(false);
+          }}
+        >
+          {PERMISSION_MODE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label} — {option.description}
+            </option>
+          ))}
+        </Select>
+
+        <div>
+          <div className="mb-1.5 text-xs font-semibold text-[var(--muted)]">Active agents</div>
+          <div className="divide-y divide-[var(--border)] rounded-xl border border-[var(--border)]">
+            {state.agents.map((agent) => {
+              const agentMode = agentDrafts[agent.id] ?? agent.mode ?? "";
+              return (
+                <div key={agent.id} className="flex items-center justify-between gap-3 px-3 py-2.5">
+                  <div className="min-w-0">
+                    <div className="truncate text-xs font-bold">{agent.name}</div>
+                    <div className="text-[10px] text-[var(--muted)]">
+                      Effective: {agent.effective.replace("_", " ")}
+                      {agent.mode ? " (override)" : " (inherits workspace)"}
+                    </div>
+                  </div>
+                  <select
+                    value={agentMode}
+                    onChange={(event) => {
+                      setAgentDrafts({ ...agentDrafts, [agent.id]: event.target.value });
+                      setSaved(false);
+                    }}
+                    className="h-8 shrink-0 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 text-[11px] font-semibold text-[var(--text)] focus:border-accent focus:outline-none"
+                  >
+                    <option value="">Inherit workspace ({workspaceMode.replace("_", " ")})</option>
+                    {PERMISSION_MODE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              );
+            })}
+            {state.agents.length === 0 && (
+              <div className="px-3 py-2.5 text-xs text-[var(--muted)]">No active agents yet.</div>
+            )}
+          </div>
+        </div>
+
+        {error && <p className="text-xs text-rose-600">{error}</p>}
+        {saved && !error && (
+          <p className="flex items-center gap-1.5 text-xs text-emerald-600">
+            <CheckCircle2 size={13} />
+            Saved — effective modes updated.
+          </p>
+        )}
+
+        <Button onClick={() => void save()} disabled={saving}>
+          <Save size={14} />
+          {saving ? "Saving…" : "Save permissions"}
+        </Button>
+      </div>
+    </section>
   );
 }
 
