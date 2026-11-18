@@ -36,6 +36,8 @@ import {
   type RuntimeHealth,
   type Session,
 } from "./runtime";
+import { cliPermissionArgs, harnessPermissionPreset, systemToolsEnabled } from "@/lib/permissions/mode";
+import type { PermissionMode } from "@/lib/permissions/mode";
 import type { HarnessSessionStore } from "./store";
 
 /** Resolve a bare command name against PATH without spawning a process. */
@@ -90,6 +92,7 @@ export class CliAgentRuntime implements AgentRuntime {
     task: string;
     signal?: AbortSignal;
     workspaceId?: string | null;
+    permissionMode?: PermissionMode;
   }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
     if (!session) throw new Error(`unknown harness session: ${input.sessionId}`);
@@ -114,7 +117,11 @@ export class CliAgentRuntime implements AgentRuntime {
 
     // Serialize turns per session: the next turn waits for this child to exit.
     const previous = this.turns.get(session.id) ?? Promise.resolve();
-    const spawn = previous.catch(() => undefined).then(() => this.runSpawn(session, input.task, input.workspaceId ?? null, queue));
+    const spawn = previous
+      .catch(() => undefined)
+      .then(() =>
+        this.runSpawn(session, input.task, input.workspaceId ?? null, input.permissionMode, queue)
+      );
     this.turns.set(session.id, spawn.catch(() => undefined));
 
     try {
@@ -130,6 +137,7 @@ export class CliAgentRuntime implements AgentRuntime {
     session: Session,
     task: string,
     workspaceId: string | null,
+    permissionMode: PermissionMode | undefined,
     queue: EventQueue<HarnessEvent>
   ): Promise<void> {
     let harnessSessionId = session.harnessSessionId;
@@ -140,6 +148,8 @@ export class CliAgentRuntime implements AgentRuntime {
       });
     }
 
+    const preset = permissionMode ? harnessPermissionPreset(permissionMode) : undefined;
+
     let sawFinal = false;
     const result = await runHarnessTask({
       task,
@@ -147,11 +157,23 @@ export class CliAgentRuntime implements AgentRuntime {
       cwd: process.cwd(),
       // Tenant scoping for the CLI path: unlike the native runtime (whose
       // global mutex makes env mutation safe), CLI turns on different
-      // sessions can run in parallel, so the workspace id is passed as a
-      // per-spawn env override instead of mutating process.env.
-      env: workspaceId
-        ? { ...process.env, CYRAOPS_WORKSPACE_ID: workspaceId }
-        : process.env,
+      // sessions can run in parallel, so the workspace id and the permission
+      // preset are passed as per-spawn env overrides instead of mutating
+      // process.env.
+      env:
+        workspaceId || preset
+          ? {
+              ...process.env,
+              ...(workspaceId ? { CYRAOPS_WORKSPACE_ID: workspaceId } : {}),
+              ...(preset ? { DSH_PERMISSION_MODE: preset } : {}),
+            }
+          : process.env,
+      // Permission mapping: CONTROLLED adds no argument (the harness default);
+      // every other mode names its preset explicitly (cliPermissionArgs).
+      permissionPreset:
+        permissionMode && cliPermissionArgs(permissionMode).length > 0 ? preset : undefined,
+      // The system-tools-off overlay stays on for every mode except SYSTEM.
+      systemTools: permissionMode ? systemToolsEnabled(permissionMode) : false,
       onEvent: (event) => {
         if (event.type === "final") sawFinal = true;
         queue.push(event);

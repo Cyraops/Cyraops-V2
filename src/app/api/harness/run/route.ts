@@ -9,6 +9,7 @@ import {
   isAbortError,
   runtimeFactory,
 } from "@/lib/harness/runtime";
+import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import { jsonError } from "@/lib/validators";
 
 /**
@@ -64,6 +65,14 @@ export async function POST(request: NextRequest) {
       return Response.json({ ok: false, error: "That session belongs to another workspace." }, { status: 404 });
     }
 
+    // The unified Permission Manager: the caller's workspace mode, role-gated
+    // (non-owners under FULL_CONTROL/SYSTEM get CONTROLLED), mapped by the
+    // runtime onto DSH_PERMISSION_MODE / --permission-mode.
+    const permissionMode = runtimePermissionMode(
+      await resolvePermissionMode({ workspaceId: user.id }),
+      user.role
+    );
+
     const events = [];
     for await (const event of runtime.executeTurn({
       sessionId: session.id,
@@ -71,6 +80,7 @@ export async function POST(request: NextRequest) {
       signal: request.signal,
       // The request owner is the tenant key for the CRM tools' scoping.
       workspaceId: user.id,
+      permissionMode,
     })) {
       events.push(event);
     }

@@ -41,6 +41,8 @@ import {
   type RuntimeHealth,
   type Session,
 } from "./runtime";
+import { harnessPermissionPreset, systemToolsEnabled } from "@/lib/permissions/mode";
+import type { PermissionMode } from "@/lib/permissions/mode";
 import type { HarnessSessionStore } from "./store";
 
 interface NativeHostModule {
@@ -51,6 +53,10 @@ interface NativeHostModule {
     timeoutMs?: number;
     projectRoot?: string;
     approvalPolicy?: "ask" | "never";
+    /** Harness permission preset name ("read-only" | "workspace-write" | "danger-full-access"). */
+    permissionMode?: string;
+    /** SYSTEM permission mode re-enables the harness system tools. */
+    systemTools?: boolean;
     onLog?: (message: string) => void;
   }): AsyncIterable<HarnessEvent>;
 }
@@ -137,6 +143,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     task: string;
     signal?: AbortSignal;
     workspaceId?: string | null;
+    permissionMode?: PermissionMode;
   }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
     if (!session) throw new Error(`unknown harness session: ${input.sessionId}`);
@@ -146,7 +153,9 @@ export class NativeAgentRuntime implements AgentRuntime {
     const queue = createEventQueue<HarnessEvent>();
     const events: HarnessEvent[] = [];
 
-    const run = this.turnChain.catch(() => undefined).then(() => this.runTurn(session, input.task, input.workspaceId ?? null, signal, queue, events));
+    const run = this.turnChain
+      .catch(() => undefined)
+      .then(() => this.runTurn(session, input.task, input.workspaceId ?? null, input.permissionMode, signal, queue, events));
     this.turnChain = run.catch(() => undefined);
 
     try {
@@ -161,6 +170,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     session: Session,
     task: string,
     workspaceId: string | null,
+    permissionMode: PermissionMode | undefined,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
     events: HarnessEvent[]
@@ -180,7 +190,7 @@ export class NativeAgentRuntime implements AgentRuntime {
       } catch {
         // Next/Turbopack (or a missing addon) blocked the in-process host:
         // serve the turn through the CLI runtime instead of failing the route.
-        await this.runTurnViaCli(session, task, workspaceId, signal, queue, events);
+        await this.runTurnViaCli(session, task, workspaceId, permissionMode, signal, queue, events);
         return;
       }
 
@@ -192,6 +202,15 @@ export class NativeAgentRuntime implements AgentRuntime {
       const previousWorkspace = process.env.CYRAOPS_WORKSPACE_ID;
       if (workspaceId) process.env.CYRAOPS_WORKSPACE_ID = workspaceId;
       else delete process.env.CYRAOPS_WORKSPACE_ID;
+
+      // Permission mapping: the cyraops-crm plugin's ask gate and the harness
+      // sandbox policy read DSH_PERMISSION_MODE / --permission-mode. Set per
+      // turn under the same global mutex so concurrent turns can never see
+      // another tenant's mode; restored below with CYRAOPS_WORKSPACE_ID.
+      const preset = permissionMode ? harnessPermissionPreset(permissionMode) : undefined;
+      const previousPermissionMode = process.env.DSH_PERMISSION_MODE;
+      if (preset) process.env.DSH_PERMISSION_MODE = preset;
+      else delete process.env.DSH_PERMISSION_MODE;
 
       // Approval events: the plugin's answerer publishes requests on the
       // broker (same process); forward them into this turn's event stream as
@@ -227,6 +246,11 @@ export class NativeAgentRuntime implements AgentRuntime {
           // The write tool's ask must reach an answerer; the plugin's broker
           // answerer fails closed when no decision arrives in time.
           approvalPolicy: "ask",
+          // Permission mapping: the preset for this turn (the plugin gate and
+          // the harness sandbox policy both read it), and SYSTEM re-enables
+          // the harness system tools the profile patch otherwise disables.
+          permissionMode: preset,
+          systemTools: permissionMode ? systemToolsEnabled(permissionMode) : false,
           onLog: (message) => process.stderr.write(`[native-host] ${message}\n`),
         })) {
           events.push(event);
@@ -249,6 +273,8 @@ export class NativeAgentRuntime implements AgentRuntime {
         stopDecided();
         if (previousWorkspace === undefined) delete process.env.CYRAOPS_WORKSPACE_ID;
         else process.env.CYRAOPS_WORKSPACE_ID = previousWorkspace;
+        if (previousPermissionMode === undefined) delete process.env.DSH_PERMISSION_MODE;
+        else process.env.DSH_PERMISSION_MODE = previousPermissionMode;
       }
     } finally {
       queue.close();
@@ -270,6 +296,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     session: Session,
     task: string,
     workspaceId: string | null,
+    permissionMode: PermissionMode | undefined,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
     events: HarnessEvent[]
@@ -284,7 +311,7 @@ export class NativeAgentRuntime implements AgentRuntime {
       });
       this.delegateSessions.set(session.id, delegateSession.id);
     }
-    for await (const event of delegate.executeTurn({ sessionId: delegateSession.id, task, signal, workspaceId })) {
+    for await (const event of delegate.executeTurn({ sessionId: delegateSession.id, task, signal, workspaceId, permissionMode })) {
       events.push(event);
       queue.push(event);
     }

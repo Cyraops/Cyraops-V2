@@ -29,6 +29,7 @@
 import { harnessSessionStore, type AgentRuntime, type RuntimeKind, type Session } from "./runtime";
 import type { HarnessSessionStore } from "./store";
 import type { HarnessEvent } from "./client";
+import type { PermissionMode } from "@/lib/permissions/mode";
 
 /**
  * Instruction appended to a harness turn's task when the reply will be read
@@ -54,6 +55,11 @@ export interface StreamHarnessTurnInput {
   signal?: AbortSignal;
   /** The turn's workspace/tenant key (conversation owner id); scopes the CRM tools. */
   workspaceId?: string | null;
+  /**
+   * The caller's resolved, role-gated permission mode; the runtime maps it
+   * onto DSH_PERMISSION_MODE / --permission-mode and the system-tools mount.
+   */
+  permissionMode?: PermissionMode;
   /** Receives each incremental delta of streamed assistant text. */
   onText: (chunk: string) => void;
   /** Invoked exactly once when the turn's event stream ends, success or failure. */
@@ -103,7 +109,6 @@ export interface StreamHarnessTurnResult {
 export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<StreamHarnessTurnResult> {
   const { runtime, conversationId, tenantId, task, signal, onText, onDone, onApproval, onEvent } = input;
   const store = input.store ?? harnessSessionStore();
-
   // createSession resolves the stored harness session id for this conversation
   // (both runtimes load it from the store), so the next turn resumes instead
   // of starting a fresh harness session.
@@ -122,6 +127,7 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
       task,
       signal,
       workspaceId: input.workspaceId ?? null,
+      permissionMode: input.permissionMode,
     })) {
       onEvent?.(event);
       if (event.type === "text" && typeof event.text === "string") {

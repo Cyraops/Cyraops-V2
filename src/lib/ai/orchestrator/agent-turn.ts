@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { providerManager } from "../provider-manager";
 import { toolRegistry } from "../tools/registry";
 import { normalizeApprovalMode, resolveToolPolicy, type ApprovalMode, type PolicyRule } from "../policy/resolve-action";
+import type { PermissionMode } from "@/lib/permissions/mode";
 import "../tools/crm-tools";
 import type { ChatMessage, ToolCallPayload } from "../types";
 
@@ -92,6 +93,11 @@ export interface AgentChatTurnResult {
   reply: string;
   toolCallsUsed: string[];
   pendingAction?: PendingToolCall;
+  /**
+   * A write that ran under FULL_CONTROL/SYSTEM owner auto-approval: the caller
+   * records its audit row as APPROVED instead of asking.
+   */
+  autoApproved?: PendingToolCall;
 }
 
 export interface TurnAgentConfig {
@@ -129,6 +135,8 @@ export async function runAgentChatTurn(params: {
   unattended?: boolean;
   /** Recorded on each tool call so assistant actions are inspectable. */
   conversationId?: string;
+  /** The workspace's unified permission mode (resolved by the caller). */
+  permissionMode?: PermissionMode;
 }): Promise<AgentChatTurnResult> {
   const toolIds = parseToolIds(params.agent.tools);
   /**
@@ -183,6 +191,8 @@ You are ${params.agent.name}, talking to a signed-in user.
   let runTainted = false;
   /** The provider hit its output limit; say so instead of ending mid-sentence. */
   let truncated = false;
+  /** A write executed under FULL_CONTROL/SYSTEM owner auto-approval. */
+  let autoApprovedAction: PendingToolCall | undefined;
 
   for (let round = 0; round < 6; round += 1) {
     const toolRoundBudget = Math.max(1024, Math.min(params.agent.maxTokens || 4096, 2048));
@@ -264,14 +274,17 @@ You are ${params.agent.name}, talking to a signed-in user.
         continue;
       }
 
-      // One place decides: deny rules, security boundaries, taint and the
-      // assistant's own approval mode. The old check was `riskClass !== "CLASS_A"`.
+      // One place decides: deny rules, security boundaries, taint, the
+      // assistant's own approval mode and the workspace permission mode. The
+      // old check was `riskClass !== "CLASS_A"`.
       const policy = resolveToolPolicy({
         tool,
         rules,
         mode,
         runTainted,
         unattended: params.unattended,
+        permissionMode: params.permissionMode,
+        requesterRole: params.actorUserRole,
       });
 
       if (policy.decision === "deny") {
@@ -315,6 +328,15 @@ You are ${params.agent.name}, talking to a signed-in user.
       });
       params.onToolDone?.(call.name, execution.success !== false, Date.now() - startedAt);
 
+      if (policy.autoApproved) {
+        autoApprovedAction = {
+          toolId: tool.id,
+          toolName: tool.name,
+          arguments: call.arguments || {},
+          reason: policy.reason,
+        };
+      }
+
       if (tool.taintsRun) runTainted = true;
 
       // Cap what a tool can inject into the context: an unbounded result used
@@ -349,7 +371,7 @@ You are ${params.agent.name}, talking to a signed-in user.
       : "I don't have enough to answer that yet.";
   }
 
-  return { reply: finalContent, toolCallsUsed, pendingAction };
+  return { reply: finalContent, toolCallsUsed, pendingAction, autoApproved: autoApprovedAction };
 }
 
 export function matchAgentMentions(

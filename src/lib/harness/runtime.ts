@@ -20,6 +20,7 @@ import type { HarnessEvent } from "./client";
 import { createCliRuntime } from "./cli-runtime";
 import { createNativeRuntime } from "./native-runtime";
 import { createPrismaSessionStore, type HarnessSessionStore } from "./store";
+import type { PermissionMode } from "@/lib/permissions/mode";
 
 export type { HarnessEvent };
 
@@ -48,6 +49,13 @@ export interface AgentRuntime {
     signal?: AbortSignal;
     /** The turn's workspace/tenant key (conversation owner id); scopes the CRM tools. */
     workspaceId?: string | null;
+    /**
+     * The caller's unified permission mode, already role-gated. Mapped onto
+     * DSH_PERMISSION_MODE (native: per-turn env under the global mutex; cli:
+     * per-spawn env + --permission-mode) and, for SYSTEM, onto the
+     * system-tools mount decision.
+     */
+    permissionMode?: PermissionMode;
   }): AsyncIterable<HarnessEvent>;
   getSession(sessionId: string): Promise<Session | null>;
   cancelTurn(input: { sessionId: string }): Promise<void>;

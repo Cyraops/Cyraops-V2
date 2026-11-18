@@ -17,6 +17,9 @@ export type ApprovalMode = "ASK" | "AUTO" | "NEVER";
 export type RuleEffect = "ALLOW" | "DENY" | "ASK";
 export type RiskClass = "CLASS_A" | "CLASS_B" | "CLASS_C";
 
+/** The unified Permission Manager modes (see src/lib/permissions/mode.ts). */
+export type PermissionMode = "READ_ONLY" | "CONTROLLED" | "FULL_CONTROL" | "SYSTEM";
+
 export interface PolicyTool {
   id: string;
   riskClass: RiskClass;
@@ -49,6 +52,14 @@ export interface PolicyInput {
   runTainted: boolean;
   /** Nobody is present to answer a card (routine, webhook, inbound email). */
   unattended?: boolean;
+  /**
+   * The workspace's unified permission mode. Undefined preserves the
+   * historical behaviour exactly (CONTROLLED-equivalent); READ_ONLY denies
+   * every mutating action and FULL_CONTROL/SYSTEM auto-approve the OWNER's.
+   */
+  permissionMode?: PermissionMode;
+  /** The requester's workspace role ("OWNER" etc.), for FULL_CONTROL gating. */
+  requesterRole?: string | null;
 }
 
 export interface PolicyDecision {
@@ -57,6 +68,11 @@ export interface PolicyDecision {
   reason: string;
   /** Whether the UI may offer "always allow this tool". */
   canAlwaysAllow: boolean;
+  /**
+   * The allow came from a FULL_CONTROL/SYSTEM owner auto-approval: the caller
+   * should record the audit row marked APPROVED instead of asking.
+   */
+  autoApproved?: boolean;
 }
 
 export function isApprovalMode(value: unknown): value is ApprovalMode {
@@ -90,6 +106,22 @@ export function resolveToolPolicy(input: PolicyInput): PolicyDecision {
       decision: "deny",
       source: "rule",
       reason: `${tool.id} is blocked for this assistant.`,
+      canAlwaysAllow: false,
+    };
+  }
+
+  // 1b. A READ_ONLY workspace refuses every action that changes anything —
+  //     writes, CLASS_B/C tools and anything the resolver counts as
+  //     consequential. The workspace mode is a boundary, so it beats a
+  //     standing allow rule too.
+  if (
+    input.permissionMode === "READ_ONLY" &&
+    (tool.requiresApproval || tool.riskClass !== "CLASS_A" || !tool.readOnly)
+  ) {
+    return {
+      decision: "deny",
+      source: "mode",
+      reason: `This workspace is in READ_ONLY permission mode, so ${tool.id} cannot run.`,
       canAlwaysAllow: false,
     };
   }
@@ -209,6 +241,25 @@ export function resolveToolPolicy(input: PolicyInput): PolicyDecision {
       source: "mode",
       reason: "Auto mode passes reads that untrusted content did not steer.",
       canAlwaysAllow: false,
+    };
+  }
+
+  // 7a. FULL_CONTROL / SYSTEM with the workspace OWNER requesting: what
+  //     CONTROLLED would have put on an approval card runs instead, and the
+  //     caller records the audit row as APPROVED. Taint still wins — a run
+  //     steered by outside text needs a person even for the owner — and a
+  //     stored ask rule or security-boundary tool still asks (steps 2/5).
+  if (
+    (input.permissionMode === "FULL_CONTROL" || input.permissionMode === "SYSTEM") &&
+    (input.requesterRole ?? "").toUpperCase() === "OWNER" &&
+    !runTainted
+  ) {
+    return {
+      decision: "allow",
+      source: "mode",
+      reason: `${input.permissionMode} permission mode: the workspace owner's action runs without approval.`,
+      canAlwaysAllow: false,
+      autoApproved: true,
     };
   }
 

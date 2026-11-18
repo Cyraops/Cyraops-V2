@@ -28,6 +28,13 @@
  *     approvalPolicy = "never",      // session approval policy passed as
  *                                    // --approval-policy; "ask" lets tools that
  *                                    // declare an ask gate consult answerers
+ *     permissionMode,                // optional permission preset name
+ *                                    // ("read-only" | "workspace-write" |
+ *                                    // "danger-full-access") passed as
+ *                                    // --permission-mode
+ *     systemTools = false,           // true (SYSTEM permission mode) skips the
+ *                                    // profile patch rows that disable
+ *                                    // tool-bash/tool-fs/tool-fs-search
  *     log = (m) => process.stderr.write(`[native-host] ${m}\n`),
  *   } = {}) : AsyncIterable<HarnessEvent>
  *
@@ -58,6 +65,9 @@ export const PROFILE_DIR = path.join(HERE, "profile");
 export const VENDOR = path.resolve(HERE, "..", "..", "dsh");
 export const INSTALL_ANCHOR = path.join(VENDOR, "package.json");
 export const ROOT_CONFIG = path.join(PROFILE_DIR, "cordis.yml");
+
+/** The system tools the profile patch disables; SYSTEM permission mode re-enables them. */
+const SYSTEM_TOOL_IDS = new Set(["tool-bash", "tool-fs", "tool-fs-search"]);
 
 const vendoredPkg = (name) => path.join(VENDOR, "node_modules", name);
 const DEFAULT_LOG = (message) => process.stderr.write(`[native-host] ${message}\n`);
@@ -243,9 +253,13 @@ function makeTimeoutError(ms) {
  * @param options.sessionId - optional durable session id to resume.
  * @param options.approvalPolicy - "ask" | "never"; the headless runner maps it
  *   onto the session approval policy via setApprovalPolicy before the run.
+ * @param options.permissionMode - optional harness permission preset name
+ *   ("read-only" | "workspace-write" | "danger-full-access"); passed as
+ *   --permission-mode so the preset's sandbox mode applies to the run.
  */
-export function buildRunArgs({ task, sessionId, approvalPolicy = "never" }) {
+export function buildRunArgs({ task, sessionId, approvalPolicy = "never", permissionMode }) {
   const args = ["--json", "--approval-policy", approvalPolicy];
+  if (permissionMode) args.push("--permission-mode", permissionMode);
   if (sessionId) args.push("--session-id", sessionId);
   args.push(task);
   return args;
@@ -500,6 +514,8 @@ export async function* runNativeTask(options = {}) {
     tee = "diagnostics",
     log = DEFAULT_LOG,
     approvalPolicy = "never",
+    permissionMode,
+    systemTools = false,
   } = options;
 
   if (typeof task !== "string" || task.trim() === "") {
@@ -594,6 +610,17 @@ export async function* runNativeTask(options = {}) {
       telemetryDisabledEnv: process.env.DSH_TELEMETRY_DISABLED,
     };
     const patches = readProfilePatches("dsh", profileContext, profile);
+    // The profile patch (cordis.patch.yml) disables tool-bash / tool-fs /
+    // tool-fs-search on every native boot. SYSTEM permission mode is the
+    // explicit per-tenant opt-in that re-enables them: drop exactly those
+    // static disable rows while every other mode keeps them off. (The
+    // "keep in sync" CLI overlay — system-tools-off.patch.yml — is skipped
+    // the same way by the CLI runtime for SYSTEM turns.)
+    const appliedPatches = systemTools
+      ? patches.filter(
+          (row) => !(SYSTEM_TOOL_IDS.has(row?.id) && row?.disabled === true)
+        )
+      : patches;
     const appReady = createAppReady();
 
     let exitResolve;
@@ -604,12 +631,12 @@ export async function* runNativeTask(options = {}) {
     if (evidence) await evidence.installCjs();
 
     // 3. Mount the tree.
-    ctx = await boot("dsh", ROOT_CONFIG, patches, async (hostCtx) => {
+    ctx = await boot("dsh", ROOT_CONFIG, appliedPatches, async (hostCtx) => {
       hostCtx.provide("profileContext", profileContext);
       hostCtx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, environment);
       await hostCtx.plugin(PluginPackages, { resolution });
       evidence?.installEsm();
-      const args = buildRunArgs({ task, sessionId, approvalPolicy });
+      const args = buildRunArgs({ task, sessionId, approvalPolicy, permissionMode });
       provideCmdline(hostCtx, {
         args,
         exit: (code) => exitResolve(code),

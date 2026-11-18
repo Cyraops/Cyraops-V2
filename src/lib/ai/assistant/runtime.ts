@@ -5,6 +5,7 @@ import type { AgentChatTurnResult, ChatTurnMessage } from "../orchestrator/agent
 import { toolRegistry } from "../tools/registry";
 import { stripToolMarkup } from "../tool-markup";
 import type { PolicyRule } from "../policy/resolve-action";
+import { resolvePermissionMode } from "@/lib/permissions/mode";
 import { selectContext } from "../context/budget";
 import { summarizeConversation } from "../context/summary";
 import { storage } from "@/lib/storage";
@@ -390,6 +391,9 @@ export async function runAssistantInThread(params: {
     approvalMode: assistant.approvalMode,
     approvalRules: approvalRules,
     unattended: params.unattended,
+    permissionMode: await resolvePermissionMode({
+      workspaceId: params.userId,
+    }),
   });
 
   return { ...turn, assistantId: assistant.id, assistantName: assistant.name };
@@ -604,6 +608,10 @@ export async function sendAssistantMessage(params: {
     onToken: params.onToken,
     onTool: params.onTool,
     onToolDone: params.onToolDone,
+    permissionMode: await resolvePermissionMode({
+      workspaceId: params.userId,
+      agentSlug: agent?.slug ?? undefined,
+    }),
   });
 
   let pendingAction:
@@ -634,6 +642,23 @@ export async function sendAssistantMessage(params: {
       canAlwaysAllow: turn.pendingAction.canAlwaysAllow,
     };
     turn.reply = `${turn.reply}\n\n⚠️ This action needs your approval: ${row.toolName}. Approve or reject it below.`;
+  }
+
+  // FULL_CONTROL/SYSTEM owner auto-approval: the action already ran, so the
+  // audit row is created settled — status APPROVED — instead of a pending card.
+  if (turn.autoApproved) {
+    await db.assistantPendingAction.create({
+      data: {
+        assistantId: assistant.id,
+        userId: params.userId,
+        conversationId: conversation.id,
+        toolId: turn.autoApproved.toolId,
+        toolName: turn.autoApproved.toolName,
+        input: JSON.stringify(turn.autoApproved.arguments),
+        summary: `${turn.autoApproved.reason ?? "Auto-approved by permission mode"} (${turn.autoApproved.toolName})`,
+        status: "APPROVED",
+      },
+    });
   }
 
   /**

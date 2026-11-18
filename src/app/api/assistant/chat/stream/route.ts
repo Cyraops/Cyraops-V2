@@ -13,6 +13,7 @@ import { streamHarnessTurn, harnessTaskForTurn } from "@/lib/harness/bot-stream"
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
 import type { HarnessEvent } from "@/lib/harness/client";
 import { approvalBroker } from "@/lib/harness/approval-broker";
+import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import {
   createHarnessApprovalRow,
   installApprovalDecisionHook,
@@ -216,6 +217,14 @@ async function streamHarnessReply(
           if (!agent) throw new Error("That teammate is not available");
         }
 
+        // The unified Permission Manager: resolve the workspace/agent mode for
+        // this caller and role-gate it (a non-owner under FULL_CONTROL/SYSTEM
+        // gets CONTROLLED) before the runtime maps it onto the harness.
+        const permissionMode = runtimePermissionMode(
+          await resolvePermissionMode({ workspaceId: assistant.userId, agentSlug }),
+          user.role
+        );
+
         const conversation = await resolveConversation(
           assistant.id,
           typeof body?.conversationId === "string" ? body.conversationId : undefined,
@@ -293,6 +302,8 @@ async function streamHarnessReply(
           // is the only tenant-stable key). Passed to the runtime, which
           // publishes it as CYRAOPS_WORKSPACE_ID for the bridge.
           workspaceId: assistant.userId,
+          // The resolved, role-gated permission mode for this turn.
+          permissionMode,
           onText: (chunk: string) => send({ type: "token", content: chunk }),
           // Collect the turn's raw events for the post-turn audit write.
           onEvent: (event) => {

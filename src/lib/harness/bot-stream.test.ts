@@ -37,22 +37,22 @@ interface FakeRuntimeOptions {
 
 /** Fake AgentRuntime: createSession resolves the stored id, like the real runtimes. */
 function fakeRuntime(store: HarnessSessionStore, options: FakeRuntimeOptions = {}): AgentRuntime & {
-  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null }>;
+  turns: Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown }>;
 } {
   const sessions = new Map<string, Session>();
   let nextId = 0;
   const runtime = {
-    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null }>,
+    turns: [] as Array<{ sessionId: string; harnessSessionId: string | null; task: string; workspaceId: string | null; permissionMode: unknown }>,
     async createSession({ tenantId, conversationId }: { tenantId: string; conversationId: string }) {
       const harnessSessionId = await store.loadHarnessSessionId({ tenantId, conversationId });
       const session: Session = { id: `adapter-${++nextId}`, tenantId, conversationId, harnessSessionId };
       sessions.set(session.id, session);
       return session;
     },
-    async *executeTurn({ sessionId, task, workspaceId }: { sessionId: string; task: string; workspaceId?: string | null }) {
+    async *executeTurn({ sessionId, task, workspaceId, permissionMode }: { sessionId: string; task: string; workspaceId?: string | null; permissionMode?: unknown }) {
       const session = sessions.get(sessionId);
       assert.ok(session, "fake runtime must receive a known session id");
-      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task, workspaceId: workspaceId ?? null });
+      runtime.turns.push({ sessionId, harnessSessionId: session.harnessSessionId, task, workspaceId: workspaceId ?? null, permissionMode });
       if (options.throwOnTurn) throw new Error("engine exploded");
       for (const event of options.events ?? []) {
         if (event.type === "session") {
@@ -319,6 +319,41 @@ test("streamHarnessTurn: passes the workspace/tenant key through to the runtime"
   });
 
   assert.equal(runtime.turns[0].workspaceId, "workspace-owner-user-1");
+});
+
+test("streamHarnessTurn: carries the caller's permission mode to the runtime", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "final", text: "ok" },
+    ],
+  });
+
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-mode",
+    tenantId: "tenant-1",
+    task: "update ticket",
+    permissionMode: "SYSTEM",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+
+  assert.equal(runtime.turns[0].permissionMode, "SYSTEM");
+
+  // No permission mode provided keeps the historical undefined for the runtime.
+  await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-mode-2",
+    tenantId: "tenant-1",
+    task: "plain",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+  assert.equal(runtime.turns[1].permissionMode, undefined);
 });
 
 test("streamHarnessTurn: forwards every raw event to onEvent in stream order", async () => {

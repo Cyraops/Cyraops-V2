@@ -13,6 +13,15 @@ enum Role {
   MEMBER
 }
 
+/// The unified Cyraops Permission Manager mode (see CYRAOPS_PERMISSION_AUDIT.md §8).
+/// Stored per workspace; an agent-level override wins when set.
+enum PermissionMode {
+  READ_ONLY
+  CONTROLLED
+  FULL_CONTROL
+  SYSTEM
+}
+
 enum ProjectStatus {
   PLANNING
   ACTIVE
@@ -404,6 +413,8 @@ model Workspace {
   logoUrl             String?
   socialLinks         String?  @db.Text
   registrationDetails String?  @db.Text
+  /// The workspace-wide permission mode every AI turn resolves against.
+  permissionMode      PermissionMode @default(CONTROLLED)
   ownerId             String   @unique
   loginEmail          String   @unique
   loginPasswordHash   String
@@ -883,6 +894,8 @@ model AiAgent {
   version       String           @default("1.0.0")
   tools         String           @default("[]")
   permissions   String           @default("[]")
+  /// Per-agent override of the workspace permission mode; null inherits it.
+  permissionMode PermissionMode?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
   tasks         AiTask[]         @relation("AssignedAgent")

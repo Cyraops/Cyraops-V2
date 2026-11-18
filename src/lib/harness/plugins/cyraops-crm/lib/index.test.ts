@@ -774,6 +774,54 @@ test("tool: updateTicketAskGate delegates every other tool to next()", async () 
   assert.deepEqual(decision, { kind: "allow" });
 });
 
+test("tool: updateTicketAskGate denies the write under READ_ONLY (DSH_PERMISSION_MODE=read-only)", async () => {
+  process.env.DSH_PERMISSION_MODE = "read-only";
+  try {
+    const gate = updateTicketAskGate();
+    const decision = await gate(
+      { name: TOOL_UPDATE_TICKET, arguments: { id: "t1", priority: "HIGH" } },
+      async () => {
+        throw new Error("next must not run when the workspace is read-only");
+      }
+    );
+    assert.equal(decision.kind, "deny");
+    assert.match(decision.reason, /READ_ONLY permission mode/);
+    assert.equal(decision.displayReason?.en, decision.reason);
+  } finally {
+    delete process.env.DSH_PERMISSION_MODE;
+  }
+});
+
+test("tool: updateTicketAskGate skips the ask under FULL_CONTROL/SYSTEM (danger-full-access)", async () => {
+  process.env.DSH_PERMISSION_MODE = "danger-full-access";
+  try {
+    const gate = updateTicketAskGate();
+    const decision = await gate(
+      { name: TOOL_UPDATE_TICKET, arguments: { id: "t1", priority: "HIGH" } },
+      async () => ({ kind: "allow" })
+    );
+    assert.deepEqual(decision, { kind: "allow" });
+  } finally {
+    delete process.env.DSH_PERMISSION_MODE;
+  }
+});
+
+test("tool: updateTicketAskGate keeps the ask gate under CONTROLLED (workspace-write)", async () => {
+  process.env.DSH_PERMISSION_MODE = "workspace-write";
+  try {
+    const gate = updateTicketAskGate();
+    const decision = await gate(
+      { name: TOOL_UPDATE_TICKET, arguments: { id: "t1", priority: "HIGH" } },
+      async () => {
+        throw new Error("next must not run for the gated tool");
+      }
+    );
+    assert.equal(decision.kind, "ask");
+  } finally {
+    delete process.env.DSH_PERMISSION_MODE;
+  }
+});
+
 test("tool: the approval answerer delegates when no broker is installed", async () => {
   const answerer = createApprovalAnswerer({ lookupBroker: () => undefined });
   const outcome = await answerer(

@@ -41,6 +41,14 @@ export interface HarnessOptions {
   timeoutMs?: number;
   /** Per-spawn environment (e.g. CYRAOPS_WORKSPACE_ID tenant scoping). */
   env?: NodeJS.ProcessEnv;
+  /**
+   * The harness sandbox preset for this turn (DSH permission presets:
+   * "read-only" | "workspace-write" | "danger-full-access"). Omitted keeps
+   * the harness's default preset, exactly as before.
+   */
+  permissionPreset?: "read-only" | "workspace-write" | "danger-full-access";
+  /** SYSTEM permission mode: re-enable the harness system tools (skip the overlay). */
+  systemTools?: boolean;
   onEvent?: (event: HarnessEvent) => void;
 }
 
@@ -53,18 +61,47 @@ export function harnessBinary(): string {
   return process.env.HARNESS_BIN?.trim() || "dsh";
 }
 
-export async function runHarnessTask(options: HarnessOptions): Promise<HarnessResult> {
-  const timeoutMs = options.timeoutMs ?? 180_000;
-  // --patch is a top-level CLI option and must precede --profile (the headless
-  // app parser does not accept it).
+/**
+ * The full CLI argument vector for one turn, exported pure so the permission
+ * mapping is unit-testable without spawning a process. `--patch` is a
+ * top-level CLI option and must precede --profile (the headless app parser
+ * does not accept it after).
+ */
+export function buildSpawnArgs(options: {
+  task: string;
+  sessionId?: string;
+  permissionPreset?: "read-only" | "workspace-write" | "danger-full-access";
+  systemTools?: boolean;
+  cwd?: string;
+}): string[] {
   const args = ["--json", "--approval-policy", "never"];
+  if (options.permissionPreset) args.push("--permission-mode", options.permissionPreset);
   // Security overlay: disable the harness's shell/filesystem tools in every
-  // Cyraops CLI turn (same rows the native profile patch disables).
-  const overlay = path.join(process.cwd(), "vendor", "tooling", "vendored-boot", "system-tools-off.patch.yml");
-  if (existsSync(overlay)) args.unshift("--patch", overlay, "--profile", harnessProfile());
+  // Cyraops CLI turn (same rows the native profile patch disables), except
+  // for SYSTEM permission mode, which explicitly opts back in.
+  const overlay = path.join(
+    options.cwd ?? process.cwd(),
+    "vendor",
+    "tooling",
+    "vendored-boot",
+    "system-tools-off.patch.yml"
+  );
+  if (existsSync(overlay) && !options.systemTools) args.unshift("--patch", overlay, "--profile", harnessProfile());
   else args.unshift("--profile", harnessProfile());
   if (options.sessionId) args.push("--session-id", options.sessionId);
   args.push(options.task);
+  return args;
+}
+
+export async function runHarnessTask(options: HarnessOptions): Promise<HarnessResult> {
+  const timeoutMs = options.timeoutMs ?? 180_000;
+  const args = buildSpawnArgs({
+    task: options.task,
+    sessionId: options.sessionId,
+    permissionPreset: options.permissionPreset,
+    systemTools: options.systemTools,
+    cwd: options.cwd,
+  });
 
   return new Promise<HarnessResult>((resolve) => {
     // Next's build rejects dynamic spawn in App Routes unless excluded from static analysis.

@@ -5,6 +5,7 @@ import { logActivity, publicUserSelect, sameOrigin, userFromRequest } from "@/li
 import { publishAgentMessage, publishAssistantMessage, publishMessage } from "@/lib/realtime";
 import { listActiveAgents, matchAgentMentions, runAgentChatTurn } from "@/lib/ai/orchestrator/agent-turn";
 import { runAssistantInThread } from "@/lib/ai/assistant/runtime";
+import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import { jsonError } from "@/lib/validators";
 
 type Context = { params: Promise<{ id: string }> };
@@ -85,6 +86,12 @@ async function handleAgentMentions(
         history,
         actorUserId: actor.id,
         actorUserRole: actor.role,
+        // The unified Permission Manager, resolved and role-gated exactly like
+        // the assistant path: agent override ?? workspace ?? CONTROLLED.
+        permissionMode: runtimePermissionMode(
+          await resolvePermissionMode({ workspaceId: actor.id, agentSlug: agent.slug }),
+          actor.role
+        ),
       });
 
       const message = await db.message.create({

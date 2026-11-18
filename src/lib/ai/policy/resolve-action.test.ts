@@ -160,3 +160,100 @@ describe("tool policy", () => {
     assert.equal(normalizeApprovalMode(undefined), "ASK");
   });
 });
+
+describe("permission-mode matrix (unified Permission Manager)", () => {
+  const pageTool: PolicyTool = {
+    id: "create_page",
+    riskClass: "CLASS_A",
+    requiresApproval: false,
+    persistsContent: true,
+  };
+
+  it("READ_ONLY denies every mutating action with a clear reason, whatever the standing rules", () => {
+    for (const tool of [writeTool, browserTool, secretTool, pageTool]) {
+      const decision = decide({
+        tool,
+        permissionMode: "READ_ONLY",
+        rules: [{ toolName: tool.id, effect: "ALLOW" }],
+      });
+      assert.equal(decision.decision, "deny", `${tool.id} must be denied`);
+      assert.equal(decision.source, "mode");
+      assert.match(decision.reason, /READ_ONLY permission mode/);
+      assert.equal(decision.canAlwaysAllow, false);
+    }
+  });
+
+  it("READ_ONLY still lets pure reads through", () => {
+    const decision = decide({ tool: readTool, permissionMode: "READ_ONLY" });
+    assert.equal(decision.decision, "allow");
+    assert.equal(decision.source, "read");
+  });
+
+  it("CONTROLLED keeps the historical behaviour", () => {
+    assert.equal(decide({ tool: writeTool, permissionMode: "CONTROLLED" }).decision, "ask");
+    assert.equal(decide({ tool: readTool, permissionMode: "CONTROLLED" }).decision, "allow");
+    assert.equal(
+      decide({ tool: writeTool, permissionMode: "CONTROLLED", requesterRole: "OWNER" }).decision,
+      "ask"
+    );
+  });
+
+  it("FULL_CONTROL auto-approves the OWNER's writes, flagged for the APPROVED audit row", () => {
+    const decision = decide({ tool: writeTool, permissionMode: "FULL_CONTROL", requesterRole: "OWNER" });
+    assert.equal(decision.decision, "allow");
+    assert.equal(decision.source, "mode");
+    assert.equal(decision.autoApproved, true);
+  });
+
+  it("FULL_CONTROL falls back to CONTROLLED for non-owners", () => {
+    for (const role of ["ADMIN", "MEMBER", null]) {
+      const decision = decide({ tool: writeTool, permissionMode: "FULL_CONTROL", requesterRole: role });
+      assert.equal(decision.decision, "ask", `role ${role}`);
+    }
+  });
+
+  it("SYSTEM behaves exactly like FULL_CONTROL for the owner", () => {
+    const owner = decide({ tool: writeTool, permissionMode: "SYSTEM", requesterRole: "OWNER" });
+    assert.equal(owner.decision, "allow");
+    assert.equal(owner.autoApproved, true);
+    assert.equal(decide({ tool: writeTool, permissionMode: "SYSTEM", requesterRole: "MEMBER" }).decision, "ask");
+  });
+
+  it("a tainted run still needs a person even for the OWNER under FULL_CONTROL", () => {
+    const decision = decide({
+      tool: writeTool,
+      permissionMode: "FULL_CONTROL",
+      requesterRole: "OWNER",
+      runTainted: true,
+    });
+    assert.equal(decision.decision, "ask");
+    assert.equal(decision.autoApproved, undefined);
+  });
+
+  it("security-boundary tools always ask, even for the OWNER under FULL_CONTROL", () => {
+    const decision = decide({
+      tool: secretTool,
+      permissionMode: "FULL_CONTROL",
+      requesterRole: "OWNER",
+    });
+    assert.equal(decision.decision, "ask");
+    assert.equal(decision.source, "explicit");
+  });
+
+  it("a stored ask rule keeps asking under FULL_CONTROL for the owner", () => {
+    const decision = decide({
+      tool: writeTool,
+      permissionMode: "FULL_CONTROL",
+      requesterRole: "OWNER",
+      rules: [{ toolName: "create_task", effect: "ASK" }],
+    });
+    assert.equal(decision.decision, "ask");
+    assert.equal(decision.source, "rule");
+  });
+
+  it("no permission mode passed preserves every existing decision", () => {
+    assert.equal(decide({ tool: writeTool }).decision, "ask");
+    assert.equal(decide({ tool: writeTool, mode: "NEVER" }).decision, "allow");
+    assert.equal(decide({ tool: readTool }).decision, "allow");
+  });
+});

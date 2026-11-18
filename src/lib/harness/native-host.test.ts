@@ -18,6 +18,7 @@ interface NativeHostModule {
     task: string;
     sessionId?: string;
     approvalPolicy?: "ask" | "never";
+    permissionMode?: string;
   }): string[];
 }
 
@@ -79,5 +80,35 @@ test("native host: buildRunArgs resumes a session with --session-id between poli
     "--session-id",
     "session-1",
     "continue",
+  ]);
+});
+
+test("native host: buildRunArgs carries the permission preset before the task", async () => {
+  const { buildRunArgs } = await loadHost();
+  assert.deepEqual(buildRunArgs({ task: "go", permissionMode: "read-only" }), [
+    "--json",
+    "--approval-policy",
+    "never",
+    "--permission-mode",
+    "read-only",
+    "go",
+  ]);
+  assert.deepEqual(buildRunArgs({ task: "go", permissionMode: "danger-full-access", approvalPolicy: "ask" }), [
+    "--json",
+    "--approval-policy",
+    "ask",
+    "--permission-mode",
+    "danger-full-access",
+    "go",
+  ]);
+});
+
+test("native host: buildRunArgs without a preset keeps the historical vector", async () => {
+  const { buildRunArgs } = await loadHost();
+  assert.deepEqual(buildRunArgs({ task: "go", approvalPolicy: "ask" }), [
+    "--json",
+    "--approval-policy",
+    "ask",
+    "go",
   ]);
 });

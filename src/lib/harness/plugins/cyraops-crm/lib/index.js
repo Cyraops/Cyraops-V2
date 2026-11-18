@@ -449,13 +449,31 @@ export function updateTicketSummary(args) {
 
 /**
  * The tools/pre-execute listener: returns the `ask` gate for the write tool
- * and delegates every other tool unchanged. Pure and exported so the unit
- * test exercises the exact decision shape the pipeline consumes.
+ * and delegates every other tool unchanged. The gate is permission-mode aware
+ * through DSH_PERMISSION_MODE (set per turn by the AgentRuntime under its
+ * global mutex, or per spawn for the CLI runtime):
+ * - "read-only"          → deny the write outright (workspace is READ_ONLY)
+ * - "danger-full-access" → no ask (FULL_CONTROL/SYSTEM: the caller already
+ *                          role-gated the turn, so the write runs and the
+ *                          audit trail records it)
+ * - anything else        → the historical ask gate (CONTROLLED)
+ * Pure and exported so the unit test exercises the exact decision shape the
+ * pipeline consumes.
  */
 export function updateTicketAskGate(toolName = TOOL_UPDATE_TICKET) {
   return async function toolsPreExecute(exec, next) {
     if (exec?.name !== toolName) return next();
     const summary = updateTicketSummary(exec.arguments);
+    const permissionMode = process.env.DSH_PERMISSION_MODE;
+    if (permissionMode === "read-only") {
+      const reason = `This workspace is in READ_ONLY permission mode, so ${toolName} cannot run.`;
+      return { kind: "deny", reason, displayReason: { en: reason } };
+    }
+    if (permissionMode === "danger-full-access") {
+      // FULL_CONTROL/SYSTEM: the route already downgraded non-owner callers,
+      // so a turn that reaches this preset is an owner's auto-approved write.
+      return next();
+    }
     return { kind: "ask", reason: summary, displayReason: { en: summary } };
   };
 }
