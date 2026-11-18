@@ -45,16 +45,19 @@ import {
 } from "./bridge.mjs";
 
 export const name = "cyraops-crm";
-export const inject = ["tools"];
+export const inject = ["tools", "userQuestions"];
 
 export const TOOL_NAME = "cyraops_open_tickets";
 export const TOOL_LIST_TICKETS = "cyraops_list_tickets";
 export const TOOL_SEARCH_CONTACTS = "cyraops_search_contacts";
 export const TOOL_LIST_SCHEDULE = "cyraops_list_schedule";
 export const TOOL_UPDATE_TICKET = "cyraops_update_ticket";
+export const TOOL_ASK_USER_QUESTION = "ask_user_question";
 
 /** Key under which the Next-side approval broker is published on globalThis. */
 export const APPROVAL_BROKER_KEY = Symbol.for("cyraops.harness.approval-broker");
+/** Key under which the Next-side question broker is published on globalThis. */
+export const QUESTION_BROKER_KEY = Symbol.for("cyraops.harness.question-broker");
 
 const TOOL_DESCRIPTION =
   "Count the open tickets in the Cyraops CRM database. An open ticket is a task " +
@@ -82,18 +85,27 @@ const OUTPUT_SCHEMA = {
 };
 
 /**
- * Load the registry's own `defineTool` from the vendored tree. The anchor is
- * CYRAOPS_ROOT (or the process cwd — the in-process harness runs inside the
- * Next server at the repo root) + vendor/dsh/package.json.
+ * Require a package from the vendored tree. The anchor is CYRAOPS_ROOT (or
+ * the process cwd — the in-process harness runs inside the Next server at the
+ * repo root) + vendor/dsh/package.json, so the load lands on the same module
+ * instances the registry itself uses.
  */
-export function loadDefineTool() {
+export function loadVendoredModule(moduleName) {
   const root = cyraopsRoot();
   const anchor = path.join(root, "vendor", "dsh", "package.json");
   if (!existsSync(anchor)) {
     throw new Error(`cyraops-crm: vendored harness tree not found at ${anchor}`);
   }
   const vendoredRequire = createRequire(anchor);
-  const defineTool = vendoredRequire("@deepseek-ai/dsh-tools")?.defineTool;
+  return vendoredRequire(moduleName);
+}
+
+/**
+ * Load the registry's own `defineTool` from the vendored tree (see
+ * loadVendoredModule for the resolution anchor).
+ */
+export function loadDefineTool() {
+  const defineTool = loadVendoredModule("@deepseek-ai/dsh-tools")?.defineTool;
   if (typeof defineTool !== "function") {
     throw new Error("cyraops-crm: @deepseek-ai/dsh-tools did not export defineTool");
   }
@@ -512,6 +524,247 @@ export function createApprovalAnswerer({
   };
 }
 
+// ---------------------------------------------------------------------------
+// ask_user_question — the model-facing user-question tool (TASK 1: ask-user).
+//
+// The vendored tree mounts the `user-questions` service seam
+// (dsh-user-questions, see dsh-base/cordis.patch.yml "user-questions"), but
+// the official model-facing tool package (@deepseek-ai/dsh-tool-ask-user) is
+// declared in vendor/dsh/package.json WITHOUT being installed under
+// vendor/dsh/node_modules, and the boot profile bundles only dsh-base,
+// dsh-headless and this plugin — so no ask_user_question tool is registered
+// by the native boot. This plugin therefore registers the tool itself,
+// mirroring the official package's timed variant exactly: the schema declares
+// the `timeout` parameter (the vendored projection's TIMED_WAIT_PARAMETER
+// marks the call timed), execute asks the userQuestions service (timed wait
+// via askTimed; `timeout: -1` falls back to the blocking ask), and the
+// answerer below bridges the service's `user-questions/request` waterfall to
+// the Next-side question broker, which /api/harness/answer resolves.
+// ---------------------------------------------------------------------------
+
+/**
+ * The model-facing parameter only the timed schema declares. Loaded from the
+ * vendored service module so it can never drift; "timeout" is the fallback.
+ */
+export function timedWaitParameter() {
+  try {
+    return loadVendoredModule("@deepseek-ai/dsh-user-questions")?.TIMED_WAIT_PARAMETER ?? "timeout";
+  } catch {
+    return "timeout";
+  }
+}
+
+export const ASK_USER_DEFAULT_TIMEOUT = 120; // seconds, same as the official tool
+export const ASK_USER_MAX_TIMEOUT = 2_147_483; // platform timer ceiling (seconds)
+
+/** Validate the model-supplied wait; -1 or a positive integer up to the ceiling. */
+export function validateAskUserTimeout(timeout) {
+  if (timeout !== -1 && (!Number.isInteger(timeout) || timeout < 1 || timeout > ASK_USER_MAX_TIMEOUT)) {
+    throw new Error(`timeout must be -1 or a positive integer up to ${ASK_USER_MAX_TIMEOUT} seconds`);
+  }
+  return timeout;
+}
+
+/** Question ids must be unique within one call (same rule as the official tool). */
+export function validateQuestionIds(questions) {
+  const ids = new Set();
+  for (const question of questions) {
+    if (ids.has(question.id)) throw new Error(`question id ${JSON.stringify(question.id)} must be unique within this call`);
+    ids.add(question.id);
+  }
+}
+
+/**
+ * Translate the model schema into the service request without changing
+ * ownership (mirrors the official tool's questionRequest).
+ */
+export function questionServiceRequest(questions, exec) {
+  return {
+    questions: questions.map((question) => ({
+      id: question.id,
+      question: question.question,
+      ...(question.header !== undefined ? { header: question.header } : {}),
+      ...(question.options !== undefined ? { options: question.options.map((option) => ({ ...option })) } : {}),
+      ...(question.multi_select !== undefined ? { multiSelect: question.multi_select } : {}),
+    })),
+    ...(exec.agent !== undefined ? { agent: exec.agent } : {}),
+    signal: exec.signal,
+  };
+}
+
+/**
+ * Copy service-owned answer arrays into the model-facing result (mirrors the
+ * official tool's answerResult).
+ */
+export function answerResultFor(result) {
+  return {
+    answers: result.answers.map((answer) => ({
+      id: answer.id,
+      selected: [...answer.selected],
+      ...(answer.custom !== undefined ? { custom: answer.custom } : {}),
+    })),
+  };
+}
+
+/**
+ * The model-facing ask_user_question tool. Test seams: `defineTool`,
+ * `askTimed`, `ask` and `ctx` can all be stubbed, so the definition is
+ * exercisable in plain Node without booting a tree.
+ */
+export function createAskUserQuestionDefinition(deps = {}) {
+  const defineTool = deps.defineTool ?? loadDefineTool();
+  const defaultTimeout = validateAskUserTimeout(deps.defaultTimeout ?? ASK_USER_DEFAULT_TIMEOUT);
+  const timeoutParam = deps.timeoutParam ?? timedWaitParameter();
+  const ctx = deps.ctx;
+  const askTimed = deps.askTimed ?? ((request, callId, timeoutMs) => {
+    if (!ctx || typeof ctx.userQuestions?.askTimed !== "function") {
+      throw new Error("ask_user_question requires the userQuestions service (not mounted)");
+    }
+    return ctx.userQuestions.askTimed(request, callId, timeoutMs);
+  });
+  const ask = deps.ask ?? ((request) => {
+    if (!ctx || typeof ctx.userQuestions?.ask !== "function") {
+      throw new Error("ask_user_question requires the userQuestions service (not mounted)");
+    }
+    return ctx.userQuestions.ask(request);
+  });
+
+  return defineTool({
+    name: TOOL_ASK_USER_QUESTION,
+    description:
+      "Ask brief, direct, self-contained questions about missing information, preferences, or decisions. " +
+      "Use user-facing terms; assume no knowledge of background work or internal names. Use distinct stable question IDs. " +
+      "An answer item with empty selected and no custom means the user skipped that question: continue without it, " +
+      "do not ask it again, and do not treat the skip as permission. A pending result instead means no answer batch " +
+      "arrived before the timeout and the user can still answer.",
+    parameters: {
+      questions: {
+        type: "array",
+        required: true,
+        description: "Questions to ask the user.",
+        items: {
+          type: "object",
+          additionalProperties: true,
+          properties: {
+            id: { type: "string", required: true, description: "Stable id for this question; echoed in the answer." },
+            question: { type: "string", required: true, description: "The specific question to ask the user." },
+            header: { type: "string", description: "Optional short heading for the question, such as \"Confirm\" or \"Choose Mode\"." },
+            options: {
+              type: "array",
+              description: "Optional choices to show the user. If you recommend one, put it first and append \"(Recommended)\" to that label.",
+              items: {
+                type: "object",
+                additionalProperties: true,
+                properties: {
+                  label: { type: "string", required: true, description: "Short user-facing option label." },
+                  description: { type: "string", description: "One sentence explaining the tradeoff or impact." },
+                },
+              },
+            },
+            multi_select: { type: "boolean", description: "Whether the user may select more than one option. Defaults to false." },
+          },
+        },
+      },
+      [timeoutParam]: {
+        type: "integer",
+        description: `Wait seconds for the entire batch (default ${defaultTimeout}); omit unless the user specifies a duration. Use -1 only when an answer is required before proceeding.`,
+      },
+    },
+    output: {
+      schema: {
+        oneOf: [
+          {
+            type: "object",
+            additionalProperties: false,
+            properties: {
+              pending: { type: "boolean", enum: [true], required: true, description: "True when the foreground wait expired before the user submitted an answer batch. The questions remain answerable; this is not a skipped answer." },
+              callId: { type: "string", required: true, description: "Tool call whose unanswered questions remain pending." },
+              message: { type: "string", required: true, description: "How to continue while the questions stay answerable." },
+            },
+          },
+          {
+            type: "object",
+            additionalProperties: false,
+            properties: {
+              answers: {
+                type: "array",
+                required: true,
+                description: "Submitted answer batch with one item per question. A skipped question has empty selected and no custom; unlike pending, the user has completed the batch.",
+                items: {
+                  type: "object",
+                  additionalProperties: false,
+                  properties: {
+                    id: { type: "string", required: true, description: "Stable question id echoed from the request." },
+                    selected: { type: "array", required: true, items: { type: "string" }, description: "Selected option labels. Empty with no custom means the user explicitly skipped this question." },
+                    custom: { type: "string", description: "Optional free-form answer; omitted for a skipped question." },
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+      render: (_args, value) => [{ type: "text", text: JSON.stringify(value) }],
+    },
+    async execute(args, exec) {
+      const timeout = validateAskUserTimeout(args[timeoutParam] ?? defaultTimeout);
+      validateQuestionIds(args.questions);
+      const request = questionServiceRequest(args.questions, exec);
+      if (timeout !== -1) {
+        if (exec.agent === undefined) throw new Error("timed questions require a live agent");
+        const result = await askTimed({ ...request, agent: exec.agent }, exec.callId, timeout * 1e3);
+        return "pending" in result
+          ? {
+              ...result,
+              message:
+                "No answer batch arrived before the timeout. This is pending, not a skipped answer. " +
+                "Continue useful independent work. The user can still answer; their reply will be a user message " +
+                "identified as answer_to_pending_question with this callId and the original questions. " +
+                "Do not treat this as permission.",
+            }
+          : answerResultFor(result);
+      }
+      return answerResultFor(await ask({ ...request, wait: { callId: exec.callId } }));
+    },
+  });
+}
+
+/**
+ * The user-questions/request answerer: claims ask_user_question batches and
+ * resolves them through the Next-side question broker (published on
+ * globalThis in the native runtime process). No broker (CLI runtime,
+ * plain-node tests) delegates via next() — the service then fails closed
+ * (NO_PROVIDER), which the timed tool maps to a pending result instead of a
+ * hang. The returned batch is the exact AskUserQuestionAnswer shape the
+ * service returns to the tool.
+ *
+ * `lookupBroker` is a test seam defaulting to the globalThis lookup.
+ */
+export function createUserQuestionAnswerer({
+  lookupBroker = () => globalThis?.[QUESTION_BROKER_KEY],
+} = {}) {
+  return async function userQuestionsRequest(req, next) {
+    if (!req || !Array.isArray(req.questions) || req.questions.length === 0) return next();
+    const broker = lookupBroker();
+    if (!broker || typeof broker.request !== "function") return next();
+    const pending = broker.request({
+      questions: req.questions.map((question) => ({
+        id: question.id,
+        question: question.question,
+      })),
+      ...(req.wait?.callId !== undefined ? { callId: req.wait.callId } : {}),
+      signal: req.signal,
+    });
+    const onAbort = () => pending.cancel();
+    req.signal?.addEventListener("abort", onAbort, { once: true });
+    try {
+      return await pending.decision;
+    } finally {
+      req.signal?.removeEventListener("abort", onAbort);
+    }
+  };
+}
+
 function apply(ctx) {
   for (const definition of toolDefinitions()) {
     ctx.tools.register(definition);
@@ -519,12 +772,19 @@ function apply(ctx) {
     // names appear on the native host's stderr during tree mount.
     process.stderr.write(`[cyraops-crm] registered tool: ${definition.name}\n`);
   }
+  ctx.tools.register(createAskUserQuestionDefinition({ ctx }));
+  process.stderr.write(`[cyraops-crm] registered tool: ${TOOL_ASK_USER_QUESTION}\n`);
   // Approval wiring: the ask gate for the write tool (tools/pre-execute) and
   // the answerer that bridges decisions to the Next-side broker
   // (approval/request). Both are no-ops for tools they do not own.
   ctx.on("tools/pre-execute", updateTicketAskGate());
   ctx.on("approval/request", createApprovalAnswerer());
-  process.stderr.write("[cyraops-crm] approval wiring installed (ask gate + broker answerer)\n");
+  // Ask-user wiring: the answerer that bridges question batches to the
+  // Next-side question broker (user-questions/request), resolved by
+  // /api/harness/answer. A missing broker delegates and the service fails
+  // closed; with the broker, the user's typed answer becomes the tool result.
+  ctx.on("user-questions/request", createUserQuestionAnswerer());
+  process.stderr.write("[cyraops-crm] approval + ask-user wiring installed (ask gate + broker answerers)\n");
 }
 
 export { apply };

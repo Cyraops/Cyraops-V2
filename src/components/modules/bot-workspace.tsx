@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bot, Check, ChevronDown, Loader2, Clock, Copy, CornerDownLeft, FileText, Globe, MessageSquare, Mic, MicOff, Paperclip, Plus, RefreshCw, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
+import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Globe, MessageSquare, Mic, MicOff, Paperclip, Plus, RefreshCw, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
 import { RoutinesModal } from "@/components/routines/routines-modal";
 import { Markdown } from "@/components/ai/markdown";
 import { parseToolSteps, ToolActivity, type ToolStep } from "@/components/ai/tool-activity";
@@ -30,12 +30,147 @@ interface ChatItem {
   streaming?: boolean;
   /** Wall-clock time the turn's tools took. */
   toolDurationMs?: number;
+  /** Harness-only: the terminal done payload's usage (V1 turns never carry it). */
+  usage?: { inputTokens: number; outputTokens: number; costUsd: number } | null;
+  /** Harness-only: per-tool timeline entries streamed with the turn. */
+  harnessTools?: HarnessToolEntry[];
+}
+
+/** One tool run of a harness turn, as the collapsible tools line expands it. */
+interface HarnessToolEntry {
+  name: string;
+  status: "running" | "completed" | "error";
+  result?: string;
 }
 
 interface Conversation {
   id: string;
   title: string;
   updatedAt: string;
+}
+
+/** "1.2k tokens · $0.002" — the muted caption under a harness assistant message. */
+function formatTokenCount(tokens: number): string {
+  if (tokens < 1000) return `${tokens}`;
+  const scaled = tokens / 1000;
+  return `${scaled >= 10 ? Math.round(scaled) : scaled.toFixed(1).replace(/\.0$/, "")}k`;
+}
+
+function formatCostUsd(costUsd: number): string {
+  const value = Math.max(0, costUsd);
+  if (value > 0 && value < 0.01) return `$${value.toFixed(3)}`;
+  if (value > 0 && value < 1) return `$${value.toFixed(2)}`;
+  return `$${value.toFixed(2)}`;
+}
+
+/**
+ * The harness tool timeline (TASK 3): a small collapsible line under the
+ * assistant bubble — collapsed "2 tools · cyraops_list_tickets,
+ * cyraops_update_ticket"; expanded per-tool name + status + truncated result.
+ * Rendered only for harness turns (harnessTools present); V1 turns keep the
+ * existing ToolActivity step trail unchanged.
+ */
+function HarnessToolTimeline({ tools, live }: { tools: HarnessToolEntry[]; live: boolean }) {
+  if (tools.length === 0) return null;
+  const names = tools.map((tool) => tool.name);
+  const errored = tools.filter((tool) => tool.status === "error").length;
+  return (
+    <details
+      open={live ? true : undefined}
+      className="group mt-1.5 w-fit min-w-[190px] max-w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] text-meta text-[var(--muted)]"
+    >
+      <summary className="flex cursor-pointer list-none items-center gap-1.5 px-2 py-1 font-medium transition hover:text-[var(--text)]">
+        <ChevronRight size={12} className="shrink-0 transition-transform group-open:rotate-90" />
+        <span className="truncate">
+          {tools.length} tool{tools.length > 1 ? "s" : ""}
+          <span className="text-[var(--faint)]"> · </span>
+          {names.join(", ")}
+        </span>
+        {errored > 0 && <span className="shrink-0 text-rose-600 dark:text-rose-400">{errored} error{errored > 1 ? "s" : ""}</span>}
+      </summary>
+      <div className="space-y-1 border-t border-[var(--border)] px-2 py-1.5">
+        {tools.map((tool, index) => (
+          <div key={`${tool.name}-${index}`} className="flex items-start gap-1.5 leading-5">
+            {tool.status === "running" ? (
+              <Loader2 size={10} className="mt-0.5 shrink-0 animate-spin text-amber-600 dark:text-amber-400" />
+            ) : tool.status === "error" ? (
+              <X size={10} className="mt-0.5 shrink-0 text-rose-600 dark:text-rose-400" />
+            ) : (
+              <Check size={10} className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+            )}
+            <span className="min-w-0">
+              <span className="block truncate font-mono text-[11px] text-[var(--text)]" title={tool.name}>
+                {tool.name}
+              </span>
+              <span className="block text-caption text-[var(--muted)]">
+                {tool.status === "running" ? "running…" : tool.status === "error" ? "error" : "completed"}
+                {tool.result !== undefined && tool.status !== "running" && (
+                  <span className="break-words"> · {tool.result}</span>
+                )}
+              </span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+/**
+ * The inline question card (TASK 1): a small text input under the transcript
+ * while the harness waits for the user's answer. No new screens — the turn's
+ * stream stays open and the answer resumes it through /api/harness/answer.
+ */
+function InlineQuestion({
+  questionId,
+  text,
+  draft,
+  sending,
+  answered,
+  onDraft,
+  onSubmit,
+}: {
+  questionId: string;
+  text: string;
+  draft: string;
+  sending: boolean;
+  answered: boolean;
+  onDraft: (value: string) => void;
+  onSubmit: () => void;
+}) {
+  return (
+    <div className="cy-rise mx-auto mt-2 w-full max-w-3xl rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-3">
+      <p className="text-meta font-semibold text-[var(--text)]">{text}</p>
+      {answered ? (
+        <p className="mt-1.5 flex items-center gap-1.5 text-caption font-medium text-emerald-600 dark:text-emerald-400">
+          <Check size={12} /> Answer sent — the assistant is continuing.
+        </p>
+      ) : (
+        <form
+          className="mt-2 flex items-center gap-2"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!draft.trim() || sending) return;
+            onSubmit();
+          }}
+        >
+          <input
+            value={draft}
+            onChange={(event) => onDraft(event.target.value)}
+            placeholder="Type your answer…"
+            maxLength={2000}
+            autoFocus
+            className="min-w-0 flex-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-prose outline-none placeholder:text-[var(--muted)] focus:border-accent"
+            aria-label={`Answer for question ${questionId}`}
+          />
+          <Button type="submit" disabled={!draft.trim() || sending}>
+            {sending ? <Loader2 size={13} className="animate-spin" /> : <CornerDownLeft size={13} />}
+            Answer
+          </Button>
+        </form>
+      )}
+    </div>
+  );
 }
 
 /** Create a bot from blank or from a template, and edit a bot you own. */
@@ -235,6 +370,11 @@ export function BotWorkspace() {
     canAlwaysAllow?: boolean;
     answered?: "allow" | "deny";
   } | null>(null);
+  /** The inline ask_user_question card while the harness waits for an answer. */
+  const [pendingQuestion, setPendingQuestion] = useState<{ questionId: string; text: string } | null>(null);
+  const [questionDraft, setQuestionDraft] = useState("");
+  const [questionSending, setQuestionSending] = useState(false);
+  const [questionAnswered, setQuestionAnswered] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -889,6 +1029,8 @@ export function BotWorkspace() {
     let replyText = "";
     let toolCallsUsed: string[] = [];
     const steps: ToolStep[] = [];
+    const harnessTools: HarnessToolEntry[] = [];
+    let turnUsage: { inputTokens: number; outputTokens: number; costUsd: number } | null = null;
     const turnStartedAt = Date.now();
     const pushSteps = () =>
       setMessages((prev) =>
@@ -950,6 +1092,10 @@ export function BotWorkspace() {
             const previousCount = existing.reduce((total, step) => total + step.count, 0);
             steps.push({ name: payload.name, status: "running", count: previousCount + 1 });
             pushSteps();
+            // Harness turns carry a callId: feed the collapsible tools line too.
+            if (typeof payload.callId === "string") {
+              harnessTools.push({ name: String(payload.name ?? "tool"), status: "running" });
+            }
           } else if (payload.type === "tool_done") {
             const running = [...steps].reverse().find((step) => step.name === payload.name && step.status === "running");
             if (running) {
@@ -957,9 +1103,25 @@ export function BotWorkspace() {
               running.durationMs = payload.durationMs;
             }
             pushSteps();
+            if (typeof payload.callId === "string") {
+              const entry = [...harnessTools].reverse().find((tool) => tool.name === payload.name && tool.status === "running");
+              if (entry) {
+                entry.status = payload.status === "error" || payload.ok === false ? "error" : "completed";
+                if (typeof payload.result === "string" && payload.result) entry.result = payload.result;
+              }
+            }
           } else if (payload.type === "done") {
             if (payload.reply) replyText = payload.reply;
             toolCallsUsed = Array.isArray(payload.toolCallsUsed) ? payload.toolCallsUsed : [];
+            // TASK 2: the harness done payload carries the turn's usage; the
+            // caption renders only when present (V1 turns have no usage field).
+            if (payload.usage && typeof payload.usage.inputTokens === "number") {
+              turnUsage = {
+                inputTokens: payload.usage.inputTokens,
+                outputTokens: typeof payload.usage.outputTokens === "number" ? payload.usage.outputTokens : 0,
+                costUsd: typeof payload.usage.costUsd === "number" ? payload.usage.costUsd : 0,
+              };
+            }
             if (payload.pendingAction) nextPending = payload.pendingAction;
             if (payload.conversationId) setConversationId(payload.conversationId);
           } else if (payload.type === "approval") {
@@ -974,6 +1136,19 @@ export function BotWorkspace() {
               toolName: payload.toolName,
               summary: payload.summary,
             });
+          } else if (payload.type === "question") {
+            // TASK 1: the model asked the user something mid-turn — surface the
+            // inline question with its small text input while the harness
+            // answerer waterfall holds the turn open.
+            setPendingQuestion({
+              questionId: String(payload.questionId ?? ""),
+              text: String(payload.text ?? "The assistant needs your input."),
+            });
+            setQuestionDraft("");
+            setQuestionAnswered(false);
+          } else if (payload.type === "question_done") {
+            setQuestionAnswered(true);
+            setQuestionSending(false);
           } else if (payload.type === "error") {
             throw new Error(payload.error || "The assistant failed to reply.");
           }
@@ -981,6 +1156,7 @@ export function BotWorkspace() {
       }
 
       for (const step of steps) if (step.status === "running") step.status = "done";
+      for (const tool of harnessTools) if (tool.status === "running") tool.status = "completed";
       const stepDuration = Date.now() - turnStartedAt;
       setMessages((prev) =>
         prev.map((message) =>
@@ -991,11 +1167,16 @@ export function BotWorkspace() {
                 toolCalls: JSON.stringify(steps.length ? steps : toolCallsUsed),
                 streaming: false,
                 toolDurationMs: stepDuration,
+                usage: turnUsage,
+                harnessTools: harnessTools.length > 0 ? harnessTools : undefined,
               }
             : message
         )
       );
       if (nextPending) setPendingAction(nextPending);
+      setPendingQuestion(null);
+      setQuestionDraft("");
+      setQuestionAnswered(false);
       speak(replyText);
       void loadConversations();
       // A page tool ran during this turn — surface the result immediately.
@@ -1028,6 +1209,10 @@ export function BotWorkspace() {
     } finally {
       abortRef.current = null;
       setBusy(false);
+      // A turn that ended (success, error or stop) no longer waits for input.
+      setPendingQuestion(null);
+      setQuestionAnswered(false);
+      setQuestionSending(false);
     }
   };
 
@@ -1085,6 +1270,36 @@ export function BotWorkspace() {
     } catch {
       setPendingAction((current) => (current ? { ...current, answered: undefined } : current));
       setError("Could not process the action.");
+    }
+  };
+
+  /**
+   * TASK 1: send the inline question's typed answer to /api/harness/answer.
+   * The harness answerer waterfall resolves with the text, the tool result
+   * carries it back to the model, and the SAME SSE stream continues to done.
+   */
+  const answerQuestion = async () => {
+    if (!pendingQuestion || !questionDraft.trim() || questionSending) return;
+    const questionId = pendingQuestion.questionId;
+    const answer = questionDraft.trim();
+    setQuestionSending(true);
+    try {
+      const response = await fetch("/api/harness/answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId, answer }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.success) {
+        setQuestionSending(false);
+        setError(data.error || "That answer could not be sent.");
+        return;
+      }
+      setQuestionAnswered(true);
+      setQuestionSending(false);
+    } catch {
+      setQuestionSending(false);
+      setError("Could not send the answer.");
     }
   };
 
@@ -1486,7 +1701,14 @@ export function BotWorkspace() {
                           if (block.kind === "text") {
                             return <TextBlock key={index} block={block} assistant={message.role === "assistant"} />;
                           }
-                          if (block.kind === "steps") return <StepBlock key={index} block={block} />;
+                          if (block.kind === "steps") {
+                            // Harness turns render their own richer collapsible
+                            // tools line under the bubble (TASK 3), so the
+                            // duplicate V1 step trail is suppressed for them;
+                            // V1-engine messages keep it exactly as before.
+                            if (message.harnessTools && message.harnessTools.length > 0) return null;
+                            return <StepBlock key={index} block={block} />;
+                          }
                           if (block.kind === "files") return <FileBlock key={index} block={block} />;
                           return null;
                         })
@@ -1524,12 +1746,21 @@ export function BotWorkspace() {
                         return null;
                       }
                     })()}
-                    {message.role === "assistant" && parseToolSteps(message.toolCalls).length > 0 && (
-                      <ToolActivity
-                        steps={parseToolSteps(message.toolCalls)}
-                        live={Boolean(message.streaming) && busy}
-                        durationMs={message.toolDurationMs}
-                      />
+                    {message.role === "assistant" && message.harnessTools && message.harnessTools.length > 0 ? (
+                      <HarnessToolTimeline tools={message.harnessTools} live={Boolean(message.streaming) && busy} />
+                    ) : (
+                      message.role === "assistant" && parseToolSteps(message.toolCalls).length > 0 && (
+                        <ToolActivity
+                          steps={parseToolSteps(message.toolCalls)}
+                          live={Boolean(message.streaming) && busy}
+                          durationMs={message.toolDurationMs}
+                        />
+                      )
+                    )}
+                    {message.role === "assistant" && message.usage && (
+                      <p className="mt-1 text-caption text-[var(--faint)]">
+                        {formatTokenCount(message.usage.inputTokens)} tokens · {formatCostUsd(message.usage.costUsd)}
+                      </p>
                     )}
                     {message.role === "assistant" && message.content && (
                       <div className="mt-1 flex items-center gap-2">
@@ -1562,6 +1793,17 @@ export function BotWorkspace() {
                     canAlwaysAllow: pendingAction.canAlwaysAllow,
                   }}
                   onDecide={(approve, alwaysAllow) => void decide(approve, alwaysAllow)}
+                />
+              )}
+              {pendingQuestion && (
+                <InlineQuestion
+                  questionId={pendingQuestion.questionId}
+                  text={pendingQuestion.text}
+                  draft={questionDraft}
+                  sending={questionSending}
+                  answered={questionAnswered}
+                  onDraft={setQuestionDraft}
+                  onSubmit={() => void answerQuestion()}
                 />
               )}
             </div>

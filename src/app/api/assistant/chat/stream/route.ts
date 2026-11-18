@@ -13,12 +13,15 @@ import { streamHarnessTurn, harnessTaskForTurn } from "@/lib/harness/bot-stream"
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
 import type { HarnessEvent } from "@/lib/harness/client";
 import { approvalBroker } from "@/lib/harness/approval-broker";
+import { toolCallsUsedOf } from "@/lib/harness/events";
 import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import {
   createHarnessApprovalRow,
   installApprovalDecisionHook,
+  maskToolOutput,
   persistHarnessTurnAudit,
   toolInputForApproval,
+  usageForDonePayload,
   type ToolCallTimings,
 } from "@/lib/harness/audit";
 
@@ -192,6 +195,7 @@ async function streamHarnessReply(
       // All writes are best-effort and never fail the chat stream.
       const auditEvents: HarnessEvent[] = [];
       const toolTimings = new Map<string, { call?: number; result?: number }>();
+      const toolNames = new Map<string, string>();
       const auditTimings: ToolCallTimings = {
         get: (callId) => toolTimings.get(callId),
       };
@@ -203,6 +207,14 @@ async function streamHarnessReply(
         } catch {
           // client disconnected
         }
+      };
+
+      /** The tool-result text the collapsible timeline shows (masked + truncated). */
+      const truncatedToolResult = (result: unknown): string | undefined => {
+        const text = maskToolOutput(result);
+        if (text === null) return undefined;
+        const trimmed = text.trim();
+        return trimmed.length > 160 ? `${trimmed.slice(0, 160)}…` : trimmed;
       };
 
       try {
@@ -305,17 +317,34 @@ async function streamHarnessReply(
           // The resolved, role-gated permission mode for this turn.
           permissionMode,
           onText: (chunk: string) => send({ type: "token", content: chunk }),
-          // Collect the turn's raw events for the post-turn audit write.
+          // Collect the turn's raw events for the post-turn audit write, and
+          // relay tool calls as live SSE events (TASK 3: tool timeline) in the
+          // exact per-event shape the chat UI already renders for V1 —
+          // `name`/`ok`/`durationMs` plus the harness-only `callId` and the
+          // masked+truncated `result` the collapsible tools line expands.
           onEvent: (event) => {
             auditEvents.push(event);
             if (event.type === "tool_call" && typeof event.callId === "string") {
               const timing = toolTimings.get(event.callId) ?? {};
               timing.call = Date.now();
               toolTimings.set(event.callId, timing);
+              const tool = typeof event.tool === "string" && event.tool ? event.tool : "tool";
+              toolNames.set(event.callId, tool);
+              send({ type: "tool", name: tool, status: "running", callId: event.callId });
             } else if (event.type === "tool_result" && typeof event.callId === "string") {
               const timing = toolTimings.get(event.callId) ?? {};
               timing.result = Date.now();
               toolTimings.set(event.callId, timing);
+              const completed = event.status === "completed";
+              send({
+                type: "tool_done",
+                name: toolNames.get(event.callId) ?? "tool",
+                ok: completed,
+                callId: event.callId,
+                durationMs: Math.max(0, (timing.result ?? 0) - (timing.call ?? 0)),
+                status: completed ? "completed" : "error",
+                result: truncatedToolResult(event.result),
+              });
             }
           },
           // Approval mapping: the harness's ask → the same SSE shape the V1
@@ -342,9 +371,27 @@ async function streamHarnessReply(
               input: toolInputForApproval(auditEvents, approval.callId, approval.toolName),
             });
           },
+          // Ask-user mapping (TASK 1): an ask_user_question tool call becomes
+          // a { type: "question" } SSE payload the inline question UI renders.
+          // The harness answerer waterfall holds the turn open until
+          // /api/harness/answer resolves the question broker.
+          onQuestion: (question) => {
+            send({
+              type: "question",
+              questionId: question.questionId,
+              text: question.text,
+              questions: question.questions,
+              ...(question.callId ? { callId: question.callId } : {}),
+            });
+          },
+          onQuestionDecided: (info) => {
+            send({ type: "question_done", questionId: info.questionId, timedOut: info.timedOut });
+          },
           onDone: () =>
             console.info(`[assistant/stream] harness turn finished (conversation=${conversation.id})`),
         });
+
+        const toolCallsUsed = toolCallsUsedOf(auditEvents);
 
         await db.assistantMessage.create({
           data: {
@@ -352,7 +399,7 @@ async function streamHarnessReply(
             conversationId: conversation.id,
             role: "assistant",
             content: result.text,
-            toolCalls: JSON.stringify([]),
+            toolCalls: JSON.stringify(toolCallsUsed),
           },
         });
 
@@ -364,8 +411,12 @@ async function streamHarnessReply(
         send({
           type: "done",
           reply: result.text,
-          toolCallsUsed: [],
+          toolCallsUsed,
           conversationId: conversation.id,
+          // TASK 2: usage display. The same events audit.ts persists, cost via
+          // the existing estimate mapper; absent usage keeps the field null so
+          // the UI shows no caption (V1-engine turns never carry it).
+          usage: usageForDonePayload(auditEvents),
           // Mirror the V1 pendingAction shape so the SAME approval card
           // renders in the unchanged UI (answered state: the decision has
           // already been made by the time the turn completes).

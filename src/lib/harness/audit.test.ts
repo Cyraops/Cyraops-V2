@@ -14,6 +14,7 @@ import {
   maskToolOutput,
   persistHarnessToolCalls,
   persistHarnessUsage,
+  usageForDonePayload,
 } from "./audit";
 
 const call = (callId: string, tool: string, input?: unknown): HarnessEvent => ({
@@ -290,5 +291,29 @@ describe("persistence writes the same shapes the V1 path writes", () => {
       await db.aiToolCall.deleteMany({ where: { conversationId } }).catch(() => {});
       await db.aiUsageLog.deleteMany({ where: { userId } }).catch(() => {});
     }
+  });
+});
+
+describe("usageForDonePayload shapes the harness done SSE usage (TASK 2)", () => {
+  test("maps the last step_end through the existing cost estimator", () => {
+    const events: HarnessEvent[] = [
+      { type: "status", phase: "step_start" },
+      { type: "status", phase: "step_end", usage: { inputTokens: 100, outputTokens: 25, totalTokens: 125 } },
+      { type: "status", phase: "step_end", usage: { inputTokens: 1_000_000, outputTokens: 1_000_000, totalTokens: 2_000_000 } },
+    ];
+    const payload = usageForDonePayload(events, { HARNESS_MODEL: "deepseek-v4-flash-vision-exp" });
+    assert.ok(payload);
+    assert.equal(payload.inputTokens, 1_000_000);
+    assert.equal(payload.outputTokens, 1_000_000);
+    // deepseek rates: $0.14 + $0.28 per 1M
+    assert.ok(Math.abs(payload.costUsd - 0.42) < 1e-9, `expected 0.42, got ${payload.costUsd}`);
+  });
+
+  test("returns null when the turn carried no step_end usage (no caption in the UI)", () => {
+    assert.equal(
+      usageForDonePayload([{ type: "status", phase: "step_start" }, { type: "final", text: "ok" }], {}),
+      null
+    );
+    assert.equal(usageForDonePayload([], {}), null);
   });
 });

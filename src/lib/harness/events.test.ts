@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { finalTextOf, parseHarnessLine, sessionIdOf, stepCountOf, usageOf } from "./events";
+import { finalTextOf, parseHarnessLine, sessionIdOf, stepCountOf, toolCallsUsedOf, usageOf } from "./events";
 
 const session = `{"type":"session","sessionId":"session-abc","cwd":"/tmp"}`;
 const stepStart = `{"type":"status","phase":"step_start","turn":1,"step":1}`;
@@ -35,4 +35,21 @@ test("usage comes from the last step_end that carries it", () => {
 
 test("step count counts completed steps", () => {
   assert.equal(stepCountOf([{ type: "status", phase: "step_end" }, { type: "status", phase: "step_start" }, { type: "status", phase: "step_end" }]), 2);
+});
+
+test("toolCallsUsedOf lists distinct tool names in first-call order", () => {
+  assert.deepEqual(
+    toolCallsUsedOf([
+      { type: "tool_call", callId: "c1", tool: "cyraops_list_tickets", input: {} },
+      { type: "tool_call", callId: "c2", tool: "cyraops_list_tickets", input: {} },
+      { type: "tool_call", callId: "c3", tool: "cyraops_update_ticket", input: {} },
+      { type: "tool_result", callId: "c1", status: "completed" },
+    ]),
+    ["cyraops_list_tickets", "cyraops_update_ticket"]
+  );
+});
+
+test("toolCallsUsedOf ignores malformed tool_call events", () => {
+  assert.deepEqual(toolCallsUsedOf([{ type: "tool_call", callId: "c1" }, { type: "tool_call", tool: "" }]), []);
+  assert.deepEqual(toolCallsUsedOf([{ type: "status" }]), []);
 });

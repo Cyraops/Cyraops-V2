@@ -50,6 +50,12 @@ import {
   createListScheduleDefinition,
   createUpdateTicketDefinition,
   createApprovalAnswerer,
+  createAskUserQuestionDefinition,
+  createUserQuestionAnswerer,
+  answerResultFor,
+  questionServiceRequest,
+  validateAskUserTimeout,
+  validateQuestionIds,
   updateTicketAskGate,
   updateTicketSummary,
   toolDefinitions,
@@ -58,6 +64,8 @@ import {
   TOOL_SEARCH_CONTACTS,
   TOOL_LIST_SCHEDULE,
   TOOL_UPDATE_TICKET,
+  TOOL_ASK_USER_QUESTION,
+  ASK_USER_DEFAULT_TIMEOUT,
 } from "./index.js";
 
 /** A findMany-capable stub with the shape the bridge uses. */
@@ -907,4 +915,217 @@ test("tool: the approval answerer cancels through the broker when the request si
   const outcome = await outcomePromise;
   assert.equal(outcome, "cancelled");
   assert.deepEqual(broker.cancelledIds, ["a3"]);
+});
+
+// ---------------------------------------------------------------------------
+// TASK 1 (ask-user): the ask_user_question tool definition and the
+// user-questions/request answerer that bridges to the question broker.
+// ---------------------------------------------------------------------------
+
+/** The exec shape the harness tool pipeline hands execute(args, exec). */
+function stubExec(overrides: Record<string, unknown> = {}) {
+  return {
+    agent: { id: "agent-1" },
+    signal: new AbortController().signal,
+    callId: "call-7",
+    ...overrides,
+  };
+}
+
+test("tool: validateAskUserTimeout accepts -1 and positive integers up to the ceiling", () => {
+  assert.equal(validateAskUserTimeout(-1), -1);
+  assert.equal(validateAskUserTimeout(1), 1);
+  assert.equal(validateAskUserTimeout(120), 120);
+  for (const bad of [0, -2, 1.5, "3", Number.NaN, Number.POSITIVE_INFINITY, 2_147_484]) {
+    assert.throws(() => validateAskUserTimeout(bad), /timeout must be -1 or a positive integer/);
+  }
+});
+
+test("tool: validateQuestionIds rejects duplicate ids within one call", () => {
+  validateQuestionIds([{ id: "a" }, { id: "b" }]);
+  assert.throws(() => validateQuestionIds([{ id: "a" }, { id: "a" }]), /must be unique/);
+});
+
+test("tool: questionServiceRequest maps the model schema into the service request", () => {
+  const exec = stubExec();
+  const request = questionServiceRequest(
+    [
+      { id: "q1", question: "Which ticket?", options: [{ label: "A" }] },
+      { id: "q2", question: "Why?", multi_select: false },
+    ],
+    exec
+  );
+  assert.deepEqual(request, {
+    questions: [
+      { id: "q1", question: "Which ticket?", options: [{ label: "A" }] },
+      { id: "q2", question: "Why?", multiSelect: false },
+    ],
+    agent: exec.agent,
+    signal: exec.signal,
+  });
+});
+
+test("tool: answerResultFor copies the service batch into the model-facing result", () => {
+  assert.deepEqual(
+    answerResultFor({ answers: [{ id: "q", selected: ["A"], custom: "text" }] }),
+    { answers: [{ id: "q", selected: ["A"], custom: "text" }] }
+  );
+  assert.deepEqual(answerResultFor({ answers: [{ id: "q", selected: [] }] }), {
+    answers: [{ id: "q", selected: [] }],
+  });
+});
+
+test("tool: ask_user_question definition declares the timed schema (timeout param + oneOf output)", () => {
+  const definition = createAskUserQuestionDefinition({
+    ctx: {},
+    askTimed: async () => ({ answers: [] }),
+    ask: async () => ({ answers: [] }),
+  });
+  assert.equal(definition.name, TOOL_ASK_USER_QUESTION);
+  assert.match(definition.description, /ask brief, direct, self-contained questions/i);
+  assert.equal(definition.parameters.properties.questions.type, "array");
+  assert.equal(definition.parameters.properties.timeout.type, "integer");
+  assert.equal(definition.output.schema.oneOf.length, 2);
+  // The pending branch and the answers branch are both advertised.
+  assert.ok(definition.output.schema.oneOf.some((branch: any) => branch.properties.answers));
+  assert.ok(definition.output.schema.oneOf.some((branch: any) => branch.properties.pending));
+});
+
+test("tool: ask_user_question execute forwards the timed wait and returns the answer batch", async () => {
+  const seen: Array<{ request: Record<string, unknown>; callId: string; timeoutMs: number }> = [];
+  const definition = createAskUserQuestionDefinition({
+    ctx: {},
+    askTimed: async (request: Record<string, unknown>, callId: string, timeoutMs: number) => {
+      seen.push({ request, callId, timeoutMs });
+      return { answers: [{ id: "q1", selected: [], custom: "seed-task-billing" }] };
+    },
+    ask: async () => {
+      throw new Error("the timed path must be used for finite timeouts");
+    },
+  });
+  const exec = stubExec();
+  const result = await definition.execute(
+    { questions: [{ id: "q1", question: "Which ticket should I update?" }] },
+    exec
+  );
+  assert.deepEqual(result, { answers: [{ id: "q1", selected: [], custom: "seed-task-billing" }] });
+  assert.equal(seen.length, 1);
+  assert.equal(seen[0].callId, "call-7");
+  assert.equal(seen[0].timeoutMs, ASK_USER_DEFAULT_TIMEOUT * 1e3);
+  assert.equal(seen[0].request.agent, exec.agent);
+  assert.deepEqual(seen[0].request.questions, [{ id: "q1", question: "Which ticket should I update?" }]);
+});
+
+test("tool: ask_user_question execute honors an explicit timeout and -1 falls back to the blocking ask", async () => {
+  const timed: number[] = [];
+  const blocking: Array<{ wait: { callId: string } }> = [];
+  const definition = createAskUserQuestionDefinition({
+    ctx: {},
+    askTimed: async (_request: unknown, _callId: string, timeoutMs: number) => {
+      timed.push(timeoutMs);
+      return { answers: [] };
+    },
+    ask: async (request: any) => {
+      blocking.push({ wait: request.wait });
+      return { answers: [{ id: "q", selected: [], custom: "x" }] };
+    },
+  });
+  const exec = stubExec();
+  await definition.execute({ questions: [{ id: "q", question: "q?" }], timeout: 30 }, exec);
+  assert.deepEqual(timed, [30_000]);
+  const blockingResult = await definition.execute({ questions: [{ id: "q", question: "q?" }], timeout: -1 }, exec);
+  assert.deepEqual(blockingResult, { answers: [{ id: "q", selected: [], custom: "x" }] });
+  assert.deepEqual(blocking, [{ wait: { callId: "call-7" } }]);
+});
+
+test("tool: ask_user_question execute passes a pending result through with the model-facing message", async () => {
+  const definition = createAskUserQuestionDefinition({
+    ctx: {},
+    askTimed: async () => ({ pending: true, callId: "call-7" }),
+    ask: async () => ({ answers: [] }),
+  });
+  const result = await definition.execute({ questions: [{ id: "q", question: "q?" }] }, stubExec());
+  assert.equal(result.pending, true);
+  assert.equal(result.callId, "call-7");
+  assert.match(result.message, /pending, not a skipped answer/);
+});
+
+test("tool: the question answerer delegates when no broker is installed", async () => {
+  const answerer = createUserQuestionAnswerer({ lookupBroker: () => undefined });
+  const outcome = await answerer(
+    { questions: [{ id: "q", question: "Which ticket?" }] },
+    async () => "fallback"
+  );
+  assert.equal(outcome, "fallback");
+});
+
+test("tool: the question answerer delegates requests without questions", async () => {
+  const answerer = createUserQuestionAnswerer({
+    lookupBroker: () => {
+      throw new Error("broker must not be consulted");
+    },
+  });
+  const outcome = await answerer({}, async () => "delegated");
+  assert.equal(outcome, "delegated");
+});
+
+test("tool: the question answerer forwards the batch to the broker and returns its batch", async () => {
+  const seen: Array<Record<string, unknown>> = [];
+  const batch = { answers: [{ id: "q", selected: [], custom: "typed" }] };
+  const broker = {
+    request(info: Record<string, unknown>) {
+      seen.push(info);
+      return { questionId: "call-1", decision: Promise.resolve(batch), cancel: () => {} };
+    },
+  };
+  const answerer = createUserQuestionAnswerer({ lookupBroker: () => broker });
+  const outcome = await answerer(
+    {
+      questions: [
+        { id: "q", question: "Which ticket?", options: [{ label: "A" }] },
+        { id: "q2", question: "Why?" },
+      ],
+      wait: { callId: "call-1" },
+    },
+    async () => "never"
+  );
+  assert.equal(outcome, batch);
+  assert.deepEqual(seen, [
+    {
+      questions: [
+        { id: "q", question: "Which ticket?" },
+        { id: "q2", question: "Why?" },
+      ],
+      callId: "call-1",
+      signal: undefined,
+    },
+  ]);
+});
+
+test("tool: the question answerer cancels through the broker when the request signal aborts", async () => {
+  const controller = new AbortController();
+  let rejectDecision: ((error: Error) => void) | undefined;
+  const cancelled: string[] = [];
+  const broker = {
+    request() {
+      return {
+        questionId: "call-2",
+        decision: new Promise((_resolve, reject) => {
+          rejectDecision = reject;
+        }),
+        cancel() {
+          cancelled.push("call-2");
+          rejectDecision?.(new Error("aborted"));
+        },
+      };
+    },
+  };
+  const answerer = createUserQuestionAnswerer({ lookupBroker: () => broker });
+  const outcomePromise = answerer(
+    { questions: [{ id: "q", question: "Which ticket?" }], signal: controller.signal },
+    async () => "never"
+  );
+  controller.abort();
+  await assert.rejects(() => outcomePromise, /aborted/);
+  assert.deepEqual(cancelled, ["call-2"]);
 });

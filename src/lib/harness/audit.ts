@@ -346,3 +346,29 @@ export async function persistHarnessTurnAudit(params: {
 export function estimatedCostFor(usage: HarnessUsageParams): number {
   return estimateCostUsd(usage.model, usage.promptTokens, usage.completionTokens);
 }
+
+/** The exact usage payload the harness done SSE carries (TASK 2: usage display). */
+export interface HarnessDoneUsage {
+  inputTokens: number;
+  outputTokens: number;
+  costUsd: number;
+}
+
+/**
+ * Shape the terminal done payload's usage from the same events the audit
+ * persistence uses (the last step_end), with the cost from the existing
+ * estimate mapper. Null when the turn carried no usage — the UI then shows no
+ * caption (V1-engine turns never get one).
+ */
+export function usageForDonePayload(
+  events: HarnessEvent[],
+  env: { [key: string]: string | undefined } = process.env
+): HarnessDoneUsage | null {
+  const usage = harnessUsageParams(events, env);
+  if (!usage) return null;
+  return {
+    inputTokens: usage.promptTokens,
+    outputTokens: usage.completionTokens,
+    costUsd: estimatedCostFor(usage),
+  };
+}

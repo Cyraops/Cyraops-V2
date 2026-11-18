@@ -1,0 +1,105 @@
+[
+  {
+    "type": "token",
+    "content": "I'll look up the open tickets in the CRM."
+  },
+  {
+    "type": "tool",
+    "name": "cyraops_list_tickets",
+    "status": "running",
+    "callId": "call_00_ET_JXvhH3CRJRxsPTRvfLii5519"
+  },
+  {
+    "type": "tool_done",
+    "name": "cyraops_list_tickets",
+    "ok": true,
+    "callId": "call_00_ET_JXvhH3CRJRxsPTRvfLii5519",
+    "durationMs": 47,
+    "status": "completed",
+    "result": "{\"count\":3,\"tickets\":[{\"id\":\"seed-task-imports\",\"title\":\"Triage customer import failures\",\"status\":\"BACKLOG\",\"priority\":\"LOW\",\"assignee\":\"Tanveer Saini\"},{\"id\":…"
+  },
+  {
+    "type": "token",
+    "content": "There are **3 open tickets**:\n\n| ID | Title | Status | Priority | Assignee |\n|---|---|---|---|---|\n| `seed-task-imports` | Triage customer import failures | BACKLOG | LOW | Tanveer Saini |\n| `seed-task-backups` | Restore nightly database backups | TODO | HIGH | Tanveer Saini |\n| `seed-task-billing` | Migrate billing webhooks to v2 | IN_PROGRESS | MEDIUM | Priya Nair |\n\nBreakdown by status: 1 backlog, 1 to-do, 1 in progress, 0 in review. Let me know if you'd like to filter by status, search by keyword, or update any of these."
+  },
+  {
+    "type": "done",
+    "reply": "There are **3 open tickets**:\n\n| ID | Title | Status | Priority | Assignee |\n|---|---|---|---|---|\n| `seed-task-imports` | Triage customer import failures | BACKLOG | LOW | Tanveer Saini |\n| `seed-task-backups` | Restore nightly database backups | TODO | HIGH | Tanveer Saini |\n| `seed-task-billing` | Migrate billing webhooks to v2 | IN_PROGRESS | MEDIUM | Priya Nair |\n\nBreakdown by status: 1 backlog, 1 to-do, 1 in progress, 0 in review. Let me know if you'd like to filter by status, search by keyword, or update any of these.",
+    "toolCallsUsed": [
+      "cyraops_list_tickets"
+    ],
+    "conversationId": "cmwm6i2q9002wxtc3fk2vqnv2",
+    "usage": {
+      "inputTokens": 241,
+      "outputTokens": 153,
+      "costUsd": 0.00007658
+    },
+    "runtime": "native"
+  },
+  {
+    "type": "tool",
+    "name": "cyraops_list_tickets",
+    "status": "running",
+    "callId": "call_00_UzZCuRXA9knyhfiKyQxg9568"
+  },
+  {
+    "type": "tool_done",
+    "name": "cyraops_list_tickets",
+    "ok": true,
+    "callId": "call_00_UzZCuRXA9knyhfiKyQxg9568",
+    "durationMs": 38,
+    "status": "completed",
+    "result": "{\"count\":3,\"tickets\":[{\"id\":\"seed-task-imports\",\"title\":\"Triage customer import failures\",\"status\":\"BACKLOG\",\"priority\":\"LOW\",\"assignee\":\"Tanveer Saini\"},{\"id\":…"
+  },
+  {
+    "type": "tool",
+    "name": "ask_user_question",
+    "status": "running",
+    "callId": "call_00_HQcb2yGCljyaRjmLcER01401"
+  },
+  {
+    "type": "question",
+    "questionId": "call_00_HQcb2yGCljyaRjmLcER01401",
+    "text": "Which ticket would you like to update?",
+    "questions": [
+      {
+        "id": "ticket_choice",
+        "question": "Which ticket would you like to update?"
+      }
+    ],
+    "callId": "call_00_HQcb2yGCljyaRjmLcER01401"
+  },
+  {
+    "type": "question_done",
+    "questionId": "call_00_HQcb2yGCljyaRjmLcER01401",
+    "timedOut": false
+  },
+  {
+    "type": "tool_done",
+    "name": "ask_user_question",
+    "ok": true,
+    "callId": "call_00_HQcb2yGCljyaRjmLcER01401",
+    "durationMs": 709,
+    "status": "completed",
+    "result": "{\"answers\":[{\"id\":\"ticket_choice\",\"selected\":[],\"custom\":\"seed-task-billing\"}]}"
+  },
+  {
+    "type": "token",
+    "content": "I asked, and here's your answer:\n\n**Your selection: `seed-task-billing`** — \"Migrate billing webhooks to v2\"\n\nFor reference, that ticket's current state:\n- **Status:** IN_PROGRESS\n- **Priority:** MEDIUM\n- **Assignee:** Priya Nair\n\nI've only recorded your choice — no change has been made to the ticket yet. Let me know what you'd like changed (title and/or priority), and I'll run the update for approval."
+  },
+  {
+    "type": "done",
+    "reply": "I asked, and here's your answer:\n\n**Your selection: `seed-task-billing`** — \"Migrate billing webhooks to v2\"\n\nFor reference, that ticket's current state:\n- **Status:** IN_PROGRESS\n- **Priority:** MEDIUM\n- **Assignee:** Priya Nair\n\nI've only recorded your choice — no change has been made to the ticket yet. Let me know what you'd like changed (title and/or priority), and I'll run the update for approval.",
+    "toolCallsUsed": [
+      "cyraops_list_tickets",
+      "ask_user_question"
+    ],
+    "conversationId": "cmwm6i6r60035xtc3a9qnjqa8",
+    "usage": {
+      "inputTokens": 137,
+      "outputTokens": 218,
+      "costUsd": 0.00008022000000000001
+    },
+    "runtime": "native"
+  }
+]

@@ -435,3 +435,101 @@ test("harnessTaskForTurn: attachment context sits between the words and the inst
     "Summarise the file\n\n[Attached files]\n--- notes.txt ---\nhello" + VOICE_SHAPING_INSTRUCTION
   );
 });
+
+test("streamHarnessTurn: forwards question batches to onQuestion and decisions to onQuestionDecided", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "tool_call", callId: "call-1", tool: "ask_user_question", input: {} },
+      {
+        type: "question",
+        questionId: "call-1",
+        text: "Which ticket should I update?",
+        questions: [
+          { id: "q1", question: "Which ticket should I update?" },
+          { id: "q2", question: "What priority?" },
+        ],
+        callId: "call-1",
+      },
+      { type: "question_decided", questionId: "call-1", timedOut: false },
+      { type: "final", text: "Updated" },
+    ],
+  });
+
+  const questions: unknown[] = [];
+  const decided: unknown[] = [];
+  const result = await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-question",
+    tenantId: "tenant-1",
+    task: "ask me which ticket",
+    onText: () => {},
+    onDone: () => {},
+    onQuestion: (question) => questions.push(question),
+    onQuestionDecided: (info) => decided.push(info),
+    store,
+  });
+
+  assert.deepEqual(questions, [
+    {
+      questionId: "call-1",
+      text: "Which ticket should I update?",
+      questions: [
+        { id: "q1", question: "Which ticket should I update?" },
+        { id: "q2", question: "What priority?" },
+      ],
+      callId: "call-1",
+    },
+  ]);
+  assert.deepEqual(decided, [{ questionId: "call-1", timedOut: false }]);
+  assert.deepEqual(result.toolCallsUsed, ["ask_user_question"]);
+});
+
+test("streamHarnessTurn: collects distinct tool names and the last step_end usage in the result", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [
+      { type: "session" },
+      { type: "tool_call", callId: "c1", tool: "cyraops_list_tickets", input: {} },
+      { type: "tool_call", callId: "c2", tool: "cyraops_update_ticket", input: {} },
+      { type: "status", phase: "step_end", usage: { inputTokens: 100, outputTokens: 25, totalTokens: 125 } },
+      { type: "tool_call", callId: "c3", tool: "cyraops_list_tickets", input: {} },
+      { type: "status", phase: "step_end", usage: { inputTokens: 1200, outputTokens: 300, totalTokens: 1500 } },
+      { type: "final", text: "done" },
+    ],
+  });
+
+  const result = await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-tools",
+    tenantId: "tenant-1",
+    task: "list tickets",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+
+  assert.deepEqual(result.toolCallsUsed, ["cyraops_list_tickets", "cyraops_update_ticket"]);
+  assert.deepEqual(result.usage, { inputTokens: 1200, outputTokens: 300 });
+});
+
+test("streamHarnessTurn: a turn without usage yields a null usage result", async () => {
+  const store = memoryStore();
+  const runtime = fakeRuntime(store, {
+    events: [{ type: "session" }, { type: "final", text: "plain" }],
+  });
+
+  const result = await streamHarnessTurn({
+    runtime,
+    conversationId: "conv-nousage",
+    tenantId: "tenant-1",
+    task: "plain",
+    onText: () => {},
+    onDone: () => {},
+    store,
+  });
+
+  assert.deepEqual(result.toolCallsUsed, []);
+  assert.equal(result.usage, null);
+});

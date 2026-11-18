@@ -24,6 +24,17 @@
  * the decision into the result's `approval` field with the exact
  * `pendingAction` shape the V1 approval card renders (id/toolName/summary/
  * answered/canAlwaysAllow), so the SAME UI card displays without UI changes.
+ *
+ * Questions: an `ask_user_question` tool call surfaces as a synthetic
+ * `question` event (questionId/text/questions/callId) while the harness
+ * answerer waterfall holds the turn open; `onQuestion` forwards it to the
+ * route (SSE { type: "question" }) and the user's answer resolves it through
+ * /api/harness/answer. `question_decided` events mark settlements.
+ *
+ * Evidence: the result also carries `toolCallsUsed` (distinct tool names in
+ * first-call order) and `usage` (the last step_end's input/output tokens),
+ * so the route can emit them on the terminal done payload without touching
+ * the audit layer.
  */
 
 import { harnessSessionStore, type AgentRuntime, type RuntimeKind, type Session } from "./runtime";
@@ -67,6 +78,14 @@ export interface StreamHarnessTurnInput {
   /** Receives each approval request the turn surfaces (route → SSE payload). */
   onApproval?: (approval: HarnessApprovalRequest) => void;
   /**
+   * Receives each user-question batch the turn surfaces (route → SSE payload).
+   * The harness answerer waterfall holds the turn open until
+   * /api/harness/answer resolves the question broker.
+   */
+  onQuestion?: (question: HarnessQuestionRequest) => void;
+  /** Receives each question settlement (answered, skipped by timeout, or cancelled). */
+  onQuestionDecided?: (info: { questionId: string; timedOut: boolean }) => void;
+  /**
    * Receives every raw harness event, in stream order. The chat route uses it
    * to collect the turn's audit evidence (tool_call/tool_result pairs, step_end
    * usage, event timestamps) without this module touching the database.
@@ -82,6 +101,16 @@ export interface HarnessApprovalRequest {
   toolName: string;
   summary: string;
   reason?: string;
+  callId?: string;
+}
+
+/** A user-question batch surfaced mid-turn (the inline question UI's input). */
+export interface HarnessQuestionRequest {
+  questionId: string;
+  /** Primary question text the UI renders. */
+  text: string;
+  /** The full batch, one entry per question of the tool call. */
+  questions: Array<{ id: string; question: string }>;
   callId?: string;
 }
 
@@ -104,10 +133,26 @@ export interface StreamHarnessTurnResult {
   runtimeKind: RuntimeKind;
   /** The first approval the turn asked for, with its decision; null when none. */
   approval: HarnessApprovalResult | null;
+  /** Distinct tool names the turn called, in first-call order (done payload). */
+  toolCallsUsed: string[];
+  /** The last step_end usage the turn carried (null when the run had none). */
+  usage: { inputTokens: number; outputTokens: number } | null;
 }
 
 export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<StreamHarnessTurnResult> {
-  const { runtime, conversationId, tenantId, task, signal, onText, onDone, onApproval, onEvent } = input;
+  const {
+    runtime,
+    conversationId,
+    tenantId,
+    task,
+    signal,
+    onText,
+    onDone,
+    onApproval,
+    onQuestion,
+    onQuestionDecided,
+    onEvent,
+  } = input;
   const store = input.store ?? harnessSessionStore();
   // createSession resolves the stored harness session id for this conversation
   // (both runtimes load it from the store), so the next turn resumes instead
@@ -120,6 +165,8 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
   const approvals = new Map<string, HarnessApprovalRequest>();
   const decisions = new Map<string, "allow" | "deny">();
   let firstApproval: HarnessApprovalRequest | null = null;
+  const toolCalls = new Set<string>();
+  let lastUsage: { inputTokens: number; outputTokens: number } | null = null;
 
   try {
     for await (const event of runtime.executeTurn({
@@ -154,6 +201,26 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
         const outcome = event.outcome;
         const answered = outcome === "allowed-once" ? "allow" : "deny";
         decisions.set(event.approvalId, answered);
+      } else if (event.type === "question" && typeof event.questionId === "string") {
+        const question: HarnessQuestionRequest = {
+          questionId: event.questionId,
+          text: typeof event.text === "string" ? event.text : "The assistant needs your input.",
+          questions: Array.isArray(event.questions)
+            ? (event.questions as Array<{ id: unknown; question: unknown }>)
+                .filter((entry) => entry && typeof entry.id === "string")
+                .map((entry) => ({ id: entry.id as string, question: String(entry.question ?? "") }))
+            : [],
+          ...(typeof event.callId === "string" ? { callId: event.callId } : {}),
+        };
+        onQuestion?.(question);
+      } else if (event.type === "question_decided" && typeof event.questionId === "string") {
+        onQuestionDecided?.({ questionId: event.questionId, timedOut: event.timedOut === true });
+      } else if (event.type === "tool_call" && typeof event.tool === "string" && event.tool) {
+        toolCalls.add(event.tool);
+      } else if (event.type === "status" && event.phase === "step_end" && event.usage) {
+        const inputTokens = typeof event.usage.inputTokens === "number" ? event.usage.inputTokens : 0;
+        const outputTokens = typeof event.usage.outputTokens === "number" ? event.usage.outputTokens : 0;
+        if (inputTokens > 0 || outputTokens > 0) lastUsage = { inputTokens, outputTokens };
       }
     }
   } finally {
@@ -181,5 +248,7 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
           canAlwaysAllow: false,
         }
       : null,
+    toolCallsUsed: [...toolCalls],
+    usage: lastUsage,
   };
 }

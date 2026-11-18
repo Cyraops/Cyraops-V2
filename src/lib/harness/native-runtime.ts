@@ -29,6 +29,11 @@ import { randomUUID } from "node:crypto";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { approvalBroker, type ApprovalDecidedInfo, type PendingApproval } from "./approval-broker";
+import {
+  questionBroker,
+  type PendingQuestion,
+  type QuestionDecidedInfo,
+} from "./question-broker";
 import type { HarnessEvent } from "./client";
 import { CliAgentRuntime } from "./cli-runtime";
 import { sessionIdOf } from "./events";
@@ -237,6 +242,30 @@ export class NativeAgentRuntime implements AgentRuntime {
       const stopRequest = broker.onRequest(forwardRequest);
       const stopDecided = broker.onDecided(forwardDecided);
 
+      // Ask-user events: the plugin's question answerer publishes each
+      // ask_user_question batch on the question broker (same process); forward
+      // them into this turn's event stream as synthetic harness events so
+      // bot-stream can relay them over SSE ({ type: "question" }).
+      const qBroker = questionBroker();
+      const forwardQuestion = (pending: PendingQuestion) => {
+        queue.push({
+          type: "question",
+          questionId: pending.questionId,
+          text: pending.text,
+          questions: pending.questions,
+          ...(pending.callId ? { callId: pending.callId } : {}),
+        });
+      };
+      const forwardQuestionDecided = (info: QuestionDecidedInfo) => {
+        queue.push({
+          type: "question_decided",
+          questionId: info.questionId,
+          timedOut: info.timedOut,
+        });
+      };
+      const stopQuestion = qBroker.onRequest(forwardQuestion);
+      const stopQuestionDecided = qBroker.onDecided(forwardQuestionDecided);
+
       try {
         for await (const event of host.runNativeTask({
           task,
@@ -271,6 +300,8 @@ export class NativeAgentRuntime implements AgentRuntime {
       } finally {
         stopRequest();
         stopDecided();
+        stopQuestion();
+        stopQuestionDecided();
         if (previousWorkspace === undefined) delete process.env.CYRAOPS_WORKSPACE_ID;
         else process.env.CYRAOPS_WORKSPACE_ID = previousWorkspace;
         if (previousPermissionMode === undefined) delete process.env.DSH_PERMISSION_MODE;

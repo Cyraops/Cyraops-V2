@@ -53,3 +53,17 @@ export function usageOf(events: HarnessEvent[]): HarnessEvent["usage"] {
 export function stepCountOf(events: HarnessEvent[]): number {
   return events.filter((event) => event.phase === "step_end").length;
 }
+
+/**
+ * Distinct tool names a turn called, in first-call order — the done payload's
+ * toolCallsUsed array (TASK 3: tool timeline).
+ */
+export function toolCallsUsedOf(events: HarnessEvent[]): string[] {
+  const names: string[] = [];
+  for (const event of events) {
+    if (event.type === "tool_call" && typeof event.tool === "string" && event.tool && !names.includes(event.tool)) {
+      names.push(event.tool);
+    }
+  }
+  return names;
+}
