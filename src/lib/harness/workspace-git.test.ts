@@ -2,9 +2,22 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   collectWorkspaceGitStatus,
+  commitChanges,
+  createBranch,
+  discardChanges,
+  getDiff,
+  getDiffStat,
+  GIT_ARG_MAX_LENGTH,
   GIT_ARG_VECTORS,
-  GIT_TIMEOUT_MS,
+  GitArgError,
   GIT_MAX_BUFFER,
+  GIT_TIMEOUT_MS,
+  hasUncommittedChanges,
+  listBranches,
+  switchBranch,
+  validateGitBranchName,
+  validateGitCommitMessage,
+  validateGitFilePath,
   type GitExec,
 } from "./workspace-git";
 
@@ -29,6 +42,21 @@ function fakeGitExec(
     },
   };
   return { exec, calls };
+}
+
+/** A recording fake for the operation helpers, keyed by the argv after `-C <root>`. */
+function opRecordingGitExec(outputs: Record<string, string> = {}, failing: string[] = []) {
+  const calls: Array<{ file: string; args: string[] }> = [];
+  const opOf = (args: string[]): string => args.slice(2).join(" ");
+  const exec: GitExec = {
+    async execFile(file, args) {
+      calls.push({ file, args });
+      const op = opOf(args);
+      if (failing.includes(op)) throw new Error(`git failed: ${op}`);
+      return { stdout: outputs[op] ?? "", stderr: "" };
+    },
+  };
+  return { exec, calls, opOf };
 }
 
 test("GIT_ARG_VECTORS contains exactly the four documented read-only vectors", () => {
@@ -104,4 +132,140 @@ test("collectWorkspaceGitStatus passes a bounded timeout and buffer to exec", as
   };
   await collectWorkspaceGitStatus("/work/project", exec);
   assert.deepEqual(seen, { timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAX_BUFFER });
+});
+
+// ---------------------------------------------------------------------------
+// listBranches / getDiff / getDiffStat / hasUncommittedChanges
+// ---------------------------------------------------------------------------
+
+test("listBranches parses the current branch and all branches", async () => {
+  const { exec, calls } = opRecordingGitExec({
+    "branch -a --no-color": "* main\n  feature/x\n  remotes/origin/main\n",
+  });
+  const list = await listBranches("/work/project", exec);
+  assert.deepEqual(list, { current: "main", branches: ["main", "feature/x", "remotes/origin/main"] });
+  assert.deepEqual(calls.map((call) => call.args), [
+    ["-C", "/work/project", "branch", "-a", "--no-color"],
+  ]);
+});
+
+test("getDiff runs git diff --unified=3 -- <path> and returns the raw text", async () => {
+  const { exec, calls } = opRecordingGitExec({ "diff --unified=3 -- src/a.ts": "diff text" });
+  const diff = await getDiff("/work/project", "src/a.ts", exec);
+  assert.deepEqual(diff, { path: "src/a.ts", rawText: "diff text" });
+  assert.deepEqual(calls.map((call) => call.args), [
+    ["-C", "/work/project", "diff", "--unified=3", "--", "src/a.ts"],
+  ]);
+});
+
+test("getDiffStat runs git diff --stat", async () => {
+  const { exec, calls } = opRecordingGitExec({ "diff --stat": " a.ts | 2 +-" });
+  const result = await getDiffStat("/work/project", exec);
+  assert.deepEqual(result, { stat: " a.ts | 2 +-" });
+  assert.deepEqual(calls.map((call) => call.args), [["-C", "/work/project", "diff", "--stat"]]);
+});
+
+test("hasUncommittedChanges is true only when status --porcelain is non-empty", async () => {
+  const { exec } = opRecordingGitExec({ "status --porcelain": "" });
+  assert.equal(await hasUncommittedChanges("/work/project", exec), false);
+  const { exec: dirtyExec } = opRecordingGitExec({ "status --porcelain": " M a.ts\n" });
+  assert.equal(await hasUncommittedChanges("/work/project", dirtyExec), true);
+});
+
+// ---------------------------------------------------------------------------
+// Mutations: fixed argv vectors, values as single argv elements
+// ---------------------------------------------------------------------------
+
+test("createBranch runs git checkout -b <name>", async () => {
+  const { exec, calls } = opRecordingGitExec();
+  await createBranch("/work/project", "feature/x", exec);
+  assert.deepEqual(calls.map((call) => call.args), [
+    ["-C", "/work/project", "checkout", "-b", "feature/x"],
+  ]);
+});
+
+test("switchBranch runs git switch <name>", async () => {
+  const { exec, calls } = opRecordingGitExec();
+  await switchBranch("/work/project", "main", exec);
+  assert.deepEqual(calls.map((call) => call.args), [["-C", "/work/project", "switch", "main"]]);
+});
+
+test("commitChanges stages everything then commits with the message", async () => {
+  const { exec, calls } = opRecordingGitExec();
+  await commitChanges("/work/project", "feat: ship it", exec);
+  assert.deepEqual(
+    calls.map((call) => call.args),
+    [
+      ["-C", "/work/project", "add", "-A"],
+      ["-C", "/work/project", "commit", "-m", "feat: ship it"],
+    ]
+  );
+});
+
+test("discardChanges unstages then discards the path, as one argv element each", async () => {
+  const { exec, calls } = opRecordingGitExec();
+  await discardChanges("/work/project", "src/my file.txt", exec);
+  assert.deepEqual(
+    calls.map((call) => call.args),
+    [
+      ["-C", "/work/project", "restore", "--staged", "--", "src/my file.txt"],
+      ["-C", "/work/project", "checkout", "--", "src/my file.txt"],
+    ]
+  );
+});
+
+// ---------------------------------------------------------------------------
+// Validation
+// ---------------------------------------------------------------------------
+
+test("validateGitBranchName accepts conventional names", () => {
+  assert.equal(validateGitBranchName("main"), "main");
+  assert.equal(validateGitBranchName("feature/foo-bar"), "feature/foo-bar");
+  assert.equal(validateGitBranchName("  fix_x.1  "), "fix_x.1");
+});
+
+test("validateGitBranchName rejects dangerous names before any exec", () => {
+  for (const bad of ["", "  ", "-f", "--force", "a..b", "a b", "a@{b", "a.", "a.lock", "/lead", "trail/", "a//b", "a~b", "a^b", "a:b", "a?b", "a*b", "a[b", "a\\b"]) {
+    assert.throws(() => validateGitBranchName(bad), GitArgError, `expected rejection of ${JSON.stringify(bad)}`);
+  }
+  assert.throws(() => validateGitBranchName("x".repeat(GIT_ARG_MAX_LENGTH + 1)), GitArgError);
+});
+
+test("validateGitFilePath accepts workspace-relative paths", () => {
+  assert.equal(validateGitFilePath("src/a.ts"), "src/a.ts");
+  assert.equal(validateGitFilePath("  hello.txt  "), "hello.txt");
+  assert.equal(validateGitFilePath("src/my file.txt"), "src/my file.txt");
+});
+
+test("validateGitFilePath rejects traversal, absolute, option-like and invalid paths", () => {
+  for (const bad of ["", "  ", "-f", "--foo", "..", "../etc/passwd", "a/../b", "/etc/passwd", "C:/x", "a\\b", "a\0b"]) {
+    assert.throws(() => validateGitFilePath(bad), GitArgError, `expected rejection of ${JSON.stringify(bad)}`);
+  }
+  assert.throws(() => validateGitFilePath("x".repeat(GIT_ARG_MAX_LENGTH + 1)), GitArgError);
+});
+
+test("validateGitCommitMessage rejects empty, NUL and over-long messages", () => {
+  assert.equal(validateGitCommitMessage("  ship it  "), "ship it");
+  assert.throws(() => validateGitCommitMessage(""), GitArgError);
+  assert.throws(() => validateGitCommitMessage("  "), GitArgError);
+  assert.throws(() => validateGitCommitMessage("a\0b"), GitArgError);
+  assert.throws(() => validateGitCommitMessage("x".repeat(4001)), GitArgError);
+});
+
+test("a traversal path is rejected before git runs", async () => {
+  const { exec, calls } = opRecordingGitExec();
+  await assert.rejects(
+    () => getDiff("/work/project", "../etc/passwd", exec),
+    (error: unknown) => error instanceof GitArgError && error.code === "TRAVERSAL"
+  );
+  assert.equal(calls.length, 0);
+});
+
+test("a leading-dash branch name is rejected before git runs", async () => {
+  const { exec, calls } = opRecordingGitExec();
+  await assert.rejects(
+    () => createBranch("/work/project", "--force", exec),
+    (error: unknown) => error instanceof GitArgError && error.code === "LEADING_DASH"
+  );
+  assert.equal(calls.length, 0);
 });
