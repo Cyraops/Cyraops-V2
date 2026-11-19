@@ -41,42 +41,27 @@ export function effectivePermissionMode(
 }
 
 /**
- * Resolve the effective permission mode for a turn. `workspaceId` may be the
- * Workspace id ("main") or, following the app's tenant convention, a user id
- * (the workspace owner's). `agentSlug` names an AiAgent whose override (if
+ * Resolve the effective permission mode for a turn from an ALREADY-RESOLVED
+ * workspace (see `resolveWorkspaceForUser` in @/lib/workspace-resolve) plus an
+ * optional agent override. `agentSlug` names an AiAgent whose override (if
  * set) wins.
  *
- * Single-workspace deployment: when the key matches neither the Workspace id
- * nor its owner, fall back to the singleton row ("main", the schema default,
- * the id every other route hardcodes) so the workspace mode still applies.
+ * `workspace === null` means "no workspace for this caller" — the effective
+ * mode falls back to CONTROLLED, never to a singleton row or another tenant's
+ * mode. Doing the workspace lookup in one place (resolveWorkspaceForUser) is
+ * what makes the multi-tenant case safe: this function no longer guesses.
  */
 export async function resolvePermissionMode(input: {
-  workspaceId?: string | null;
+  workspace?: { permissionMode: PermissionMode | null } | null;
   agentSlug?: string | null;
 }): Promise<PermissionMode> {
-  const [workspace, agent] = await Promise.all([
-    input.workspaceId
-      ? db.workspace.findFirst({
-          where: { OR: [{ id: input.workspaceId }, { ownerId: input.workspaceId }] },
-          select: { permissionMode: true },
-        })
-      : null,
-    input.agentSlug
-      ? db.aiAgent.findFirst({
-          where: { slug: input.agentSlug },
-          select: { permissionMode: true },
-        })
-      : null,
-  ]);
-  const resolvedWorkspace =
-    workspace ??
-    (input.workspaceId
-      ? await db.workspace.findUnique({
-          where: { id: "main" },
-          select: { permissionMode: true },
-        })
-      : null);
-  return effectivePermissionMode(agent?.permissionMode, resolvedWorkspace?.permissionMode);
+  const agent = input.agentSlug
+    ? await db.aiAgent.findFirst({
+        where: { slug: input.agentSlug },
+        select: { permissionMode: true },
+      })
+    : null;
+  return effectivePermissionMode(agent?.permissionMode, input.workspace?.permissionMode);
 }
 
 /** READ_ONLY is the only mode in which nothing may change. */

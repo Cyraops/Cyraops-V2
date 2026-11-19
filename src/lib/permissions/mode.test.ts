@@ -93,16 +93,6 @@ describe("resolvePermissionMode (against cyraops_test)", () => {
     const owner = await db.user.create({
       data: { name: "Perm Mode Owner", email: userEmail, role: "OWNER", passwordHash: "x" },
     });
-    await db.workspace.create({
-      data: {
-        id: "main",
-        name: "Perm Mode Test Workspace",
-        ownerId: owner.id,
-        loginEmail: userEmail,
-        loginPasswordHash: "x",
-        permissionMode: "READ_ONLY",
-      },
-    });
     const agent = await db.aiAgent.create({
       data: { slug: agentSlug, name: "Perm Mode Agent", role: "agent", description: "t", systemPrompt: "t" },
     });
@@ -110,32 +100,26 @@ describe("resolvePermissionMode (against cyraops_test)", () => {
   }
 
   async function cleanup() {
-    await db.workspace.deleteMany({ where: { id: "main" } });
     await db.aiAgent.deleteMany({ where: { slug: agentSlug } });
     await db.user.deleteMany({ where: { email: userEmail } });
   }
 
-  it("resolves workspace → agent override → default, with the singleton fallback", async () => {
+  it("resolves agent override ?? workspace ?? CONTROLLED from a resolved workspace", async () => {
     await cleanup();
-    const { owner, agent } = await seed();
+    const { agent } = await seed();
     try {
+      const workspace = { permissionMode: "READ_ONLY" as const };
       // Workspace mode only.
-      assert.equal(await resolvePermissionMode({ workspaceId: "main" }), "READ_ONLY");
-      // The owner user id identifies the same workspace (tenant convention).
-      assert.equal(await resolvePermissionMode({ workspaceId: owner.id }), "READ_ONLY");
-      // A key matching neither still resolves the singleton "main" workspace
-      // (single-workspace deployment; the routes pass arbitrary tenant keys).
-      assert.equal(await resolvePermissionMode({ workspaceId: "someone-else" }), "READ_ONLY");
+      assert.equal(await resolvePermissionMode({ workspace }), "READ_ONLY");
       // Agent override beats the workspace value.
       await db.aiAgent.update({ where: { id: agent.id }, data: { permissionMode: "SYSTEM" } });
-      assert.equal(await resolvePermissionMode({ workspaceId: "main", agentSlug }), "SYSTEM");
+      assert.equal(await resolvePermissionMode({ workspace, agentSlug }), "SYSTEM");
       // A null agent override inherits the workspace.
       await db.aiAgent.update({ where: { id: agent.id }, data: { permissionMode: null } });
-      assert.equal(await resolvePermissionMode({ workspaceId: "main", agentSlug }), "READ_ONLY");
-      // No workspace row at all falls back to the CONTROLLED default.
-      await db.workspace.deleteMany({ where: { id: "main" } });
-      assert.equal(await resolvePermissionMode({ workspaceId: "missing" }), "CONTROLLED");
+      assert.equal(await resolvePermissionMode({ workspace, agentSlug }), "READ_ONLY");
+      // No resolved workspace at all falls back to the CONTROLLED default.
       assert.equal(await resolvePermissionMode({}), "CONTROLLED");
+      assert.equal(await resolvePermissionMode({ workspace: null }), "CONTROLLED");
     } finally {
       await cleanup();
     }

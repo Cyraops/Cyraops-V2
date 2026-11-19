@@ -23,6 +23,7 @@ import {
   SHELL_DISABLED_REPLY,
 } from "@/lib/harness/command-classifier";
 import { resolvePermissionMode, runtimePermissionMode, allowsSystemTools } from "@/lib/permissions/mode";
+import { resolveWorkspaceForUser } from "@/lib/workspace-resolve";
 import {
   createHarnessApprovalRow,
   installApprovalDecisionHook,
@@ -246,11 +247,15 @@ async function streamHarnessReply(
           if (!agent) throw new Error("That teammate is not available");
         }
 
-        // The unified Permission Manager: resolve the workspace/agent mode for
-        // this caller and role-gate it (a non-owner under FULL_CONTROL/SYSTEM
-        // gets CONTROLLED) before the runtime maps it onto the harness.
+        // The unified Permission Manager: resolve the authenticated user's
+        // workspace (no singleton fallback), then the workspace/agent mode and
+        // role-gate it (a non-owner under FULL_CONTROL/SYSTEM gets CONTROLLED)
+        // before the runtime maps it onto the harness.
         const permissionMode = runtimePermissionMode(
-          await resolvePermissionMode({ workspaceId: assistant.userId, agentSlug }),
+          await resolvePermissionMode({
+            workspace: await resolveWorkspaceForUser({ db, userId: user.id }),
+            agentSlug,
+          }),
           user.role
         );
 

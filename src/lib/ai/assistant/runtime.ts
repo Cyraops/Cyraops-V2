@@ -6,6 +6,7 @@ import { toolRegistry } from "../tools/registry";
 import { stripToolMarkup } from "../tool-markup";
 import type { PolicyRule } from "../policy/resolve-action";
 import { resolvePermissionMode } from "@/lib/permissions/mode";
+import { resolveWorkspaceForUser } from "@/lib/workspace-resolve";
 import { selectContext } from "../context/budget";
 import { summarizeConversation } from "../context/summary";
 import { storage } from "@/lib/storage";
@@ -432,7 +433,7 @@ export async function runAssistantInThread(params: {
     approvalRules: approvalRules,
     unattended: params.unattended,
     permissionMode: await resolvePermissionMode({
-      workspaceId: params.userId,
+      workspace: await resolveWorkspaceForUser({ db, userId: params.userId }),
     }),
   });
 
@@ -649,7 +650,7 @@ export async function sendAssistantMessage(params: {
     onTool: params.onTool,
     onToolDone: params.onToolDone,
     permissionMode: await resolvePermissionMode({
-      workspaceId: params.userId,
+      workspace: await resolveWorkspaceForUser({ db, userId: params.userId }),
       agentSlug: agent?.slug ?? undefined,
     }),
   });

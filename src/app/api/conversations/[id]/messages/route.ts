@@ -7,6 +7,7 @@ import { listActiveAgents, matchAgentMentions, runAgentChatTurn } from "@/lib/ai
 import { runAssistantInThread } from "@/lib/ai/assistant/runtime";
 import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import { jsonError } from "@/lib/validators";
+import { resolveWorkspaceForUser } from "@/lib/workspace-resolve";
 
 type Context = { params: Promise<{ id: string }> };
 export async function GET(request: NextRequest, context: Context) {
@@ -87,9 +88,13 @@ async function handleAgentMentions(
         actorUserId: actor.id,
         actorUserRole: actor.role,
         // The unified Permission Manager, resolved and role-gated exactly like
-        // the assistant path: agent override ?? workspace ?? CONTROLLED.
+        // the assistant path: agent override ?? workspace ?? CONTROLLED, where
+        // the workspace is the actor's own (no singleton fallback).
         permissionMode: runtimePermissionMode(
-          await resolvePermissionMode({ workspaceId: actor.id, agentSlug: agent.slug }),
+          await resolvePermissionMode({
+            workspace: await resolveWorkspaceForUser({ db, userId: actor.id }),
+            agentSlug: agent.slug,
+          }),
           actor.role
         ),
       });

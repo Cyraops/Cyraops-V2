@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { sameOrigin, userFromRequest } from "@/lib/auth";
+import { db } from "@/lib/db";
 import { finalTextOf, stepCountOf } from "@/lib/harness/events";
 import {
   HarnessRunError,
@@ -11,6 +12,7 @@ import {
 } from "@/lib/harness/runtime";
 import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
 import { jsonError } from "@/lib/validators";
+import { resolveWorkspaceForUser } from "@/lib/workspace-resolve";
 
 /**
  * One bot turn, answered by the DeepSeek Harness through the AgentRuntime
@@ -65,11 +67,12 @@ export async function POST(request: NextRequest) {
       return Response.json({ ok: false, error: "That session belongs to another workspace." }, { status: 404 });
     }
 
-    // The unified Permission Manager: the caller's workspace mode, role-gated
-    // (non-owners under FULL_CONTROL/SYSTEM get CONTROLLED), mapped by the
-    // runtime onto DSH_PERMISSION_MODE / --permission-mode.
+    // The unified Permission Manager: resolve the caller's workspace (never a
+    // singleton fallback), then role-gate it (non-owners under
+    // FULL_CONTROL/SYSTEM get CONTROLLED) before the runtime maps it onto
+    // DSH_PERMISSION_MODE / --permission-mode.
     const permissionMode = runtimePermissionMode(
-      await resolvePermissionMode({ workspaceId: user.id }),
+      await resolvePermissionMode({ workspace: await resolveWorkspaceForUser({ db, userId: user.id }) }),
       user.role
     );
 
