@@ -50,10 +50,42 @@ import type { PermissionMode } from "@/lib/permissions/mode";
 export const VOICE_SHAPING_INSTRUCTION =
   "\n\nYou are speaking aloud right now through a voice interface. Answer in one to three short spoken sentences, no lists, no headings, no markdown, no URLs. If there is a lot to say, offer to continue rather than reciting it all.";
 
-/** The task handed to the harness for one turn, with voice shaping when spoken. */
-export function harnessTaskForTurn(input: { content: string; attachmentContext?: string; voice?: boolean }): string {
-  const { content, attachmentContext = "", voice = false } = input;
-  return `${content}${attachmentContext}${voice ? VOICE_SHAPING_INSTRUCTION : ""}`;
+/**
+ * Instruction appended to SYSTEM-mode turns so the model uses the actually
+ * mounted shell tool for file operations instead of reaching for a non-existent
+ * "file-create"/"pdf" skill or a subagent.
+ */
+export const SYSTEM_FILE_OP_GUIDANCE =
+  "\n\nYou have a shell. For file operations prefer the shell tool over any other tool — e.g. create a PDF by running Python (reportlab) via the shell, and write text files with standard shell commands.";
+
+/**
+ * SYSTEM project turns (a pinned workspace root) are tool-heavy and must not
+ * be forced into a conversational reply, so voice shaping is suppressed for
+ * them. Plain voice turns (no root, or not SYSTEM) keep the shortening.
+ */
+export function suppressVoiceShaping(input: {
+  permissionMode?: PermissionMode;
+  workspaceRoot?: string | null;
+}): boolean {
+  return input.permissionMode === "SYSTEM" && (input.workspaceRoot ?? null) != null;
+}
+
+/** The task handed to the harness for one turn, with mode-specific shaping. */
+export function harnessTaskForTurn(input: {
+  content: string;
+  attachmentContext?: string;
+  voice?: boolean;
+  permissionMode?: PermissionMode;
+  workspaceRoot?: string | null;
+}): string {
+  const { content, attachmentContext = "", voice = false, permissionMode, workspaceRoot } = input;
+  const systemTurn = permissionMode === "SYSTEM";
+  // Tool-heavy SYSTEM project turns keep their full reply; every other voice
+  // turn is shortened to spoken length.
+  const voiceInstruction = voice && !suppressVoiceShaping({ permissionMode, workspaceRoot }) ? VOICE_SHAPING_INSTRUCTION : "";
+  // Only SYSTEM turns get the file-operation pointer (shell over skill/subagent).
+  const fileOpGuidance = systemTurn ? SYSTEM_FILE_OP_GUIDANCE : "";
+  return `${content}${attachmentContext}${fileOpGuidance}${voiceInstruction}`;
 }
 
 /**

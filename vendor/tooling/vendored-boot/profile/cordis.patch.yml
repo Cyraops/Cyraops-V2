@@ -1,8 +1,12 @@
 # Native-runtime patch layer. Mirrors system-tools-off.patch.yml (keep in sync);
-# see that file for the security rationale.
+# see that file for the security rationale. `tool-skill` is disabled in every
+# mode — including SYSTEM — because the model treated it as a file-operation
+# tool (hallucinated "file-create"/"pdf" skill names) instead of the shell.
 - id: tool-bash
   disabled: true
 - id: tool-fs
   disabled: true
 - id: tool-fs-search
+  disabled: true
+- id: tool-skill
   disabled: true

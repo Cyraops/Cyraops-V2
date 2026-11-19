@@ -374,6 +374,11 @@ async function streamHarnessReply(
               content: planDirective?.task ?? (planDirective?.mode ? "" : content),
               attachmentContext,
               voice: body?.voice === true,
+              // SYSTEM turns get the shell-first file-operation pointer, and a
+              // SYSTEM project turn (root pinned) drops the spoken-length voice
+              // shaping so tool work is not forced conversational.
+              permissionMode,
+              workspaceRoot,
             });
 
         // -----------------------------------------------------------------

@@ -7,6 +7,7 @@ interface Skill {
   id: string;
   name: string;
   description: string;
+  disabled?: boolean;
 }
 
 /**
@@ -15,6 +16,11 @@ interface Skill {
  * harness boot. Names and descriptions come from GET /api/assistant/skills,
  * which is compiled from the vendored dsh-skill package metadata — no actions
  * are offered because the catalog is informational.
+ *
+ * The skill registry and filesystem provider stay mounted, but the
+ * model-facing loader tool is disabled in the Cyraops boot; a disabled entry
+ * renders an explicit "disabled" badge so the panel does not imply the loader
+ * is active.
  */
 export function SkillsPanel() {
   const [open, setOpen] = useState(false);
@@ -64,7 +70,14 @@ export function SkillsPanel() {
           ) : (
             skills.map((skill) => (
               <div key={skill.id} className="rounded-lg border border-[var(--border)] px-2 py-1.5">
-                <p className="text-meta font-semibold text-[var(--text)]">{skill.name}</p>
+                <p className="flex items-center gap-1.5 text-meta font-semibold text-[var(--text)]">
+                  <span>{skill.name}</span>
+                  {skill.disabled ? (
+                    <span className="rounded-full bg-[var(--surface-2)] px-1.5 py-0.5 text-[10px] font-semibold normal-case tracking-normal text-[var(--muted)]">
+                      disabled
+                    </span>
+                  ) : null}
+                </p>
                 <p className="text-caption leading-relaxed text-[var(--muted)]">{skill.description}</p>
               </div>
             ))

@@ -31,6 +31,13 @@ test("descriptions are the package.json descriptions, verbatim", () => {
   assert.equal(byId.get("dsh-tool-skill"), "Model-facing skill loading tool for the DeepSeek Harness");
 });
 
+test("the model-facing skill loader is flagged disabled while the providers stay mounted", () => {
+  const byId = new Map(HARNESS_SKILLS.map((skill) => [skill.id, skill]));
+  assert.equal(byId.get("dsh-tool-skill")?.disabled, true);
+  assert.equal(byId.get("dsh-skill")?.disabled, undefined);
+  assert.equal(byId.get("dsh-skill-filesystem")?.disabled, undefined);
+});
+
 test("listHarnessSkills returns a defensive copy", () => {
   const first = listHarnessSkills();
   const second = listHarnessSkills();

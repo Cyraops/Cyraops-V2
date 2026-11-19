@@ -4,6 +4,8 @@ import {
   harnessTaskForTurn,
   planDirectiveFor,
   streamHarnessTurn,
+  suppressVoiceShaping,
+  SYSTEM_FILE_OP_GUIDANCE,
   VOICE_SHAPING_INSTRUCTION,
   type HarnessQuestionRequest,
 } from "./bot-stream";
@@ -470,6 +472,58 @@ test("harnessTaskForTurn: attachment context sits between the words and the inst
     task,
     "Summarise the file\n\n[Attached files]\n--- notes.txt ---\nhello" + VOICE_SHAPING_INSTRUCTION
   );
+});
+
+test("harnessTaskForTurn: a SYSTEM turn appends the shell-first file-operation guidance", () => {
+  const task = harnessTaskForTurn({ content: "Create a PDF", permissionMode: "SYSTEM" });
+  assert.equal(task, `Create a PDF${SYSTEM_FILE_OP_GUIDANCE}`);
+  assert.match(task, /You have a shell\. For file operations prefer the shell tool/);
+  // Exactly once.
+  assert.equal(task.indexOf(SYSTEM_FILE_OP_GUIDANCE), task.lastIndexOf(SYSTEM_FILE_OP_GUIDANCE));
+});
+
+test("harnessTaskForTurn: non-SYSTEM turns carry no file-operation guidance", () => {
+  assert.equal(harnessTaskForTurn({ content: "Create a PDF", permissionMode: "CONTROLLED" }), "Create a PDF");
+  assert.equal(harnessTaskForTurn({ content: "Create a PDF" }), "Create a PDF");
+});
+
+test("harnessTaskForTurn: a SYSTEM project voice turn suppresses the spoken-length shaping", () => {
+  const task = harnessTaskForTurn({
+    content: "Create a PDF named x.pdf on the Desktop",
+    voice: true,
+    permissionMode: "SYSTEM",
+    workspaceRoot: "/Users/tanveersinghsaini/Desktop",
+  });
+  assert.ok(!task.includes(VOICE_SHAPING_INSTRUCTION), "voice shaping must be suppressed for SYSTEM + root");
+  assert.ok(!task.includes("one to three short spoken sentences"));
+  assert.ok(task.includes(SYSTEM_FILE_OP_GUIDANCE), "file-operation guidance still applies");
+});
+
+test("harnessTaskForTurn: a SYSTEM voice turn without a root keeps the spoken-length shaping", () => {
+  const task = harnessTaskForTurn({
+    content: "What is due this week?",
+    voice: true,
+    permissionMode: "SYSTEM",
+    workspaceRoot: null,
+  });
+  assert.ok(task.includes(VOICE_SHAPING_INSTRUCTION));
+  assert.ok(task.includes(SYSTEM_FILE_OP_GUIDANCE));
+  // Guidance precedes the spoken-length instruction.
+  assert.ok(task.indexOf(SYSTEM_FILE_OP_GUIDANCE) < task.indexOf(VOICE_SHAPING_INSTRUCTION));
+});
+
+test("harnessTaskForTurn: a plain voice turn (no SYSTEM) still shortens", () => {
+  const task = harnessTaskForTurn({ content: "Hi", voice: true, permissionMode: "CONTROLLED" });
+  assert.ok(task.includes(VOICE_SHAPING_INSTRUCTION));
+  assert.ok(!task.includes(SYSTEM_FILE_OP_GUIDANCE));
+});
+
+test("suppressVoiceShaping: only SYSTEM plus a pinned root suppresses", () => {
+  assert.equal(suppressVoiceShaping({ permissionMode: "SYSTEM", workspaceRoot: "/x" }), true);
+  assert.equal(suppressVoiceShaping({ permissionMode: "SYSTEM", workspaceRoot: null }), false);
+  assert.equal(suppressVoiceShaping({ permissionMode: "SYSTEM", workspaceRoot: undefined }), false);
+  assert.equal(suppressVoiceShaping({ permissionMode: "CONTROLLED", workspaceRoot: "/x" }), false);
+  assert.equal(suppressVoiceShaping({ permissionMode: undefined, workspaceRoot: "/x" }), false);
 });
 
 test("streamHarnessTurn: forwards question batches to onQuestion and decisions to onQuestionDecided", async () => {

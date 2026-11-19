@@ -3,9 +3,17 @@
 # `pwd`, read /etc/passwd and wrote /tmp with zero approval. Until a
 # per-tenant "system" permission mode exists, these tools are disabled in
 # every Cyraops runtime (native profile patch and CLI --patch overlay).
+#
+# tool-skill (the model-facing skill loader) is disabled in every mode —
+# including SYSTEM — because the model treated it as a file-operation tool
+# (hallucinated "file-create"/"pdf" skill names) instead of the actually
+# mounted shell tool. The skill registry (dsh-skill) and the filesystem
+# provider (dsh-skill-filesystem) stay mounted; only the loader tool is off.
 - id: tool-bash
   disabled: true
 - id: tool-fs
   disabled: true
 - id: tool-fs-search
+  disabled: true
+- id: tool-skill
   disabled: true

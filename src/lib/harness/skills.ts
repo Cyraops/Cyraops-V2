@@ -11,6 +11,16 @@
  *   - `@deepseek-ai/dsh-skill-filesystem` — local-directory skill discovery;
  *   - `@deepseek-ai/dsh-tool-skill`       — the model-facing skill loader tool.
  *
+ * The registry and the filesystem provider stay mounted, but the model-facing
+ * loader tool (`dsh-tool-skill`) is DISABLED in the Cyraops boot — the
+ * system-tools-off overlay and the native profile patch both carry a
+ * `tool-skill` disable row, in every permission mode including SYSTEM. The
+ * model was treating the `skill` tool as a file-operation tool (hallucinated
+ * "file-create"/"pdf" skill names) instead of the actually mounted shell tool,
+ * so the loader is turned off to remove that red herring. The catalog below
+ * keeps the disabled row listed (with `disabled: true`) so the Skills panel
+ * reports the truth rather than pretending the loader is active.
+ *
  * `@deepseek-ai/dsh-skill-office` and `@deepseek-ai/dsh-skill-badge` are
  * *declared* in `vendor/dsh/package.json` (the distribution manifest) but are
  * NOT vendored under `vendor/dsh/node_modules` and are NOT mounted by the
@@ -26,6 +36,11 @@ export interface HarnessSkill {
   name: string;
   /** The package.json description, verbatim. */
   description: string;
+  /**
+   * True when the capability is listed for transparency but disabled in the
+   * Cyraops boot (the model-facing skill loader tool).
+   */
+  disabled?: boolean;
 }
 
 export const HARNESS_SKILLS: HarnessSkill[] = [
@@ -43,6 +58,7 @@ export const HARNESS_SKILLS: HarnessSkill[] = [
     id: "dsh-tool-skill",
     name: "Skill loader",
     description: "Model-facing skill loading tool for the DeepSeek Harness",
+    disabled: true,
   },
 ];
 
