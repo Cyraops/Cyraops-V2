@@ -1,8 +1,8 @@
 "use client";
 
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Folder, Globe, MessageSquare, Mic, MicOff, Paperclip, Pencil, Plus, RefreshCw, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
+import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Folder, Globe, MessageSquare, Mic, MicOff, Paperclip, Pencil, Plus, RefreshCw, Search, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
 import { RoutinesModal } from "@/components/routines/routines-modal";
 import { Markdown } from "@/components/ai/markdown";
 import { parseToolSteps, ToolActivity, type ToolStep } from "@/components/ai/tool-activity";
@@ -12,6 +12,7 @@ import { VoiceMode } from "@/components/ai/voice-mode";
 import { LocalBrowserAgent } from "@/components/ai/local-browser-agent";
 import { readLastMode } from "@/lib/ai/voice/last-mode";
 import { WorkspacePanel } from "@/components/ai/workspace-panel";
+import { SkillsPanel } from "@/components/ai/skills-panel";
 import { CommandPalette } from "@/components/ai/command-palette";
 import { AskBlock, FileBlock, StepBlock, TextBlock, toBlocks } from "@/components/ai/blocks";
 import { BotOrb } from "@/components/ai/bot-avatar";
@@ -70,6 +71,33 @@ interface Conversation {
   id: string;
   title: string;
   updatedAt: string;
+}
+
+/** A row from GET /api/assistant/conversations/search?q=… */
+interface SearchResult {
+  id: string;
+  title: string;
+  updatedAt: string;
+  pinnedAt?: string | null;
+  archivedAt?: string | null;
+  matchedIn: "title" | "message";
+  snippet: string | null;
+}
+
+/** Case-insensitive highlight of `query` inside `text`. */
+function highlightMatch(text: string, query: string): ReactNode {
+  const trimmed = query.trim();
+  if (!trimmed) return text;
+  const index = text.toLowerCase().indexOf(trimmed.toLowerCase());
+  if (index < 0) return text;
+  const end = index + trimmed.length;
+  return (
+    <>
+      {text.slice(0, index)}
+      <mark className="rounded bg-accent/20 px-0.5 text-[var(--text)]">{text.slice(index, end)}</mark>
+      {text.slice(end)}
+    </>
+  );
 }
 
 /** "1.2k tokens · $0.002" — the muted caption under a harness assistant message. */
@@ -572,6 +600,9 @@ export function BotWorkspace() {
   const [approvalMode, setApprovalMode] = useState<"ASK" | "AUTO" | "NEVER">("ASK");
   const [approvalRules, setApprovalRules] = useState<Array<{ toolName: string; effect: string }>>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  /** Server-side search matches; null means "not searching" (show the full list). */
+  const [searchResults, setSearchResults] = useState<SearchResult[] | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [renamingId, setRenamingId] = useState("");
   const [renameDraft, setRenameDraft] = useState("");
   /** History row whose trash affordance is awaiting its confirm step. */
@@ -1232,6 +1263,45 @@ export function BotWorkspace() {
   );
 
   /**
+   * Debounced server-side history search (~250ms). Queries of fewer than two
+   * characters fall back to the full list; a settled search replaces the list
+   * with matches from GET /api/assistant/conversations/search.
+   */
+  useEffect(() => {
+    const query = searchQuery.trim();
+    if (query.length < 2) {
+      setSearchResults(null);
+      setSearchLoading(false);
+      return;
+    }
+
+    setSearchLoading(true);
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      const url = `/api/assistant/conversations/search?q=${encodeURIComponent(query)}${
+        activeAgent ? `&agent=${encodeURIComponent(activeAgent)}` : ""
+      }`;
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        const data = await response.json().catch(() => ({}));
+        if (controller.signal.aborted) return;
+        setSearchResults(Array.isArray(data.results) ? data.results : []);
+      } catch (err: any) {
+        if (err?.name === "AbortError") return;
+        setSearchResults([]);
+      } finally {
+        if (!controller.signal.aborted) setSearchLoading(false);
+      }
+    }, 250);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [searchQuery, activeAgent]);
+
+
+  /**
    * One turn through the SAME stream path for both the message box and the
    * Workspace panel's command box: `command: true` marks the turn as a
    * command intent (the server classifies destructive commands and gates
@@ -1709,15 +1779,6 @@ export function BotWorkspace() {
     await runTurn(message.content);
   };
 
-  // Untitled conversations are clutter — every real chat gets a title from its
-  // first message, so hide the empty ones except the one being edited.
-  const visibleConversations = conversations
-    .filter((conversation) => conversation.title !== "New chat" || conversation.id === conversationId)
-    .filter((conversation) => (showArchived ? Boolean((conversation as any).archivedAt) : !(conversation as any).archivedAt))
-    .filter((conversation) =>
-      searchQuery.trim() ? conversation.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) : true
-    );
-
   // Prompts chosen from what is actually true, so the first screen is about
   // this business rather than a generic demo.
   return (
@@ -1837,13 +1898,68 @@ export function BotWorkspace() {
             </span>
           </button>
           {historyOpen && (
-            <div id="chat-history" className="soft-scrollbar mt-1 max-h-56 space-y-0.5 overflow-y-auto">
-              {conversations.filter((conversation) => conversation.title && conversation.title !== "New chat").length === 0 ? (
-                <p className="px-1.5 py-1 text-[11px] text-[var(--muted)]">Nothing yet — ask something.</p>
-              ) : (
-                conversations
-                  .filter((conversation) => conversation.title && conversation.title !== "New chat")
-                  .map((conversation) =>
+            <div id="chat-history" className="mt-1">
+              <div className="mb-1 px-0.5">
+                <div className="flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-1.5 py-1">
+                  <Search size={11} className="shrink-0 text-[var(--muted)]" />
+                  <input
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder="Search chats…"
+                    aria-label="Search conversations"
+                    maxLength={80}
+                    className="min-w-0 flex-1 bg-transparent text-[11px] text-[var(--text)] outline-none placeholder:text-[var(--faint)]"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      aria-label="Clear search"
+                      className="flex h-4 w-4 shrink-0 items-center justify-center rounded text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-[var(--text)]"
+                    >
+                      <X size={10} />
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="soft-scrollbar max-h-56 space-y-0.5 overflow-y-auto">
+                {searchQuery.trim().length >= 2 ? (
+                  searchLoading ? (
+                    <p className="px-1.5 py-1 text-[11px] text-[var(--muted)]">Searching…</p>
+                  ) : (searchResults ?? []).length === 0 ? (
+                    <p className="px-1.5 py-1 text-[11px] text-[var(--muted)]">No chats match “{searchQuery.trim()}”.</p>
+                  ) : (
+                    (searchResults ?? []).map((result) => (
+                      <button
+                        key={result.id}
+                        onClick={() => {
+                          setVoiceOpen(false);
+                          selectConversation(result.id);
+                        }}
+                        title={result.title}
+                        className={`flex w-full items-center gap-2 rounded-lg px-1.5 py-1.5 text-left transition ${
+                          result.id === conversationId ? "bg-accent/10 text-accent" : "hover:bg-[var(--hover)]"
+                        }`}
+                      >
+                        <MessageSquare size={11} className="shrink-0 text-[var(--muted)]" />
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[11px] font-medium text-[var(--text)]">
+                            {highlightMatch(result.title, searchQuery)}
+                          </span>
+                          <span className="block truncate text-[10px] text-[var(--muted)]">
+                            {result.snippet
+                              ? highlightMatch(result.snippet, searchQuery)
+                              : new Date(result.updatedAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}
+                          </span>
+                        </span>
+                      </button>
+                    ))
+                  )
+                ) : conversations.filter((conversation) => conversation.title && conversation.title !== "New chat").length === 0 ? (
+                  <p className="px-1.5 py-1 text-[11px] text-[var(--muted)]">Nothing yet — ask something.</p>
+                ) : (
+                  conversations
+                    .filter((conversation) => conversation.title && conversation.title !== "New chat")
+                    .map((conversation) =>
                     renamingId === conversation.id ? (
                       // Inline rename: PATCH /api/assistant/conversations/[id] { title }.
                       <div
@@ -1952,6 +2068,7 @@ export function BotWorkspace() {
                     )
                   )
               )}
+              </div>
             </div>
           )}
         </div>
@@ -2595,6 +2712,10 @@ export function BotWorkspace() {
             />
           </div>
         )}
+
+        {/* The mounted harness skills: a muted, collapsible, read-only catalog
+            compiled from the vendored dsh-skill package metadata. */}
+        <SkillsPanel />
       </aside>
 
       <RoutinesModal open={routinesOpen} onClose={() => setRoutinesOpen(false)} />
