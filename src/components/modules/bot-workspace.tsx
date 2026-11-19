@@ -2,7 +2,7 @@
 
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Folder, Globe, MessageSquare, Mic, MicOff, Paperclip, Plus, RefreshCw, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
+import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Folder, Globe, MessageSquare, Mic, MicOff, Paperclip, Pencil, Plus, RefreshCw, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
 import { RoutinesModal } from "@/components/routines/routines-modal";
 import { Markdown } from "@/components/ai/markdown";
 import { parseToolSteps, ToolActivity, type ToolStep } from "@/components/ai/tool-activity";
@@ -33,6 +33,8 @@ interface ChatItem {
   createdAt?: string;
   /** True only while this reply is still arriving. */
   streaming?: boolean;
+  /** The turn that carried this user message failed — show the Retry affordance. */
+  failed?: boolean;
   /** Wall-clock time the turn's tools took. */
   toolDurationMs?: number;
   /** Harness-only: the terminal done payload's usage (V1 turns never carry it). */
@@ -495,6 +497,16 @@ export function BotWorkspace() {
   /** Tier-2 plan preview: one plan-review decision in flight at a time. */
   const [planReviewSending, setPlanReviewSending] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  /** Supersedes in-flight conversation loads (delete/switch while loading). */
+  const loadSeqRef = useRef(0);
+  /** The conversation id the latest load started for (stale-delete guard). */
+  const loadingIdRef = useRef("");
+  /**
+   * The conversation whose transcript is on screen. `conversationId` state can
+   * be overwritten by a live voice session, so delete uses THIS to decide
+   * whether removing a conversation must start a fresh chat.
+   */
+  const viewedConversationRef = useRef("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [dragging, setDragging] = useState(false);
   /** Null = the personal assistant. Otherwise the AI teammate being talked to. */
@@ -562,6 +574,10 @@ export function BotWorkspace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [renamingId, setRenamingId] = useState("");
   const [renameDraft, setRenameDraft] = useState("");
+  /** History row whose trash affordance is awaiting its confirm step. */
+  const [confirmingDeleteId, setConfirmingDeleteId] = useState("");
+  /** The signed-in user's role — gates the owner-only workspace controls. */
+  const [meRole, setMeRole] = useState("");
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
   const followingRef = useRef(true);
@@ -577,6 +593,13 @@ export function BotWorkspace() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const speakRepliesRef = useRef(false);
+
+  /**
+   * Owner-only gate for the workspace-root controls (same OWNER check the
+   * sibling modules read from /api/auth/me). Non-owners never see the setter
+   * or the clear ✕; the API is owner-only and fails closed anyway.
+   */
+  const canManageWorkspace = meRole === "OWNER";
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -620,16 +643,37 @@ export function BotWorkspace() {
   }, []);
 
   const deleteConversation = async (id: string) => {
+    setConfirmingDeleteId("");
     setConversations((list) => list.filter((item) => item.id !== id));
-    if (id === conversationId) {
+    // Deleting the conversation on screen starts a fresh one: an unsaved "New
+    // chat" state whose first send creates the replacement server-side.
+    if (id === conversationId || id === viewedConversationRef.current) {
+      // An in-flight load of the deleted chat must not resurrect it (the
+      // messages route falls back to the latest conversation on a missing id).
+      loadSeqRef.current += 1;
+      setLoading(false);
+      viewedConversationRef.current = "";
       setConversationId("");
       setMessages([]);
       setConversationTitle("New chat");
       setPendingAction(null);
+    } else if (loadingIdRef.current === id) {
+      // A row clicked and then deleted before its load finished: void it so
+      // the fallback cannot hijack the view onto a different conversation.
+      loadSeqRef.current += 1;
+      setLoading(false);
     }
     try {
-      await fetch(`/api/assistant/conversations/${id}`, { method: "DELETE" });
+      const response = await fetch(`/api/assistant/conversations/${id}`, { method: "DELETE" });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        toast(data.error || "Could not delete that chat", "error");
+        void loadConversations();
+        return;
+      }
+      toast("Chat deleted");
     } catch {
+      toast("Could not delete that chat", "error");
       void loadConversations();
     }
   };
@@ -639,13 +683,23 @@ export function BotWorkspace() {
     setRenamingId("");
     if (!next) return;
     setConversations((list) => list.map((item) => (item.id === id ? { ...item, title: next } : item)));
+    // The header follows the rename when the renamed chat is the one open.
+    if (id === conversationId) setConversationTitle(next);
     try {
-      await fetch(`/api/assistant/conversations/${id}`, {
+      const response = await fetch(`/api/assistant/conversations/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: next }),
       });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        toast(data.error || "Could not rename that chat", "error");
+        void loadConversations();
+        return;
+      }
+      toast("Chat renamed");
     } catch {
+      toast("Could not rename that chat", "error");
       void loadConversations();
     }
   };
@@ -821,6 +875,7 @@ export function BotWorkspace() {
       setConversationId("");
       setMessages([]);
       setPendingAction(null);
+      viewedConversationRef.current = "";
       setConversationTitle(slug ? teammates.find((mate) => mate.slug === slug)?.name ?? "Teammate" : "New chat");
       // Resume this teammate's last thread: there is no list to pick it from.
       void (async () => {
@@ -835,6 +890,8 @@ export function BotWorkspace() {
 
   const loadConversation = useCallback(
     async (id: string) => {
+      const seq = ++loadSeqRef.current;
+      loadingIdRef.current = id;
       setLoading(true);
       setError(null);
       try {
@@ -853,10 +910,16 @@ export function BotWorkspace() {
         } catch {
           // keep the built-in list
         }
+        // A delete/switch superseded this load while it was in flight: the
+        // results must not overwrite the newer state.
+        if (seq !== loadSeqRef.current) return;
         if (history.conversation) {
           setConversationId(history.conversation.id);
           setConversationTitle(history.conversation.title || "New chat");
         }
+        // Remember what the transcript shows: a live voice session may
+        // overwrite `conversationId` state, so delete consults this ref.
+        viewedConversationRef.current = history.conversation?.id ?? "";
         setMessages(
           Array.isArray(history.messages)
             ? history.messages.map((message: any) => ({
@@ -870,9 +933,9 @@ export function BotWorkspace() {
             : []
         );
       } catch {
-        setError("Could not load your assistant.");
+        if (seq === loadSeqRef.current) setError("Could not load your assistant.");
       } finally {
-        setLoading(false);
+        if (seq === loadSeqRef.current) setLoading(false);
       }
     },
     []
@@ -906,6 +969,14 @@ export function BotWorkspace() {
       await loadApprovalSettings();
       await loadBrief();
       await loadTeammates();
+      // Owner-only workspace controls need the signed-in user's role (the same
+      // /api/auth/me check the sibling modules read).
+      try {
+        const me = await fetch("/api/auth/me").then((r) => r.json()).catch(() => ({}));
+        setMeRole(me.user?.role ?? "");
+      } catch {
+        /* role is optional; the owner-only controls simply stay hidden */
+      }
       /**
        * Come back to whatever was last chosen: the assistant shows its voice
        * screen, a teammate or a bot shows that conversation.
@@ -1421,12 +1492,17 @@ export function BotWorkspace() {
           )
         );
       } else {
-        // Nothing was persisted, so drop the optimistic pair too and hand the
-        // text back instead of silently losing what the user typed.
+        // Nothing was persisted. Keep the user's message in the transcript —
+        // flagged failed so its Retry affordance can re-send the SAME content
+        // (resend only; no edit/history) — and drop just the assistant
+        // placeholder. This is also the mid-stream { type: "error" } SSE path.
         setMessages((prev) =>
-          prev.filter((message) => message.id !== pendingId && message.clientId !== localClientId)
+          prev
+            .filter((message) => message.id !== pendingId)
+            .map((message) =>
+              message.clientId === localClientId ? { ...message, failed: true } : message
+            )
         );
-        setInput((current) => current || content);
         setError(err?.message || "The assistant failed to reply.");
       }
     } finally {
@@ -1586,6 +1662,14 @@ export function BotWorkspace() {
     return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
   };
 
+  /** Full localized date + time — the hover title behind each message's HH:MM. */
+  const formatFullTime = (iso?: string): string => {
+    if (!iso) return "";
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return "";
+    return date.toLocaleString();
+  };
+
   const dayLabel = (iso?: string): string => {
     if (!iso) return "";
     const date = new Date(iso);
@@ -1613,6 +1697,16 @@ export function BotWorkspace() {
     } catch {
       /* clipboard unavailable */
     }
+  };
+
+  /**
+   * Resend (1c / 4): re-send the failed message's content through the SAME
+   * stream path. Resend only — deliberately no edit/history affordance.
+   */
+  const retryMessage = async (message: ChatItem) => {
+    if (busy || !message.content) return;
+    setMessages((prev) => prev.map((item) => (item.id === message.id ? { ...item, failed: false } : item)));
+    await runTurn(message.content);
   };
 
   // Untitled conversations are clutter — every real chat gets a title from its
@@ -1749,27 +1843,114 @@ export function BotWorkspace() {
               ) : (
                 conversations
                   .filter((conversation) => conversation.title && conversation.title !== "New chat")
-                  .map((conversation) => (
-                    <button
-                      key={conversation.id}
-                      onClick={() => {
-                        setVoiceOpen(false);
-                        selectConversation(conversation.id);
-                      }}
-                      title={conversation.title}
-                      className={`flex w-full items-center gap-2 rounded-lg px-1.5 py-1.5 text-left transition ${
-                        conversation.id === conversationId ? "bg-accent/10 text-accent" : "hover:bg-[var(--hover)]"
-                      }`}
-                    >
-                      <MessageSquare size={11} className="shrink-0 text-[var(--muted)]" />
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[11px] font-medium text-[var(--text)]">{conversation.title}</span>
-                        <span className="block truncate text-[10px] text-[var(--muted)]">
-                          {new Date(conversation.updatedAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}
-                        </span>
-                      </span>
-                    </button>
-                  ))
+                  .map((conversation) =>
+                    renamingId === conversation.id ? (
+                      // Inline rename: PATCH /api/assistant/conversations/[id] { title }.
+                      <div
+                        key={conversation.id}
+                        className="flex items-center gap-1 rounded-lg border border-accent/40 bg-[var(--surface-2)] px-1.5 py-1"
+                      >
+                        <MessageSquare size={11} className="shrink-0 text-[var(--muted)]" />
+                        <input
+                          value={renameDraft}
+                          onChange={(event) => setRenameDraft(event.target.value)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              event.preventDefault();
+                              void renameConversation(conversation.id, renameDraft);
+                            }
+                            if (event.key === "Escape") setRenamingId("");
+                          }}
+                          maxLength={120}
+                          autoFocus
+                          aria-label={`Rename ${conversation.title}`}
+                          className="min-w-0 flex-1 rounded bg-[var(--surface)] px-1.5 py-0.5 text-[11px] text-[var(--text)] outline-none placeholder:text-[var(--faint)] focus:border-accent"
+                        />
+                        <button
+                          onClick={() => void renameConversation(conversation.id, renameDraft)}
+                          disabled={!renameDraft.trim()}
+                          aria-label="Save name"
+                          className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-emerald-600 transition hover:bg-[var(--hover)] disabled:opacity-40 dark:text-emerald-400"
+                        >
+                          <Check size={11} />
+                        </button>
+                        <button
+                          onClick={() => setRenamingId("")}
+                          aria-label="Cancel rename"
+                          className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-[var(--text)]"
+                        >
+                          <X size={11} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div key={conversation.id} className="group/history relative flex items-center">
+                        <button
+                          onClick={() => {
+                            setVoiceOpen(false);
+                            selectConversation(conversation.id);
+                          }}
+                          title={conversation.title}
+                          className={`flex min-w-0 flex-1 items-center gap-2 rounded-lg px-1.5 py-1.5 text-left transition ${
+                            conversation.id === conversationId ? "bg-accent/10 text-accent" : "hover:bg-[var(--hover)]"
+                          }`}
+                        >
+                          <MessageSquare size={11} className="shrink-0 text-[var(--muted)]" />
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-[11px] font-medium text-[var(--text)]">{conversation.title}</span>
+                            <span className="block truncate text-[10px] text-[var(--muted)]">
+                              {new Date(conversation.updatedAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}
+                            </span>
+                          </span>
+                        </button>
+                        {confirmingDeleteId === conversation.id ? (
+                          // Trash two-step confirm: DELETE the same route.
+                          <span className="flex shrink-0 items-center gap-0.5 rounded-md border border-rose-500/40 bg-[var(--surface)] px-1 py-0.5">
+                            <span className="text-[9px] font-semibold text-rose-600 dark:text-rose-400">Delete?</span>
+                            <button
+                              onClick={() => void deleteConversation(conversation.id)}
+                              aria-label="Confirm delete"
+                              className="flex h-4 w-4 items-center justify-center rounded text-rose-600 transition hover:bg-rose-500/10 dark:text-rose-400"
+                            >
+                              <Check size={10} />
+                            </button>
+                            <button
+                              onClick={() => setConfirmingDeleteId("")}
+                              aria-label="Cancel delete"
+                              className="flex h-4 w-4 items-center justify-center rounded text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-[var(--text)]"
+                            >
+                              <X size={10} />
+                            </button>
+                          </span>
+                        ) : (
+                          <span className="flex shrink-0 items-center gap-0.5 pl-0.5 pr-1">
+                            <button
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setRenamingId(conversation.id);
+                                setRenameDraft(conversation.title);
+                              }}
+                              aria-label={`Rename ${conversation.title}`}
+                              title="Rename"
+                              className="flex h-5 w-5 items-center justify-center rounded text-[var(--muted)] opacity-0 transition hover:bg-[var(--hover)] hover:text-accent focus:opacity-100 group-hover/history:opacity-100"
+                            >
+                              <Pencil size={10} />
+                            </button>
+                            <button
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setConfirmingDeleteId(conversation.id);
+                              }}
+                              aria-label={`Delete ${conversation.title}`}
+                              title="Delete"
+                              className="flex h-5 w-5 items-center justify-center rounded text-[var(--muted)] opacity-0 transition hover:bg-[var(--hover)] hover:text-rose-600 focus:opacity-100 group-hover/history:opacity-100"
+                            >
+                              <Trash2 size={10} />
+                            </button>
+                          </span>
+                        )}
+                      </div>
+                    )
+                  )
               )}
             </div>
           )}
@@ -2007,6 +2188,28 @@ export function BotWorkspace() {
                         return null;
                       }
                     })()}
+                    {message.role === "user" && (
+                      <div className="mt-0.5 flex items-center justify-end gap-2">
+                        {/* Resend affordance: only the LAST user message after a
+                            failed turn (1c and the mid-stream error path). */}
+                        {message.failed && index === messages.length - 1 && (
+                          <button
+                            onClick={() => void retryMessage(message)}
+                            disabled={busy}
+                            title="Resend this message"
+                            aria-label="Retry sending this message"
+                            className="flex items-center gap-1 rounded-md border border-rose-500/40 bg-rose-500/10 px-1.5 py-0.5 text-caption font-semibold text-rose-600 transition hover:bg-rose-500/20 disabled:opacity-50 dark:text-rose-400"
+                          >
+                            <RefreshCw size={10} /> Retry
+                          </button>
+                        )}
+                        {formatTime(message.createdAt) && (
+                          <time className="text-caption text-[var(--faint)]" title={formatFullTime(message.createdAt)}>
+                            {formatTime(message.createdAt)}
+                          </time>
+                        )}
+                      </div>
+                    )}
                     {message.role === "assistant" && message.plan && message.plan.text ? (
                       <HarnessPlanBlock
                         plan={message.plan}
@@ -2042,7 +2245,9 @@ export function BotWorkspace() {
                           {copiedId === message.id ? "Copied" : "Copy"}
                         </button>
                         {formatTime(message.createdAt) && (
-                          <span className="text-caption text-[var(--muted)]">{formatTime(message.createdAt)}</span>
+                          <time className="text-caption text-[var(--muted)]" title={formatFullTime(message.createdAt)}>
+                            {formatTime(message.createdAt)}
+                          </time>
                         )}
                       </div>
                     )}
@@ -2385,6 +2590,7 @@ export function BotWorkspace() {
             <WorkspacePanel
               conversationId={conversationId}
               busy={busy}
+              canManage={canManageWorkspace}
               onRunCommand={(command) => void runTurn(command, { command: true })}
             />
           </div>

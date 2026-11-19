@@ -122,7 +122,12 @@ describe("Strict conversation resolution (harness chat path)", () => {
   });
 
   it("legacy mode keeps the original fallback behaviour for unknown ids", async () => {
-    // Make the original conversation the most recently updated one first.
+    // Make the original conversation the most recently updated one, no matter
+    // what other probes left behind: age every OTHER conversation out first.
+    await db.assistantConversation.updateMany({
+      where: { id: { not: conversationId } },
+      data: { updatedAt: new Date(0) },
+    });
     await db.assistantConversation.update({
       where: { id: conversationId },
       data: { updatedAt: new Date() },

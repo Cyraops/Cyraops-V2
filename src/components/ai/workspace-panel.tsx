@@ -11,9 +11,12 @@ import { ChevronRight, FileText, Folder, FolderOpen, GitBranch, Loader2, Play, R
  * commands server-side and surfaces the same approval card tool approvals
  * use).
  *
- * Renders nothing until the conversation has a workspace root (the API is
- * owner-only; the conversation resolves under this user's assistant, so the
- * panel simply shows the result it is allowed to see).
+ * While the conversation has NO root, owners see an inline setter (POST
+ * /workspace-root, the server's validation errors — missing / not-a-directory
+ * — render under the input); with a root set, the realpath shows with a small
+ * ✕ that clears it ({ path: null }). Both controls are owner-only and simply
+ * don't render for anyone else (the API itself is scoped to the caller's own
+ * assistant, so it fails closed for non-owners).
  */
 
 interface WorkspaceInfo {
@@ -63,11 +66,14 @@ function formatSize(bytes: number): string {
 export function WorkspacePanel({
   conversationId,
   busy,
+  canManage,
   onRunCommand,
 }: {
   conversationId: string;
   /** The chat's own busy flag: commands wait for the in-flight turn. */
   busy: boolean;
+  /** Owner-only controls (set / clear the root) render only when true. */
+  canManage: boolean;
   /** Sends the command through the chat's existing stream path (command intent). */
   onRunCommand: (command: string) => void;
 }) {
@@ -81,6 +87,10 @@ export function WorkspacePanel({
   const [command, setCommand] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  /** The path the owner is typing into the root setter input. */
+  const [pathDraft, setPathDraft] = useState("");
+  /** A set/clear root request is in flight. */
+  const [saving, setSaving] = useState(false);
   const aliveRef = useRef(true);
   useEffect(() => {
     aliveRef.current = true;
@@ -195,10 +205,130 @@ export function WorkspacePanel({
     setRefreshing(false);
   };
 
+  /**
+   * Owner-only root setter: POST the absolute path. The server validates it
+   * (missing / not-a-directory → 400 with a readable error) and records both
+   * spellings. On success the listing reloads and the tree re-roots itself.
+   */
+  const setRoot = async () => {
+    const value = pathDraft.trim();
+    if (!value || saving || !conversationId) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `/api/assistant/conversations/${encodeURIComponent(conversationId)}/workspace-root`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: value }),
+        }
+      );
+      const data = await response.json().catch(() => ({}));
+      if (!aliveRef.current) return;
+      if (!response.ok) {
+        setError(data.error || "Could not set the workspace root.");
+        return;
+      }
+      setPathDraft("");
+      setTree({});
+      setExpanded({});
+      setPreview(null);
+      await loadInfo();
+    } catch {
+      if (aliveRef.current) setError("Could not set the workspace root.");
+    } finally {
+      if (aliveRef.current) setSaving(false);
+    }
+  };
+
+  /** Clear the root ({ path: null }) — the conversation returns to CRM mode. */
+  const clearRoot = async () => {
+    if (saving || !conversationId) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `/api/assistant/conversations/${encodeURIComponent(conversationId)}/workspace-root`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: null }),
+        }
+      );
+      const data = await response.json().catch(() => ({}));
+      if (!aliveRef.current) return;
+      if (!response.ok) {
+        setError(data.error || "Could not clear the workspace root.");
+        return;
+      }
+      setPathDraft("");
+      setTree({});
+      setExpanded({});
+      setPreview(null);
+      await loadInfo();
+    } catch {
+      if (aliveRef.current) setError("Could not clear the workspace root.");
+    } finally {
+      if (aliveRef.current) setSaving(false);
+    }
+  };
+
   const hasRoot = Boolean(info?.workspaceRootRealpath || info?.workspaceRoot);
 
-  // No workspace root set: the panel stays out of the rail entirely.
-  if (!hasRoot) return null;
+  // Still loading (or no conversation yet): the panel stays out of the rail.
+  if (!info) return null;
+
+  // No workspace root set: owners get the inline setter; everyone else sees
+  // nothing (the API is owner-only, so the controls would just 403 for them).
+  if (!hasRoot) {
+    if (!canManage) return null;
+    return (
+      <div id="rail-workspace" className="mt-2 shrink-0">
+        <p className="mb-2 mt-4 flex items-center gap-1.5 text-caption font-bold uppercase tracking-widest text-[var(--muted)]">
+          <Folder size={12} />
+          <span className="flex-1">Workspace</span>
+        </p>
+        <div className="rounded-lg border border-[var(--border)]">
+          <div className="px-2 py-1.5">
+            <p className="text-[10px] leading-snug text-[var(--muted)]">
+              No project root yet. Set an absolute folder path and this chat's harness turns run inside it.
+            </p>
+            <form
+              className="mt-1.5 flex items-center gap-1"
+              onSubmit={(event) => {
+                event.preventDefault();
+                void setRoot();
+              }}
+            >
+              <input
+                value={pathDraft}
+                onChange={(event) => setPathDraft(event.target.value)}
+                placeholder="/absolute/path/to/project"
+                disabled={saving}
+                aria-label="Workspace root path"
+                className="min-w-0 flex-1 rounded-md border border-[var(--border)] bg-[var(--surface-2)] px-2 py-1 font-mono text-[10px] text-[var(--text)] outline-none placeholder:text-[var(--faint)] focus:border-accent disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={saving || !pathDraft.trim()}
+                className="flex h-6 shrink-0 items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 text-[10px] font-semibold text-[var(--text)] transition hover:text-accent disabled:opacity-40"
+                aria-label="Set workspace root"
+              >
+                {saving ? <Loader2 size={10} className="animate-spin" /> : null}
+                Set
+              </button>
+            </form>
+          </div>
+          {error && (
+            <p className="border-t border-[var(--border)] px-2 py-1.5 text-[10px] leading-snug text-rose-600 dark:text-rose-400">
+              {error}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   const rootPath = info?.realpath || info?.workspaceRootRealpath || info?.workspaceRoot || "";
   const rootMissing = info?.exists === false;
@@ -272,9 +402,22 @@ export function WorkspacePanel({
 
       <div className="rounded-lg border border-[var(--border)]">
         <div className="border-b border-[var(--border)] px-2 py-1.5">
-          <p className="truncate font-mono text-[10px] text-[var(--muted)]" title={rootPath}>
-            {rootMissing ? `${rootPath} (missing)` : rootPath}
-          </p>
+          <div className="flex items-center gap-1">
+            <p className="min-w-0 flex-1 truncate font-mono text-[10px] text-[var(--muted)]" title={rootPath}>
+              {rootMissing ? `${rootPath} (missing)` : rootPath}
+            </p>
+            {canManage && (
+              <button
+                onClick={() => void clearRoot()}
+                disabled={saving}
+                className="shrink-0 rounded p-0.5 text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-rose-600 disabled:opacity-40"
+                title="Clear workspace root"
+                aria-label="Clear workspace root"
+              >
+                {saving ? <Loader2 size={10} className="animate-spin" /> : <X size={11} />}
+              </button>
+            )}
+          </div>
           <div className="mt-0.5 flex items-center gap-1 text-[10px] text-[var(--muted)]">
             {git === null ? (
               <span className="flex items-center gap-1">
@@ -302,7 +445,7 @@ export function WorkspacePanel({
         <div className="max-h-44 overflow-y-auto px-1 py-1">
           {rootMissing ? (
             <p className="px-1 py-1 text-[10px] leading-snug text-[var(--muted)]">
-              The workspace folder no longer exists. Set a new root for this chat from the workspace picker.
+              The workspace folder no longer exists. Clear the root with ✕ above, then set a new one.
             </p>
           ) : loadingDirs[""] && !tree[""] ? (
             <div className="flex items-center gap-1.5 px-1 py-1 text-[10px] text-[var(--muted)]">
