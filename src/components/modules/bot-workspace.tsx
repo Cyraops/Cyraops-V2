@@ -2,6 +2,7 @@
 
 import { Fragment, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Bot, Check, ChevronDown, ChevronRight, Loader2, Clock, Copy, CornerDownLeft, FileText, Folder, Globe, MessageSquare, Mic, MicOff, Paperclip, Pencil, Plus, RefreshCw, Search, Sparkles, Square, Trash2, Users, Volume2, VolumeX, Wrench, X } from "lucide-react";
 import { RoutinesModal } from "@/components/routines/routines-modal";
 import { Markdown } from "@/components/ai/markdown";
@@ -22,6 +23,62 @@ const SELECTION_KEY = "cyraops:bot:row";
 
 /** The muted, click-to-fill suggestions a fresh (empty) conversation shows. */
 const SUGGESTIONS = ["list open tickets", "what's due this week", "set ticket priorities"];
+
+/**
+ * Wave 2 (TASK 2) — muted one-tap "next step" chips under the composer after a
+ * fresh reply. Static/heuristic: a ticket mention picks the ticket set, anything
+ * else picks the default set. Pure so it can stay inline without side effects.
+ */
+const NEXT_STEPS_TICKETS = ["List open tickets", "What's due this week", "Set a priority"];
+const NEXT_STEPS_DEFAULT = ["Summarize this thread", "What's due this week", "List my open tasks"];
+/** A "fresh-ish" thread is a few messages; beyond that the chips stay out of the way. */
+const NEXT_STEPS_MAX_MESSAGES = 6;
+
+function nextStepSuggestions(messages: ChatItem[]): string[] {
+  if (messages.length === 0 || messages.length > NEXT_STEPS_MAX_MESSAGES) return [];
+  const latest = [...messages].reverse().find((message) => message.role === "assistant" && message.content);
+  if (!latest) return [];
+  return /ticket/i.test(latest.content) ? NEXT_STEPS_TICKETS : NEXT_STEPS_DEFAULT;
+}
+
+/**
+ * Wave 2 (TASK 3) — helper-agent launches are tool calls named `subagent`
+ * (one per run), a forked `subagent_fork` (also one), or a top-level
+ * `workflow` fan-out (counted once: the tool event carries no headcount).
+ */
+const HELPER_TOOL_NAMES = new Set(["subagent", "subagent_fork", "workflow"]);
+
+function isHelperTool(name: string): boolean {
+  return HELPER_TOOL_NAMES.has(name);
+}
+
+/** Count helper launches from raw tool names (the live per-call events). */
+function countHelperAgents(names: ReadonlyArray<string>): number {
+  let count = 0;
+  for (const name of names) if (isHelperTool(name)) count += 1;
+  return count;
+}
+
+/**
+ * The muted "helpers" line under a reply. The live turn carries the exact count
+ * (`helperAgents`); after a reload the persisted `toolCalls` keeps only DISTINCT
+ * names, so it renders the honest number-less form instead of a wrong count.
+ */
+function helpersLabel(message: ChatItem): string | null {
+  // Exact live count: `helperAgents` is stamped at turn end; `harnessTools`
+  // (the live per-call timeline) carries the same names while it is running.
+  let count = typeof message.helperAgents === "number" ? message.helperAgents : 0;
+  if (count === 0 && message.harnessTools?.length) {
+    count = countHelperAgents(message.harnessTools.map((tool) => tool.name));
+  }
+  if (count > 0) return `Ran with ${count} helper agent${count === 1 ? "" : "s"}`;
+  // Reload fallback: the persisted `toolCalls` stores only DISTINCT names, so it
+  // proves helpers ran but not how many.
+  if (countHelperAgents(parseToolSteps(message.toolCalls).map((step) => step.name)) > 0) {
+    return "Ran with helper agents";
+  }
+  return null;
+}
 
 interface ChatItem {
   id: string;
@@ -44,6 +101,8 @@ interface ChatItem {
   harnessTools?: HarnessToolEntry[];
   /** Harness-only (plan mode): the turn's presented plan and its review state. */
   plan?: HarnessPlanState | null;
+  /** Wave 2 (TASK 3): exact helper-agent launches seen live in this turn. */
+  helperAgents?: number;
 }
 
 /** One tool run of a harness turn, as the collapsible tools line expands it. */
@@ -620,6 +679,15 @@ export function BotWorkspace() {
   const [pages, setPages] = useState<PageMeta[]>([]);
   const [openPage, setOpenPage] = useState<OpenPage | null>(null);
   const [pagesBrowserOpen, setPagesBrowserOpen] = useState(false);
+  /** Wave 2 (TASK 1): the bot's live state from GET /api/bot/status. */
+  const [botStatus, setBotStatus] = useState<{
+    mode: string;
+    effectiveMode: string;
+    shellEnabled: boolean;
+    systemToolsEnabled: boolean;
+    root: string | null;
+    workspaceOwnerMatch: boolean;
+  } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -840,6 +908,25 @@ export function BotWorkspace() {
     }
   }, []);
 
+  /**
+   * Wave 2 (TASK 1): read the bot's live state through the same ownership-
+   * verified path turns use. `conversationId` scopes `root` to the thread on
+   * screen; `agentSlug` resolves the per-agent effective mode.
+   */
+  const loadBotStatus = useCallback(async () => {
+    try {
+      const params = new URLSearchParams();
+      if (conversationId) params.set("conversationId", conversationId);
+      if (activeAgent) params.set("agentSlug", activeAgent);
+      const query = params.toString();
+      const response = await fetch(`/api/bot/status${query ? `?${query}` : ""}`);
+      const data = await response.json();
+      if (response.ok) setBotStatus(data);
+    } catch {
+      /* the status strip is best-effort */
+    }
+  }, [conversationId, activeAgent]);
+
   const saveApprovalMode = async (mode: "ASK" | "AUTO" | "NEVER") => {
     setApprovalMode(mode);
     try {
@@ -1049,6 +1136,22 @@ export function BotWorkspace() {
   useEffect(() => {
     speakRepliesRef.current = speakReplies;
   }, [speakReplies]);
+
+  /**
+   * Wave 2 (TASK 1): refresh the strip when the conversation or agent changes,
+   * and when the tab regains focus/visibility — the mode and root live on the
+   * Settings / Workspace surfaces, so a round-trip back here re-reads them.
+   */
+  useEffect(() => {
+    void loadBotStatus();
+    const refresh = () => void loadBotStatus();
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, [loadBotStatus]);
 
   const atBottom = useCallback((el: HTMLElement) => el.scrollHeight - el.scrollTop - el.clientHeight < 80, []);
 
@@ -1343,6 +1446,7 @@ export function BotWorkspace() {
     let toolCallsUsed: string[] = [];
     const steps: ToolStep[] = [];
     const harnessTools: HarnessToolEntry[] = [];
+    let helperAgents = 0;
     let turnUsage: { inputTokens: number; outputTokens: number; costUsd: number } | null = null;
     const turnStartedAt = Date.now();
     const pushSteps = () =>
@@ -1407,6 +1511,8 @@ export function BotWorkspace() {
             const previousCount = existing.reduce((total, step) => total + step.count, 0);
             steps.push({ name: payload.name, status: "running", count: previousCount + 1 });
             pushSteps();
+            // Wave 2 (TASK 3): each helper launch is one tool_call event.
+            if (isHelperTool(String(payload.name ?? ""))) helperAgents += 1;
             // Harness turns carry a callId: feed the collapsible tools line too.
             if (typeof payload.callId === "string") {
               harnessTools.push({ name: String(payload.name ?? "tool"), status: "running" });
@@ -1532,6 +1638,7 @@ export function BotWorkspace() {
                 toolDurationMs: stepDuration,
                 usage: turnUsage,
                 harnessTools: harnessTools.length > 0 ? harnessTools : undefined,
+                helperAgents: helperAgents > 0 ? helperAgents : undefined,
               }
             : message
         )
@@ -1781,6 +1888,7 @@ export function BotWorkspace() {
 
   // Prompts chosen from what is actually true, so the first screen is about
   // this business rather than a generic demo.
+  const nextSteps = !busy && !loading ? nextStepSuggestions(messages) : [];
   return (
     <div className="relative grid overflow-hidden h-[calc(100dvh-62px-2rem)] w-full grid-cols-1 md:grid-cols-[240px_minmax(0,1fr)] sm:h-[calc(100dvh-62px-3.5rem)] xl:grid-cols-[240px_minmax(0,1fr)_260px]" /* main carries p-4 / p-7, so the page must subtract it or the whole grid overflows the viewport and the composer sits below the fold */>
       {/* Left rail — conversations */}
@@ -2346,6 +2454,12 @@ export function BotWorkspace() {
                         />
                       )
                     )}
+                    {message.role === "assistant" && helpersLabel(message) && (
+                      <p data-testid="helpers-line" className="mt-1 flex items-center gap-1.5 text-caption text-[var(--faint)]">
+                        <Users size={11} className="shrink-0" />
+                        {helpersLabel(message)}
+                      </p>
+                    )}
                     {message.role === "assistant" && message.usage && (
                       <p className="mt-1 text-caption text-[var(--faint)]">
                         {formatTokenCount(message.usage.inputTokens)} tokens · {formatCostUsd(message.usage.costUsd)}
@@ -2431,6 +2545,30 @@ export function BotWorkspace() {
         )}
 
         <div className="border-t border-[var(--border)] px-5 py-3">
+          {/* Wave 2 (TASK 1): a muted one-line status strip above the composer.
+              The mode is a link to Settings; shell/root come straight from
+              GET /api/bot/status. */}
+          {botStatus && (
+            <div data-testid="bot-status-strip" className="mx-auto mb-1.5 flex max-w-3xl items-center gap-1.5 overflow-hidden px-1 text-caption text-[var(--muted)]">
+              <span className="shrink-0">Mode:</span>
+              <Link
+                href="/settings"
+                title="Open Settings to change the mode"
+                className="shrink-0 rounded font-semibold text-[var(--text-2)] underline decoration-[var(--border-strong)] underline-offset-2 transition hover:text-accent hover:decoration-accent"
+              >
+                {botStatus.effectiveMode.replace(/_/g, " ")}
+              </Link>
+              <span aria-hidden className="shrink-0 text-[var(--faint)]">·</span>
+              <span className="shrink-0">Shell: {botStatus.shellEnabled ? "on" : "off"}</span>
+              <span aria-hidden className="shrink-0 text-[var(--faint)]">·</span>
+              <span className="min-w-0 truncate" title={botStatus.root ?? "none"}>
+                Root: {botStatus.root ?? "none"}
+              </span>
+              {!botStatus.shellEnabled && (
+                <span className="shrink-0 text-[var(--faint)]">· file/shell off</span>
+              )}
+            </div>
+          )}
           {attachments.length > 0 && (
             <div className="mx-auto mb-1.5 flex max-w-3xl flex-wrap gap-1.5">
               {attachments.map((attachment) => (
@@ -2584,6 +2722,23 @@ export function BotWorkspace() {
               </button>
             )}
           </div>
+          {nextSteps.length > 0 && (
+            <div data-testid="next-step-chips" className="mx-auto mb-1 mt-1.5 flex max-w-3xl flex-wrap gap-1.5 px-1">
+              {nextSteps.map((suggestion) => (
+                <button
+                  key={suggestion}
+                  type="button"
+                  onClick={() => {
+                    setInput(suggestion);
+                    textareaRef.current?.focus();
+                  }}
+                  className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-caption text-[var(--muted)] transition hover:border-accent/40 hover:text-accent"
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          )}
           <p className="mx-auto mt-1.5 max-w-3xl px-1 text-caption text-[var(--muted)]">
             {listening ? (
               <span className="flex items-center gap-1.5 font-semibold text-rose-600 dark:text-rose-400">
