@@ -5,6 +5,7 @@ import { cookieOptions, createSession, SESSION_COOKIE, sameOrigin, sha256 } from
 import { resolveLoginCredential, type LegacyWorkspaceCredential } from "@/lib/login-credentials";
 import { retryAfterSecondsFor } from "@/lib/login-lockout";
 import { emailSchema, jsonError } from "@/lib/validators";
+import { ensureWorkspaceForUser } from "@/lib/workspace-provision";
 
 const dummyPasswordHash = hash("cyraops-cms-invalid-account-password", 12);
 
@@ -54,6 +55,12 @@ export async function POST(request: NextRequest) {
     return jsonError("Email or password is incorrect", 401);
   }
   await db.authRateLimit.deleteMany({ where: { key: { in: keys } } });
+  // Wave 1b: every session-establishing path provisions the member's owned
+  // workspace so they never fall back to "no workspace → CONTROLLED". Best-
+  // effort — the /api/auth/me safety net re-provisions on app load.
+  await ensureWorkspaceForUser({ db, userId: credential.user.id }).catch((error: unknown) => {
+    console.warn("[auth/login] workspace provisioning failed:", error);
+  });
   const session = await createSession(credential.user.id);
   const response = NextResponse.json({ ok: true, mustChangePassword: credential.user.mustChangePassword });
   response.cookies.set(SESSION_COOKIE, session.token, cookieOptions(session.expiresAt, request));

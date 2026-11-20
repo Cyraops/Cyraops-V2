@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  FILE_SHELL_DISABLED_REPLY,
   harnessTaskForTurn,
+  isFileShellRequest,
   planDirectiveFor,
   streamHarnessTurn,
   suppressVoiceShaping,
@@ -524,6 +526,47 @@ test("suppressVoiceShaping: only SYSTEM plus a pinned root suppresses", () => {
   assert.equal(suppressVoiceShaping({ permissionMode: "SYSTEM", workspaceRoot: undefined }), false);
   assert.equal(suppressVoiceShaping({ permissionMode: "CONTROLLED", workspaceRoot: "/x" }), false);
   assert.equal(suppressVoiceShaping({ permissionMode: undefined, workspaceRoot: "/x" }), false);
+});
+
+test("isFileShellRequest detects shell/filesystem intent words case-insensitively", () => {
+  for (const text of [
+    "Create a blank PDF",
+    "write a file",
+    "save the report to disk",
+    "make a pdf named money123.pdf",
+    "open a file",
+    "run a shell command",
+    "install the package",
+    "RUN this script",
+  ]) {
+    assert.equal(isFileShellRequest(text), true, `expected file/shell intent: ${text}`);
+  }
+});
+
+test("isFileShellRequest is false for non-file/shell requests", () => {
+  for (const text of [
+    "What tickets are overdue this week?",
+    "Summarize my inbox",
+    "Draft a reply to the client",
+    "Who is my next meeting with?",
+    "",
+    "planning my day",
+  ]) {
+    assert.equal(isFileShellRequest(text), false, `expected no file/shell intent: ${text}`);
+  }
+});
+
+test("isFileShellRequest matches whole words only, not substrings", () => {
+  assert.equal(isFileShellRequest("running shoes for the team"), false);
+  assert.equal(isFileShellRequest("creative brainstorming"), false);
+  assert.equal(isFileShellRequest("my profile settings"), false);
+});
+
+test("FILE_SHELL_DISABLED_REPLY is the fixed platform line", () => {
+  assert.equal(
+    FILE_SHELL_DISABLED_REPLY,
+    "Shell and file tools are off in CONTROLLED mode. An admin can switch this workspace to SYSTEM in Settings → Permissions."
+  );
 });
 
 test("streamHarnessTurn: forwards question batches to onQuestion and decisions to onQuestionDecided", async () => {

@@ -59,6 +59,30 @@ export const SYSTEM_FILE_OP_GUIDANCE =
   "\n\nYou have a shell. For file operations prefer the shell tool over any other tool — e.g. create a PDF by running Python (reportlab) via the shell, and write text files with standard shell commands.";
 
 /**
+ * The platform answer for a chat turn that clearly asks for shell/filesystem
+ * work in a mode that does not mount those tools (anything but SYSTEM). The
+ * route short-circuits the turn with this line instead of letting the model
+ * improvise a hallucinated file write or a non-existent tool.
+ */
+export const FILE_SHELL_DISABLED_REPLY =
+  "Shell and file tools are off in CONTROLLED mode. An admin can switch this workspace to SYSTEM in Settings → Permissions.";
+
+/**
+ * Words that mark a user request as shell/filesystem intent. This is a
+ * deliberate, coarse heuristic (the same family as the shell-command gate):
+ * it over-matches on purpose so a member can never get a hallucinated file
+ * operation. `create`/`write`/`save`/`run` are common verbs, so the gate only
+ * fires when the effective mode already refuses shell tools — in SYSTEM mode
+ * the turn simply runs, exactly as it did before.
+ */
+const FILE_SHELL_REQUEST_WORDS = /\b(create|write|save|pdf|file|shell|run|install)\b/i;
+
+/** Pure shell/filesystem-intent detector; unit-tested without a runtime. */
+export function isFileShellRequest(text: string): boolean {
+  return FILE_SHELL_REQUEST_WORDS.test(text);
+}
+
+/**
  * SYSTEM project turns (a pinned workspace root) are tool-heavy and must not
  * be forced into a conversational reply, so voice shaping is suppressed for
  * them. Plain voice turns (no root, or not SYSTEM) keep the shortening.

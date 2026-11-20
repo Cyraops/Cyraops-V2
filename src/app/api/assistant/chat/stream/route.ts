@@ -10,7 +10,7 @@ import {
 import { checkDailySpend, checkRateLimit } from "@/lib/ai/assistant/guard";
 import { db } from "@/lib/db";
 import { storage } from "@/lib/storage";
-import { streamHarnessTurn, harnessTaskForTurn, planDirectiveFor, type StreamHarnessTurnResult } from "@/lib/harness/bot-stream";
+import { streamHarnessTurn, harnessTaskForTurn, planDirectiveFor, isFileShellRequest, FILE_SHELL_DISABLED_REPLY, type StreamHarnessTurnResult } from "@/lib/harness/bot-stream";
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
 import type { HarnessEvent } from "@/lib/harness/client";
 import { approvalBroker } from "@/lib/harness/approval-broker";
@@ -24,6 +24,7 @@ import {
 } from "@/lib/harness/command-classifier";
 import { resolvePermissionMode, runtimePermissionMode, allowsSystemTools } from "@/lib/permissions/mode";
 import { resolveWorkspaceForUser } from "@/lib/workspace-resolve";
+import { defaultWorkspaceRootForUser } from "@/lib/workspace-provision";
 import {
   createHarnessApprovalRow,
   installApprovalDecisionHook,
@@ -290,11 +291,22 @@ async function streamHarnessReply(
         // every conversation resolved above is scoped to this caller's own
         // assistant, so this gate is structural today and fails closed for any
         // future shared thread). Any other caller's turn runs WITHOUT a root.
-        const workspaceRoot = workspaceRootForTurn({
+        const storedRoot = workspaceRootForTurn({
           actorId: user.id,
           conversationOwnerId: assistant.userId,
           workspaceRootRealpath: conversation.workspaceRootRealpath,
         });
+        // Wave 1b default root: when the conversation has NO pinned root and
+        // the effective mode is SYSTEM, point the owner's turn at their per-
+        // member default project root (~/Cyraops/<userId>) instead of CRM mode
+        // ("no root → can't write"). Computed per turn, not persisted; in any
+        // other mode the shell is off anyway, so the default stays null.
+        const isConversationOwner = user.id === assistant.userId;
+        const workspaceRoot =
+          storedRoot ??
+          (isConversationOwner && permissionMode === "SYSTEM"
+            ? defaultWorkspaceRootForUser({ userId: assistant.userId })
+            : null);
 
         // Attachments are persisted and their text is inlined into the task,
         // mirroring the V1 path.
@@ -475,6 +487,25 @@ async function streamHarnessReply(
               approved: true,
             });
           }
+        }
+
+        // -----------------------------------------------------------------
+        // Capability gate (Wave 1b): a plain chat turn that clearly asks for
+        // shell/filesystem work but whose effective mode is NOT SYSTEM never
+        // mounts those tools. Short-circuit with the fixed platform line
+        // instead of a model turn that hallucinates a file write or reaches
+        // for a non-existent tool. Command turns already answered above; a
+        // plan-mode bare switch has no file/shell words and runs normally.
+        // -----------------------------------------------------------------
+        if (!commandIntent && !shortcutReply && !allowsSystemTools(permissionMode) && isFileShellRequest(content)) {
+          shortcutReply = FILE_SHELL_DISABLED_REPLY;
+          send({ type: "token", content: FILE_SHELL_DISABLED_REPLY });
+          void recordShellCommandAudit({
+            userId: user.id,
+            conversationId: conversation.id,
+            command: content,
+            approved: false,
+          });
         }
 
         if (!shortcutReply) {

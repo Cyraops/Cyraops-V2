@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { createSession, cookieOptions, SESSION_COOKIE, sameOrigin, sha256 } from "@/lib/auth";
 import { emailSchema, jsonError, nameSchema, passwordSchema } from "@/lib/validators";
+import { ensureWorkspaceForUser } from "@/lib/workspace-provision";
 import { z } from "zod";
 
 export async function GET(request: NextRequest) {
@@ -109,6 +110,12 @@ export async function POST(request: NextRequest) {
 
       await db.authRateLimit.deleteMany({ where: { key: { in: keys } } });
 
+      // Wave 1b: an employee who sets their password becomes a member in a new
+      // session — provision their owned workspace now (idempotent).
+      await ensureWorkspaceForUser({ db, userId: updatedUser.id }).catch((error: unknown) => {
+        console.warn("[auth/setup] workspace provisioning failed:", error);
+      });
+
       const session = await createSession(updatedUser.id);
       const response = NextResponse.json({
         ok: true,
@@ -154,6 +161,11 @@ export async function POST(request: NextRequest) {
   }, { isolationLevel: "Serializable" }).catch((error: unknown) => error instanceof Error && error.message === "INITIALIZED" || typeof error === "object" && error !== null && "code" in error && (error.code === "P2002" || error.code === "P2034") ? null : Promise.reject(error));
 
   if (!userId) return jsonError("Workspace has already been initialized", 409);
+  // The "main" workspace was created above with ownerId = userId, so this
+  // reuses it (idempotent) rather than creating a second owned workspace.
+  await ensureWorkspaceForUser({ db, userId }).catch((error: unknown) => {
+    console.warn("[auth/setup] workspace provisioning failed:", error);
+  });
   const session = await createSession(userId);
   const response = NextResponse.json({ ok: true });
   response.cookies.set(SESSION_COOKIE, session.token, cookieOptions(session.expiresAt, request));
