@@ -384,6 +384,10 @@ async function drivePlanTurn({
   const approval = ctx.get("approval");
 
   const selection = defaultModel.currentSelection();
+  if (typeof model === "string" && model) {
+    selection.model = model;
+    log(`model override for this turn: ${model}`);
+  }
   const agentOptions = { ...selection };
   const setup = (agentCtx, agent) => {
     if (sessionId !== undefined) {
@@ -789,6 +793,7 @@ export async function* runNativeTask(options = {}) {
      * directly (see drivePlanTurn). The task may be empty for a bare switch.
      */
     planMode,
+    model,
   } = options;
 
   if (planMode === undefined && (typeof task !== "string" || task.trim() === "")) {

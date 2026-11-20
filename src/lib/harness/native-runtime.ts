@@ -71,6 +71,8 @@ interface NativeHostModule {
     systemTools?: boolean;
     /** Tier-2 plan preview: "on" | "off" runs the turn as a plan-mode turn. */
     planMode?: "on" | "off";
+    /** Workspace model override; overrides the harness's default model for this turn. */
+    model?: string;
     onLog?: (message: string) => void;
   }): AsyncIterable<HarnessEvent>;
 }
@@ -357,6 +359,7 @@ export class NativeAgentRuntime implements AgentRuntime {
           // drives the turn as a plan-mode turn; the review arrives through
           // the question broker the runtime already subscribes to below.
           planMode,
+          model: model ?? undefined,
           onLog: (message) => process.stderr.write(`[native-host] ${message}\n`),
         })) {
           events.push(event);

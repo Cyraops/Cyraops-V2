@@ -6,23 +6,23 @@ describe("model catalog", () => {
   it("declares exactly the two DeepSeek API models", () => {
     assert.deepEqual(
       MODEL_CHOICES.map((choice) => choice.id),
-      ["deepseek-chat", "deepseek-reasoner"]
+      ["deepseek-flash", "deepseek-v4-pro"]
     );
     assert.deepEqual(
       MODEL_CHOICES.map((choice) => choice.label),
-      ["DeepSeek Chat (fast)", "DeepSeek Reasoner (thinking)"]
+      ["DeepSeek Flash (fast · default)", "DeepSeek V4 Pro (most capable)"]
     );
   });
 });
 
 describe("isValidModel", () => {
   it("accepts a catalog id", () => {
-    assert.equal(isValidModel("deepseek-chat"), true);
-    assert.equal(isValidModel("deepseek-reasoner"), true);
+    assert.equal(isValidModel("deepseek-flash"), true);
+    assert.equal(isValidModel("deepseek-v4-pro"), true);
   });
 
   it("rejects unknown, empty, and non-string values", () => {
-    assert.equal(isValidModel("deepseek-flash"), false);
+    assert.equal(isValidModel("deepseek-chat"), false);
     assert.equal(isValidModel(""), false);
     assert.equal(isValidModel(null), false);
     assert.equal(isValidModel(undefined), false);

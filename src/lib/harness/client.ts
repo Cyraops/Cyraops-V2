@@ -11,6 +11,8 @@
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
+import os from "node:os";
+import { writeFile, unlink } from "node:fs/promises";
 import { finalTextOf, parseHarnessLine, sessionIdOf } from "./events";
 
 export interface HarnessEvent {
@@ -89,6 +91,8 @@ export function buildSpawnArgs(options: {
   cwd?: string;
   /** Absolute directories appended as --add-dir (workspace-write grants). */
   addDir?: string[];
+  /** A written patch file overriding agent-default-model; passed as --patch. */
+  modelPatchPath?: string;
 }): string[] {
   const args = ["--json", "--approval-policy", "never"];
   if (options.permissionPreset) args.push("--permission-mode", options.permissionPreset);
@@ -108,6 +112,7 @@ export function buildSpawnArgs(options: {
     "vendored-boot",
     "system-tools-off.patch.yml"
   );
+  if (options.modelPatchPath) args.unshift("--patch", options.modelPatchPath);
   if (existsSync(overlay) && !options.systemTools) args.unshift("--patch", overlay, "--profile", harnessProfile());
   else args.unshift("--profile", harnessProfile());
   if (options.sessionId) args.push("--session-id", options.sessionId);
@@ -131,8 +136,22 @@ export function buildSpawnEnv(env: NodeJS.ProcessEnv, model?: string | null): No
 
 export async function runHarnessTask(options: HarnessOptions): Promise<HarnessResult> {
   const timeoutMs = options.timeoutMs ?? 180_000;
+  let modelPatchPath: string | undefined;
+  if (options.model) {
+    modelPatchPath = path.join(
+      os.tmpdir(),
+      `cyraops-model-${process.pid}-${Date.now()}.patch.yml`
+    );
+    await writeFile(
+      modelPatchPath,
+      `- id: agent-default-model\n  config:\n    provider: deepseek-official\n    model: ${options.model}\n`,
+      "utf8"
+    );
+  }
+
   const args = buildSpawnArgs({
     task: options.task,
+    modelPatchPath,
     sessionId: options.sessionId,
     permissionPreset: options.permissionPreset,
     systemTools: options.systemTools,
@@ -190,6 +209,7 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
 
     child.on("close", (code) => {
       clearTimeout(timer);
+      if (modelPatchPath) void unlink(modelPatchPath).catch(() => {});
       const text = finalTextOf(events);
       resolve({ text, sessionId, events, stderr, code, timedOut });
     });

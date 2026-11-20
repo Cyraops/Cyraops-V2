@@ -2,8 +2,8 @@
  * The workspace model selector (Settings → Permissions → Model).
  *
  * The DeepSeek Harness's llm-deepseek adapter lists exactly two official
- * models from the DeepSeek API (`model listing … loaded 2 model(s)`):
- * `deepseek-chat` (fast, conversational) and `deepseek-reasoner` (thinking).
+ * models from the DeepSeek API — verified live: `deepseek-flash` (the
+ * configured default) and `deepseek-v4-pro` (most capable).
  * A workspace stores at most one of these as an override; `null` means "the
  * harness's configured default" (the agent-default-model composition entry).
  *
@@ -18,8 +18,8 @@ export interface ModelChoice {
 }
 
 export const MODEL_CHOICES: readonly ModelChoice[] = [
-  { id: "deepseek-chat", label: "DeepSeek Chat (fast)" },
-  { id: "deepseek-reasoner", label: "DeepSeek Reasoner (thinking)" },
+  { id: "deepseek-flash", label: "DeepSeek Flash (fast · default)" },
+  { id: "deepseek-v4-pro", label: "DeepSeek V4 Pro (most capable)" },
 ] as const;
 
 export type ModelId = (typeof MODEL_CHOICES)[number]["id"];
