@@ -64,22 +64,27 @@ export const SYSTEM_FILE_OP_GUIDANCE =
  * route short-circuits the turn with this line instead of letting the model
  * improvise a hallucinated file write or a non-existent tool.
  */
-export const FILE_SHELL_DISABLED_REPLY =
-  "Shell and file tools are off in CONTROLLED mode. An admin can switch this workspace to SYSTEM in Settings → Permissions.";
+export function fileShellDisabledReply(mode?: string): string {
+  return `Shell and file tools are off in ${mode ?? "this"} mode. An admin can switch this workspace to SYSTEM in Settings → Permissions.`;
+}
+
+/** Backward-compatible fixed line (CONTROLLED is the common non-SYSTEM mode). */
+export const FILE_SHELL_DISABLED_REPLY = fileShellDisabledReply("CONTROLLED");
 
 /**
- * Words that mark a user request as shell/filesystem intent. This is a
- * deliberate, coarse heuristic (the same family as the shell-command gate):
- * it over-matches on purpose so a member can never get a hallucinated file
- * operation. `create`/`write`/`save`/`run` are common verbs, so the gate only
- * fires when the effective mode already refuses shell tools — in SYSTEM mode
- * the turn simply runs, exactly as it did before.
+ * Tokens that mark a user request as shell/filesystem intent. File/shell is
+ * signalled by its NOUNS (pdf, file, folder, script, shell, command, disk…),
+ * not by generic verbs like create/write/save/run — otherwise "create a task"
+ * or "run a report" (valid CRM work) would be mistaken for file intent and
+ * short-circuited in CONTROLLED mode. The gate only fires when the effective
+ * mode already refuses shell tools; in SYSTEM the turn simply runs.
  */
-const FILE_SHELL_REQUEST_WORDS = /\b(create|write|save|pdf|file|shell|run|install)\b/i;
+const FILE_SHELL_REQUEST_TOKENS =
+  /\b(pdf|\.pdf|\.txt|\.py|\.md|\.docx?|\.xlsx?|file|folder|desktop|directory|script|shell|terminal|bash|command|mkdir|pip|npm|python|reportlab|install|disk)\b/i;
 
 /** Pure shell/filesystem-intent detector; unit-tested without a runtime. */
 export function isFileShellRequest(text: string): boolean {
-  return FILE_SHELL_REQUEST_WORDS.test(text);
+  return FILE_SHELL_REQUEST_TOKENS.test(text);
 }
 
 /**

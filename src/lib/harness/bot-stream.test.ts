@@ -551,6 +551,10 @@ test("isFileShellRequest is false for non-file/shell requests", () => {
     "Who is my next meeting with?",
     "",
     "planning my day",
+    "create a task",
+    "run a report",
+    "write an email",
+    "save the ticket",
   ]) {
     assert.equal(isFileShellRequest(text), false, `expected no file/shell intent: ${text}`);
   }

@@ -10,12 +10,13 @@ import {
 import { checkDailySpend, checkRateLimit } from "@/lib/ai/assistant/guard";
 import { db } from "@/lib/db";
 import { storage } from "@/lib/storage";
-import { streamHarnessTurn, harnessTaskForTurn, planDirectiveFor, isFileShellRequest, FILE_SHELL_DISABLED_REPLY, type StreamHarnessTurnResult } from "@/lib/harness/bot-stream";
+import { streamHarnessTurn, harnessTaskForTurn, planDirectiveFor, isFileShellRequest, fileShellDisabledReply, type StreamHarnessTurnResult } from "@/lib/harness/bot-stream";
 import { HarnessRunError, isAbortError, runtimeFactory, type AgentRuntime } from "@/lib/harness/runtime";
 import type { HarnessEvent } from "@/lib/harness/client";
 import { approvalBroker } from "@/lib/harness/approval-broker";
 import { planOfToolCall, planReviewOfQuestion, toolCallsUsedOf, type PlanReviewQuestion } from "@/lib/harness/events";
 import { workspaceRootForTurn } from "@/lib/harness/workspace-root";
+import { mkdir } from "node:fs/promises";
 import {
   classifyCommand,
   commandTaskFor,
@@ -305,7 +306,15 @@ async function streamHarnessReply(
         const workspaceRoot =
           storedRoot ??
           (isConversationOwner && permissionMode === "SYSTEM"
-            ? defaultWorkspaceRootForUser({ userId: assistant.userId })
+            ? await (async () => {
+                const dir = defaultWorkspaceRootForUser({ userId: assistant.userId });
+                try {
+                  await mkdir(dir, { recursive: true });
+                } catch {
+                  // The sandbox will report an unusable cwd if this fails; keep going.
+                }
+                return dir;
+              })()
             : null);
 
         // Attachments are persisted and their text is inlined into the task,
@@ -498,8 +507,8 @@ async function streamHarnessReply(
         // plan-mode bare switch has no file/shell words and runs normally.
         // -----------------------------------------------------------------
         if (!commandIntent && !shortcutReply && !allowsSystemTools(permissionMode) && isFileShellRequest(content)) {
-          shortcutReply = FILE_SHELL_DISABLED_REPLY;
-          send({ type: "token", content: FILE_SHELL_DISABLED_REPLY });
+          shortcutReply = fileShellDisabledReply(permissionMode);
+          send({ type: "token", content: shortcutReply });
           void recordShellCommandAudit({
             userId: user.id,
             conversationId: conversation.id,
