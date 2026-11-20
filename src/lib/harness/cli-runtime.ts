@@ -94,6 +94,7 @@ export class CliAgentRuntime implements AgentRuntime {
     workspaceId?: string | null;
     workspaceRoot?: string | null;
     permissionMode?: PermissionMode;
+    model?: string | null;
   }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
     if (!session) throw new Error(`unknown harness session: ${input.sessionId}`);
@@ -121,7 +122,7 @@ export class CliAgentRuntime implements AgentRuntime {
     const spawn = previous
       .catch(() => undefined)
       .then(() =>
-        this.runSpawn(session, input.task, input.workspaceId ?? null, input.workspaceRoot ?? null, input.permissionMode, queue)
+        this.runSpawn(session, input.task, input.workspaceId ?? null, input.workspaceRoot ?? null, input.permissionMode, input.model, queue)
       );
     this.turns.set(session.id, spawn.catch(() => undefined));
 
@@ -140,6 +141,7 @@ export class CliAgentRuntime implements AgentRuntime {
     workspaceId: string | null,
     workspaceRoot: string | null,
     permissionMode: PermissionMode | undefined,
+    model: string | null | undefined,
     queue: EventQueue<HarnessEvent>
   ): Promise<void> {
     let harnessSessionId = session.harnessSessionId;
@@ -179,6 +181,10 @@ export class CliAgentRuntime implements AgentRuntime {
         permissionMode && cliPermissionArgs(permissionMode).length > 0 ? preset : undefined,
       // The system-tools-off overlay stays on for every mode except SYSTEM.
       systemTools: permissionMode ? systemToolsEnabled(permissionMode) : false,
+      // Model override (Settings → Permissions → Model): the headless CLI has
+      // no --model flag, so the selected model rides the per-spawn environment
+      // as HARNESS_MODEL (client.ts applies it onto `env`).
+      model,
       onEvent: (event) => {
         if (event.type === "final") sawFinal = true;
         queue.push(event);

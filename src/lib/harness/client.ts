@@ -56,6 +56,13 @@ export interface HarnessOptions {
   addDir?: string[];
   /** SYSTEM permission mode: re-enable the harness system tools (skip the overlay). */
   systemTools?: boolean;
+  /**
+   * Model override for this spawn (Settings → Permissions → Model). The
+   * headless CLI accepts no --model flag, so the value rides the per-spawn
+   * environment as HARNESS_MODEL; null/absent removes it so the harness keeps
+   * its configured default.
+   */
+  model?: string | null;
   onEvent?: (event: HarnessEvent) => void;
 }
 
@@ -108,6 +115,20 @@ export function buildSpawnArgs(options: {
   return args;
 }
 
+/**
+ * The per-spawn environment for one turn. The headless CLI has no `--model`
+ * flag (verified via `dsh --profile headless --help`), so the workspace model
+ * override rides the environment as HARNESS_MODEL. A null/absent model removes
+ * the variable so the harness keeps its configured default; the returned object
+ * is always a fresh copy so a spawn can never mutate the caller's env.
+ */
+export function buildSpawnEnv(env: NodeJS.ProcessEnv, model?: string | null): NodeJS.ProcessEnv {
+  const next: NodeJS.ProcessEnv = { ...env };
+  if (model) next.HARNESS_MODEL = model;
+  else delete next.HARNESS_MODEL;
+  return next;
+}
+
 export async function runHarnessTask(options: HarnessOptions): Promise<HarnessResult> {
   const timeoutMs = options.timeoutMs ?? 180_000;
   const args = buildSpawnArgs({
@@ -123,7 +144,7 @@ export async function runHarnessTask(options: HarnessOptions): Promise<HarnessRe
     // Next's build rejects dynamic spawn in App Routes unless excluded from static analysis.
     const child = spawn(/* turbopackIgnore: true */ harnessBinary(), args, {
       cwd: options.cwd ?? process.cwd(),
-      env: options.env ?? process.env,
+      env: buildSpawnEnv(options.env ?? process.env, options.model),
       stdio: ["ignore", "pipe", "pipe"],
     });
 

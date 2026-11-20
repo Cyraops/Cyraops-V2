@@ -166,6 +166,12 @@ export interface StreamHarnessTurnInput {
    */
   permissionMode?: PermissionMode;
   /**
+   * The workspace model override for this turn (one of MODEL_CHOICES, or null
+   * = the harness's configured default). The runtime forwards it to the
+   * harness (native: HARNESS_MODEL per turn; cli: per-spawn env).
+   */
+  model?: string | null;
+  /**
    * Plan-mode switch for this turn ("on" | "off"): the native runtime runs
    * the turn as a plan-mode turn — the model explores, presents its plan
    * through exit_plan_mode, and the review arrives as a plan-review question
@@ -288,6 +294,7 @@ export async function streamHarnessTurn(input: StreamHarnessTurnInput): Promise<
       // the turn input; runtimes ignore it when null (CRM mode).
       workspaceRoot: input.workspaceRoot ?? null,
       permissionMode: input.permissionMode,
+      model: input.model,
       planMode: input.planMode,
     })) {
       onEvent?.(event);

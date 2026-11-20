@@ -167,6 +167,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     workspaceId?: string | null;
     workspaceRoot?: string | null;
     permissionMode?: PermissionMode;
+    model?: string | null;
     planMode?: "on" | "off";
   }): AsyncIterable<HarnessEvent> {
     const session = this.sessions.get(input.sessionId);
@@ -187,6 +188,7 @@ export class NativeAgentRuntime implements AgentRuntime {
           input.workspaceRoot ?? null,
           input.permissionMode,
           input.planMode,
+          input.model,
           signal,
           queue,
           events
@@ -209,6 +211,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     workspaceRoot: string | null,
     permissionMode: PermissionMode | undefined,
     planMode: "on" | "off" | undefined,
+    model: string | null | undefined,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
     events: HarnessEvent[]
@@ -249,7 +252,7 @@ export class NativeAgentRuntime implements AgentRuntime {
       } catch {
         // Next/Turbopack (or a missing addon) blocked the in-process host:
         // serve the turn through the CLI runtime instead of failing the route.
-        await this.runTurnViaCli(session, task, workspaceId, workspaceRoot, permissionMode, signal, queue, events);
+        await this.runTurnViaCli(session, task, workspaceId, workspaceRoot, permissionMode, model, signal, queue, events);
         return;
       }
 
@@ -270,6 +273,15 @@ export class NativeAgentRuntime implements AgentRuntime {
       const previousPermissionMode = process.env.DSH_PERMISSION_MODE;
       if (preset) process.env.DSH_PERMISSION_MODE = preset;
       else delete process.env.DSH_PERMISSION_MODE;
+
+      // Model override (Settings → Permissions → Model): published as
+      // HARNESS_MODEL for the duration of this turn under the same global
+      // mutex so the audit/cost layer names the selected model. null/absent
+      // removes it so the harness keeps its configured default.
+      const previousModel = process.env.HARNESS_MODEL;
+      if (model) process.env.HARNESS_MODEL = model;
+      else delete process.env.HARNESS_MODEL;
+      console.info(`[native-runtime] effective model: ${model ?? "harness default (null)"}`);
 
       // Approval events: the plugin's answerer publishes requests on the
       // broker (same process); forward them into this turn's event stream as
@@ -371,6 +383,8 @@ export class NativeAgentRuntime implements AgentRuntime {
         else process.env.CYRAOPS_WORKSPACE_ID = previousWorkspace;
         if (previousPermissionMode === undefined) delete process.env.DSH_PERMISSION_MODE;
         else process.env.DSH_PERMISSION_MODE = previousPermissionMode;
+        if (previousModel === undefined) delete process.env.HARNESS_MODEL;
+        else process.env.HARNESS_MODEL = previousModel;
       }
     } finally {
       queue.close();
@@ -394,6 +408,7 @@ export class NativeAgentRuntime implements AgentRuntime {
     workspaceId: string | null,
     workspaceRoot: string | null,
     permissionMode: PermissionMode | undefined,
+    model: string | null | undefined,
     signal: AbortSignal | undefined,
     queue: ReturnType<typeof createEventQueue<HarnessEvent>>,
     events: HarnessEvent[]
@@ -415,6 +430,7 @@ export class NativeAgentRuntime implements AgentRuntime {
       workspaceId,
       workspaceRoot,
       permissionMode,
+      model,
     })) {
       events.push(event);
       queue.push(event);

@@ -415,6 +415,9 @@ model Workspace {
   registrationDetails String?  @db.Text
   /// The workspace-wide permission mode every AI turn resolves against.
   permissionMode      PermissionMode @default(CONTROLLED)
+  /// The workspace model override for harness turns (one of MODEL_CHOICES);
+  /// null means the harness's configured default (agent-default-model).
+  model               String?
   ownerId             String   @unique
   loginEmail          String   @unique
   loginPasswordHash   String

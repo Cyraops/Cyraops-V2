@@ -11,6 +11,7 @@ import {
   runtimeFactory,
 } from "@/lib/harness/runtime";
 import { resolvePermissionMode, runtimePermissionMode } from "@/lib/permissions/mode";
+import { resolveModel } from "@/lib/model";
 import { jsonError } from "@/lib/validators";
 import { resolveWorkspaceForUser } from "@/lib/workspace-resolve";
 
@@ -71,10 +72,15 @@ export async function POST(request: NextRequest) {
     // singleton fallback), then role-gate it (non-owners under
     // FULL_CONTROL/SYSTEM get CONTROLLED) before the runtime maps it onto
     // DSH_PERMISSION_MODE / --permission-mode.
+    const workspace = await resolveWorkspaceForUser({ db, userId: user.id });
     const permissionMode = runtimePermissionMode(
-      await resolvePermissionMode({ workspace: await resolveWorkspaceForUser({ db, userId: user.id }) }),
+      await resolvePermissionMode({ workspace }),
       user.role
     );
+
+    // The workspace model override (Settings → Permissions → Model); null =
+    // the harness's configured default.
+    const model = resolveModel(workspace);
 
     const events = [];
     for await (const event of runtime.executeTurn({
@@ -84,6 +90,7 @@ export async function POST(request: NextRequest) {
       // The request owner is the tenant key for the CRM tools' scoping.
       workspaceId: user.id,
       permissionMode,
+      model,
     })) {
       events.push(event);
     }

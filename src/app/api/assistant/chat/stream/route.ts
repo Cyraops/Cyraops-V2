@@ -24,6 +24,7 @@ import {
   SHELL_DISABLED_REPLY,
 } from "@/lib/harness/command-classifier";
 import { resolvePermissionMode, runtimePermissionMode, allowsSystemTools } from "@/lib/permissions/mode";
+import { resolveModel } from "@/lib/model";
 import { resolveWorkspaceForUser } from "@/lib/workspace-resolve";
 import { defaultWorkspaceRootForUser } from "@/lib/workspace-provision";
 import {
@@ -253,13 +254,15 @@ async function streamHarnessReply(
         // workspace (no singleton fallback), then the workspace/agent mode and
         // role-gate it (a non-owner under FULL_CONTROL/SYSTEM gets CONTROLLED)
         // before the runtime maps it onto the harness.
+        const workspace = await resolveWorkspaceForUser({ db, userId: user.id });
         const permissionMode = runtimePermissionMode(
-          await resolvePermissionMode({
-            workspace: await resolveWorkspaceForUser({ db, userId: user.id }),
-            agentSlug,
-          }),
+          await resolvePermissionMode({ workspace, agentSlug }),
           user.role
         );
+
+        // The workspace model override (Settings → Permissions → Model); null =
+        // the harness's configured default.
+        const model = resolveModel(workspace);
 
         // FIX: strict conversation ids. An unknown id throws
         // ConversationNotFoundError (never a silent fallback onto the latest
@@ -535,6 +538,8 @@ async function streamHarnessReply(
           workspaceRoot,
           // The resolved, role-gated permission mode for this turn.
           permissionMode,
+          // The workspace model override for this turn (null = harness default).
+          model,
           // Tier-2 plan preview: "/plan …" runs the turn in the harness's
           // plan mode (native runtime; other runtimes ignore the flag).
           planMode: planDirective?.mode ?? undefined,

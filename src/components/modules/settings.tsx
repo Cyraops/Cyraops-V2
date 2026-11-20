@@ -544,8 +544,14 @@ interface PermissionAgent {
   effective: string;
 }
 
+interface ModelChoice {
+  id: string;
+  label: string;
+}
+
 interface PermissionState {
-  workspace: { id: string; name: string; mode: string };
+  workspace: { id: string; name: string; mode: string; model: string | null };
+  modelChoices: ModelChoice[];
   agents: PermissionAgent[];
 }
 
@@ -568,6 +574,7 @@ interface BotStatus {
 function PermissionsCard() {
   const [state, setState] = useState<PermissionState | null>(null);
   const [workspaceDraft, setWorkspaceDraft] = useState<string | null>(null);
+  const [workspaceModelDraft, setWorkspaceModelDraft] = useState<string | null>(null);
   const [agentDrafts, setAgentDrafts] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -596,6 +603,7 @@ function PermissionsCard() {
       if (!res.ok) throw new Error(data.error ?? "Failed to load permission modes");
       setState(data);
       setWorkspaceDraft(null);
+      setWorkspaceModelDraft(null);
       setAgentDrafts({});
     } catch (err: any) {
       setError(err.message ?? "Failed to load permission modes");
@@ -616,9 +624,14 @@ function PermissionsCard() {
     setSaved(false);
 
     // One POST per changed field; each response carries the full new state.
-    const patches: { workspaceMode?: string; agentId?: string; agentMode?: string | null }[] = [];
+    const patches: { workspaceMode?: string; workspaceModel?: string | null; agentId?: string; agentMode?: string | null }[] = [];
     if (workspaceDraft && workspaceDraft !== state.workspace.mode) {
       patches.push({ workspaceMode: workspaceDraft });
+    }
+    const currentModel = state.workspace.model ?? "";
+    const draftModel = workspaceModelDraft ?? currentModel;
+    if (draftModel !== currentModel) {
+      patches.push({ workspaceModel: draftModel === "" ? null : draftModel });
     }
     for (const agent of state.agents) {
       const current = agent.mode ?? "";
@@ -647,6 +660,7 @@ function PermissionsCard() {
       if (latest) {
         setState(latest);
         setWorkspaceDraft(null);
+        setWorkspaceModelDraft(null);
         setAgentDrafts({});
       }
       setSaved(true);
@@ -686,6 +700,7 @@ function PermissionsCard() {
   }
 
   const workspaceMode = workspaceDraft ?? state.workspace.mode;
+  const workspaceModel = workspaceModelDraft ?? state.workspace.model ?? "";
 
   return (
     <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
@@ -728,6 +743,27 @@ function PermissionsCard() {
             </option>
           ))}
         </Select>
+
+        <div>
+          <Select
+            label="Model"
+            value={workspaceModel}
+            onChange={(event) => {
+              setWorkspaceModelDraft(event.target.value);
+              setSaved(false);
+            }}
+          >
+            <option value="">Default (harness default)</option>
+            {state.modelChoices.map((choice) => (
+              <option key={choice.id} value={choice.id}>
+                {choice.label}
+              </option>
+            ))}
+          </Select>
+          <p className="mt-1 text-[10px] text-[var(--muted)]">
+            The model the harness uses for this workspace&apos;s AI turns. Default follows the harness&apos;s configured model.
+          </p>
+        </div>
 
         <div>
           <div className="mb-1.5 text-xs font-semibold text-[var(--muted)]">Active agents</div>

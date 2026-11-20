@@ -65,6 +65,16 @@ export interface AgentRuntime {
      */
     permissionMode?: PermissionMode;
     /**
+     * The workspace model override for this turn (one of MODEL_CHOICES in
+     * @/lib/model, or null = the harness's configured default). The native
+     * runtime publishes it as HARNESS_MODEL per turn under its global mutex;
+     * the CLI runtime forwards it in the per-spawn environment (the headless
+     * CLI has no --model flag). The harness itself reads the model from its
+     * agent-default-model composition; HARNESS_MODEL additionally names the
+     * model in the Cyraops usage/cost rows.
+     */
+    model?: string | null;
+    /**
      * Plan-mode switch for this turn ("on" | "off"): the native runtime runs
      * the turn as a plan-mode turn (the model presents its plan through
      * exit_plan_mode for review before executing). Only the native runtime

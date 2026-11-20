@@ -11,8 +11,8 @@
 
 import type { PrismaClient, Workspace } from "@prisma/client";
 
-/** The subset of a Workspace the rest of the permission pipeline needs. */
-export type ResolvedWorkspace = Pick<Workspace, "id" | "ownerId" | "permissionMode">;
+/** The subset of a Workspace the rest of the permission/model pipeline needs. */
+export type ResolvedWorkspace = Pick<Workspace, "id" | "ownerId" | "permissionMode" | "model">;
 
 /**
  * Resolve the Workspace a user belongs to, in priority order:
@@ -40,7 +40,7 @@ export async function resolveWorkspaceForUser(input: {
     // `ownerId` filter is what proves the caller belongs to this workspace.
     const workspace = await db.workspace.findFirst({
       where: { id: workspaceId, ownerId: userId },
-      select: { id: true, ownerId: true, permissionMode: true },
+      select: { id: true, ownerId: true, permissionMode: true, model: true },
     });
     // Reject rather than fall through: a supplied id the user does not own must
     // not resolve to the user's own workspace (let alone another tenant's).
@@ -51,7 +51,7 @@ export async function resolveWorkspaceForUser(input: {
   // is at most one row.
   const owned = await db.workspace.findFirst({
     where: { ownerId: userId },
-    select: { id: true, ownerId: true, permissionMode: true },
+    select: { id: true, ownerId: true, permissionMode: true, model: true },
   });
   return owned ?? null;
 }
