@@ -1118,8 +1118,10 @@ export function BotWorkspace() {
         return;
       }
 
-      // Assistant selected (or nothing remembered yet): its voice screen.
-      setVoiceOpen(true);
+      // Assistant selected (or nothing remembered yet): honour the last mode
+      // (voice only if the user explicitly last used voice), instead of always
+      // re-opening the voice screen — the initial state already read lastMode.
+      setVoiceOpen(readLastMode(windowLocalStorageLike(), ["personal"]) === "voice");
 
       const list = await fetch("/api/assistant/conversations").then((r) => r.json()).catch(() => ({}));
       const first = list.conversations?.[0];
