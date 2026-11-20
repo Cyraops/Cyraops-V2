@@ -10,10 +10,13 @@ import {
   GIT_ARG_MAX_LENGTH,
   GIT_ARG_VECTORS,
   GitArgError,
+  GitCommandError,
   GIT_MAX_BUFFER,
   GIT_TIMEOUT_MS,
   hasUncommittedChanges,
+  isNotAGitRepository,
   listBranches,
+  NOT_A_GIT_REPOSITORY,
   switchBranch,
   validateGitBranchName,
   validateGitCommitMessage,
@@ -57,6 +60,27 @@ function opRecordingGitExec(outputs: Record<string, string> = {}, failing: strin
     },
   };
   return { exec, calls, opOf };
+}
+
+/** A git exit-128 "not a git repository" failure, shaped like node's execFile error. */
+function notAGitRepoError(): Error {
+  const error = new Error("git exited 128");
+  (error as { code?: unknown }).code = 128;
+  (error as { stderr?: unknown }).stderr =
+    "fatal: not a git repository (or any of the parent directories): .git";
+  return error;
+}
+
+/** A recording fake whose every git call fails with the non-repo exit-128 error. */
+function nonRepoGitExec() {
+  const calls: Array<{ file: string; args: string[] }> = [];
+  const exec: GitExec = {
+    async execFile(file, args) {
+      calls.push({ file, args });
+      throw notAGitRepoError();
+    },
+  };
+  return { exec, calls };
 }
 
 test("GIT_ARG_VECTORS contains exactly the four documented read-only vectors", () => {
@@ -135,6 +159,62 @@ test("collectWorkspaceGitStatus passes a bounded timeout and buffer to exec", as
 });
 
 // ---------------------------------------------------------------------------
+// Non-git root detection (exit 128 / "not a git repository")
+// ---------------------------------------------------------------------------
+
+test("isNotAGitRepository is true only for exit 128 with the non-repo stderr", () => {
+  assert.equal(isNotAGitRepository(notAGitRepoError()), true);
+
+  const otherCode = notAGitRepoError();
+  (otherCode as { code?: unknown }).code = 1;
+  assert.equal(isNotAGitRepository(otherCode), false);
+
+  const otherStderr = notAGitRepoError();
+  (otherStderr as { stderr?: unknown }).stderr = "fatal: bad object";
+  assert.equal(isNotAGitRepository(otherStderr), false);
+
+  assert.equal(isNotAGitRepository(new Error("boom")), false);
+});
+
+test("collectWorkspaceGitStatus detects a non-git root, reports the reason, and stops polling", async () => {
+  const { exec, calls } = nonRepoGitExec();
+  const status = await collectWorkspaceGitStatus("/work/project", exec);
+  assert.deepEqual(status, {
+    branch: "",
+    status: "",
+    log: "",
+    diffStat: "",
+    available: false,
+    reason: NOT_A_GIT_REPOSITORY,
+  });
+  // The first fatal vector decides it: the other three are never attempted.
+  assert.equal(calls.length, 1);
+  assert.deepEqual(calls[0].args, ["-C", "/work/project", "branch", "--show-current"]);
+});
+
+test("listBranches returns available:false for a non-git root instead of throwing", async () => {
+  const { exec } = nonRepoGitExec();
+  const list = await listBranches("/work/project", exec);
+  assert.deepEqual(list, { current: "", branches: [], available: false, reason: NOT_A_GIT_REPOSITORY });
+});
+
+test("listBranches still throws GitCommandError for a genuine git failure", async () => {
+  const { exec } = opRecordingGitExec({}, ["branch -a --no-color"]);
+  await assert.rejects(() => listBranches("/work/project", exec), GitCommandError);
+});
+
+test("getDiff returns available:false for a non-git root instead of throwing", async () => {
+  const { exec } = nonRepoGitExec();
+  const diff = await getDiff("/work/project", "src/a.ts", exec);
+  assert.deepEqual(diff, { path: "src/a.ts", rawText: "", available: false, reason: NOT_A_GIT_REPOSITORY });
+});
+
+test("getDiff still throws GitCommandError for a genuine git failure", async () => {
+  const { exec } = opRecordingGitExec({}, ["diff --unified=3 -- src/a.ts"]);
+  await assert.rejects(() => getDiff("/work/project", "src/a.ts", exec), GitCommandError);
+});
+
+// ---------------------------------------------------------------------------
 // listBranches / getDiff / getDiffStat / hasUncommittedChanges
 // ---------------------------------------------------------------------------
 
@@ -143,7 +223,7 @@ test("listBranches parses the current branch and all branches", async () => {
     "branch -a --no-color": "* main\n  feature/x\n  remotes/origin/main\n",
   });
   const list = await listBranches("/work/project", exec);
-  assert.deepEqual(list, { current: "main", branches: ["main", "feature/x", "remotes/origin/main"] });
+  assert.deepEqual(list, { current: "main", branches: ["main", "feature/x", "remotes/origin/main"], available: true });
   assert.deepEqual(calls.map((call) => call.args), [
     ["-C", "/work/project", "branch", "-a", "--no-color"],
   ]);
@@ -152,7 +232,7 @@ test("listBranches parses the current branch and all branches", async () => {
 test("getDiff runs git diff --unified=3 -- <path> and returns the raw text", async () => {
   const { exec, calls } = opRecordingGitExec({ "diff --unified=3 -- src/a.ts": "diff text" });
   const diff = await getDiff("/work/project", "src/a.ts", exec);
-  assert.deepEqual(diff, { path: "src/a.ts", rawText: "diff text" });
+  assert.deepEqual(diff, { path: "src/a.ts", rawText: "diff text", available: true });
   assert.deepEqual(calls.map((call) => call.args), [
     ["-C", "/work/project", "diff", "--unified=3", "--", "src/a.ts"],
   ]);

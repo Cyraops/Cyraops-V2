@@ -45,6 +45,34 @@ export const defaultGitExec: GitExec = {
 export const GIT_TIMEOUT_MS = 10_000;
 export const GIT_MAX_BUFFER = 1 << 20; // 1 MB — plenty for log/diff --stat
 
+/** The canonical reason the panel and routes surface for a non-git root. */
+export const NOT_A_GIT_REPOSITORY = "not a git repository";
+
+/** The process exit code git uses for a fatal error such as "not a git repository". */
+const GIT_FATAL_EXIT_CODE = 128;
+
+/** The exit code and stderr a failed exec produced, normalised from either a raw spawn error or a GitCommandError. */
+function execFailure(error: unknown): { code: number | string | null; stderr: string } {
+  const code = (error as { code?: unknown } | null)?.code ?? null;
+  const stderr = String(
+    (error as { stderr?: unknown } | null)?.stderr ??
+      (error as { message?: unknown } | null)?.message ??
+      ""
+  );
+  return { code: typeof code === "number" || typeof code === "string" ? code : null, stderr };
+}
+
+/**
+ * True when git failed specifically because `root` is not inside a repository:
+ * exit code 128 with "not a git repository" on stderr. This is the one failure
+ * the read-only helpers must answer gracefully instead of throwing, so the
+ * Workspace panel can show a single muted line and stop asking.
+ */
+export function isNotAGitRepository(error: unknown): boolean {
+  const { code, stderr } = execFailure(error);
+  return code === GIT_FATAL_EXIT_CODE && /not a git repository/i.test(stderr);
+}
+
 /**
  * The ONLY arg vectors the read-only status helper executes. `args(root)`
  * receives the server-resolved workspace realpath (never user input beyond
@@ -75,6 +103,8 @@ export interface WorkspaceGitStatus {
   diffStat: string;
   /** False when git is missing or the directory is not a git repository. */
   available: boolean;
+  /** Why `available` is false: "not a git repository" when git exited 128 for that reason. */
+  reason?: string;
 }
 
 /**
@@ -98,9 +128,15 @@ export async function collectWorkspaceGitStatus(
       });
       result[vector.key] = stdout.replace(/\s+$/, "");
       succeeded += 1;
-    } catch {
-      // git missing, not a repository, or output beyond the buffer: the field
-      // stays "" and the panel shows the muted "not a repository" line.
+    } catch (error) {
+      // Not a repository is decided on the FIRST failing vector: every vector
+      // would fail the same way, so stop polling rather than retrying four
+      // times. Other failures (git missing, buffer overflow) keep the field ""
+      // and the panel shows the same muted unavailable line.
+      if (isNotAGitRepository(error)) {
+        result.reason = NOT_A_GIT_REPOSITORY;
+        break;
+      }
     }
   }
   result.available = succeeded === GIT_ARG_VECTORS.length;
@@ -225,13 +261,16 @@ export function validateGitCommitMessage(message: string): string {
 export class GitCommandError extends Error {
   readonly command: string[];
   readonly stderr: string;
+  /** The process exit code when git ran and failed; undefined for a spawn error. */
+  readonly code?: number;
 
-  constructor(command: string[], stderr: string) {
+  constructor(command: string[], stderr: string, code?: number) {
     const firstLine = stderr.trim().split("\n")[0] ?? "";
     super(`git ${command.join(" ")} failed${firstLine ? `: ${firstLine}` : ""}`);
     this.name = "GitCommandError";
     this.command = command;
     this.stderr = stderr;
+    this.code = code;
   }
 }
 
@@ -244,12 +283,12 @@ async function runGit(exec: GitExec, root: string, args: string[]): Promise<stri
     });
     return stdout;
   } catch (error) {
-    const stderr = String(
-      (error as { stderr?: unknown } | null)?.stderr ??
-        (error as { message?: unknown } | null)?.message ??
-        ""
+    const { code, stderr } = execFailure(error);
+    throw new GitCommandError(
+      ["git", "-C", root, ...args],
+      stderr,
+      typeof code === "number" ? code : undefined
     );
-    throw new GitCommandError(["git", "-C", root, ...args], stderr);
   }
 }
 
@@ -258,6 +297,10 @@ export interface GitBranchList {
   current: string;
   /** Every local and remote branch (`git branch -a --no-color`), de-duplicated in order. */
   branches: string[];
+  /** False when the root is not a git repository; the list is then empty. */
+  available: boolean;
+  /** Why `available` is false: "not a git repository" when git exited 128 for that reason. */
+  reason?: string;
 }
 
 /**
@@ -267,7 +310,17 @@ export interface GitBranchList {
  * the UI filters those out).
  */
 export async function listBranches(root: string, exec: GitExec = defaultGitExec): Promise<GitBranchList> {
-  const out = await runGit(exec, root, ["branch", "-a", "--no-color"]);
+  let out: string;
+  try {
+    out = await runGit(exec, root, ["branch", "-a", "--no-color"]);
+  } catch (error) {
+    // A non-git root is an expected answer, not an error: report it without
+    // throwing so the route and panel never log a GitCommandError for it.
+    if (isNotAGitRepository(error)) {
+      return { current: "", branches: [], available: false, reason: NOT_A_GIT_REPOSITORY };
+    }
+    throw error;
+  }
   const branches: string[] = [];
   let current = "";
   for (const line of out.split("\n")) {
@@ -280,7 +333,7 @@ export async function listBranches(root: string, exec: GitExec = defaultGitExec)
       branches.push(trimmed);
     }
   }
-  return { current, branches };
+  return { current, branches, available: true };
 }
 
 /** True when `git status --porcelain` reports any change (staged, unstaged or untracked). */
@@ -294,10 +347,20 @@ export async function getDiff(
   root: string,
   relpath: string,
   exec: GitExec = defaultGitExec
-): Promise<{ path: string; rawText: string }> {
+): Promise<{ path: string; rawText: string; available: boolean; reason?: string }> {
   const rel = validateGitFilePath(relpath);
-  const rawText = await runGit(exec, root, ["diff", "--unified=3", "--", rel]);
-  return { path: rel, rawText };
+  let rawText: string;
+  try {
+    rawText = await runGit(exec, root, ["diff", "--unified=3", "--", rel]);
+  } catch (error) {
+    // A non-git root is an expected answer: report it instead of throwing so
+    // the diff route can surface the reason without a GitCommandError log.
+    if (isNotAGitRepository(error)) {
+      return { path: rel, rawText: "", available: false, reason: NOT_A_GIT_REPOSITORY };
+    }
+    throw error;
+  }
+  return { path: rel, rawText, available: true };
 }
 
 /** The working-tree summary (`git diff --stat`). */

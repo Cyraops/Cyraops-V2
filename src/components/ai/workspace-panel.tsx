@@ -43,6 +43,7 @@ interface GitInfo {
   log: string;
   diffStat: string;
   available: boolean;
+  reason?: string;
 }
 
 interface BranchInfo {
@@ -170,30 +171,47 @@ export function WorkspacePanel({
       aliveRef.current = false;
     };
   }, []);
+  /** Once git is known unavailable (non-repo), stop polling it until an explicit refresh. */
+  const gitUnavailableRef = useRef(false);
 
   const changedPaths = useMemo(() => changedPathsFromStatus(git?.status ?? ""), [git?.status]);
 
-  const loadInfo = useCallback(async () => {
-    if (!conversationId) return;
-    setError(null);
-    try {
-      const base = `/api/assistant/conversations/${encodeURIComponent(conversationId)}/workspace`;
-      const [infoRes, gitRes, branchesRes] = await Promise.all([
-        fetch(base, { cache: "no-store" }),
-        fetch(`${base}/git-status`, { cache: "no-store" }),
-        fetch(`${base}/git/branches`, { cache: "no-store" }),
-      ]);
-      const infoData = await infoRes.json().catch(() => ({}));
-      const gitData = await gitRes.json().catch(() => null);
-      const branchesData = await branchesRes.json().catch(() => null);
-      if (!aliveRef.current) return;
-      setInfo(infoData.workspace ?? null);
-      setGit(gitData);
-      setBranches(branchesData && typeof branchesData.current === "string" ? branchesData : null);
-    } catch {
-      if (aliveRef.current) setError("Could not load the workspace.");
-    }
-  }, [conversationId]);
+  const loadInfo = useCallback(
+    async (force = false) => {
+      if (!conversationId) return;
+      setError(null);
+      try {
+        const base = `/api/assistant/conversations/${encodeURIComponent(conversationId)}/workspace`;
+        // A non-git root is a stable answer: once seen, skip the git round-trips
+        // until the owner forces a refresh, so git is never polled while the
+        // directory is not a repository.
+        const skipGit = !force && gitUnavailableRef.current;
+        const [infoData, gitData, branchesData] = await Promise.all([
+          fetch(base, { cache: "no-store" }).then((res) => res.json().catch(() => ({}))),
+          skipGit
+            ? Promise.resolve(undefined)
+            : fetch(`${base}/git-status`, { cache: "no-store" }).then((res) => res.json().catch(() => null)),
+          skipGit
+            ? Promise.resolve(undefined)
+            : fetch(`${base}/git/branches`, { cache: "no-store" }).then((res) => res.json().catch(() => null)),
+        ]);
+        if (!aliveRef.current) return;
+        setInfo(infoData.workspace ?? null);
+        if (gitData !== undefined) {
+          setGit(gitData);
+          setBranches(
+            branchesData && typeof branchesData.current === "string" && branchesData.available !== false
+              ? branchesData
+              : null
+          );
+          gitUnavailableRef.current = gitData?.available === false;
+        }
+      } catch {
+        if (aliveRef.current) setError("Could not load the workspace.");
+      }
+    },
+    [conversationId]
+  );
 
   // Reset and reload whenever the conversation changes.
   useEffect(() => {
@@ -212,6 +230,7 @@ export function WorkspacePanel({
     setNewBranchName("");
     setCommitMessage("");
     setPendingApproval(null);
+    gitUnavailableRef.current = false;
     if (conversationId) void loadInfo();
   }, [conversationId, loadInfo]);
 
@@ -315,7 +334,8 @@ export function WorkspacePanel({
     setPreview(null);
     setDiff(null);
     setGitError(null);
-    await loadInfo();
+    // Force a fresh git check: the owner may have turned the folder into a repo.
+    await loadInfo(true);
     await loadDir("");
     setRefreshing(false);
   };
@@ -483,6 +503,9 @@ export function WorkspacePanel({
       setExpanded({});
       setPreview(null);
       setDiff(null);
+      // A new root may be a git repository: re-check git rather than carrying
+      // the previous root's "not a git repository" verdict forward.
+      gitUnavailableRef.current = false;
       await loadInfo();
     } catch {
       if (aliveRef.current) setError("Could not set the workspace root.");
@@ -516,6 +539,7 @@ export function WorkspacePanel({
       setExpanded({});
       setPreview(null);
       setDiff(null);
+      gitUnavailableRef.current = false;
       await loadInfo();
     } catch {
       if (aliveRef.current) setError("Could not clear the workspace root.");
@@ -721,7 +745,7 @@ export function WorkspacePanel({
         )}
         {git !== null && !git.available && (
           <div className="flex items-center gap-1 border-b border-[var(--border)] px-2 py-1.5 text-[10px] text-[var(--muted)]">
-            <GitBranch size={11} /> Not a git repository
+            <GitBranch size={11} /> {git.reason || "not a git repository"}
           </div>
         )}
 

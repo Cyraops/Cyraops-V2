@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CornerDownLeft, Loader2, Paperclip, PhoneOff, Volume2, VolumeX, X } from "lucide-react";
+import { Check, ChevronRight, CornerDownLeft, Loader2, Paperclip, PhoneOff, Volume2, VolumeX, X } from "lucide-react";
 import { VoiceEarth, type EarthPhase } from "./voice-earth";
 import { stripToolMarkup } from "@/lib/ai/tool-markup";
 import { availableGenders, pickVoice, type VoiceGender } from "@/lib/ai/voice/preferred-voices";
 import { recordUtterance, smoothLevel, toWav } from "@/lib/ai/voice/recorder";
 import { lastModeScope, writeLastMode } from "@/lib/ai/voice/last-mode";
 import { nextSentence } from "@/lib/ai/voice/sentences";
+import { SHELL_DISABLED_REPLY } from "@/lib/harness/command-classifier";
 
 type Phase = "idle" | "listening" | "thinking" | "speaking" | "error";
 
@@ -24,6 +25,8 @@ interface Turn {
   role: "user" | "assistant";
   text: string;
   at: number;
+  /** Tools the harness used during this assistant turn, for the collapsible tools line. */
+  tools?: VoiceTool[];
 }
 
 interface Attachment {
@@ -33,7 +36,33 @@ interface Attachment {
   size?: number;
 }
 
+/** One tool step in a voice turn's timeline (mirrors chat's HarnessToolTimeline). */
+interface VoiceTool {
+  name: string;
+  status: "running" | "completed" | "error";
+  result?: string;
+}
+
+/** The muted status line: mode + shell on/off + root, from /api/bot/status. */
+interface VoiceStatus {
+  mode?: string;
+  shell?: boolean;
+  root?: string | null;
+}
+
 const SPEECH_LANG = "en-IN";
+
+/**
+ * True when text is the platform's "shell is disabled" capability answer
+ * (either the exact shortcut reply or a platform error carrying the same
+ * capability text). These are shown as a muted notice, never a red error.
+ */
+function isShellDisabledMessage(text: unknown): boolean {
+  const value = String(text ?? "").trim();
+  if (!value) return false;
+  if (value === SHELL_DISABLED_REPLY) return true;
+  return /shell/i.test(value) && /disabled/i.test(value);
+}
 
 /** Strip what should never be read or spoken: tool markup, emphasis, links. */
 function plain(text: string): string {
@@ -45,6 +74,56 @@ function plain(text: string): string {
     .replace(/[*_#>]+/g, "")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+/**
+ * The collapsible tools line under a spoken reply — the same muted "N tools ·
+ * names" trail the chat shows for harness turns.
+ */
+function VoiceToolTimeline({ tools, live = false }: { tools: VoiceTool[]; live?: boolean }) {
+  if (tools.length === 0) return null;
+  const names = tools.map((tool) => tool.name);
+  const errored = tools.filter((tool) => tool.status === "error").length;
+  return (
+    <details
+      open={live ? true : undefined}
+      className="group mt-1.5 w-fit min-w-[190px] max-w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] text-meta text-[var(--muted)]"
+    >
+      <summary className="flex cursor-pointer list-none items-center gap-1.5 px-2 py-1 font-medium transition hover:text-[var(--text)]">
+        <ChevronRight size={12} className="shrink-0 transition-transform group-open:rotate-90" />
+        <span className="truncate">
+          {tools.length} tool{tools.length > 1 ? "s" : ""}
+          <span className="text-[var(--faint)]"> · </span>
+          {names.join(", ")}
+        </span>
+        {errored > 0 && <span className="shrink-0 text-rose-600 dark:text-rose-400">{errored} error{errored > 1 ? "s" : ""}</span>}
+      </summary>
+      <div className="space-y-1 border-t border-[var(--border)] px-2 py-1.5">
+        {tools.map((tool, index) => (
+          <div key={`${tool.name}-${index}`} className="flex items-start gap-1.5 leading-5">
+            {tool.status === "running" ? (
+              <Loader2 size={10} className="mt-0.5 shrink-0 animate-spin text-amber-600 dark:text-amber-400" />
+            ) : tool.status === "error" ? (
+              <X size={10} className="mt-0.5 shrink-0 text-rose-600 dark:text-rose-400" />
+            ) : (
+              <Check size={10} className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+            )}
+            <span className="min-w-0">
+              <span className="block truncate font-mono text-[11px] text-[var(--text)]" title={tool.name}>
+                {tool.name}
+              </span>
+              <span className="block text-caption text-[var(--muted)]">
+                {tool.status === "running" ? "running…" : tool.status === "error" ? "error" : "completed"}
+                {tool.result !== undefined && tool.status !== "running" && (
+                  <span className="break-words"> · {tool.result}</span>
+                )}
+              </span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </details>
+  );
 }
 
 /**
@@ -66,6 +145,12 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
   const [personPulseAt, setPersonPulseAt] = useState(0);
   const [speakPulseAt, setSpeakPulseAt] = useState(0);
   const [streamingReply, setStreamingReply] = useState("");
+  /** Tool steps of the in-flight turn, for the live "N tools" line while streaming. */
+  const [streamingTools, setStreamingTools] = useState<VoiceTool[]>([]);
+  /** The muted status line (mode · shell · root), fetched from /api/bot/status. */
+  const [botStatus, setBotStatus] = useState<VoiceStatus | null>(null);
+  /** A capability notice (e.g. "shell is disabled") shown muted instead of a red error. */
+  const [capabilityNotice, setCapabilityNotice] = useState("");
   /** Smoothed microphone level 0..1, shown as a bar while listening. */
   const [micLevel, setMicLevel] = useState(0);
   /** Last time the level was pushed into state; the meter updates ~12x/s. */
@@ -223,6 +308,44 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
     })();
   }, []);
 
+  // The muted status line (Wave 1c voice parity): mode + shell on/off + root.
+  // Primary source is the sibling's GET /api/bot/status; if it is not deployed
+  // yet, degrade gracefully to the conversation's workspace root only.
+  useEffect(() => {
+    const id = conversationId ?? conversationRef.current;
+    void (async () => {
+      try {
+        const query = id ? `?conversationId=${encodeURIComponent(id)}` : "";
+        const data = await fetch(`/api/bot/status${query}`)
+          .then((response) => response.json())
+          .catch(() => ({}));
+        if (data && (typeof data.mode === "string" || typeof data.effectiveMode === "string" || "shellEnabled" in data || "root" in data)) {
+          setBotStatus({
+            mode: typeof data.effectiveMode === "string" ? data.effectiveMode : typeof data.mode === "string" ? data.mode : undefined,
+            shell: typeof data.shellEnabled === "boolean" ? data.shellEnabled : undefined,
+            root: "root" in data ? (data.root ?? null) : undefined,
+          });
+          return;
+        }
+      } catch {
+        /* fall through to the lightweight fallback below */
+      }
+      if (!id) {
+        setBotStatus(null);
+        return;
+      }
+      try {
+        const data = await fetch(`/api/assistant/conversations/${encodeURIComponent(id)}/workspace`)
+          .then((response) => response.json())
+          .catch(() => ({}));
+        const ws = data?.workspace ?? null;
+        setBotStatus({ root: ws?.workspaceRootRealpath || ws?.workspaceRoot || null });
+      } catch {
+        setBotStatus(null);
+      }
+    })();
+  }, [conversationId]);
+
   useEffect(() => {
     mutedRef.current = muted;
     if (muted && typeof window !== "undefined" && window.speechSynthesis) window.speechSynthesis.cancel();
@@ -236,8 +359,8 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
     if (element) element.scrollTop = element.scrollHeight;
   }, [turns, streamingReply, heard]);
 
-  const appendTurn = useCallback((role: Turn["role"], text: string) => {
-    setTurns((current) => [...current, { id: `${role}_${Date.now()}_${current.length}`, role, text, at: Date.now() }]);
+  const appendTurn = useCallback((role: Turn["role"], text: string, tools?: VoiceTool[]) => {
+    setTurns((current) => [...current, { id: `${role}_${Date.now()}_${current.length}`, role, text, at: Date.now(), tools }]);
   }, []);
 
   // Earlier turns of this conversation, so the transcript is not empty on entry.
@@ -746,6 +869,8 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
       setError("");
       setHeard("");
       setStreamingReply("");
+      setStreamingTools([]);
+      setCapabilityNotice("");
       appendTurn("user", text);
 
       const controller = new AbortController();
@@ -773,6 +898,9 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         let buffer = "";
         let reply = "";
         let spokenUpTo = 0;
+        const tools: VoiceTool[] = [];
+        /** True when this turn was answered by a capability notice (shell disabled). */
+        let capabilityReply = false;
         let pending: {
           id: string;
           toolName: string;
@@ -802,6 +930,13 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
               // Superseded by a barge-in while the stream was closing: these
               // tokens belong to a turn that no longer owns the screen.
               if (askGenRef.current !== gen) continue;
+              // The platform's "shell is disabled" capability answer is shown as
+              // a muted notice rather than read aloud or treated as a reply.
+              if (isShellDisabledMessage(payload.content)) {
+                capabilityReply = true;
+                setCapabilityNotice(String(payload.content));
+                continue;
+              }
               reply += payload.content;
               setStreamingReply(reply);
               // Speak each finished sentence as it forms, rather than waiting for
@@ -811,6 +946,19 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
                 spokenUpTo += split.consumed;
                 enqueueSpeech(split.sentence);
               }
+            } else if (payload.type === "tool") {
+              // Show the tool step the moment it starts (voice parity with chat).
+              if (askGenRef.current !== gen) continue;
+              tools.push({ name: String(payload.name ?? "tool"), status: "running" });
+              setStreamingTools([...tools]);
+            } else if (payload.type === "tool_done") {
+              if (askGenRef.current !== gen) continue;
+              const entry = [...tools].reverse().find((tool) => tool.name === payload.name && tool.status === "running");
+              if (entry) {
+                entry.status = payload.status === "error" || payload.ok === false ? "error" : "completed";
+                if (typeof payload.result === "string" && payload.result) entry.result = payload.result;
+              }
+              setStreamingTools([...tools]);
             } else if (payload.type === "approval") {
               // Harness approval mid-turn: the broker is waiting on the decision,
               // so the card's buttons must be able to answer it right now.
@@ -818,13 +966,29 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
               pendingViaRef.current = "harness";
               setPendingApproval({ id: payload.approvalId, toolName: payload.toolName, summary: payload.summary, via: "harness" });
             } else if (payload.type === "done") {
-              if (payload.reply) reply = payload.reply;
+              if (payload.reply) {
+                // The shortcut command turn also mirrors the capability answer in
+                // the done payload; keep it a notice, not a spoken turn.
+                if (isShellDisabledMessage(payload.reply)) {
+                  capabilityReply = true;
+                  setCapabilityNotice(String(payload.reply));
+                } else {
+                  reply = payload.reply;
+                }
+              }
               if (payload.conversationId) {
                 conversationRef.current = payload.conversationId;
                 onConversation?.(payload.conversationId);
               }
               if (payload.pendingAction) pending = payload.pendingAction;
             } else if (payload.type === "error") {
+              // A capability error ("shell is disabled") is a clean notice, not
+              // a failure: show it muted and let the turn finish quietly.
+              if (isShellDisabledMessage(payload.error)) {
+                capabilityReply = true;
+                setCapabilityNotice(String(payload.error));
+                continue;
+              }
               throw new Error(payload.error || "The assistant did not answer.");
             }
           }
@@ -835,7 +999,8 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         if (askGenRef.current !== gen) return;
 
         setStreamingReply("");
-        if (reply.trim()) appendTurn("assistant", reply);
+        setStreamingTools([]);
+        if (!capabilityReply && reply.trim()) appendTurn("assistant", reply, tools.length > 0 ? tools : undefined);
 
         // A tool needs a person. Ask here rather than throwing the person out
         // of the voice screen: the card appears above the composer and the
@@ -859,7 +1024,7 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         }
 
         const tail = reply.slice(spokenUpTo).trim();
-        if (tail) enqueueSpeech(tail);
+        if (tail && !capabilityReply) enqueueSpeech(tail);
         const waitForSpeech = () => {
           if (!activeRef.current) return;
           if (queueRef.current.length || pumpingRef.current) {
@@ -872,6 +1037,7 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         else resumeListening();
       } catch (caught) {
         setStreamingReply("");
+        setStreamingTools([]);
         // Aborted because the person spoke over it: that is not an error.
         if ((caught as { name?: string })?.name === "AbortError") return;
         // A superseded turn failing must not paint over the new turn's screen.
@@ -1199,8 +1365,29 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
             ? "Paused — tap the planet to retry"
             : "Tap the planet to talk";
 
+  // The muted status line (mode · shell · root), same info as the chat's strip.
+  const statusParts: string[] = [];
+  if (botStatus?.mode) statusParts.push(String(botStatus.mode).replace(/_/g, " ").toLowerCase());
+  if (botStatus?.shell === true) statusParts.push("shell on");
+  else if (botStatus?.shell === false) statusParts.push("shell off");
+  if (botStatus && botStatus.root) statusParts.push(botStatus.root);
+  else if (botStatus && botStatus.root === null) statusParts.push("no folder set — file work is disabled");
+  const statusLine = statusParts.join(" · ");
+
   return (
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+      {/* Tiny muted status line (mode · shell · root), left of the floating planet. */}
+      {statusLine && (
+        <div className="pointer-events-none absolute left-3 top-2 z-20 max-w-[55%]">
+          <p
+            data-testid="voice-status"
+            className="truncate rounded-full bg-[var(--surface)]/70 px-2.5 py-0.5 text-caption text-[var(--muted)] backdrop-blur-sm"
+            title={statusLine}
+          >
+            {statusLine}
+          </p>
+        </div>
+      )}
       {/* The planet floats over the conversation: the chat keeps the full pane
           and simply passes behind the Earth and the Moon. */}
       {/* Centred with left/translate rather than flex: this holds whatever the
@@ -1258,23 +1445,29 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
         <div className="mx-auto max-w-3xl space-y-2">
           {turns.map((turn) => (
             <div key={turn.id} className={`flex ${turn.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[85%] rounded-2xl px-3 py-2 text-meta leading-relaxed ${
-                  turn.role === "user"
-                    ? "bg-accent text-white"
-                    : "border border-[var(--border)] bg-[var(--surface)] text-[var(--text)]"
-                }`}
-              >
-                {turn.role === "user" ? turn.text : plain(turn.text)}
-              </div>
+              {turn.role === "assistant" ? (
+                <div className="flex min-w-0 max-w-[85%] flex-col items-start">
+                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-meta leading-relaxed text-[var(--text)]">
+                    {plain(turn.text)}
+                  </div>
+                  {turn.tools && turn.tools.length > 0 && <VoiceToolTimeline tools={turn.tools} />}
+                </div>
+              ) : (
+                <div className="max-w-[85%] rounded-2xl bg-accent px-3 py-2 text-meta leading-relaxed text-white">
+                  {turn.text}
+                </div>
+              )}
             </div>
           ))}
 
           {streamingReply && (
             <div className="flex justify-start">
-              <div className="max-w-[85%] rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-meta leading-relaxed text-[var(--text)]">
-                {plain(streamingReply)}
-                <Loader2 size={11} className="ml-1 inline animate-spin text-[var(--muted)]" />
+              <div className="flex min-w-0 max-w-[85%] flex-col items-start">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-meta leading-relaxed text-[var(--text)]">
+                  {plain(streamingReply)}
+                  <Loader2 size={11} className="ml-1 inline animate-spin text-[var(--muted)]" />
+                </div>
+                {streamingTools.length > 0 && <VoiceToolTimeline tools={streamingTools} live />}
               </div>
             </div>
           )}
@@ -1285,6 +1478,12 @@ export function VoiceMode({ assistantId, conversationId, onConversation, onExit 
                 {heard}
               </div>
             </div>
+          )}
+
+          {capabilityNotice && (
+            <p className="rounded-lg bg-[var(--surface-2)] px-3 py-2 text-meta text-[var(--muted)]">
+              {capabilityNotice}
+            </p>
           )}
 
           {error && (
