@@ -549,6 +549,17 @@ interface PermissionState {
   agents: PermissionAgent[];
 }
 
+/** GET /api/bot/status — the user's mode resolved through the turn path. */
+interface BotStatus {
+  mode: string;
+  effectiveMode: string;
+  workspace: { id: string; ownerId: string; permissionMode: string } | null;
+  workspaceOwnerMatch: boolean;
+  root: string | null;
+  shellEnabled: boolean;
+  systemToolsEnabled: boolean;
+}
+
 /**
  * Functional replacement for the static Access & Collaboration card. Rendered
  * only for OWNER/ADMIN (the API is Owner/Admin gated); members never see the
@@ -562,6 +573,19 @@ function PermissionsCard() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [botStatus, setBotStatus] = useState<BotStatus | null>(null);
+
+  // Wave 1a: the user's effective mode, resolved through the SAME ownership-
+  // verified path turns use, so the card can never disagree with a turn.
+  const loadBotStatus = useCallback(async () => {
+    try {
+      const res = await fetch("/api/bot/status");
+      const data = await res.json();
+      if (res.ok) setBotStatus(data);
+    } catch {
+      // Non-fatal: the mode selects still work without the status banner.
+    }
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -578,7 +602,8 @@ function PermissionsCard() {
     } finally {
       setLoading(false);
     }
-  }, []);
+    void loadBotStatus();
+  }, [loadBotStatus]);
 
   useEffect(() => {
     void load();
@@ -671,6 +696,22 @@ function PermissionsCard() {
           <p className="text-[10px] text-[var(--muted)]">Unified AI permission modes for the workspace and its agents.</p>
         </div>
       </div>
+
+      {botStatus && (
+        <div className="mb-4 space-y-2">
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-[var(--muted)]">Your bot&apos;s effective mode:</span>
+            <span className="rounded-full bg-accent/10 px-2.5 py-1 text-[11px] font-bold text-accent">
+              {botStatus.effectiveMode.replace(/_/g, " ")}
+            </span>
+          </div>
+          {!botStatus.workspaceOwnerMatch && (
+            <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-200">
+              This workspace is owned by someone else, so your bot turns resolve to {botStatus.effectiveMode.replace(/_/g, " ")}. Contact the owner or switch to your own workspace.
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="space-y-4">
         <Select
